@@ -10,7 +10,7 @@ namespace E_Shop.Domain.Models
         public Order? Order { get; set; }
 
         [Required]
-        public User2? User { get; set; }
+        public User? User { get; set; }
 
         [Required]
         [DefaultValue(false)]
