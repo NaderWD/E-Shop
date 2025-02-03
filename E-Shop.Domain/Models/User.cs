@@ -6,10 +6,10 @@ namespace E_Shop.Domain.Models
 {
     public class User : BaseModel
     {
-        [Display(Name = "نام کاربری")]
+        [Display(Name = "نام")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(255)]
-        public string? UserName { get; set; }
+        public string? Name { get; set; }
 
         [Display(Name = "گذرواژه")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -36,14 +36,8 @@ namespace E_Shop.Domain.Models
         [DataType(DataType.PhoneNumber)]
         public string? Mobile { get; set; }
 
-        [Display(Name = "آدرس")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public Address? Address { get; set; }
-
         [Required]
         [DefaultValue(false)]
         public bool IsAdmin { get; set; }
-
-       
     }
 }
