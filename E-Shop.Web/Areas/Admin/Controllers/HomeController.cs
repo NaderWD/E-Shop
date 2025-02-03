@@ -3,10 +3,8 @@
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    
-    public class HomeController : BaseAdminController
+    public class HomeController : Controller
     {
-        [Route("Admin")]
         public IActionResult Index()
         {
             return View();
