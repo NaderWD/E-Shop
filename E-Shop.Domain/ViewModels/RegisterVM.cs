@@ -1,24 +1,23 @@
 ﻿using E_Shop.Domain.Models.Common;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace E_Shop.Domain.Models
+namespace E_Shop.Domain.ViewModels
 {
-    public class User : BaseModel
+    public class RegisterVM : BaseModel
     {
-       
         [MaxLength(255)]
-        public string? UserName { get; set; }
+        public string UserName { get; set; }
 
         [MaxLength(255)]
-        public string? Password { get; set; }
+        public string Password { get; set; }
+
+        [MaxLength(255)]
+        public string Repassword { get; set; }
 
         [MaxLength(500)]
         public string? EmailAddress { get; set; }
 
         [MaxLength(500)]
         public string? Mobile { get; set; }
-
-        public bool IsAdmin { get; set; }
     }
 }
