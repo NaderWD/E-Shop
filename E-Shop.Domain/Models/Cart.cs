@@ -2,7 +2,7 @@
 
 namespace E_Shop.Domain.Models
 {
-    public class Product : BaseModel
+    public class Cart : BaseModel
     {
 
     }
