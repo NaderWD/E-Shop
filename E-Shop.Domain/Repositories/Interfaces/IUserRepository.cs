@@ -5,14 +5,14 @@ namespace E_Shop.Domain.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetAllUsers();
+        Task<IEnumerable<User>> GetAllUsers();
         Task<User> GetUserById(int id);
         Task<User> GetUserByEmail(string email);
-        Task<int> CreateUser(User user);
+        bool CreateUser(User user);
         void UpdateUser(User user);
-        Task DeleteUser(int id);
-        Task Login(LoginVM login);
-        Task Logout();
-        Task Register(RegisterVM register);
+        void DeleteUser(int id);
+        Task LoginUser(LoginVM login);
+        Task LogoutUser();
+        Task RegisterUser(RegisterVM register);
     }
 }

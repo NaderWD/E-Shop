@@ -1,0 +1,61 @@
+﻿using E_Shop.Domain.Models;
+using E_Shop.Domain.Repositories.Interfaces;
+using E_Shop.Domain.ViewModels;
+using Microsoft.EntityFrameworkCore;
+
+namespace E_Shop.Infra.Data.Repositories.Implementations
+{
+    public class UserRepository(ShopDbContext context) : IUserRepository
+    {
+
+        private readonly ShopDbContext _context = context;
+
+        public bool CreateUser(User user)
+        {
+            _context.Users.Add(user);
+            return true;
+        }
+
+        public void DeleteUser(int id)
+        {
+            _context.Remove(id);
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            var models = await _context.Users.ToListAsync();
+            return models;
+        }
+
+        public Task<User> GetUserByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<User> GetUserById(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return user;
+        }
+
+        public async Task LoginUser(LoginVM login)
+        {
+           aw 
+        }
+
+        public Task LogoutUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RegisterUser(RegisterVM register)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+        }
+    }
+}
