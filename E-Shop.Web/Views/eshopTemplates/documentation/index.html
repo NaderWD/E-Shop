@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="fw-bold">یکتا کالا - مستندات</div>
+        <div class="text-muted">نسخه 1.0.0</div>
+    </header>
+
+    <main class="main">
+        <div class="sidebar d-none d-md-block">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#updates">بروزرسانی</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#customize">شخصی سازی</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#structure">ساختار</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#dependencies">وابستگی ها</a>
+                </li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="d-md-none">
+                <a class="btn btn-outline-light rounded-pill px-4 mb-3" data-bs-toggle="offcanvas"
+                    href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+                        <g>
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" />
+                        </g>
+                    </svg>
+                    <span class="text-dark">منو</span>
+                </a>
+            </div>
+            <div class="section">
+                <h3 class="section-title" id="updates">
+                    نحوه بروزرسانی:
+                </h3>
+                <div class="section-content">
+                    <p class="desc">
+                        همیشه می توانید بروزرسانی جدید این قالب را به صورت رایگان از قسمت پنل کاربری>دانلودها،
+                        دانلود کنید.
+                    </p>
+                    <p class="desc">
+                        از شما خواسته می شود پوشه ها و فایل ها را بروز کنید و به ویژه مطمئن شوید که پوشه <span
+                            class="fw-bold text-dark ff-en">theme-assets</span> نیز بروز
+                        شده است. گاهی اوقات، ساختار <span class="fw-bold text-dark ff-en">HTML</span> نیز نیاز به
+                        بروزرسانی دارد. بنابراین، اگر برخی از عناصر ویرایش
+                        شده شما کار نمی کند، ساختار آن را با ساختار قالب ما (آخرین نسخه) مقایسه کنید و تغییرات مورد نیاز
+                        را اعمال کنید.
+                    </p>
+                    <div class="alert alert-warning my-4" role="alert">
+                        <p class="fw-bold text-danger desc">
+                            نکته:
+                        </p>
+                        <p class="desc">
+                            برای هر گونه شخصی سازی قالب، حتما طبق گفته های قسمت (نحوه شخصی سازی) عمل کنید تا بعد از
+                            بروزرسانی تغییرات شما از بین نرود.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <h3 class="section-title" id="customize">
+                    نحوه شخصی سازی:
+                </h3>
+                <div class="section-content">
+                    <p class="desc">
+                        اگر می خواهید قالب را شخصی سازی کنید ، توصیه می شود کد <span
+                            class="fw-bold text-dark ff-en">CSS</span> و <span class="fw-bold text-dark ff-en">JS</span>
+                        خود را به عنوان فایل های جدا با
+                        استفاده از تگ های <span class="fw-bold text-dark ff-en">link</span> و <span
+                            class="fw-bold text-dark ff-en">script</span> به پروژه اضافه کنید. نام فایل <span
+                            class="fw-bold text-dark ff-en">CSS</span> پیشنهادی
+                        <span class="fw-bold text-dark ff-en">theme-asset/css/custom.css</span>
+                        و نام فایل <span class="fw-bold text-dark ff-en">JS</span> پیشنهادی <span
+                            class="fw-bold text-dark ff-en">theme-asset/js/custom.js</span> است.
+                    </p>
+                    <p class="desc">
+                        اطمینان حاصل کنید که
+                        فایل <span class="fw-bold text-dark ff-en">CSS</span> خود را در انتهای
+                        لیست استایلها اضافه کردید یا فایل <span class="fw-bold text-dark ff-en">JS</span> را در انتهای
+                        لیست اسکریپت ها.
+                    </p>
+                    <div class="alert alert-warning my-4" role="alert">
+                        <p class="fw-bold text-danger desc">
+                            نکته:
+                        </p>
+                        <p class="desc">
+                            هر دوی این فایلها برای راحتی شما در قالب وجود دارد و در صفحات لینک شده است.
+                        </p>
+                    </div>
+                    <div class="alert alert-warning my-4" role="alert">
+                        <p class="fw-bold text-danger desc">
+                            نکته:
+                        </p>
+                        <p class="desc">
+                            تحت هیچ شرایطی فایلهای اصلی قالب را شخصی سازی نکنید،زیرا با بروزرسانی قالب کدهای شما از بین
+                            خواهد رفت!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <h3 class="section-title" id="structure">
+                    ساختار:
+                </h3>
+                <div class="section-content">
+                    <div class="dir-ltr ff-en">
+                        <ul>
+                            <li><b>HTML</b> - main theme folder</li>
+                            <ul>
+                                <li><b>theme-assets</b> - assets folder</li>
+                                <ul>
+                                    <li><b>css</b> - all common styles used on the pages</li>
+                                    <li><b>fonts</b> - all common fonts used on the pages</li>
+                                    <li><b>images</b> - images for the project</li>
+                                    <li><b>js</b> - all common scripts used on the pages</li>
+                                    <li><b>sass</b> - all common styles used on the pages</li>
+                                </ul>
+                                <li><b>... .html</b> - Theme Preview</li>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <h3 class="section-title" id="dependencies">
+                    وابستگی ها:
+                </h3>
+                <div class="section-content">
+                    <p class="desc">
+                        قالب ... با آخرین نسخه فریمورک محبوب <span class="fw-bold text-dark ff-en">Bootstrap</span>
+                        طراحی شده است، و به این معنی است که می توانید از قابلیت ها،کامپوننت ها و کلاس های آماده این
+                        فریمورک در قالب بهره
+                        ببرید.
+                    </p>
+                    <p class="desc">
+                        لازم به ذکر است که در آپدیت های آینده تمامی کامپوننت های این فریمورک با قالب از لحاظ ظاهر یا
+                        بصری همخوانی بهتری پیدا خواهد کرد.
+                    </p>
+                    <div class="py-2 my-4">
+                        <p class="desc">
+                            از طریق لینک پایین می توانید مستندات فریمورک <span
+                                class="fw-bold text-dark ff-en">Bootstrap</span> را بخوانید.
+                        </p>
+                        <div class="dir-ltr">
+                            <a href="#">https://getbootstrap.com/</a>
+                        </div>
+                    </div>
+                    <p class="desc fw-bold fs-6 text-dark">
+                        در قالب ... از پلاگین های زیر استفاده شده است:
+                    </p>
+                    <div class="py-2 my-4">
+                        <ul class="mb-0">
+                            <li class="mb-4">
+                                <span class="d-block">قسمت ارسال نظر برای بخش امتیاز دهی:</span>
+                                <span class="d-block dir-ltr ff-en"><span
+                                        class="text-success d-block">bootstrap-slider</span>
+                                    <a href="#" class="me-3">https://seiyria.com/bootstrap-slider/</a></span>
+                            </li>
+                            <li class="mb-4">
+                                <span class="d-block">قسمت گالری محصول:</span>
+                                <span class="d-block dir-ltr ff-en"><span class="text-success d-block">fancybox</span>
+                                    <a href="#" class="me-3">https://fancyapps.com/docs/ui/fancybox/</a></span>
+                            </li>
+                            <li class="mb-4">
+                                <span class="d-block">قسمت پیشنهادات شگفت انگیز برای تایمر:</span>
+                                <span class="d-block dir-ltr ff-en"><span
+                                        class="text-success d-block">jQuery.countdown</span>
+                                    <a href="#" class="me-3">http://hilios.github.io/jQuery.countdown/</a></span>
+                            </li>
+                            <li class="mb-4">
+                                <span class="d-block">برای تایمر صفحه وریفای شماره موبایل:</span>
+                                <span class="d-block dir-ltr ff-en"><span class="text-success d-block">simple
+                                        timer</span> <a href="#"
+                                        class="me-3">https://csouza.me/jQuery-Simple-Timer/</a></span>
+                            </li>
+                            <li class="mb-4">
+                                <span class="d-block">قسمت فیلتر قیمت:</span>
+                                <span class="d-block dir-ltr ff-en"><span class="text-success d-block">noUiSlider</span>
+                                    <a href="#" class="me-3">https://refreshless.com/nouislider/</a></span>
+                            </li>
+                            <li class="mb-4">
+                                <span class="d-block">برای مودال ها:</span>
+                                <span class="d-block dir-ltr ff-en"><span class="text-success d-block">remodal</span> <a
+                                        href="#" class="me-3">https://vodkabears.github.io/remodal/</a></span>
+                            </li>
+                            <li class="mb-4">
+                                <span class="d-block">استفاده شده برای تگهای <span class="ff-en">select</span></span>
+                                <span class="d-block dir-ltr ff-en"><span class="text-success d-block">select2</span> <a
+                                        href="#" class="me-3">https://select2.org/</a></span>
+                            </li>
+                            <li class="mb-4">
+                                <span class="d-block">برای شخصی سازی اسکرول مرورگر</span>
+                                <span class="d-block dir-ltr ff-en"><span class="text-success d-block">simplebar</span>
+                                    <a href="#" class="me-3">http://grsmto.github.io/simplebar/</a></span>
+                            </li>
+                            <li class="mb-4">
+                                <span class="d-block">برای ایجادکردن اسلایدرها</span>
+                                <span class="d-block dir-ltr ff-en"><span class="text-success d-block">swiper</span> <a
+                                        href="#" class="me-3">https://swiperjs.com/</a></span>
+                            </li>
+                            <li class="mb-4">
+                                <span class="d-block">برای زوم تصویر در صفحه محصول</span>
+                                <span class="d-block dir-ltr ff-en"><span class="text-success d-block">zoomsl</span> <a
+                                        href="#"
+                                        class="me-3">https://www.jqueryscript.net/zoom/Stylish-Magnifying-Glass-Plugin-SergeLand-Image-Zoomer.html</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+            aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel"></h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#updates">بروزرسانی</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#customize">شخصی سازی</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#structure">ساختار</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#dependencies">وابستگی ها</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
