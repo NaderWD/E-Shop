@@ -4,7 +4,6 @@ namespace E_Shop.Web.Areas.User.Controllers
 {
     public class HomeController : Controller
     {
-        [Area("User")]
         public IActionResult Index()
         {
             return View();
