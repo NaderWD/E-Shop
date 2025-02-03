@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace E_Shop.Infra.Data.Security
+namespace E_Shop.Application.Services.Security
 {
     public static class PasswordHasher
     {
@@ -14,7 +14,7 @@ namespace E_Shop.Infra.Data.Security
             //orginalBytes = ASCIIEncoding.Default.GetBytes(pass);
             //encodedBytes = md5.ComputeHash(orginalBytes);
 
-            byte[] originalBytes = ASCIIEncoding.Default.GetBytes(pass);
+            byte[] originalBytes = Encoding.Default.GetBytes(pass);
             byte[] encodedBytes = MD5.HashData(originalBytes);
 
             return BitConverter.ToString(encodedBytes);
