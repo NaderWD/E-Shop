@@ -6,13 +6,15 @@ namespace E_Shop.Domain.Models
 {
     public class Cart : BaseModel
     {
+        [Display(Name = "سفارشات")]
         [Required]
         public Order? Order { get; set; }
 
+        [Display(Name = "کابر")]
         [Required]
-        public User2? User { get; set; }
+        public User? User { get; set; }
 
-        [Required]
+        [Display(Name = "وضعیت پرداخت")]
         [DefaultValue(false)]
         public bool IsPaid { get; set; }
     }
