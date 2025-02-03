@@ -12,4 +12,8 @@
     <Folder Include="Services\Implementations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\E-Shop.Infra.Data\E-Shop.Infra.Data.csproj" />
+  </ItemGroup>
+
 </Project>
