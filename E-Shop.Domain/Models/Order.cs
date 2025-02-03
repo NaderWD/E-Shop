@@ -4,6 +4,6 @@ namespace E_Shop.Domain.Models
 {
     public class Order : BaseModel
     {
-
+        public Product? Product { get; set; }
     }
 }
