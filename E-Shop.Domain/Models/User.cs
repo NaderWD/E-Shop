@@ -1,10 +1,15 @@
 ﻿using E_Shop.Domain.Models.Common;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace E_Shop.Domain.Models
 {
-    public class User2 : BaseModel
+    public class User : BaseModel
     {
         [Required]
         [MaxLength(255)]
@@ -31,5 +36,10 @@ namespace E_Shop.Domain.Models
         [Required]
         [DefaultValue(false)]
         public bool IsAdmin { get; set; }
+
+        [Required]
+        [MaxLength(500)]
+        [DataType(DataType.PhoneNumber)]
+        public string? Mobile { get; set; }
     }
 }
