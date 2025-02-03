@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Domain.Models.Common
 {
@@ -11,5 +12,9 @@ namespace E_Shop.Domain.Models.Common
         public DateTime CreateDate { get; set; }
 
         public DateTime LastModifiedDate { get; set; }
+
+        [Required]
+        [DefaultValue(false)]
+        public bool IsActive { get; set; }
     }
 }
