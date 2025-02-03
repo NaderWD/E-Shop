@@ -1,12 +1,11 @@
 ﻿using E_Shop.Domain.Models.Common;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace E_Shop.Domain.Models
 {
     public class Product : BaseModel
     {
-        [Display(Name = "نام دسته بندی")]
+        [Display(Name = "نام محصول")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(255)]
         public string? Title { get; set; }
@@ -29,6 +28,14 @@ namespace E_Shop.Domain.Models
         [Required(ErrorMessage = "لطفا {0} را قرار دهید")]
         [DataType((DataType.ImageUrl))]
         public string? Image { get; set; }
+
+        [Display(Name = "قیمت")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public decimal Price { get; set; }
+
+        [Display(Name = "تخفیف")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public Discount? Discount { get; set; }
 
         [Display(Name = "برند")]
         public string? Brand { get; set; }
