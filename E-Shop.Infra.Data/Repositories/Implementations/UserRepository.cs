@@ -40,16 +40,6 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return user;
         }
 
-        public Task LoginUser(LoginVM login)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task LogoutUser()
-        {
-            throw new NotImplementedException();
-        }
-
         public Task RegisterUser(RegisterVM register)
         {
             User user = new()

@@ -1,4 +1,5 @@
 ﻿using E_Shop.Application.Services.Interfaces;
+using E_Shop.Application.Services.Security;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
 using E_Shop.Domain.ViewModels;
@@ -10,6 +11,8 @@ namespace E_Shop.Application.Services.Implementations
     public class UserService(IUserRepository repository) : IUserService
     {
         private readonly IUserRepository _repository = repository;
+
+
 
         public async Task<User> GetByEmail(string email)
         {
@@ -24,7 +27,7 @@ namespace E_Shop.Application.Services.Implementations
 
             if (user == null) return LoginResult.UserNotFound;
 
-            string hashPassword = login.Password;
+            string hashPassword = login.Password.Trim().EncodePasswordMd5();
 
             if (login.Password != hashPassword) return LoginResult.Error;
 
