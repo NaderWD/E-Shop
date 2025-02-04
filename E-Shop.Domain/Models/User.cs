@@ -11,10 +11,10 @@ namespace E_Shop.Domain.Models
         public string? UserName { get; set; }
 
         [MaxLength(255)]
-        public string? Password { get; set; }
+        public string Password { get; set; }
 
         [MaxLength(500)]
-        public string? EmailAddress { get; set; }
+        public string EmailAddress { get; set; }
 
         [MaxLength(500)]
         public string? Mobile { get; set; }

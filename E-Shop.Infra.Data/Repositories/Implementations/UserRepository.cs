@@ -16,9 +16,10 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return true;
         }
 
-        public void DeleteUser(int id)
+        public async void DeleteUser(int id)
         {
-            _context.Remove(id);
+            var user = await GetUserById(id);
+            _context.Users.Remove(user);
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
@@ -27,9 +28,10 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return models;
         }
 
-        public Task<User> GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.EmailAddress == email);
+            return user;
         }
 
         public async Task<User> GetUserById(int id)
@@ -38,9 +40,9 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return user;
         }
 
-        public async Task LoginUser(LoginVM login)
+        public Task LoginUser(LoginVM login)
         {
-           aw 
+            throw new NotImplementedException();
         }
 
         public Task LogoutUser()
@@ -50,7 +52,13 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public Task RegisterUser(RegisterVM register)
         {
-            throw new NotImplementedException();
+            User user = new()
+            {
+                EmailAddress = register.EmailAddress,
+                Password = register.Password,
+            };
+            _context.Users.Add(user);
+            return Task.CompletedTask;
         }
 
         public void UpdateUser(User user)

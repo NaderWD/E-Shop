@@ -1,7 +1,32 @@
+using E_Shop.Infra.Data;
+using E_Shop.Infra.IOC;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.ConfigureServices();
+
+var connection = builder.Configuration.GetConnectionString("ShopDbConnection");
+builder.Services.AddDbContext<ShopDbContext>(options => options.UseSqlServer(connection));
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie(options =>
+{
+    options.LoginPath = "/login";
+    options.LogoutPath = "/logout";
+    //options.ForwardSignIn = "/register";
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+});
+
+
 
 var app = builder.Build();
 
@@ -17,7 +42,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapStaticAssets();
 
