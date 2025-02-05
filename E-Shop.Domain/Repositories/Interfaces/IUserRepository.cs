@@ -1,5 +1,6 @@
 ﻿using E_Shop.Domain.Models;
 using E_Shop.Domain.ViewModels;
+using static E_Shop.Domain.ViewModels.RegisterVM;
 
 namespace E_Shop.Domain.Repositories.Interfaces
 {
@@ -11,7 +12,6 @@ namespace E_Shop.Domain.Repositories.Interfaces
         bool CreateUser(User user);
         void UpdateUser(User user);
         void DeleteUser(int id);
-        Task RegisterUser(RegisterVM register);
         void Save();
     }
 }

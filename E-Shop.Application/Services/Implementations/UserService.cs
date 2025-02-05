@@ -1,13 +1,11 @@
 ﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.Services.Security;
-using E_Shop.Application.Tools;
+using E_Shop.Application.Services.Tools;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
-using E_Shop.Domain.ServicesModels;
 using E_Shop.Domain.ViewModels;
-using System.Net.Mail;
 using static E_Shop.Domain.ViewModels.LoginVM;
 using static E_Shop.Domain.ViewModels.RegisterVM;
+using static E_Shop.Domain.ViewModels.ResetPasswordVM;
 
 namespace E_Shop.Application.Services.Implementations
 {
@@ -15,7 +13,7 @@ namespace E_Shop.Application.Services.Implementations
     {
         private readonly IUserRepository _repository = repository;
 
-    
+
 
         public async Task<User> GetByEmail(string email)
         {
@@ -38,42 +36,30 @@ namespace E_Shop.Application.Services.Implementations
         }
 
         public async Task<RegisterResult> Register(RegisterVM register)
-
         {
-
-            await _repository.RegisterUser(register);
+            var code = new Guid();
+            var user = new User()
+            {
+                FirstName = register.FirstName,
+                LastName = register.LastName,
+                EmailAddress = register.EmailAddress,
+                Mobile = register.Mobile,
+                Password = PasswordHasher.EncodePasswordMd5(register.Password),
+                ActivationCode = code,
+            };
+            _repository.CreateUser(user);
+            _repository.Save();
             return RegisterResult.Success;
         }
 
-
-
-        public async Task<string> SetActivationCode(ForgetPasswordVM model)
+        public async Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password)
         {
-            var user = await _repository.GetUserByEmail(model.EmailAddress);
-            var activationCode = ActiveCodeGenerator.GenerateRandomCode(6);
-            user.ActivationCode = activationCode;
+            var user = await _repository.GetUserByEmail(resetPassword.EmailAddress);
+            user.Password = password;
             _repository.UpdateUser(user);
             _repository.Save();
-            return activationCode;
-        }
-
-        public void SendVerificationEmail(Email email)
-        {
-            MailMessage mail = new();
-            SmtpClient SmtpServer = new("smtp.gmail.com");
-            mail.From = new MailAddress("Toplearn@gmail.com", "EShop");
-            mail.To.Add(email.To);
-            mail.Subject = email.Subject;
-            var message = email.Body;
-            mail.Body = $"{message}\n\nYour activation code is: {SetActivationCode}";
-            mail.IsBodyHtml = true;
-
-            SmtpServer.Port = 587;
-            //SmtpServer.UseDefaultCredentials = false;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("Toplearn@gmail.com", "******");
-            SmtpServer.EnableSsl = true;
-
-            SmtpServer.Send(mail);
+            if (code != null) { }
+            return UserResult.Success;
         }
     }
 }

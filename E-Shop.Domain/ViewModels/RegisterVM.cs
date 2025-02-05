@@ -4,17 +4,35 @@ namespace E_Shop.Domain.ViewModels
 {
     public class RegisterVM
     {
+        public string? FirstName { get; set; }
+
+        public string? LastName { get; set; }
+
+        [Display(Name = "رمز عبور")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(255)]
         public string Password { get; set; }
 
+        [Display(Name = "تکرار رمز عبور")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(255)]
         [Compare("Password")]
         public string Repassword { get; set; }
 
+        [Display(Name = "ایمیل")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(500)]
+        [EmailAddress(ErrorMessage = "ایمیل صحیح وارد کنید")]
         public string EmailAddress { get; set; }
 
-        public string? ActivationCode { get; set; }
+        [Required]
+        public Guid? ActivationCode { get; set; }
+
+        [Display(Name = "تلفن همراه")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(500)]
+        [DataType(DataType.PhoneNumber)]
+        public string? Mobile { get; set; }
 
         public enum RegisterResult
         {

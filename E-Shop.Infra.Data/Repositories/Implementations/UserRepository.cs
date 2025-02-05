@@ -2,6 +2,7 @@
 using E_Shop.Domain.Repositories.Interfaces;
 using E_Shop.Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using static E_Shop.Domain.ViewModels.RegisterVM;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations
 {
@@ -38,17 +39,6 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             return user;
-        }
-
-        public Task RegisterUser(RegisterVM register)
-        {
-            User user = new()
-            {
-                EmailAddress = register.EmailAddress,
-                Password = register.Password,
-            };
-            _context.Users.Add(user);
-            return Task.CompletedTask;
         }
 
         public void Save()

@@ -12,6 +12,7 @@ namespace E_Shop.Infra.IOC
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
             return services;
         }

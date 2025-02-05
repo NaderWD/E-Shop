@@ -4,9 +4,10 @@ namespace E_Shop.Domain.ViewModels
 {
     public class ForgetPasswordVM
     {
-        [EmailAddress]
+        [Display(Name = "ایمیل")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(500)]
+        [EmailAddress(ErrorMessage = "ایمیل صحیح وارد کنید")]
         public string EmailAddress { get; set; }
-
-        public string? ActivationCode { get; set; }
     }
 }

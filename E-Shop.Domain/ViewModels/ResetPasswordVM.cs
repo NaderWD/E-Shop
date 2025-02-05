@@ -6,11 +6,27 @@ namespace E_Shop.Domain.ViewModels
     {
         public string Code { get; set; }
 
-        [DataType(DataType.Password)]
-        public string NewPassword { get; set; }
+        [Display(Name = "رمز عبور")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(255)]
+        public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        [Compare("NewPassword")]
+        [Display(Name = "تکرار رمز عبور")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(255)]
+        [Compare("Password")]
         public string RePassword { get; set; }
+
+        [Display(Name = "ایمیل")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(500)]
+        [EmailAddress(ErrorMessage = "ایمیل صحیح وارد کنید")]
+        public string EmailAddress { get; set; }
+
+        public enum UserResult
+        {
+            Success,
+            Error,
+        }
     }
 }
