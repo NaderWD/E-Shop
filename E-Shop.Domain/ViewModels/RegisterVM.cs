@@ -14,6 +14,8 @@ namespace E_Shop.Domain.ViewModels
         [MaxLength(500)]
         public string EmailAddress { get; set; }
 
+        public string? ActivationCode { get; set; }
+
         public enum RegisterResult
         {
             Success,

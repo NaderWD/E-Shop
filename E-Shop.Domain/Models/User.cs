@@ -19,6 +19,8 @@ namespace E_Shop.Domain.Models
         [MaxLength(500)]
         public string? Mobile { get; set; }
 
+        public string? ActivationCode { get; set; }
+
         public bool IsAdmin { get; set; }
     }
 }

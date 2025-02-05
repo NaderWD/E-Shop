@@ -1,4 +1,5 @@
 ﻿using E_Shop.Application.Services.Interfaces;
+using E_Shop.Domain.ServicesModels;
 using E_Shop.Domain.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -92,5 +93,42 @@ namespace E_Shop.Web.Controllers
             return View(register);
         }
 
+        [HttpGet("/ForgetPassword")]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost("/ForgetPassword")]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPassword)
+        {
+            var user = await _service.GetByEmail(forgetPassword.EmailAddress);
+            if (user == null) return RedirectToAction("Index");
+            Email email = new();
+            _service.SendVerificationEmail(email);
+            if (user.ActivationCode == forgetPassword.ActivationCode)
+                return RedirectToAction("ResetPassword");
+            return View(forgetPassword);
+        }
+
+
+        [HttpGet("/ResetPassword")]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost("/ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordVM resetPassword)
+        {
+            //var user =  
+            return View();
+        }
+
     }
 }
+
+
+

@@ -2,11 +2,11 @@
 
 namespace E_Shop.Domain.ViewModels
 {
-    public class ForgetPassword
+    public class ForgetPasswordVM
     {
+        [EmailAddress]
         public string EmailAddress { get; set; }
 
-        [MaxLength(500)]
-        public string? Mobile { get; set; }
+        public string? ActivationCode { get; set; }
     }
 }

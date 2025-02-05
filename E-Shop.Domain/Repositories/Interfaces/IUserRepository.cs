@@ -12,5 +12,6 @@ namespace E_Shop.Domain.Repositories.Interfaces
         void UpdateUser(User user);
         void DeleteUser(int id);
         Task RegisterUser(RegisterVM register);
+        void Save();
     }
 }
