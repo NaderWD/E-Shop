@@ -9,8 +9,9 @@ namespace E_Shop.Domain.Repositories.Interfaces
         Task<User> GetUserById(int id);
         Task<User> GetUserByEmail(string email);
         bool CreateUser(User user);
-        void UpdateUser(User user);
+        bool UpdateUser(User user);
         void DeleteUser(int id);
         Task RegisterUser(RegisterVM register);
+        bool EmailIsDuplicated(string email);
     }
 }

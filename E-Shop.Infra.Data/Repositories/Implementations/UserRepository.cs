@@ -2,6 +2,7 @@
 using E_Shop.Domain.Repositories.Interfaces;
 using E_Shop.Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations
 {
@@ -20,6 +21,15 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         {
             var user = await GetUserById(id);
             _context.Users.Remove(user);
+          
+        }
+
+        public bool EmailIsDuplicated(string email)
+        {
+            var user = _context.Users.Where(u => u.EmailAddress == email);
+            if (user.Any()) { return false; }
+            else { return true; }
+
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
@@ -51,9 +61,12 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return Task.CompletedTask;
         }
 
-        public void UpdateUser(User user)
+        public bool UpdateUser(User user)
         {
             _context.Users.Update(user);
+            return true;
         }
+
+       
     }
 }

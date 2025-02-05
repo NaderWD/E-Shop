@@ -2,6 +2,7 @@ using E_Shop.Infra.Data;
 using E_Shop.Infra.IOC;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.ConfigureServices();
 
 var connection = builder.Configuration.GetConnectionString("ShopDbConnection");
 builder.Services.AddDbContext<ShopDbContext>(options => options.UseSqlServer(connection));
-
+builder.Services.ConfigureServices();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -57,6 +58,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
 
 
 
