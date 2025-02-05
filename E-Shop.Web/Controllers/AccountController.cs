@@ -1,16 +1,18 @@
-﻿using E_Shop.Application.Services.Interfaces;
+﻿using E_Shop.Application.Services.Implementations;
+using E_Shop.Application.Services.Interfaces;
 using E_Shop.Domain.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using System.Security.Claims;
 
 namespace E_Shop.Web.Controllers
 {
-    public class AccountController(IUserService service) : SiteBaseController
+    public class AccountController(IUserService service, IEmailSender emailSender) : SiteBaseController
     {
         private readonly IUserService _service = service;
-
+        private readonly IEmailSender _emailSender = emailSender;
 
 
         [HttpGet("/login")]
@@ -92,5 +94,82 @@ namespace E_Shop.Web.Controllers
             return View(register);
         }
 
+        [HttpGet("/ForgetPassword")]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost("/ForgetPassword")]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPassword)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _service.GetByEmail(forgetPassword.EmailAddress);
+                if (user == null)
+                {
+                    return RedirectToAction("ForgotPasswordConfirmation");
+                }
+
+                var token = new Guid();
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { token, email = forgetPassword.EmailAddress }, protocol: Request.Scheme);
+
+                await _emailSender.SendEmailAsync(forgetPassword.EmailAddress, "Reset Password",
+                    $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+
+                return RedirectToAction("ForgotPasswordConfirmation");
+            }
+
+            return View(forgetPassword);
+        }
+
+
+        [HttpGet("/ResetPassword")]
+        public IActionResult ResetPassword(string token)
+        {
+            return token == null ? View("Error") : View(new ResetPasswordVM { Code = token });
+        }
+
+        [HttpPost("/ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordVM resetPassword)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _service.GetByEmail(resetPassword.EmailAddress);
+                if (user == null)
+                {
+                    return RedirectToAction("ResetPasswordConfirmation");
+                }
+
+                await _service.ResetPassword(resetPassword, resetPassword.Code, resetPassword.Password);
+                //if (result == sucsess)
+                //{
+                //    return RedirectToAction("ResetPasswordConfirmation");
+                //}
+
+                //foreach (var error in result.Errors)
+                //{
+                //    ModelState.AddModelError("", error.Description);
+                //}
+            }
+            return View(resetPassword);
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
     }
 }
+
+
+

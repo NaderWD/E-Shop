@@ -1,14 +1,21 @@
-﻿using E_Shop.Domain.Models.Common;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Domain.ViewModels
 {
-    public class LoginVM
+    public class ResetPasswordVM
     {
+        public string Code { get; set; }
+
         [Display(Name = "رمز عبور")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(255)]
         public string Password { get; set; }
+
+        [Display(Name = "تکرار رمز عبور")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(255)]
+        [Compare("Password")]
+        public string RePassword { get; set; }
 
         [Display(Name = "ایمیل")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -16,11 +23,10 @@ namespace E_Shop.Domain.ViewModels
         [EmailAddress(ErrorMessage = "ایمیل صحیح وارد کنید")]
         public string EmailAddress { get; set; }
 
-        public enum LoginResult
+        public enum UserResult
         {
             Success,
             Error,
-            UserNotFound
         }
     }
 }

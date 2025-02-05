@@ -2,6 +2,7 @@
 using E_Shop.Domain.Repositories.Interfaces;
 using E_Shop.Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using static E_Shop.Domain.ViewModels.RegisterVM;
 using System.ComponentModel;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations
@@ -50,15 +51,9 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return user;
         }
 
-        public Task RegisterUser(RegisterVM register)
+        public void Save()
         {
-            User user = new()
-            {
-                EmailAddress = register.EmailAddress,
-                Password = register.Password,
-            };
-            _context.Users.Add(user);
-            return Task.CompletedTask;
+            _context.SaveChanges();
         }
 
         public bool UpdateUser(User user)

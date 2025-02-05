@@ -6,7 +6,6 @@ namespace E_Shop.Domain.Models
 {
     public class User : BaseModel
     {
-
         [MaxLength(255, ErrorMessage = "Username cannot be longer than 50 characters")]
         [Required(ErrorMessage = "Username is required")]
         public string? FirstName { get; set; }
@@ -34,7 +33,12 @@ namespace E_Shop.Domain.Models
 
         public string? Mobile { get; set; }
 
-        public bool IsAdmin { get; set; } = false;
+        public Guid? ActivationCode { get; set; }
+
+        public bool IsAdmin { get; set; }
+        
+
+        public bool IsActive { get; set; }
     }
     
 }

@@ -9,7 +9,7 @@
 
 <html lang="en"
       class="light-style customizer-hide"
-      dir="ltr"
+      dir="rtl"
       data-theme="theme-default"
       data-assets-path="/assets/"
       data-template="horizontal-menu-template">
@@ -126,14 +126,14 @@
                                     </g>
                                 </svg>
                             </span>
-                            <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+                            <span class="app-brand-text demo text-body fw-bolder">یکتا کالا</span>
                         </a>
                     </div>
                     <!-- /Logo -->
-                    <h4 class="mb-2">Welcome to Sneat! 👋</h4>
-                    <p class="mb-4">Please sign-in to your account and start the adventure</p>
+                    <h4 class="mb-2">به فروشگاه ما خوش آمدید  👋</h4>
+                    <p class="mb-4">برای تجربه ی بهتر لطفا وارد پنل خود شوید</p>
 
-                    <form id="login" class="mb-3" action="index.html" method="POST" asp-action="Login">
+                    <form id="login" class="mb-3" method="POST" asp-action="Login">
                         <div class="mb-3">
                             <label for="email" class="form-label">ایمیل</label>
                             <input type="text"
@@ -141,15 +141,13 @@
                                    id="email"
                                    name="email-username"
                                    placeholder="Enter your email or username"
-                                   autofocus 
-                                   asp-for="EmailAddress"/>
+                                   autofocus
+                                   asp-for="EmailAddress" />
                         </div>
                         <div class="mb-3 form-password-toggle">
                             <div class="d-flex justify-content-between">
                                 <label class="form-label" for="password">رمز عبور</label>
-                                <a href="auth-forgot-password-cover.html">
-                                    <small>Forgot Password?</small>
-                                </a>
+
                             </div>
                             <div class="input-group input-group-merge">
                                 <input type="password"
@@ -157,10 +155,13 @@
                                        class="form-control"
                                        name="password"
                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                       aria-describedby="password" 
-                                       asp-for="Password"/>
+                                       aria-describedby="password"
+                                       asp-for="Password" />
                                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                             </div>
+                            <a href="ForgetPassword">
+                                <small>فراموشی رمز عبور</small>
+                            </a>
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
@@ -172,9 +173,9 @@
                     </form>
 
                     <p class="text-center">
-                        <span>New on our platform?</span>
-                        <a href="auth-register-cover.html">
-                            <span>Create an account</span>
+                        <span>تا به حال ثبت نام نکرده اید ؟  </span>
+                        <a asp-action="Register">
+                            <span>ثبت نام</span>
                         </a>
                     </p>
 

@@ -1,5 +1,6 @@
 ﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.Services.Security;
+using E_Shop.Application.Services.Tools;
+
 using E_Shop.Application.ViewModels;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using static E_Shop.Domain.ViewModels.LoginVM;
 using static E_Shop.Domain.ViewModels.RegisterVM;
+using static E_Shop.Domain.ViewModels.ResetPasswordVM;
 
 namespace E_Shop.Application.Services.Implementations
 {
@@ -49,6 +51,7 @@ namespace E_Shop.Application.Services.Implementations
             return await _repository.GetUserByEmail(myEmail);
         }
 
+       
         public Task<User> GetUserById(int id)
         {
             return _repository.GetUserById(id);
@@ -70,8 +73,29 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task<RegisterResult> Register(RegisterVM register)
         {
-            await _repository.RegisterUser(register);
+            var code = new Guid();
+            var user = new User()
+            {
+                FirstName = register.FirstName,
+                LastName = register.LastName,
+                EmailAddress = register.EmailAddress,
+                Mobile = register.Mobile,
+                Password = PasswordHasher.EncodePasswordMd5(register.Password),
+                ActivationCode = code,
+            };
+            _repository.CreateUser(user);
+            _repository.Save();
             return RegisterResult.Success;
+        }
+
+        public async Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password)
+        {
+            var user = await _repository.GetUserByEmail(resetPassword.EmailAddress);
+            user.Password = password;
+            _repository.UpdateUser(user);
+            _repository.Save();
+            if (code != null) { }
+            return UserResult.Success;
         }
 
         public async Task<ValidationErrorType> UpdateUser(UserViewModel model)

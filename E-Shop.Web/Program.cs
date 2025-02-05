@@ -12,6 +12,8 @@ builder.Services.ConfigureServices();
 
 var connection = builder.Configuration.GetConnectionString("ShopDbConnection");
 builder.Services.AddDbContext<ShopDbContext>(options => options.UseSqlServer(connection));
+
+
 builder.Services.ConfigureServices();
 builder.Services.AddAuthentication(options =>
 {
