@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Shop.Infra.Data.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20250204131717_Initial DatBase")]
-    partial class InitialDatBase
+    [Migration("20250205061757_Init DataBase")]
+    partial class InitDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace E_Shop.Infra.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActivationCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()

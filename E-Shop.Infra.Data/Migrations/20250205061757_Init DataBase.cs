@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace E_Shop.Infra.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDatBase : Migration
+    public partial class InitDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,6 +21,7 @@ namespace E_Shop.Infra.Data.Migrations
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Mobile = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ActivationCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

@@ -13,6 +13,7 @@ namespace E_Shop.Infra.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShopDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShopDbContextConfiguration).Assembly);
         }
 
         public override int SaveChanges()

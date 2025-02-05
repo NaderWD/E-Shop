@@ -30,6 +30,9 @@ namespace E_Shop.Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ActivationCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasMaxLength(500)
