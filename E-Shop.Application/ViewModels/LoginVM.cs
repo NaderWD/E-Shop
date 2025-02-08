@@ -1,7 +1,7 @@
 ﻿using E_Shop.Domain.Models.Common;
 using System.ComponentModel.DataAnnotations;
 
-namespace E_Shop.Domain.ViewModels
+namespace E_Shop.Application.ViewModels
 {
     public class LoginVM
     {

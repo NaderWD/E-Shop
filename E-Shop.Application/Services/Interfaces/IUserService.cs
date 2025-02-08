@@ -1,9 +1,8 @@
 ﻿using E_Shop.Application.ViewModels;
 using E_Shop.Domain.Models;
-using E_Shop.Domain.ViewModels;
-using static E_Shop.Domain.ViewModels.LoginVM;
-using static E_Shop.Domain.ViewModels.RegisterVM;
-using static E_Shop.Domain.ViewModels.ResetPasswordVM;
+using static E_Shop.Application.ViewModels.LoginVM;
+using static E_Shop.Application.ViewModels.RegisterVM;
+using static E_Shop.Application.ViewModels.ResetPasswordVM;
 
 namespace E_Shop.Application.Services.Interfaces
 {

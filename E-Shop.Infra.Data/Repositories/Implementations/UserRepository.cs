@@ -36,24 +36,6 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return models;
         }
 
-        public async Task<User> GetByVerificationCode(string code)
-        {
-            return _context.Users.FirstOrDefault(u => u.ActivationCode == code);
-        }
-
-        public async Task<bool> ConfirmEmailRepo(User user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user), "User cannot be null.");
-            }
-
-            user.IsActive = true;
-            _context.SaveChanges();
-
-            return await Task.FromResult(true);
-        }
-
         public async Task<User> GetUserByEmail(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.EmailAddress == email);
@@ -76,7 +58,5 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             _context.Users.Update(user);
             return true;
         }
-
-       
     }
 }
