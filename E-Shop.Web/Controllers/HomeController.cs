@@ -1,3 +1,4 @@
+using E_Shop.Domain.Models;
 using E_Shop.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -27,6 +28,19 @@ namespace E_Shop.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Route("ContactUs")]
+        public IActionResult ContactUs()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("ContactUs")]
+        public IActionResult ContactUs(ContactUsMessage message)
+        {
+            
         }
     }
 }

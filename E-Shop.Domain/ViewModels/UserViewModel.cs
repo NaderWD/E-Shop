@@ -1,11 +1,16 @@
-﻿using E_Shop.Domain.Models.Common;
-using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace E_Shop.Domain.Models
+namespace E_Shop.Application.ViewModels
 {
-    public class User : BaseModel
+    public class UserViewModel 
     {
+        
+        public int Id { get; set; }
         [MaxLength(255, ErrorMessage = "نام نباید بیشتر از ۲۵۵ کاراکتر باشد.")]
         [Required(ErrorMessage = "وارد کردن نام ضروری است.")]
         public string? FirstName { get; set; }
@@ -29,11 +34,8 @@ namespace E_Shop.Domain.Models
         [MaxLength(500, ErrorMessage = "شماره موبایل نباید بیشتر از ۵۰۰ کاراکتر باشد.")]
         public string? Mobile { get; set; }
 
-        public Guid? ActivationCode { get; set; }
-
         public bool IsAdmin { get; set; }
-
-        public bool IsActive{get; set;}
-
+        public bool IsDelete { get; set; }
     }
+    
 }

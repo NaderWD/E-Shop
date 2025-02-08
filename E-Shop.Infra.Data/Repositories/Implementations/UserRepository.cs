@@ -15,28 +15,50 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         public bool CreateUser(User user)
         {
             _context.Users.Add(user);
+            Save();
             return true;
         }
 
-        public async void DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id)
         {
-            var user = await GetUserById(id);
-            _context.Users.Remove(user);
-          
+            Save();
+            return true;
         }
 
         public bool EmailIsDuplicated(string email)
         {
-            var user = _context.Users.Where(u => u.EmailAddress == email);
-            if (user.Any()) { return false; }
-            else { return true; }
+
+            if (_context.Users.Any(u => u.EmailAddress == email)) 
+            { return true; }
+            else 
+            { return false; }
 
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
         {
+            List<User> users = new List<User>();
             var models = await _context.Users.ToListAsync();
-            return models;
+            foreach (var item in models)
+            {
+                users.Add(new User()
+                {
+                    EmailAddress = item.EmailAddress,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    Id = item.Id,
+                    IsActive = item.IsActive,
+                    IsAdmin = item.IsAdmin,
+                    ActivationCode = item.ActivationCode,
+                    LastModifiedDate = item.LastModifiedDate,
+                    Mobile = item.Mobile,
+                    Password = item.Password,
+                    UserName = item.UserName,
+                    IsDelete = item.IsDelete,
+
+                });
+            }
+            return users;
         }
 
         public async Task<User> GetUserByEmail(string email)
@@ -45,10 +67,14 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return user;
         }
 
-        public async Task<User> GetUserById(int id)
+        public async Task<User?> GetUserById(int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-            return user;
+            return  await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public Task RegisterUser(RegisterVM register)
+        {
+            throw new NotImplementedException();
         }
 
         public void Save()
@@ -59,9 +85,10 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         public bool UpdateUser(User user)
         {
             _context.Users.Update(user);
+            Save();
             return true;
         }
 
-       
+
     }
 }

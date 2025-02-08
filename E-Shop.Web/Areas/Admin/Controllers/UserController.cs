@@ -5,14 +5,19 @@ using E_Shop.Application.ViewModels;
 using System.Reflection;
 using E_Shop.Application.Services.Interfaces;
 using E_Shop.Domain;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
+using E_Shop.Domain.ViewModels;
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
-    public class UserController : AdminBaseController
+    public class UserController(IUserService userService) : AdminBaseController
     {
-        private readonly IUserService _userService;
-        public IActionResult Index()
+
+        private readonly IUserService _userService = userService;
+
+        public async Task<IActionResult> Index()
         {
-            var model = _userService.GetAllUsers();
+            var model = await _userService.GetAllUsers();
             return View(model);
         }
         public IActionResult CreateUser()
@@ -35,10 +40,11 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 var result = await _userService.CreateUser(model);
                 switch (result)
                 {
-                    case ValidationErrorType.EmailIsDuplicated:
-                        TempData[SuccessMessage] = ErrorMessages.EmailIsDuplicated;
+                    case Domain.Enum.ValidationErrorType.EmailIsDuplicated:
+                        TempData[ErrorMessage] = ErrorMessages.EmailIsDuplicated;
                         break;
-                    case ValidationErrorType.Success:
+
+                    case Domain.Enum.ValidationErrorType.Success:
                         TempData[SuccessMessage] = ErrorMessages.UserAdded;
                         return RedirectToAction("Index");
 
@@ -49,45 +55,74 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         }
 
-        public IActionResult UpdateUser(int Id)
+       
+        public async Task<IActionResult> UpdateUser(int UserId)
         {
-            var content = _userService.GetUserById(Id);
+            var content = await _userService.GetUserById(UserId);
             return View(content);
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UserViewModel model)
         {
-            if (!ModelState.IsValid)
+            var emailcheck = await _userService.GetUserById(model.Id);
+            if (emailcheck.EmailAddress != model.EmailAddress)
             {
-                return View(model);
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
 
+                }
+                else
+                {
+
+                    var result = await _userService.UpdateUser(model, true);
+                    switch (result)
+                    {
+                        case Domain.Enum.ValidationErrorType.EmailIsDuplicated:
+                            TempData[ErrorMessage] = ErrorMessages.EmailIsDuplicated;
+                            break;
+                        case Domain.Enum.ValidationErrorType.Success:
+                            TempData[SuccessMessage] = ErrorMessages.UserUpdate;
+                            return RedirectToAction("Index");
+
+                    }
+
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
-
-                var result = await _userService.UpdateUser(model);
-                switch (result)
+                if (!ModelState.IsValid)
                 {
-                    case ValidationErrorType.EmailIsDuplicated:
-                        TempData[SuccessMessage] = ErrorMessages.EmailIsDuplicated;
-                        break;
-                    case ValidationErrorType.Success:
-                        TempData[SuccessMessage] = ErrorMessages.UserAdded;
-                        return RedirectToAction("Index");
+                    return View(model);
 
                 }
+                else
+                {
+                    var result = await _userService.UpdateUser(model, false);
+                    TempData[SuccessMessage] = ErrorMessages.UserUpdate;
+                    return RedirectToAction("Index");
+                }
+            }
 
-                return RedirectToAction("Index", "User", new { area = "Admin" });
+        }
+
+     
+       
+        public async Task<IActionResult> DeleteUser(int UserId)
+        {
+            var result = await _userService.DeleteUser(UserId);
+            if (result)
+            {
+                TempData[SuccessMessage] = ErrorMessages.UserDeleted;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData[ErrorMessage] = ErrorMessages.FailedMessage;
+                return RedirectToAction("Index");
             }
         }
-
-        public IActionResult DeleteUser(int Id)
-        {
-            _userService.DeleteUser(Id);
-            return View("Index");
-        }
-
-
     }
 }
