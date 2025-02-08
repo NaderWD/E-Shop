@@ -1,10 +1,7 @@
-﻿using E_Shop.Domain.Models;
-using E_Shop.Domain.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels;
-using System.Reflection;
-using E_Shop.Application.Services.Interfaces;
 using E_Shop.Domain;
+using Microsoft.AspNetCore.Mvc;
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
     public class UserController : AdminBaseController

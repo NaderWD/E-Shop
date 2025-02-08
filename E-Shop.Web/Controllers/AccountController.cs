@@ -77,9 +77,9 @@ namespace E_Shop.Web.Controllers
         [HttpPost("/register")]
         public async Task<IActionResult> Register(RegisterVM register)
         {
-            if (ModelState.IsValid)
-            {
-                await _service.Register(register);
+            if (ModelState.IsValid) return View(register);
+            
+                 await _service.Register(register);
                 var user = await _service.GetByEmail(register.EmailAddress);
                 var callbackUrl = Url.Action("ConfirmEmail", "Account", new { code = user.ActivationCode }, protocol: Request.Scheme);
 
@@ -87,7 +87,7 @@ namespace E_Shop.Web.Controllers
                     $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
 
                 return RedirectToAction("Index", "Home");
-            }
+            
             return View(register);
         }
 

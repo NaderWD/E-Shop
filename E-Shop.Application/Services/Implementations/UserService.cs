@@ -71,10 +71,10 @@ namespace E_Shop.Application.Services.Implementations
             return LoginResults.Success;
         }
 
-        public async Task<bool> ActivateAccount(ForgetPasswordVM userVM, string code)
+        public async Task<bool> ActivateAccount(string code)
         {
-            User user = await _repository.GetUserByEmail(userVM.EmailAddress);
-            if (user.ActivationCode == code)
+            User user = await _repository.GetUserByActivationCode(code);
+            if (user != null)
             {
                 user.IsActive = true;
                 _repository.UpdateUser(user);
@@ -83,7 +83,7 @@ namespace E_Shop.Application.Services.Implementations
             return false;
         }
 
-        public async Task<User> Register(RegisterVM userVM)
+        public async Task<RegisterResults> Register(RegisterVM userVM)
         {
             var activeCode = Guid.NewGuid().ToString();
             User user = new()
@@ -99,7 +99,7 @@ namespace E_Shop.Application.Services.Implementations
             //var check = await EmailExist(userVM.EmailAddress);
             //if (check != true) return user;
             _repository.CreateUser(user);
-            return user;
+            return RegisterResults.Success;
         }
 
         public async Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password)

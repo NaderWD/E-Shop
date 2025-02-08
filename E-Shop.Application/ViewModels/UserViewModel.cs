@@ -16,6 +16,7 @@ namespace E_Shop.Application.ViewModels
 
         [MaxLength(255)]
         public string? LastName { get; set; }
+
         [MaxLength(255)]
         [Required(ErrorMessage = "لطفا نام کاربری را وارد کنید")]
         public string UserName { get; set; }

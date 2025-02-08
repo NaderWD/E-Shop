@@ -36,6 +36,12 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return models;
         }
 
+        public async Task<User> GetUserByActivationCode(string code)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.ActivationCode == code);
+            return user;
+        }
+
         public async Task<User> GetUserByEmail(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.EmailAddress == email);
