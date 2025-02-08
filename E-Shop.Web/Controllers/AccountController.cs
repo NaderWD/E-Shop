@@ -79,7 +79,7 @@ namespace E_Shop.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newUser = await _service.Register(register);
+                await _service.Register(register);
                 var user = await _service.GetByEmail(register.EmailAddress);
                 var callbackUrl = Url.Action("ConfirmEmail", "Account", new { code = user.ActivationCode }, protocol: Request.Scheme);
 

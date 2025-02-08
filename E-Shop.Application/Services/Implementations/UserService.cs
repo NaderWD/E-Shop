@@ -1,6 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels;
+using E_Shop.Domain;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
 using static E_Shop.Application.ViewModels.LoginVM;
@@ -34,7 +35,6 @@ namespace E_Shop.Application.Services.Implementations
                     LastName = item.LastName,
                     EmailAddress = item.EmailAddress,
                     Mobile = item.Mobile,
-                    UserName = item.UserName,
                     IsAdmin = item.IsAdmin,
                     Password = item.Password,
                 });
@@ -83,7 +83,7 @@ namespace E_Shop.Application.Services.Implementations
             return false;
         }
 
-        public async Task<RegisterResults> Register(RegisterVM userVM)
+        public async Task<User> Register(RegisterVM userVM)
         {
             var activeCode = Guid.NewGuid().ToString();
             User user = new()
@@ -96,10 +96,10 @@ namespace E_Shop.Application.Services.Implementations
                 ActivationCode = activeCode,
                 IsActive = false,
             };
-            var check = await EmailExist(userVM.EmailAddress);
-            if (check == true) return RegisterResults.EmailExists;
+            //var check = await EmailExist(userVM.EmailAddress);
+            //if (check != true) return user;
             _repository.CreateUser(user);
-            return RegisterResults.Success;
+            return user;
         }
 
         public async Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password)
@@ -122,7 +122,6 @@ namespace E_Shop.Application.Services.Implementations
             {
                 var user = new User
                 {
-                    UserName = model.UserName,
                     EmailAddress = model.EmailAddress,
                     Mobile = model.Mobile,
                     IsAdmin = model.IsAdmin,
@@ -143,7 +142,6 @@ namespace E_Shop.Application.Services.Implementations
             {
                 var user = new User
                 {
-                    UserName = model.UserName,
                     EmailAddress = model.EmailAddress,
                     Mobile = model.Mobile,
                     IsAdmin = model.IsAdmin,

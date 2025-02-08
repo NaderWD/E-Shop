@@ -11,7 +11,7 @@ namespace E_Shop.Application.Services.Interfaces
         Task<User> GetByEmail(string email);
         Task<UserResult> ResetPassword(ResetPasswordVM userVM, string code, string password);
         Task<bool> EmailExist(string email);
-        Task<RegisterResults> Register(RegisterVM userVM);
+        Task<User> Register(RegisterVM userVM);
         Task<LoginResults> Login(LoginVM userVM);
         Task<bool> ActivateAccount(ForgetPasswordVM userVM, string code);
         Task<ValidationErrorType> CreateUser(UserViewModel user);
