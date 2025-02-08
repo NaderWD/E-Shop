@@ -1,14 +1,9 @@
 ﻿using E_Shop.Application.Services.Interfaces;
-
 using E_Shop.Application.Tools;
-using E_Shop.Application.Services.Tools;
 using E_Shop.Application.ViewModels;
-
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
 using E_Shop.Domain.ViewModels;
-using System.Collections.Generic;
-using System.Numerics;
 using static E_Shop.Domain.ViewModels.LoginVM;
 using static E_Shop.Domain.ViewModels.RegisterVM;
 using static E_Shop.Domain.ViewModels.ResetPasswordVM;
@@ -56,19 +51,17 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task<bool> EmailExist(string email)
         {
-            var check = await _repository.CheckEmailExist(email);
+            var check = _repository.EmailIsDuplicated(email);
             if (check == true) return false;
             return true;
         }
-
-        public async Task<LoginResults> Login(LoginVM login)
        
         public Task<User> GetUserById(int id)
         {
             return _repository.GetUserById(id);
         }
 
-        public async Task<LoginVM.LoginResult> Login(LoginVM login)
+        public async Task<LoginVM.LoginResults> Login(LoginVM login)
         {
             var email = login.EmailAddress.Trim().ToLower();
             var user = await _repository.GetUserByEmail(email);
@@ -85,7 +78,7 @@ namespace E_Shop.Application.Services.Implementations
             if (user.ActivationCode == code)
             {
                 user.IsActive = true;
-                _repository.Update(user);
+                _repository.UpdateUser(user);
                 return true;
             }
             return false;
@@ -106,7 +99,7 @@ namespace E_Shop.Application.Services.Implementations
             };
             var check = await EmailExist(userVM.EmailAddress);
             if (check == true) return RegisterResults.EmailExists;
-            await _repository.CreateUser(user);
+            _repository.CreateUser(user);
             return RegisterResults.Success;
         }
 

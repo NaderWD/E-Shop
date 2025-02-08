@@ -31,7 +31,7 @@ namespace E_Shop.Application.ViewModels
         [MaxLength(500)]
         public string? Mobile { get; set; }
 
-        public bool IsAdmin { get; set; }
+        public bool? IsAdmin { get; set; }
     }
     public enum ValidationErrorType
     {

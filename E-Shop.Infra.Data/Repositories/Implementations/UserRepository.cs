@@ -1,8 +1,6 @@
 ﻿using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using static E_Shop.Domain.ViewModels.RegisterVM;
-using System.ComponentModel;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations
 {
