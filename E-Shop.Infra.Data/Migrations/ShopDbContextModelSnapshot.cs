@@ -30,26 +30,26 @@ namespace E_Shop.Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid?>("ActivationCode")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ActivationCode")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsAdmin")
+                    b.Property<bool?>("IsAdmin")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDelete")
@@ -63,8 +63,8 @@ namespace E_Shop.Infra.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Mobile")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Password")
                         .IsRequired()

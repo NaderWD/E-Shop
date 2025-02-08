@@ -1,11 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace E_Shop.Domain.ViewModels
+namespace E_Shop.Application.ViewModels
 {
     public class RegisterVM
     {
+        [Display(Name = "نام")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(255)]
         public string? FirstName { get; set; }
 
+        [Display(Name = "نام خانوادگی")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(255)]
         public string? LastName { get; set; }
 
         [Display(Name = "رمز عبور")]
@@ -17,7 +23,7 @@ namespace E_Shop.Domain.ViewModels
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(255)]
         [Compare("Password")]
-        public string Repassword { get; set; }
+        public string RePassword { get; set; }
 
         [Display(Name = "ایمیل")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -25,19 +31,17 @@ namespace E_Shop.Domain.ViewModels
         [EmailAddress(ErrorMessage = "ایمیل صحیح وارد کنید")]
         public string EmailAddress { get; set; }
 
-        [Required]
-        public Guid? ActivationCode { get; set; }
-
         [Display(Name = "تلفن همراه")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(500)]
         [DataType(DataType.PhoneNumber)]
         public string? Mobile { get; set; }
 
-        public enum RegisterResult
+        public string? ActivationCode { get; set; }
+
+        public enum RegisterResults
         {
-            Success,
-            Error
+            Success, EmailExists, Error, NotFound
         }
     }
 }

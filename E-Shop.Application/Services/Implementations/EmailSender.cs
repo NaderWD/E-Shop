@@ -1,35 +1,26 @@
 ﻿using E_Shop.Application.Services.Interfaces;
-using Microsoft.Extensions.Configuration;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
 
 namespace E_Shop.Application.Services.Implementations
 {
-    public class EmailSender(IConfiguration configuration) : IEmailSender
+    public class EmailSender : IEmailSender
     {
-        private readonly IConfiguration _configuration = configuration;
+
 
         public async Task SendEmailAsync(string email, string subject, string message)
         {
-            var smtpClient = new SmtpClient
-            {
-                Host = _configuration["EmailSettings:Host"],
-                Port = int.Parse(_configuration["EmailSettings:Port"]),
-                EnableSsl = bool.Parse(_configuration["EmailSettings:EnableSsl"]),
-                Credentials = new NetworkCredential(
-                    _configuration["EmailSettings:Username"],
-                    _configuration["EmailSettings:Password"])
-            };
-
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(_configuration["EmailSettings:From"]),
-                Subject = subject,
-                Body = message,
-                IsBodyHtml = true
-            };
-
+            MailMessage mailMessage = new();
+            SmtpClient smtpClient = new("smtp.gmail.com");
+            mailMessage.From = new MailAddress("NaderTempEmail@gmail.com");
             mailMessage.To.Add(email);
+            mailMessage.Subject = subject;
+            mailMessage.Body = message;
+            mailMessage.IsBodyHtml = true;
+
+            smtpClient.Port = 587;
+            smtpClient.Credentials = new NetworkCredential("NaderTempEmail@gmail.com", "kagu fpev fqjz iiqe");
+            smtpClient.EnableSsl = true;
 
             await smtpClient.SendMailAsync(mailMessage);
         }

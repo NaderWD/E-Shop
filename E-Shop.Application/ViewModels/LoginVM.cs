@@ -1,7 +1,7 @@
 ﻿using E_Shop.Domain.Models.Common;
 using System.ComponentModel.DataAnnotations;
 
-namespace E_Shop.Domain.ViewModels
+namespace E_Shop.Application.ViewModels
 {
     public class LoginVM
     {
@@ -16,7 +16,7 @@ namespace E_Shop.Domain.ViewModels
         [EmailAddress(ErrorMessage = "ایمیل صحیح وارد کنید")]
         public string EmailAddress { get; set; }
 
-        public enum LoginResult
+        public enum LoginResults
         {
             Success,
             Error,

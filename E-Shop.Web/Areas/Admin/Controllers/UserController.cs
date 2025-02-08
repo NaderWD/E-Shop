@@ -1,9 +1,5 @@
-﻿using E_Shop.Domain.Models;
-using E_Shop.Domain.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels;
-using System.Reflection;
-using E_Shop.Application.Services.Interfaces;
 using E_Shop.Domain;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;

@@ -1,9 +1,6 @@
 ﻿using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
-using E_Shop.Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
-using static E_Shop.Domain.ViewModels.RegisterVM;
-using System.ComponentModel;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations
 {
@@ -59,6 +56,12 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
                 });
             }
             return users;
+        }
+
+        public async Task<User> GetUserByActivationCode(string code)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.ActivationCode == code);
+            return user;
         }
 
         public async Task<User> GetUserByEmail(string email)

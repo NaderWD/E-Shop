@@ -40,7 +40,7 @@ namespace E_Shop.Web.Controllers
         [Route("ContactUs")]
         public IActionResult ContactUs(ContactUsMessage message)
         {
-            
+            return View();
         }
     }
 }

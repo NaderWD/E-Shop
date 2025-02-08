@@ -1,6 +1,5 @@
 ﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.Services.Tools;
-
+using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels;
 using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models;
@@ -44,7 +43,6 @@ namespace E_Shop.Application.Services.Implementations
                     LastName = item.LastName,
                     EmailAddress = item.EmailAddress,
                     Mobile = item.Mobile,
-                    UserName = item.UserName,
                     IsAdmin = item.IsAdmin,
                     Password = item.Password,
                 });
@@ -80,45 +78,58 @@ namespace E_Shop.Application.Services.Implementations
             return model;
         }
 
-        public async Task<LoginVM.LoginResult> Login(LoginVM login)
+        public async Task<LoginResults> Login(LoginVM login)
         {
             var email = login.EmailAddress.Trim().ToLower();
             var user = await _repository.GetUserByEmail(email);
+            var password = PasswordHasher.EncodePasswordMd5(login.Password);
 
-            if (user == null) return LoginResult.UserNotFound;
-
-            string hashPassword = login.Password.Trim().EncodePasswordMd5();
-
-            if (login.Password != hashPassword) return LoginResult.Error;
-
-            return LoginResult.Success;
+            if (user == null) return LoginResults.UserNotFound;
+            if (password != user.Password) return LoginResults.Error;
+            return LoginResults.Success;
         }
 
-        public async Task<RegisterResult> Register(RegisterVM register)
+        public async Task<bool> ActivateAccount(string code)
         {
-            var code = new Guid();
-            var user = new User()
+            User user = await _repository.GetUserByActivationCode(code);
+            if (user != null)
             {
-                FirstName = register.FirstName,
-                LastName = register.LastName,
-                EmailAddress = register.EmailAddress,
-                Mobile = register.Mobile,
-                Password = PasswordHasher.EncodePasswordMd5(register.Password),
-                ActivationCode = code,
+                user.IsActive = true;
+                _repository.UpdateUser(user);
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<RegisterResults> Register(RegisterVM userVM)
+        {
+            var activeCode = Guid.NewGuid().ToString();
+            User user = new()
+            {
+                FirstName = userVM.FirstName,
+                LastName = userVM.LastName,
+                EmailAddress = userVM.EmailAddress.Trim().ToLower(),
+                Mobile = userVM.Mobile,
+                Password = PasswordHasher.EncodePasswordMd5(userVM.Password),
+                ActivationCode = activeCode,
+                IsActive = false,
             };
+            //var check = await EmailExist(userVM.EmailAddress);
+            //if (check != true) return user;
             _repository.CreateUser(user);
-            _repository.Save();
-            return RegisterResult.Success;
+            return RegisterResults.Success;
         }
 
         public async Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password)
         {
-            var user = await _repository.GetUserByEmail(resetPassword.EmailAddress);
-            user.Password = password;
-            _repository.UpdateUser(user);
-            _repository.Save();
-            if (code != null) { }
-            return UserResult.Success;
+            User user = await _repository.GetUserByEmail(resetPassword.EmailAddress);
+            if (user.ActivationCode == code)
+            {
+                user.Password = PasswordHasher.EncodePasswordMd5(password);
+                _repository.UpdateUser(user);
+                return UserResult.Success;
+            }
+            return UserResult.Error;
         }
 
         public async Task<ValidationErrorType> UpdateUser(UserViewModel model, bool EmailCheck)
@@ -149,7 +160,6 @@ namespace E_Shop.Application.Services.Implementations
 
                 var user = new User
                 {
-                    UserName = model.UserName,
                     EmailAddress = model.EmailAddress,
                     Mobile = model.Mobile,
                     IsAdmin = model.IsAdmin,
@@ -172,7 +182,6 @@ namespace E_Shop.Application.Services.Implementations
             {
                 var user = new User
                 {
-                    UserName = model.UserName,
                     EmailAddress = model.EmailAddress,
                     Mobile = model.Mobile,
                     IsAdmin = model.IsAdmin,

@@ -1,16 +1,14 @@
 ﻿using E_Shop.Application.ViewModels;
 using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models;
-using E_Shop.Domain.ViewModels;
-using static E_Shop.Domain.ViewModels.LoginVM;
-using static E_Shop.Domain.ViewModels.RegisterVM;
-using static E_Shop.Domain.ViewModels.ResetPasswordVM;
+using static E_Shop.Application.ViewModels.LoginVM;
+using static E_Shop.Application.ViewModels.RegisterVM;
+using static E_Shop.Application.ViewModels.ResetPasswordVM;
 
 namespace E_Shop.Application.Services.Interfaces
 {
     public interface IUserService
     {
-       
         Task<User> GetByEmail(string email);
         Task<RegisterResult> Register(RegisterVM register);
         Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password);
