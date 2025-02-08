@@ -14,10 +14,10 @@ namespace E_Shop.Application.Services.Interfaces
         Task<RegisterResults> Register(RegisterVM userVM);
         Task<LoginResults> Login(LoginVM userVM);
         Task<bool> ActivateAccount(ForgetPasswordVM userVM, string code);
-        public Task<ValidationErrorType> CreateUser(UserViewModel user);
-        public Task<ValidationErrorType> UpdateUser(UserViewModel user);
-        public bool DeleteUser(int id);
-        public Task<User> GetUserById(int id);
-        public Task<IEnumerable<UserViewModel>> GetAllUsers();
+        Task<ValidationErrorType> CreateUser(UserViewModel user);
+        Task<ValidationErrorType> UpdateUser(UserViewModel user);
+        bool DeleteUser(int id);
+        Task<User> GetUserById(int id);
+        Task<IEnumerable<UserViewModel>> GetAllUsers();
     }
 }

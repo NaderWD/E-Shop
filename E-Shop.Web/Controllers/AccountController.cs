@@ -1,9 +1,10 @@
 ﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Domain.ViewModels;
+using E_Shop.Application.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static E_Shop.Application.ViewModels.LoginVM;
 
 namespace E_Shop.Web.Controllers
 {
@@ -32,7 +33,7 @@ namespace E_Shop.Web.Controllers
 
             switch (result)
             {
-                case LoginVM.LoginResult.Success:
+                case LoginResults.Success:
                     var user = await _service.GetByEmail(userLogin.EmailAddress);
                     var claims = new List<Claim>()
                     {
@@ -46,11 +47,11 @@ namespace E_Shop.Web.Controllers
                     TempData[SuccessMessage] = "خوش آمدید";
                     return RedirectToAction("Index");
 
-                case LoginVM.LoginResult.Error:
+                case LoginResults.Error:
                     TempData[ErrorMessage] = "خطایی رخ داده است";
                     return View(userLogin);
 
-                case LoginVM.LoginResult.UserNotFound:
+                case LoginResults.UserNotFound:
                     TempData[ErrorMessage] = "کاربری یافت نشد";
                     return View(userLogin);
             }
@@ -78,9 +79,8 @@ namespace E_Shop.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
-               var user = await _service.Register(register);
-
+                var newUser = await _service.Register(register);
+                var user = await _service.GetByEmail(register.EmailAddress);
                 var callbackUrl = Url.Action("ConfirmEmail", "Account", new { code = user.ActivationCode }, protocol: Request.Scheme);
 
                 await _emailSender.SendEmailAsync(register.EmailAddress, "Confirm your email",
@@ -89,20 +89,6 @@ namespace E_Shop.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return View(register);
-            //if (!ModelState.IsValid) return View(register);
-
-            //var result = await _service.Register(register);
-
-            //switch (result)
-            //{
-            //    case RegisterVM.RegisterResult.Success:
-            //        return RedirectToAction("Index");
-
-            //    case RegisterVM.RegisterResult.Error:
-            //        TempData[ErrorMessage] = "خطایی رخ داده است";
-            //        return View(register);
-            //}
-            //return View(register);
         }
 
         [HttpGet("/ForgetPassword")]
@@ -176,30 +162,6 @@ namespace E_Shop.Web.Controllers
         {
             return View();
         }
-
-        public async Task<IActionResult> ConfirmEmail(string code)
-        {
-            if (string.IsNullOrEmpty(code))
-            {
-                return View("Error");
-            }
-
-            var user = await _service.FindByVerificationCode(code);
-            if (user == null)
-            {
-                return View("Error");
-            }
-
-            var result = await _service.ConfirmEmail(user);
-            if (result)
-            {
-                return View("ConfirmEmail");
-            }
-
-            return View("Error");
-        }
-
-
     }
 }
 

@@ -37,6 +37,8 @@ namespace E_Shop.Application.ViewModels
         [DataType(DataType.PhoneNumber)]
         public string? Mobile { get; set; }
 
+        public string ActivationCode { get; set; }
+
         public enum RegisterResults
         {
             Success, EmailExists, Error, NotFound

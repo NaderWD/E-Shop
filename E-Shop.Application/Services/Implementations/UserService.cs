@@ -60,7 +60,7 @@ namespace E_Shop.Application.Services.Implementations
             return _repository.GetUserById(id);
         }
 
-        public async Task<LoginVM.LoginResults> Login(LoginVM login)
+        public async Task<LoginResults> Login(LoginVM login)
         {
             var email = login.EmailAddress.Trim().ToLower();
             var user = await _repository.GetUserByEmail(email);
@@ -104,12 +104,14 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password)
         {
-            var user = await _repository.GetUserByEmail(resetPassword.EmailAddress);
-            user.Password = password;
-            _repository.UpdateUser(user);
-            _repository.Save();
-            if (code != null) { }
-            return UserResult.Success;
+            User user = await _repository.GetUserByEmail(resetPassword.EmailAddress);
+            if (user.ActivationCode == code)
+            {
+                user.Password = PasswordHasher.EncodePasswordMd5(password);
+                _repository.UpdateUser(user);
+                return UserResult.Success;
+            }
+            return UserResult.Error;
         }
 
         public async Task<ValidationErrorType> UpdateUser(UserViewModel model)
