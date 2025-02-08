@@ -9,8 +9,9 @@ namespace E_Shop.Domain.Repositories.Interfaces
         Task<User> GetUserByEmail(string email);
         Task<bool> CheckEmailExist(string email);
         Task<bool> CreateUser(User user);
-        void UpdateUser(User user);
+        bool UpdateUser(User user);
         void DeleteUser(int id);
         void Save();
+        bool EmailIsDuplicated(string email);
     }
 }

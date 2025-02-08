@@ -1,0 +1,66 @@
+﻿@model List<E_Shop.Application.ViewModels.UserViewModel>
+
+
+<div class="card">
+    <div class="d-flex justify-content-between align-items-center mb-۱ ">
+        <h2 class="m-3">لیست کاربران</h2>
+        <a  class="btn btn-primary m-3" asp-action="CreateUser">افزودن کاربر</a>
+    </div>
+
+    <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>نام و نام خانوادگی</th>
+                    <th>ایمیل</th>
+                    <th>نام کاربری</th>
+                    <th>ادمین</th>
+                    <th>عملیات </th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+               
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@($"{item.FirstName} {item.LastName}")</strong></td>
+                    <td></td>
+                    <td>
+                        <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                            @item.EmailAddress
+                        </ul>
+                    </td>
+                        <td>
+                            <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                @item.Mobile
+                            </ul>
+                        </td>
+                    <td>
+                        @if (item.IsAdmin == true)
+                        {
+                            <span class="badge bg-label-primary me-1">ادمین</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-label-danger me-1">کاربر ساده</span>
+                        }
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:void(0);" asp-action="UpdateUser" asp-route-UserId="@item.Id"><i class="bx bx-edit-alt me-1"></i> ویرایش</a>
+                                    <a class="dropdown-item" href="javascript:void(0);" asp-action="DeleteUser" asp-route-UserId="@item.Id"><i class="bx bx-trash me-1"></i> حذف</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr> 
+                }
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
