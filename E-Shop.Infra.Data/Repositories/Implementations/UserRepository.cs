@@ -1,8 +1,6 @@
 ﻿using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
-using E_Shop.Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
-using static E_Shop.Domain.ViewModels.RegisterVM;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations
 {
@@ -27,6 +25,24 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         {
             var models = await _context.Users.ToListAsync();
             return models;
+        }
+
+        public async Task<User> GetByVerificationCode(string code)
+        {
+            return _context.Users.FirstOrDefault(u => u.ActivationCode == code);
+        }
+
+        public async Task<bool> ConfirmEmailRepo(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user), "User cannot be null.");
+            }
+
+            user.IsActive = true;
+            _context.SaveChanges();
+
+            return await Task.FromResult(true);
         }
 
         public async Task<User> GetUserByEmail(string email)

@@ -16,7 +16,7 @@ namespace E_Shop.Domain.ViewModels
         [EmailAddress(ErrorMessage = "ایمیل صحیح وارد کنید")]
         public string EmailAddress { get; set; }
 
-        public enum LoginResult
+        public enum LoginResults
         {
             Success,
             Error,

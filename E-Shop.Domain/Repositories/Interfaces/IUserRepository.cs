@@ -1,6 +1,4 @@
 ﻿using E_Shop.Domain.Models;
-using E_Shop.Domain.ViewModels;
-using static E_Shop.Domain.ViewModels.RegisterVM;
 
 namespace E_Shop.Domain.Repositories.Interfaces
 {
@@ -9,7 +7,8 @@ namespace E_Shop.Domain.Repositories.Interfaces
         Task<IEnumerable<User>> GetAllUsers();
         Task<User> GetUserById(int id);
         Task<User> GetUserByEmail(string email);
-        bool CreateUser(User user);
+        Task<bool> CheckEmailExist(string email);
+        Task<bool> CreateUser(User user);
         void UpdateUser(User user);
         void DeleteUser(int id);
         void Save();

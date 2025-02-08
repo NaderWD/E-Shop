@@ -8,9 +8,11 @@ namespace E_Shop.Application.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<LoginResult> Login(LoginVM login);
         Task<User> GetByEmail(string email);
-        Task<RegisterResult> Register(RegisterVM register);
-        Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password);
+        Task<UserResult> ResetPassword(ResetPasswordVM userVM, string code, string password);
+        Task<bool> EmailExist(string email);
+        Task<RegisterResults> Register(RegisterVM userVM);
+        Task<LoginResults> Login(LoginVM userVM);
+        Task<bool> ActivateAccount(ForgetPasswordVM userVM, string code);
     }
 }

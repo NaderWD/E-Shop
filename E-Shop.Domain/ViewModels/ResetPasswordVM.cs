@@ -4,6 +4,8 @@ namespace E_Shop.Domain.ViewModels
 {
     public class ResetPasswordVM
     {
+        [Display(Name = "کد دریافت شده")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Code { get; set; }
 
         [Display(Name = "رمز عبور")]

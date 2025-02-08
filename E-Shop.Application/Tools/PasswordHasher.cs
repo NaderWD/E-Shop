@@ -1,19 +1,12 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace E_Shop.Application.Services.Tools
+namespace E_Shop.Application.Tools
 {
     public static class PasswordHasher
     {
         public static string EncodePasswordMd5(this string pass)
         {
-            //byte[] orginalBytes;
-            //byte[] encodedBytes;
-            //MD5 md5;
-            //md5 = new MD5CryptoServiceProvider();
-            //orginalBytes = ASCIIEncoding.Default.GetBytes(pass);
-            //encodedBytes = md5.ComputeHash(orginalBytes);
-
             byte[] originalBytes = Encoding.Default.GetBytes(pass);
             byte[] encodedBytes = MD5.HashData(originalBytes);
 

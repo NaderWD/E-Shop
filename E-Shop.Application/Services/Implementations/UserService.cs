@@ -1,5 +1,5 @@
 ﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.Services.Tools;
+using E_Shop.Application.Tools;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
 using E_Shop.Domain.ViewModels;
@@ -13,7 +13,7 @@ namespace E_Shop.Application.Services.Implementations
     {
         private readonly IUserRepository _repository = repository;
 
-
+       
 
         public async Task<User> GetByEmail(string email)
         {
@@ -21,35 +21,53 @@ namespace E_Shop.Application.Services.Implementations
             return await _repository.GetUserByEmail(myEmail);
         }
 
-        public async Task<LoginResult> Login(LoginVM login)
+        public async Task<bool> EmailExist(string email)
+        {
+            var check = await _repository.CheckEmailExist(email);
+            if (check == true) return false;
+            return true;
+        }
+
+        public async Task<LoginResults> Login(LoginVM login)
         {
             var email = login.EmailAddress.Trim().ToLower();
             var user = await _repository.GetUserByEmail(email);
+            var password = PasswordHasher.EncodePasswordMd5(login.Password);
 
-            if (user == null) return LoginResult.UserNotFound;
-
-            string hashPassword = login.Password.Trim().EncodePasswordMd5();
-
-            if (login.Password != hashPassword) return LoginResult.Error;
-
-            return LoginResult.Success;
+            if (user == null) return LoginResults.UserNotFound;
+            if (password != user.Password) return LoginResults.Error;
+            return LoginResults.Success;
         }
 
-        public async Task<RegisterResult> Register(RegisterVM register)
+        public async Task<bool> ActivateAccount(ForgetPasswordVM userVM, string code)
         {
-            var code = new Guid();
-            var user = new User()
+            User user = await _repository.GetUserByEmail(userVM.EmailAddress);
+            if (user.ActivationCode == code)
             {
-                FirstName = register.FirstName,
-                LastName = register.LastName,
-                EmailAddress = register.EmailAddress,
-                Mobile = register.Mobile,
-                Password = PasswordHasher.EncodePasswordMd5(register.Password),
-                ActivationCode = code,
+                user.IsActive = true;
+                _repository.Update(user);
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<RegisterResults> Register(RegisterVM userVM)
+        {
+            var activeCode = Guid.NewGuid().ToString();
+            User user = new()
+            {
+                FirstName = userVM.FirstName,
+                LastName = userVM.LastName,
+                EmailAddress = userVM.EmailAddress.Trim().ToLower(),
+                Mobile = userVM.Mobile,
+                Password = PasswordHasher.EncodePasswordMd5(userVM.Password),
+                ActivationCode = activeCode,
+                IsActive = false,
             };
-            _repository.CreateUser(user);
-            _repository.Save();
-            return RegisterResult.Success;
+            var check = await EmailExist(userVM.EmailAddress);
+            if (check == true) return RegisterResults.EmailExists;
+            await _repository.CreateUser(user);
+            return RegisterResults.Success;
         }
 
         public async Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password)
@@ -61,5 +79,7 @@ namespace E_Shop.Application.Services.Implementations
             if (code != null) { }
             return UserResult.Success;
         }
+
+
     }
 }

@@ -1,10 +1,8 @@
-﻿using E_Shop.Application.Services.Implementations;
-using E_Shop.Application.Services.Interfaces;
+﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Domain.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Common;
 using System.Security.Claims;
 
 namespace E_Shop.Web.Controllers
@@ -78,20 +76,33 @@ namespace E_Shop.Web.Controllers
         [HttpPost("/register")]
         public async Task<IActionResult> Register(RegisterVM register)
         {
-            if (!ModelState.IsValid) return View(register);
-
-            var result = await _service.Register(register);
-
-            switch (result)
+            if (ModelState.IsValid)
             {
-                case RegisterVM.RegisterResult.Success:
-                    return RedirectToAction("Index");
 
-                case RegisterVM.RegisterResult.Error:
-                    TempData[ErrorMessage] = "خطایی رخ داده است";
-                    return View(register);
+               var user = await _service.Register(register);
+
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { code = user.ActivationCode }, protocol: Request.Scheme);
+
+                await _emailSender.SendEmailAsync(register.EmailAddress, "Confirm your email",
+                    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+
+                return RedirectToAction("Index", "Home");
             }
             return View(register);
+            //if (!ModelState.IsValid) return View(register);
+
+            //var result = await _service.Register(register);
+
+            //switch (result)
+            //{
+            //    case RegisterVM.RegisterResult.Success:
+            //        return RedirectToAction("Index");
+
+            //    case RegisterVM.RegisterResult.Error:
+            //        TempData[ErrorMessage] = "خطایی رخ داده است";
+            //        return View(register);
+            //}
+            //return View(register);
         }
 
         [HttpGet("/ForgetPassword")]
@@ -142,16 +153,14 @@ namespace E_Shop.Web.Controllers
                     return RedirectToAction("ResetPasswordConfirmation");
                 }
 
-                await _service.ResetPassword(resetPassword, resetPassword.Code, resetPassword.Password);
-                //if (result == sucsess)
-                //{
-                //    return RedirectToAction("ResetPasswordConfirmation");
-                //}
-
-                //foreach (var error in result.Errors)
-                //{
-                //    ModelState.AddModelError("", error.Description);
-                //}
+                var result = await _service.ResetPassword(resetPassword, resetPassword.Code, resetPassword.Password);
+                switch (result)
+                {
+                    case ResetPasswordVM.UserResult.Success:
+                        break;
+                    case ResetPasswordVM.UserResult.Error:
+                        break;
+                }
             }
             return View(resetPassword);
         }
@@ -167,6 +176,29 @@ namespace E_Shop.Web.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> ConfirmEmail(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+            {
+                return View("Error");
+            }
+
+            var user = await _service.FindByVerificationCode(code);
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var result = await _service.ConfirmEmail(user);
+            if (result)
+            {
+                return View("ConfirmEmail");
+            }
+
+            return View("Error");
+        }
+
 
     }
 }
