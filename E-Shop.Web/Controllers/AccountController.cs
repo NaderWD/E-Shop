@@ -115,7 +115,6 @@ namespace E_Shop.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            // Show SweetAlert error message
             TempData["Message"] = "Invalid email confirmation token.";
             TempData["MessageType"] = "error";
 
