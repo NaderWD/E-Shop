@@ -1,8 +1,11 @@
-﻿using E_Shop.Application.Services.Interfaces;
+﻿using E_Shop.Application.Services.Implementations;
+using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels;
+using E_Shop.Domain.Models.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Plugins;
 using System.Security.Claims;
 using static E_Shop.Application.ViewModels.LoginVM;
 
@@ -23,6 +26,7 @@ namespace E_Shop.Web.Controllers
             }
             return View();
         }
+
 
         [HttpPost("/login")]
         public async Task<IActionResult> Login(LoginVM userLogin)
@@ -59,6 +63,7 @@ namespace E_Shop.Web.Controllers
             return View(userLogin);
         }
 
+
         [HttpGet("/logout")]
         public async Task<IActionResult> Logout()
         {
@@ -77,19 +82,46 @@ namespace E_Shop.Web.Controllers
         [HttpPost("/register")]
         public async Task<IActionResult> Register(RegisterVM register)
         {
-            if (ModelState.IsValid) return View(register);
-            
-                 await _service.Register(register);
-                var user = await _service.GetByEmail(register.EmailAddress);
-                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { code = user.ActivationCode }, protocol: Request.Scheme);
+            if (!ModelState.IsValid) return View(register);
 
-                await _emailSender.SendEmailAsync(register.EmailAddress, "Confirm your email",
-                    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+            var result = await _service.Register(register);
+            if (result == RegisterVM.RegisterResults.Error) return View(register);
+
+            var token = await _service.GenerateEmailConfirmationToken(register);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { email = register.EmailAddress, token }, protocol: Request.Scheme);
+
+            await _emailSender.SendEmailAsync(register.EmailAddress, "Confirm your email",
+                $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+
+            
+            TempData["Message"] = "Registration successful! Please check your email to confirm your account.";
+            TempData["MessageType"] = "success";
+
+            return RedirectToAction("Index", "Home");
+
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
+        {
+            var result = await _service.ConfirmEmail(email, token);
+            if (result)
+            {
+                
+                TempData["Message"] = "Email confirmed successfully!";
+                TempData["MessageType"] = "success";
 
                 return RedirectToAction("Index", "Home");
-            
-            return View(register);
+            }
+
+            // Show SweetAlert error message
+            TempData["Message"] = "Invalid email confirmation token.";
+            TempData["MessageType"] = "error";
+
+            return RedirectToAction("Index", "Home");
         }
+
 
         [HttpGet("/ForgetPassword")]
         public IActionResult ForgetPassword()

@@ -8,12 +8,5 @@ namespace E_Shop.Infra.Data
     public class ShopDbContext(DbContextOptions<ShopDbContext> options) : DbContext(options)
     {
         public DbSet<User> Users { get; set; }
-
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShopDbContext).Assembly);
-        //}
-
     }
 }

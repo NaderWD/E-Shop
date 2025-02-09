@@ -7,6 +7,8 @@ namespace E_Shop.Web.Areas.Admin.Controllers
     public class UserController : AdminBaseController
     {
         private readonly IUserService _userService;
+
+
         public IActionResult Index()
         {
             var model = _userService.GetAllUsers();

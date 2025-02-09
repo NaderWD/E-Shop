@@ -19,5 +19,7 @@ namespace E_Shop.Application.Services.Interfaces
         bool DeleteUser(int id);
         Task<User> GetUserById(int id);
         Task<IEnumerable<UserViewModel>> GetAllUsers();
+        Task<string> GenerateEmailConfirmationToken(RegisterVM userVM);
+        Task<bool> ConfirmEmail(string email, string token);
     }
 }

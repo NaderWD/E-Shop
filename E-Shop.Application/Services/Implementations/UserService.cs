@@ -17,7 +17,7 @@ namespace E_Shop.Application.Services.Implementations
 
         public bool DeleteUser(int id)
         {
-          _repository.DeleteUser(id);
+            _repository.DeleteUser(id);
             return true;
         }
 
@@ -54,7 +54,7 @@ namespace E_Shop.Application.Services.Implementations
             if (check == true) return false;
             return true;
         }
-       
+
         public Task<User> GetUserById(int id)
         {
             return _repository.GetUserById(id);
@@ -88,6 +88,8 @@ namespace E_Shop.Application.Services.Implementations
             var activeCode = Guid.NewGuid().ToString();
             User user = new()
             {
+                Id = 0,
+                UserName = "puch",
                 FirstName = userVM.FirstName,
                 LastName = userVM.LastName,
                 EmailAddress = userVM.EmailAddress.Trim().ToLower(),
@@ -96,9 +98,10 @@ namespace E_Shop.Application.Services.Implementations
                 ActivationCode = activeCode,
                 IsActive = false,
             };
-            //var check = await EmailExist(userVM.EmailAddress);
-            //if (check != true) return user;
+            var check = await EmailExist(userVM.EmailAddress);
+            if (check != true) return RegisterResults.Error;
             _repository.CreateUser(user);
+            _repository.Save();
             return RegisterResults.Success;
         }
 
@@ -152,7 +155,24 @@ namespace E_Shop.Application.Services.Implementations
                 _repository.CreateUser(user);
                 return ValidationErrorType.Success;
             }
+        }
+        public async Task<string> GenerateEmailConfirmationToken(RegisterVM userVM)
+        {
+            var code = new Guid().ToString();
+            userVM.ActivationCode = code;
+            _repository.Save();
+            return code;
+        }
 
+        public async Task<bool> ConfirmEmail(string email, string token)
+        {
+            var user = await _repository.GetByEmailAndCode(email, token);
+            if (user == null) return false;
+
+            user.IsActive = true;
+            user.ActivationCode = null;
+            _repository.Save();
+            return true;
         }
     }
 }
