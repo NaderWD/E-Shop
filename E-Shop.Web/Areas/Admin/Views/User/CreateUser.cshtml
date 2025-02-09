@@ -1,29 +1,44 @@
 ﻿@model E_Shop.Application.ViewModels.UserViewModel
 
+
+
 <div class="card mb-4">
     <h3 class="card-header">افزودن کاربر</h3>
     <form class="card-body" method="post" asp-action="CreatUser">
         <h6>اطلاعات اکانت</h6>
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label" for="multicol-username">نام کاربری</label>
-                <input type="text" id="multicol-username" class="form-control" asp-for="UserName">
+                <label class="form-label" for="username">نام کاربری</label>
+                <input type="text" name="username" id="username" class="form-control" asp-for="UserName">
             </div>
+
+            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             <div class="col-md-6">
                 <label class="form-label" for="multicol-email">ایمیل</label>
                 <div class="input-group input-group-merge">
                     <input type="text" id="multicol-email" class="form-control" placeholder="@Html.Raw("Gmail.com@")" aria-label="john.doe" aria-describedby="multicol-email2" asp-for="EmailAddress">
-                    
+
                 </div>
+
+                @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-6">
                 <div class="form-password-toggle">
-                    <label class="form-label" for="multicol-password">رمز عبور</label>
+                    <label class="form-label" for="password">رمز عبور</label>
                     <div class="input-group input-group-merge">
-                        <input type="password" id="multicol-password" class="form-control" placeholder="············" aria-describedby="multicol-password2" asp-for="UserName">
-                        <span class="input-group-text cursor-pointer" id="multicol-password2"><i class="bx bx-hide"></i></span>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="············" aria-describedby="multicol-password2" asp-for="Password">
+                        <span class="input-group-text cursor-pointer" id="password"><i class="bx bx-hide"></i></span>
                     </div>
+
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                 </div>
+            </div>
+            <div class="col-md-6 mt-5">
+                <div class="form-check">
+                    <input type="checkbox" id="is-admin" class="form-check-input" asp-for="IsAdmin">
+                    <label class="form-check-label" for="is-admin">ادمین</label>
+                </div>
+
             </div>
         </div>
         <hr class="my-4 mx-n4">
@@ -32,20 +47,23 @@
             <div class="col-md-6">
                 <label class="form-label" for="multicol-first-name">نام</label>
                 <input type="text" id="multicol-first-name" class="form-control" asp-for="FirstName">
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-6">
                 <label class="form-label" for="multicol-last-name">نام خانوادگی</label>
-                <input type="text" id="multicol-last-name" class="form-control"  asp-for="LastName">
+                <input type="text" id="multicol-last-name" class="form-control" asp-for="LastName">
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
             </div>
 
             <div class="col-md-6">
                 <label class="form-label" for="multicol-phone">شماره تلفن</label>
                 <input type="text" id="multicol-phone" class="form-control phone-mask" placeholder="09123456789" aria-label="09123456789" asp-for="Mobile">
             </div>
+            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
         </div>
         <div class="pt-4">
-            <button type="submit" class="btn btn-primary me-sm-3 me-1">افرودن کاربر</button>
-            <button type="reset" class="btn btn-label-secondary">لغو</button>
+            <button type="submit" class="btn btn-primary me-sm-3 me-1" asp-action="CreateUser">افرودن کاربر</button>
+            <button class="btn btn-label-secondary" asp-action="Index">لغو</button>
         </div>
     </form>
 </div>

@@ -1,4 +1,5 @@
 ﻿using E_Shop.Application.ViewModels;
+using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models;
 using static E_Shop.Application.ViewModels.LoginVM;
 using static E_Shop.Application.ViewModels.RegisterVM;
@@ -21,5 +22,6 @@ namespace E_Shop.Application.Services.Interfaces
         Task<IEnumerable<UserViewModel>> GetAllUsers();
         Task<string> GenerateEmailConfirmationToken(RegisterVM userVM);
         Task<bool> ConfirmEmail(string email, string token);
+
     }
 }

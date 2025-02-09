@@ -1,12 +1,17 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels;
-using E_Shop.Domain;
+using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
-using static E_Shop.Application.ViewModels.LoginVM;
-using static E_Shop.Application.ViewModels.RegisterVM;
-using static E_Shop.Application.ViewModels.ResetPasswordVM;
+using E_Shop.Domain.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using System.Collections.Generic;
+using System.Numerics;
+using static E_Shop.Domain.ViewModels.LoginVM;
+using static E_Shop.Domain.ViewModels.RegisterVM;
+using static E_Shop.Domain.ViewModels.ResetPasswordVM;
 
 namespace E_Shop.Application.Services.Implementations
 {
@@ -14,19 +19,23 @@ namespace E_Shop.Application.Services.Implementations
     {
         private readonly IUserRepository _repository = repository;
 
-
-        public bool DeleteUser(int id)
+        public async  Task<bool> DeleteUser(int id)
         {
-            _repository.DeleteUser(id);
+
+            var user = await _repository.GetUserById(id);
+            user.IsDelete = true;
+            _repository.UpdateUser(user);
+            _repository.Save();
             return true;
         }
+
 
         public async Task<IEnumerable<UserViewModel>> GetAllUsers()
         {
             List<UserViewModel> users = new List<UserViewModel>();
             IEnumerable<User> model = await _repository.GetAllUsers();
 
-            foreach (var item in model)
+            foreach (var item in model.Where(u => u.IsDelete==false))
             {
                 users.Add(new UserViewModel
                 {
@@ -39,7 +48,7 @@ namespace E_Shop.Application.Services.Implementations
                     Password = item.Password,
                 });
             }
-            return (users);
+            return users;
         }
 
         public async Task<User> GetByEmail(string email)
@@ -48,16 +57,25 @@ namespace E_Shop.Application.Services.Implementations
             return await _repository.GetUserByEmail(myEmail);
         }
 
-        public async Task<bool> EmailExist(string email)
-        {
-            var check = _repository.EmailIsDuplicated(email);
-            if (check == true) return false;
-            return true;
-        }
 
-        public Task<User> GetUserById(int id)
+        public async Task<UserViewModel> GetUserById(int id)
         {
-            return _repository.GetUserById(id);
+            var user = await _repository.GetUserById(id);
+
+            var model = new UserViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                EmailAddress = user.EmailAddress,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Mobile = user.Mobile,
+                IsAdmin = user.IsAdmin,
+                Password = user.Password,
+            };
+
+
+            return model;
         }
 
         public async Task<LoginResults> Login(LoginVM login)
@@ -117,12 +135,32 @@ namespace E_Shop.Application.Services.Implementations
             return UserResult.Error;
         }
 
-        public async Task<ValidationErrorType> UpdateUser(UserViewModel model)
+        public async Task<ValidationErrorType> UpdateUser(UserViewModel model, bool EmailCheck)
         {
-            if (_repository.EmailIsDuplicated(model.EmailAddress))
-                return ValidationErrorType.EmailIsDuplicated;
+            if (EmailCheck == true)
+            {
+                if (_repository.EmailIsDuplicated(model.EmailAddress))
+                    return ValidationErrorType.EmailIsDuplicated;
+
+                else
+                {
+                    var user = new User
+                    {
+                        UserName = model.UserName,
+                        EmailAddress = model.EmailAddress,
+                        Mobile = model.Mobile,
+                        IsAdmin = model.IsAdmin,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName
+                    };
+
+                    _repository.UpdateUser(user);
+                    return ValidationErrorType.Success;
+                }
+            }
             else
             {
+
                 var user = new User
                 {
                     EmailAddress = model.EmailAddress,
@@ -134,13 +172,15 @@ namespace E_Shop.Application.Services.Implementations
 
                 _repository.UpdateUser(user);
                 return ValidationErrorType.Success;
+
             }
         }
 
         async Task<ValidationErrorType> IUserService.CreateUser(UserViewModel model)
         {
-            if (_repository.EmailIsDuplicated(model.EmailAddress))
+            if (EmailIsDuplicated(model.EmailAddress))
                 return ValidationErrorType.EmailIsDuplicated;
+
             else
             {
                 var user = new User
@@ -149,7 +189,9 @@ namespace E_Shop.Application.Services.Implementations
                     Mobile = model.Mobile,
                     IsAdmin = model.IsAdmin,
                     FirstName = model.FirstName,
-                    LastName = model.LastName
+                    LastName = model.LastName,
+                    CreateDate = DateTime.Now,
+                    Password = model.Password,
                 };
 
                 _repository.CreateUser(user);
@@ -174,5 +216,10 @@ namespace E_Shop.Application.Services.Implementations
             _repository.Save();
             return true;
         }
+        public bool EmailIsDuplicated(string Email)
+        {
+            return _repository.EmailIsDuplicated(Email);
+        }
+
     }
 }
