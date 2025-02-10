@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Services\Interfaces\knlu5311.pz3~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\E-Shop.Infra.Data\E-Shop.Infra.Data.csproj" />
   </ItemGroup>
 

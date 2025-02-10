@@ -211,7 +211,11 @@
                         </div>
                         <button class="btn btn-primary d-grid w-100">ثبت نام</button>
                     </form>
-
+                    @if (ViewBag.MessageType != null) {
+                        <div class="alert alert-success" >
+                            ایمیل برای شما ارسال شد
+                        </div>
+                    }
                     <p class="text-center">
                         <span>از قبل اکانت دارید ؟</span>
                         <a href="Login">

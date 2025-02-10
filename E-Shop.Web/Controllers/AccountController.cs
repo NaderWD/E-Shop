@@ -84,41 +84,40 @@ namespace E_Shop.Web.Controllers
         {
             if (!ModelState.IsValid) return View(register);
 
-            var result = await _service.Register(register);
-            if (result == RegisterVM.RegisterResults.Error) return View(register);
+             await _service.Register(register);
 
-            var token = await _service.GenerateEmailConfirmationToken(register);
-            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { email = register.EmailAddress, token }, protocol: Request.Scheme);
-
-            await _emailSender.SendEmailAsync(register.EmailAddress, "Confirm your email",
-                $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-
-            
             TempData["Message"] = "Registration successful! Please check your email to confirm your account.";
-            TempData["MessageType"] = "success";
+            ViewBag.MessageType = "success";
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ConfirmEmail", "Account");
 
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> ConfirmEmail(string email, string token)
+        [HttpGet("/confirmEmail")]
+        public IActionResult ConfirmEmail()
         {
-            var result = await _service.ConfirmEmail(email, token);
+            return View();
+        }
+
+
+        [HttpPost("/confirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailVM model)
+        {
+            var result = await _service.ConfirmEmailService(model);
             if (result)
             {
-                
+
                 TempData["Message"] = "Email confirmed successfully!";
                 TempData["MessageType"] = "success";
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Account");
             }
 
             TempData["Message"] = "Invalid email confirmation token.";
             TempData["MessageType"] = "error";
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("register", "Account");
         }
 
 
@@ -156,7 +155,7 @@ namespace E_Shop.Web.Controllers
         [HttpGet("/ResetPassword")]
         public IActionResult ResetPassword(string token)
         {
-            return token == null ? View("Error") : View(new ResetPasswordVM { Code = token });
+            return token == null ? View("Error") : View(new ResetPasswordVM { ActivationCode = token });
         }
 
         [HttpPost("/ResetPassword")]
@@ -170,7 +169,7 @@ namespace E_Shop.Web.Controllers
                     return RedirectToAction("ResetPasswordConfirmation");
                 }
 
-                var result = await _service.ResetPassword(resetPassword, resetPassword.Code, resetPassword.Password);
+                var result = await _service.ResetPassword(resetPassword, resetPassword.ActivationCode, resetPassword.Password);
                 switch (result)
                 {
                     case ResetPasswordVM.UserResult.Success:

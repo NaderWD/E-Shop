@@ -6,7 +6,7 @@ namespace E_Shop.Application.ViewModels
     {
         [Display(Name = "کد دریافت شده")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string Code { get; set; }
+        public string ActivationCode { get; set; }
 
         [Display(Name = "رمز عبور")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]

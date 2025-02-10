@@ -1,6 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels;
 using E_Shop.Domain;
+using E_Shop.Domain.Models.Shared;
 using Microsoft.AspNetCore.Mvc;
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
@@ -35,7 +36,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 switch (result)
                 {
                     case ValidationErrorType.EmailIsDuplicated:
-                        TempData[SuccessMessage] = ErrorMessages.EmailIsDuplicated;
+                        TempData[SuccessMessage] = ErrorMessages.EmailExistError;
                         break;
                     case ValidationErrorType.Success:
                         TempData[SuccessMessage] = ErrorMessages.UserAdded;
@@ -69,7 +70,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 switch (result)
                 {
                     case ValidationErrorType.EmailIsDuplicated:
-                        TempData[SuccessMessage] = ErrorMessages.EmailIsDuplicated;
+                        TempData[SuccessMessage] = ErrorMessages.EmailExistError;
                         break;
                     case ValidationErrorType.Success:
                         TempData[SuccessMessage] = ErrorMessages.UserAdded;

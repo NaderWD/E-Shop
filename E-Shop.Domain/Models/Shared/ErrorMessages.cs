@@ -10,5 +10,6 @@
         public const string ResetPasswordEmailSent = "برای بروزرسانی رمز عبور روی لینک ارسالی کلیک کنید";
         public const string ResetPasswordSuccess = "تغییر رمز عبور با موفقیت انجام شد";
         public const string WrongPassword = "رمز عبور اشتباه است";
+        public const string UserAdded = "کاربر با موفقیت اضافه شد.";
     }
 }

@@ -1,7 +1,9 @@
-﻿
+﻿@model ConfirmEmailVM
+
 @{
     Layout = null;
 }
+
 
 
 <!DOCTYPE html>
@@ -11,13 +13,13 @@
       dir="ltr"
       data-theme="theme-default"
       data-assets-path="/assets/"
-      data-template="horizontal-menu-template">
+      data-template="vertical-menu-template">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Verify Email Cover - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Two Steps Verifications Cover - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content="" />
 
@@ -43,6 +45,8 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="/assets/vendor/libs/typeahead-js/typeahead.css" />
+    <!-- Vendor -->
+    <link rel="stylesheet" href="/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css" />
 
     <!-- Page CSS -->
     <!-- Page -->
@@ -65,18 +69,19 @@
             <!-- /Left Text -->
             <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center p-5">
                 <div class="w-100 d-flex justify-content-center">
-                    <img src="/assets/img/illustrations/boy-verify-email-light.png"
+                    <img src="/assets/img/illustrations/girl-verify-password-light.png"
                          class="img-fluid"
                          alt="Login image"
                          width="600"
-                         data-app-dark-img="illustrations/boy-verify-email-dark.png"
-                         data-app-light-img="illustrations/boy-verify-email-light.png" />
+                         data-app-dark-img="illustrations/girl-verify-password-dark.png"
+                         data-app-light-img="illustrations/girl-verify-password-light.png" />
                 </div>
             </div>
             <!-- /Left Text -->
-            <!--  Verify email -->
+            <!-- Two Steps Verification -->
             <div class="d-flex col-12 col-lg-5 col-xl-4 align-items-center authentication-bg p-4 p-sm-5">
                 <div class="w-px-400 mx-auto">
+                    <!-- Logo -->
                     <div class="app-brand mb-5">
                         <a href="index.html" class="app-brand-link gap-2">
                             <span class="app-brand-logo demo">
@@ -125,19 +130,35 @@
                             <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
                         </a>
                     </div>
-                    <h3 class="mb-2">Verify your email ✉️</h3>
-                    <p class="text-start">
-                        Account activation link sent to your email address: hello@example.com Please follow the link inside to
-                        continue.
+                    <!-- /Logo -->
+
+                    <h4 class="mb-2">Two Step Verification 💬</h4>
+                    <p class="text-start mb-4">
+                        We sent a verification code to your mobile. Enter the code from the mobile in the field below.
+                        <span class="fw-bold d-block mt-2">******1234</span>
                     </p>
-                    <a class="btn btn-primary w-100 my-3" href="index.html"> Skip for now </a>
-                    <p class="text-center">
-                        Didn't get the mail?
-                        <a href="javascript:void(0);" class="ms-2"> Resend </a>
-                    </p>
+                    <p class="mb-0 fw-semibold">Type your 6 digit security code</p>
+                    <form id="confirmEmail" asp-action="ConfirmEmail" method="POST">
+                        <input type="hidden" name="otp" asp-for="ActivationCode" />
+                        <div class="mb-3">
+                            <div class="auth-input-wrapper d-flex align-items-center justify-content-sm-between numeral-mask-wrapper">
+                                <input type="text"
+                                       class="form-control auth-input "
+                                       maxlength="7"
+                                       autofocus asp-for="ActivationCode" />
+                            </div>
+                            <!-- Create a hidden field which is combined by 3 fields above -->
+                            <input type="hidden" name="otp" asp-for="ActivationCode" />
+                        </div>
+                        <button class="btn btn-primary d-grid w-100 mb-3" >تایید اکانت</button>
+                        <div class="text-center">
+                            کد را دریافت نکرده اید ؟
+                            <a href="javascript:void(0);"> Resend </a>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <!-- / Verify email -->
+            <!-- /Two Steps Verification -->
         </div>
     </div>
 
@@ -156,9 +177,17 @@
     <script src="/assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
     <!-- Vendors JS -->
+    <script src="/assets/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
+    <script src="/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
+    <script src="/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
+
     <!-- Main JS -->
     <script src="/assets/js/main.js"></script>
 
     <!-- Page JS -->
+    <script src="/assets/js/pages-auth.js"></script>
+    <script src="/assets/js/pages-auth-two-steps.js"></script>
 </body>
 </html>
+

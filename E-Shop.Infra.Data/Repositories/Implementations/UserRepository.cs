@@ -22,12 +22,6 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
           
         }
 
-        public async Task<User> GetByEmailAndCode(string email, string token)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.EmailAddress == email && u.ActivationCode == token);
-            return user;
-        }
-
         public bool EmailIsDuplicated(string email)
         {
           return  _context.Users.Any(u => u.EmailAddress == email);

@@ -3,18 +3,15 @@ using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels;
 using E_Shop.Domain;
 using E_Shop.Domain.Models;
+using E_Shop.Domain.Models.Shared;
 using E_Shop.Domain.Repositories.Interfaces;
 using static E_Shop.Application.ViewModels.LoginVM;
-using static E_Shop.Application.ViewModels.RegisterVM;
 using static E_Shop.Application.ViewModels.ResetPasswordVM;
 
 namespace E_Shop.Application.Services.Implementations
 {
-    public class UserService(IUserRepository repository) : IUserService
+    public class UserService(IUserRepository _repository, IEmailSender _emailSender) : IUserService
     {
-        private readonly IUserRepository _repository = repository;
-
-
         public bool DeleteUser(int id)
         {
             _repository.DeleteUser(id);
@@ -23,8 +20,8 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task<IEnumerable<UserViewModel>> GetAllUsers()
         {
-            List<UserViewModel> users = new List<UserViewModel>();
             IEnumerable<User> model = await _repository.GetAllUsers();
+            List<UserViewModel> users = [];
 
             foreach (var item in model)
             {
@@ -51,8 +48,8 @@ namespace E_Shop.Application.Services.Implementations
         public async Task<bool> EmailExist(string email)
         {
             var check = _repository.EmailIsDuplicated(email);
-            if (check == true) return false;
-            return true;
+            if (check) return true;
+            return false;
         }
 
         public Task<User> GetUserById(int id)
@@ -83,13 +80,14 @@ namespace E_Shop.Application.Services.Implementations
             return false;
         }
 
-        public async Task<RegisterResults> Register(RegisterVM userVM)
+        public async Task<string> Register(RegisterVM userVM)
         {
-            var activeCode = Guid.NewGuid().ToString();
+            var check = await EmailExist(userVM.EmailAddress);
+            if (check) return ErrorMessages.EmailExistError;
+
+            var activeCode = CodeGenerator.GenerateCode();
             User user = new()
             {
-                Id = 0,
-                UserName = "puch",
                 FirstName = userVM.FirstName,
                 LastName = userVM.LastName,
                 EmailAddress = userVM.EmailAddress.Trim().ToLower(),
@@ -98,11 +96,11 @@ namespace E_Shop.Application.Services.Implementations
                 ActivationCode = activeCode,
                 IsActive = false,
             };
-            var check = await EmailExist(userVM.EmailAddress);
-            if (check != true) return RegisterResults.Error;
-            _repository.CreateUser(user);
-            _repository.Save();
-            return RegisterResults.Success;
+             _repository.CreateUser(user);
+             _repository.Save();
+            await _emailSender.SendEmailAsync(userVM.EmailAddress, "کد تایید اکانت", $"کد تایید اکانت شما {activeCode} می باشد");
+
+            return ErrorMessages.registerConfirmationSuccess;
         }
 
         public async Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password)
@@ -156,21 +154,16 @@ namespace E_Shop.Application.Services.Implementations
                 return ValidationErrorType.Success;
             }
         }
-        public async Task<string> GenerateEmailConfirmationToken(RegisterVM userVM)
-        {
-            var code = new Guid().ToString();
-            userVM.ActivationCode = code;
-            _repository.Save();
-            return code;
-        }
 
-        public async Task<bool> ConfirmEmail(string email, string token)
+
+        public async Task<bool> ConfirmEmailService(ConfirmEmailVM model)
         {
-            var user = await _repository.GetByEmailAndCode(email, token);
+            var user = await _repository.GetUserByActivationCode(model.ActivationCode);
             if (user == null) return false;
 
             user.IsActive = true;
-            user.ActivationCode = null;
+            user.ActivationCode = CodeGenerator.GenerateCode();
+            _repository.UpdateUser(user);
             _repository.Save();
             return true;
         }
