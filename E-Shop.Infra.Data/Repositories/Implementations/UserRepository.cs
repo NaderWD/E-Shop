@@ -12,24 +12,24 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         public bool CreateUser(User user)
         {
             _context.Users.Add(user);
-            Save();
             return true;
         }
 
-        public async Task<bool> DeleteUser(int id)
+        public bool DeleteUser(int id)
         {
-            Save();
+           var user = GetUserById(id);
+            _context.Remove(user);
             return true;
         }
 
         public bool EmailIsDuplicated(string email)
         {
-          return  _context.Users.Any(u => u.EmailAddress == email);
+            return _context.Users.Any(u => u.EmailAddress == email);
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
         {
-            List<User> users = new List<User>();
+            List<User> users = [];
             var models = await _context.Users.ToListAsync();
             foreach (var item in models)
             {
@@ -65,15 +65,11 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return user;
         }
 
-        public async Task<User?> GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
-            return  await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task RegisterUser(RegisterVM register)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Save()
         {

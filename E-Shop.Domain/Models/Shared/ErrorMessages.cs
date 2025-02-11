@@ -2,6 +2,12 @@
 {
     public static class ErrorMessages
     {
+
+        public const string EmailIsDuplicated = "اکانتی با این ایمیل وجود دارد.";
+        public const string UserAdded = "کاربر با موفقیت اضافه شد.";
+        public const string UserUpdate = "کاربر با موفقیت برورزرسانی شد.";
+        public const string UserDeleted = "کاربر با موفقیت حذف شد.";
+        public const string FailedMessage = "مشکلی پیش آمده مجددا تلاش کنید.";
         public const string EmailExistError = "ایمیل وارد شده از قبل ثبت نام شده است";
         public const string ConfirmEmail = "برای تکمیل ثبت نام بر روی لینک ارسالی کلیک کنید";
         public const string EmailConfirmationError = "عملیات با خطا روبرو شد";
@@ -13,6 +19,5 @@
         public const string ResetPasswordSuccess = "تغییر رمز عبور با موفقیت انجام شد";
         public const string ResetPasswordCodeError = "کد تایید اشتباه است";
         public const string WrongPassword = "رمز عبور اشتباه است";
-        public const string UserAdded = "کاربر با موفقیت اضافه شد.";
     }
 }

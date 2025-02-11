@@ -12,9 +12,8 @@ namespace E_Shop.Application.Services.Implementations
     public class UserService(IUserRepository _repository, IEmailSender _emailSender) : IUserService
     {
 
-        public async  Task<bool> DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id)
         {
-
             var user = await _repository.GetUserById(id);
             user.IsDelete = true;
             _repository.UpdateUser(user);
@@ -28,7 +27,7 @@ namespace E_Shop.Application.Services.Implementations
             IEnumerable<User> model = await _repository.GetAllUsers();
             List<UserViewModel> users = [];
 
-            foreach (var item in model.Where(u => u.IsDelete==false))
+            foreach (var item in model.Where(u => u.IsDelete == false))
             {
                 users.Add(new UserViewModel
                 {
@@ -137,50 +136,29 @@ namespace E_Shop.Application.Services.Implementations
             return ErrorMessages.ResetPasswordSuccess;
         }
 
-        public async Task<ValidationErrorType> UpdateUser(UserViewModel model, bool EmailCheck)
+        public async Task<ValidationErrorType> UpdateUser(UserViewModel model)
         {
-            if (EmailCheck == true)
+            if (await EmailExist(model.EmailAddress))
+                return ValidationErrorType.EmailIsDuplicated;
+
+            var user = new User
             {
-                if (_repository.EmailIsDuplicated(model.EmailAddress))
-                    return ValidationErrorType.EmailIsDuplicated;
+                UserName = model.UserName,
+                EmailAddress = model.EmailAddress,
+                Mobile = model.Mobile,
+                IsAdmin = model.IsAdmin,
+                FirstName = model.FirstName,
+                LastName = model.LastName
+            };
 
-                else
-                {
-                    var user = new User
-                    {
-                        UserName = model.UserName,
-                        EmailAddress = model.EmailAddress,
-                        Mobile = model.Mobile,
-                        IsAdmin = model.IsAdmin,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName
-                    };
+            _repository.UpdateUser(user);
+            return ValidationErrorType.Success;
 
-                    _repository.UpdateUser(user);
-                    return ValidationErrorType.Success;
-                }
-            }
-            else
-            {
-
-                var user = new User
-                {
-                    EmailAddress = model.EmailAddress,
-                    Mobile = model.Mobile,
-                    IsAdmin = model.IsAdmin,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName
-                };
-
-                _repository.UpdateUser(user);
-                return ValidationErrorType.Success;
-
-            }
         }
 
-        async Task<ValidationErrorType> IUserService.CreateUser(UserViewModel model)
+        public async Task<ValidationErrorType> CreateUser(UserViewModel model)
         {
-            if (EmailIsDuplicated(model.EmailAddress))
+            if (await EmailExist(model.EmailAddress))
                 return ValidationErrorType.EmailIsDuplicated;
 
             else
@@ -192,7 +170,6 @@ namespace E_Shop.Application.Services.Implementations
                     IsAdmin = model.IsAdmin,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    CreateDate = DateTime.Now,
                     Password = model.Password,
                 };
 
@@ -200,7 +177,6 @@ namespace E_Shop.Application.Services.Implementations
                 return ValidationErrorType.Success;
             }
         }
-
 
         public async Task<bool> ConfirmEmailService(ConfirmEmailVM model)
         {

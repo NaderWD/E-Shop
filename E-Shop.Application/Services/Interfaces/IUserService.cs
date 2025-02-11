@@ -14,8 +14,8 @@ namespace E_Shop.Application.Services.Interfaces
         Task<string> Login(LoginVM userVM);
         Task<ValidationErrorType> CreateUser(UserViewModel userVM);
         Task<ValidationErrorType> UpdateUser(UserViewModel userVM);
-        bool DeleteUser(int id);
-        Task<User> GetUserById(int id);
+        Task<bool> DeleteUser(int id);
+        Task<UserViewModel> GetUserById(int id);
         Task<IEnumerable<UserViewModel>> GetAllUsers();
         Task<bool> ConfirmEmailService(ConfirmEmailVM model);
     }

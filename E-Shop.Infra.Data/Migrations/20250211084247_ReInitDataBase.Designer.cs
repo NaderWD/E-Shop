@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Shop.Infra.Data.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20250207125526_CreatDateColumnAddedToUserTable")]
-    partial class CreatDateColumnAddedToUserTable
+    [Migration("20250211084247_ReInitDataBase")]
+    partial class ReInitDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,11 +33,9 @@ namespace E_Shop.Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid?>("ActivationCode")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("ActivationCode")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -53,6 +51,9 @@ namespace E_Shop.Infra.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -73,8 +74,7 @@ namespace E_Shop.Infra.Data.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

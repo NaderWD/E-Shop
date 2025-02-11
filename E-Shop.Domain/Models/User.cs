@@ -1,5 +1,4 @@
 ﻿using E_Shop.Domain.Models.Common;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Domain.Models
@@ -15,8 +14,8 @@ namespace E_Shop.Domain.Models
 
         [Required(ErrorMessage = "وارد کردن نام کاربری ضروری است.")]
         [MinLength(8, ErrorMessage = "نام کاربری باید حداقل ۸ کاراکتر باشد.")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", ErrorMessage = "نام کاربری باید شامل حداقل یک حرف بزرگ، یک حرف کوچک و یک عدد باشد.")]
-        public string UserName { get; set; }
+        //[RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", ErrorMessage = "نام کاربری باید شامل حداقل یک حرف بزرگ، یک حرف کوچک و یک عدد باشد.")]
+        public string? UserName { get; set; }
 
         [MaxLength(255, ErrorMessage = "رمز عبور نباید بیشتر از ۲۵۵ کاراکتر باشد.")]
         [Required(ErrorMessage = "لطفا رمز جدید را وارد کنید.")]
@@ -35,7 +34,5 @@ namespace E_Shop.Domain.Models
         public bool IsAdmin { get; set; }
 
         public bool IsActive{get; set;}
-
-        public bool IsActive { get; set; }
     }
 }
