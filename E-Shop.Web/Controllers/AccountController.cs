@@ -1,13 +1,11 @@
-﻿using E_Shop.Application.Services.Implementations;
-using E_Shop.Application.Services.Interfaces;
+﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels;
 using E_Shop.Domain.Models.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol.Plugins;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Security.Claims;
-using static E_Shop.Application.ViewModels.LoginVM;
 
 namespace E_Shop.Web.Controllers
 {
@@ -17,61 +15,7 @@ namespace E_Shop.Web.Controllers
         private readonly IEmailSender _emailSender = emailSender;
 
 
-        [HttpGet("/login")]
-        public IActionResult Login()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
-
-
-        [HttpPost("/login")]
-        public async Task<IActionResult> Login(LoginVM userLogin)
-        {
-            if (!ModelState.IsValid) return View(userLogin);
-
-            var result = await _service.Login(userLogin);
-
-            switch (result)
-            {
-                case LoginResults.Success:
-                    var user = await _service.GetByEmail(userLogin.EmailAddress);
-                    var claims = new List<Claim>()
-                    {
-                        new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                        new(ClaimTypes.Email, user.EmailAddress),
-                    };
-                    var identify = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var principal = new ClaimsPrincipal(identify);
-                    var properties = new AuthenticationProperties { IsPersistent = true };
-                    await HttpContext.SignInAsync(principal, properties);
-                    TempData[SuccessMessage] = "خوش آمدید";
-                    return RedirectToAction("Index");
-
-                case LoginResults.Error:
-                    TempData[ErrorMessage] = "خطایی رخ داده است";
-                    return View(userLogin);
-
-                case LoginResults.UserNotFound:
-                    TempData[ErrorMessage] = "کاربری یافت نشد";
-                    return View(userLogin);
-            }
-
-            return View(userLogin);
-        }
-
-
-        [HttpGet("/logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync();
-            return RedirectToAction("Index");
-        }
-
-
+        #region Register
         [HttpGet("/register")]
         public IActionResult Register()
         {
@@ -84,7 +28,7 @@ namespace E_Shop.Web.Controllers
         {
             if (!ModelState.IsValid) return View(register);
 
-             await _service.Register(register);
+            await _service.Register(register);
 
             TempData["Message"] = "Registration successful! Please check your email to confirm your account.";
             ViewBag.MessageType = "success";
@@ -92,8 +36,55 @@ namespace E_Shop.Web.Controllers
             return RedirectToAction("ConfirmEmail", "Account");
 
         }
+        #endregion
 
 
+
+        #region Login
+        [HttpGet("/login")]
+        public IActionResult Login()
+        {
+            if (!User.Identity.IsAuthenticated) return View();
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost("/login")]
+        public async Task<IActionResult> Login(LoginVM userLogin)
+        {
+            var result = await _service.Login(userLogin);
+            if (result != ErrorMessages.LoginSuccess) return View(userLogin);
+
+            var user = await _service.GetByEmail(userLogin.EmailAddress);
+            var claims = new List<Claim>()
+                    {
+                        new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new(ClaimTypes.Email, user.EmailAddress),
+                    };
+            var identify = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identify);
+            var properties = new AuthenticationProperties { IsPersistent = true };
+            await HttpContext.SignInAsync(principal, properties);
+            TempData[SuccessMessage] = "خوش آمدید";
+            return RedirectToAction("Index");
+
+        }
+        #endregion
+
+
+
+        #region Logout
+        [HttpGet("/logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index");
+        }
+        #endregion
+
+
+
+        #region Confirm Email
         [HttpGet("/confirmEmail")]
         public IActionResult ConfirmEmail()
         {
@@ -105,22 +96,14 @@ namespace E_Shop.Web.Controllers
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailVM model)
         {
             var result = await _service.ConfirmEmailService(model);
-            if (result)
-            {
-
-                TempData["Message"] = "Email confirmed successfully!";
-                TempData["MessageType"] = "success";
-
-                return RedirectToAction("Login", "Account");
-            }
-
-            TempData["Message"] = "Invalid email confirmation token.";
-            TempData["MessageType"] = "error";
-
-            return RedirectToAction("register", "Account");
+            if (!result) return RedirectToAction("register", "Account");
+            return RedirectToAction("Login", "Account");
         }
+        #endregion
 
 
+
+        #region Forget Password
         [HttpGet("/ForgetPassword")]
         public IActionResult ForgetPassword()
         {
@@ -131,69 +114,57 @@ namespace E_Shop.Web.Controllers
         [HttpPost("/ForgetPassword")]
         public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPassword)
         {
-            if (ModelState.IsValid)
-            {
-                var user = await _service.GetByEmail(forgetPassword.EmailAddress);
-                if (user == null)
-                {
-                    return RedirectToAction("ForgotPasswordConfirmation");
-                }
+            if (!ModelState.IsValid) return View(forgetPassword);
 
-                var token = new Guid();
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { token, email = forgetPassword.EmailAddress }, protocol: Request.Scheme);
-
-                await _emailSender.SendEmailAsync(forgetPassword.EmailAddress, "Reset Password",
-                    $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-
-                return RedirectToAction("ForgotPasswordConfirmation");
-            }
-
-            return View(forgetPassword);
+            await _service.ForgetPasswordCode(forgetPassword);
+            return RedirectToAction("ResetPassword");
         }
+        #endregion
 
 
+
+        #region Reset Password
         [HttpGet("/ResetPassword")]
-        public IActionResult ResetPassword(string token)
+        public IActionResult ResetPassword()
         {
-            return token == null ? View("Error") : View(new ResetPasswordVM { ActivationCode = token });
+            return View();
         }
 
         [HttpPost("/ResetPassword")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordVM resetPassword)
+        public async Task<IActionResult> ResetPassword(ResetPasswordVM userVM)
         {
-            if (ModelState.IsValid)
-            {
-                var user = await _service.GetByEmail(resetPassword.EmailAddress);
-                if (user == null)
-                {
-                    return RedirectToAction("ResetPasswordConfirmation");
-                }
+            if (!ModelState.IsValid) return View(userVM);
 
-                var result = await _service.ResetPassword(resetPassword, resetPassword.ActivationCode, resetPassword.Password);
-                switch (result)
-                {
-                    case ResetPasswordVM.UserResult.Success:
-                        break;
-                    case ResetPasswordVM.UserResult.Error:
-                        break;
-                }
-            }
-            return View(resetPassword);
+            await _service.ResetPassword(userVM, userVM.ActivationCode, userVM.Password);
+            return RedirectToAction("Login", "Account");
         }
+        #endregion
 
+
+
+        #region ReSend
         [HttpGet]
-        public IActionResult ForgotPasswordConfirmation()
+        public async Task<IActionResult> ReSend(string email)
         {
-            return View();
+            var model = new ResetPasswordVM { EmailAddress = email };
+            return View(model);
         }
 
-        [HttpGet]
-        public IActionResult ResetPasswordConfirmation()
+
+        [HttpPost]
+        public async Task<IActionResult> ReSendCode(ForgetPasswordVM userVM)
         {
-            return View();
+            await _service.ForgetPasswordCode(userVM);
+            return RedirectToAction("ResetPassword");
         }
+        #endregion
     }
+
 }
+
+
+
+
 
 
 

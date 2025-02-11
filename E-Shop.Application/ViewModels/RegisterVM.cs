@@ -38,10 +38,5 @@ namespace E_Shop.Application.ViewModels
         public string? Mobile { get; set; }
 
         public string? ActivationCode { get; set; }
-
-        public enum RegisterResults
-        {
-            Success, EmailExists, Error, NotFound
-        }
     }
 }

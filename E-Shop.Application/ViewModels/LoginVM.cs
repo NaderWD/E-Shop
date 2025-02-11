@@ -15,12 +15,5 @@ namespace E_Shop.Application.ViewModels
         [MaxLength(500)]
         [EmailAddress(ErrorMessage = "ایمیل صحیح وارد کنید")]
         public string EmailAddress { get; set; }
-
-        public enum LoginResults
-        {
-            Success,
-            Error,
-            UserNotFound
-        }
     }
 }

@@ -1,12 +1,9 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels;
-using E_Shop.Domain;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.Shared;
 using E_Shop.Domain.Repositories.Interfaces;
-using static E_Shop.Application.ViewModels.LoginVM;
-using static E_Shop.Application.ViewModels.ResetPasswordVM;
 
 namespace E_Shop.Application.Services.Implementations
 {
@@ -57,27 +54,15 @@ namespace E_Shop.Application.Services.Implementations
             return _repository.GetUserById(id);
         }
 
-        public async Task<LoginResults> Login(LoginVM login)
+        public async Task<string> Login(LoginVM login)
         {
-            var email = login.EmailAddress.Trim().ToLower();
-            var user = await _repository.GetUserByEmail(email);
+            var user = await GetByEmail(login.EmailAddress);
             var password = PasswordHasher.EncodePasswordMd5(login.Password);
 
-            if (user == null) return LoginResults.UserNotFound;
-            if (password != user.Password) return LoginResults.Error;
-            return LoginResults.Success;
-        }
+            if (user == null) return ErrorMessages.UserNotExistError;
+            if (password != user.Password) return ErrorMessages.WrongPassword;
 
-        public async Task<bool> ActivateAccount(string code)
-        {
-            User user = await _repository.GetUserByActivationCode(code);
-            if (user != null)
-            {
-                user.IsActive = true;
-                _repository.UpdateUser(user);
-                return true;
-            }
-            return false;
+            return ErrorMessages.LoginSuccess;
         }
 
         public async Task<string> Register(RegisterVM userVM)
@@ -96,23 +81,37 @@ namespace E_Shop.Application.Services.Implementations
                 ActivationCode = activeCode,
                 IsActive = false,
             };
-             _repository.CreateUser(user);
-             _repository.Save();
-            await _emailSender.SendEmailAsync(userVM.EmailAddress, "کد تایید اکانت", $"کد تایید اکانت شما {activeCode} می باشد");
+            _repository.CreateUser(user);
+            _repository.Save();
+            await _emailSender.SendEmailAsync(userVM.EmailAddress, "کد فعال سازی", $"کد تایید اکانت شما {activeCode} می باشد");
 
             return ErrorMessages.registerConfirmationSuccess;
         }
 
-        public async Task<UserResult> ResetPassword(ResetPasswordVM resetPassword, string code, string password)
+        public async Task<string> ForgetPasswordCode(ForgetPasswordVM userVM)
+        {
+            var email = userVM.EmailAddress.Trim().ToLower();
+            var user = await _repository.GetUserByEmail(email);
+            var activeCode = CodeGenerator.GenerateCode();
+
+            user.ActivationCode = activeCode;
+            _repository.UpdateUser(user);
+            _repository.Save();
+
+            await _emailSender.SendEmailAsync(userVM.EmailAddress, "کد فعال سازی", $"کد تایید اکانت شما {activeCode} می باشد");
+            return ErrorMessages.ResetPasswordEmailSent;
+        }
+
+        public async Task<string> ResetPassword(ResetPasswordVM resetPassword, string code, string password)
         {
             User user = await _repository.GetUserByEmail(resetPassword.EmailAddress);
-            if (user.ActivationCode == code)
-            {
-                user.Password = PasswordHasher.EncodePasswordMd5(password);
-                _repository.UpdateUser(user);
-                return UserResult.Success;
-            }
-            return UserResult.Error;
+            if (user.ActivationCode != code) return ErrorMessages.ResetPasswordCodeError;
+
+            user.Password = PasswordHasher.EncodePasswordMd5(password);
+            user.ActivationCode = CodeGenerator.GenerateCode();
+            _repository.UpdateUser(user);
+            _repository.Save();
+            return ErrorMessages.ResetPasswordSuccess;
         }
 
         public async Task<ValidationErrorType> UpdateUser(UserViewModel model)
@@ -167,5 +166,6 @@ namespace E_Shop.Application.Services.Implementations
             _repository.Save();
             return true;
         }
+
     }
 }

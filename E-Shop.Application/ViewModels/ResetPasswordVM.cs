@@ -23,12 +23,6 @@ namespace E_Shop.Application.ViewModels
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(500)]
         [EmailAddress(ErrorMessage = "ایمیل صحیح وارد کنید")]
-        public string EmailAddress { get; set; }
-
-        public enum UserResult
-        {
-            Success,
-            Error,
-        }
+        public string? EmailAddress { get; set; }
     }
 }
