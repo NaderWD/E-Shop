@@ -1,0 +1,25 @@
+﻿@{
+    var errorMessage = TempData["ErrorMessage"] as string;
+    var successMessage = TempData["SuccessMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'موفق',
+            text: '@Html.Raw(successMessage)'
+        });
+    </script>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'خطا',
+            text: '@Html.Raw(errorMessage)'
+        });
+    </script>
+}

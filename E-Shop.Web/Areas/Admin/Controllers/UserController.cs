@@ -3,16 +3,17 @@ using E_Shop.Application.ViewModels;
 using E_Shop.Domain;
 using E_Shop.Domain.Models.Shared;
 using Microsoft.AspNetCore.Mvc;
+
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
-    public class UserController : AdminBaseController
+    public class UserController(IUserService userService) : AdminBaseController
     {
-        private readonly IUserService _userService;
+        private readonly IUserService _userService = userService;
 
+        public async Task<IActionResult> Index()
 
-        public IActionResult Index()
         {
-            var model = _userService.GetAllUsers();
+            var model = await _userService.GetAllUsers();
             return View(model);
         }
         public IActionResult CreateUser()
@@ -38,7 +39,8 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                     case ValidationErrorType.EmailIsDuplicated:
                         TempData[SuccessMessage] = ErrorMessages.EmailExistError;
                         break;
-                    case ValidationErrorType.Success:
+
+                    case Domain.Enum.ValidationErrorType.Success:
                         TempData[SuccessMessage] = ErrorMessages.UserAdded;
                         return RedirectToAction("Index");
 
@@ -49,25 +51,45 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         }
 
-        public IActionResult UpdateUser(int Id)
+       
+        public async Task<IActionResult> UpdateUser(int UserId)
         {
-            var content = _userService.GetUserById(Id);
+            var content = await _userService.GetUserById(UserId);
             return View(content);
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UserViewModel model)
         {
-            if (!ModelState.IsValid)
+            var emailcheck = await _userService.GetUserById(model.Id);
+            if (emailcheck.EmailAddress != model.EmailAddress)
             {
-                return View(model);
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
 
+                }
+                else
+                {
+
+                    var result = await _userService.UpdateUser(model, true);
+                    switch (result)
+                    {
+                        case Domain.Enum.ValidationErrorType.EmailIsDuplicated:
+                            TempData[ErrorMessage] = ErrorMessages.EmailIsDuplicated;
+                            break;
+                        case Domain.Enum.ValidationErrorType.Success:
+                            TempData[SuccessMessage] = ErrorMessages.UserUpdate;
+                            return RedirectToAction("Index");
+
+                    }
+
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
-
-                var result = await _userService.UpdateUser(model);
-                switch (result)
+                if (!ModelState.IsValid)
                 {
                     case ValidationErrorType.EmailIsDuplicated:
                         TempData[SuccessMessage] = ErrorMessages.EmailExistError;
@@ -75,19 +97,32 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                     case ValidationErrorType.Success:
                         TempData[SuccessMessage] = ErrorMessages.UserAdded;
                         return RedirectToAction("Index");
-
                 }
+                else
+                {
+                    var result = await _userService.UpdateUser(model, false);
+                    TempData[SuccessMessage] = ErrorMessages.UserUpdate;
+                    return RedirectToAction("Index");
+                }
+            }
 
-                return RedirectToAction("Index", "User", new { area = "Admin" });
+        }
+
+     
+       
+        public async Task<IActionResult> DeleteUser(int UserId)
+        {
+            var result = await _userService.DeleteUser(UserId);
+            if (result)
+            {
+                TempData[SuccessMessage] = ErrorMessages.UserDeleted;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData[ErrorMessage] = ErrorMessages.FailedMessage;
+                return RedirectToAction("Index");
             }
         }
-
-        public IActionResult DeleteUser(int Id)
-        {
-            _userService.DeleteUser(Id);
-            return View("Index");
-        }
-
-
     }
 }
