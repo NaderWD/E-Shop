@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Shop.Infra.Data.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20250211084247_ReInitDataBase")]
+    [Migration("20250211084912_ReInitDataBase")]
     partial class ReInitDataBase
     {
         /// <inheritdoc />
@@ -71,10 +71,6 @@ namespace E_Shop.Infra.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

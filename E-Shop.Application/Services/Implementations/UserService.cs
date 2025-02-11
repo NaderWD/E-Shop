@@ -63,7 +63,6 @@ namespace E_Shop.Application.Services.Implementations
             var model = new UserViewModel
             {
                 Id = user.Id,
-                UserName = user.UserName,
                 EmailAddress = user.EmailAddress,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -71,8 +70,6 @@ namespace E_Shop.Application.Services.Implementations
                 IsAdmin = user.IsAdmin,
                 Password = user.Password,
             };
-
-
             return model;
         }
 
@@ -143,7 +140,6 @@ namespace E_Shop.Application.Services.Implementations
 
             var user = new User
             {
-                UserName = model.UserName,
                 EmailAddress = model.EmailAddress,
                 Mobile = model.Mobile,
                 IsAdmin = model.IsAdmin,

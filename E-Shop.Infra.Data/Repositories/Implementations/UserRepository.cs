@@ -45,7 +45,6 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
                     LastModifiedDate = item.LastModifiedDate,
                     Mobile = item.Mobile,
                     Password = item.Password,
-                    UserName = item.UserName,
                     IsDelete = item.IsDelete,
 
                 });
