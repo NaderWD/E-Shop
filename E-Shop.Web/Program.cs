@@ -25,7 +25,6 @@ builder.Services.AddAuthentication(options =>
 {
     options.LoginPath = "/login";
     options.LogoutPath = "/logout";
-    //options.ForwardSignIn = "/register";
     options.ExpireTimeSpan = TimeSpan.FromDays(7);
 });
 
