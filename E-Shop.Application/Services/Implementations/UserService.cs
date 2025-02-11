@@ -183,6 +183,9 @@ namespace E_Shop.Application.Services.Implementations
             user.ActivationCode = CodeGenerator.GenerateCode();
             _repository.UpdateUser(user);
             _repository.Save();
+
+            await _emailSender.SendEmailAsync(user.EmailAddress, "آفرین بر تو", $"کاربر گرامی ثبت نام شما در سایت بزرگ فروشگاهی یکتا فلان فلان با موفقیت انجام شد");
+
             return true;
         }
     }

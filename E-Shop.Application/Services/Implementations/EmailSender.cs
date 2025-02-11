@@ -6,8 +6,6 @@ namespace E_Shop.Application.Services.Implementations
 {
     public class EmailSender : IEmailSender
     {
-
-
         public async Task SendEmailAsync(string email, string subject, string message)
         {
             MailMessage mailMessage = new();

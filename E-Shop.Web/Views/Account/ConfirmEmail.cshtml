@@ -141,10 +141,10 @@
                     <form id="confirmEmail" asp-action="ConfirmEmail" method="POST">
                         <input type="hidden" name="otp" asp-for="ActivationCode" />
                         <div class="mb-3">
-                            <div class="auth-input-wrapper d-flex align-items-center justify-content-sm-between numeral-mask-wrapper">
+                            <div class="auth-input-wrapper align-items-center ">
                                 <input type="text"
                                        class="form-control auth-input "
-                                       maxlength="7"
+                                       maxlength="6"
                                        autofocus asp-for="ActivationCode" />
                             </div>
                             <!-- Create a hidden field which is combined by 3 fields above -->
