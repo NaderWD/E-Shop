@@ -12,13 +12,15 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         public bool CreateUser(User user)
         {
             _context.Users.Add(user);
+            Save();
             return true;
         }
 
         public bool DeleteUser(int id)
         {
-           var user = GetUserById(id);
+            var user = GetUserById(id);
             _context.Remove(user);
+            Save();
             return true;
         }
 

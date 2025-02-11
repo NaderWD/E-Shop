@@ -8,7 +8,8 @@ namespace E_Shop.Web.Areas.Admin.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            var model = await _userService.GetAllUsers(); return View(model);
+            var model = await _userService.GetAllUsers(); 
+            return View(model);
         }
         public IActionResult CreateUser()
         {
@@ -26,7 +27,9 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                     case Domain.Enum.ValidationErrorType.EmailIsDuplicated:
                         TempData[ErrorMessage] = ErrorMessages.EmailIsDuplicated;
                         break;
-                    case Domain.Enum.ValidationErrorType.Success: TempData[SuccessMessage] = ErrorMessages.UserAdded; return RedirectToAction("Index");
+                    case Domain.Enum.ValidationErrorType.Success:
+                        TempData[SuccessMessage] = ErrorMessages.UserAdded;
+                        return RedirectToAction("Index");
                 }
                 return RedirectToAction("Index");
             }
@@ -41,16 +44,17 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UserViewModel model)
         {
-            var emailcheck = await _userService.GetUserById(model.Id);
-            if (emailcheck.EmailAddress != model.EmailAddress)
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
+                return View(model);
+            }
+            else
+            {
+                var emailcheck = await _userService.GetUserById(model.Id);
+                if (emailcheck.EmailAddress != model.EmailAddress)
                 {
-                    return View(model);
-                }
-                else
-                {
-                    var result = await _userService.UpdateUser(model);
+
+                    var result = await _userService.UpdateUser(model,true);
                     switch (result)
                     {
                         case Domain.Enum.ValidationErrorType.EmailIsDuplicated:
@@ -61,18 +65,18 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                             return RedirectToAction("Index");
                     }
                     return RedirectToAction("Index");
+
                 }
-            }
-            else
-            {
-                if (!ModelState.IsValid) { return View(model); }
                 else
                 {
-                    await _userService.UpdateUser(model);
+
+                    await _userService.UpdateUser(model, false);
                     TempData[SuccessMessage] = ErrorMessages.UserUpdate;
                     return RedirectToAction("Index");
+
                 }
             }
+
         }
 
         public async Task<IActionResult> DeleteUser(int UserId)

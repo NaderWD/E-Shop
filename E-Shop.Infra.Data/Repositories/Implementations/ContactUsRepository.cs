@@ -14,7 +14,9 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public bool SendMessage(ContactUsMessage message)
         {
-            throw new NotImplementedException();
+            _context.ContactUsMessages.Add(message);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

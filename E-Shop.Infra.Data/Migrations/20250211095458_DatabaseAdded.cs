@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace E_Shop.Infra.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ReInitDataBase : Migration
+    public partial class DatabaseAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

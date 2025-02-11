@@ -1,19 +1,17 @@
+using E_Shop.Application.Services.Implementations;
+using E_Shop.Application.Services.Interfaces;
 using E_Shop.Domain.Models;
+using E_Shop.Domain.Models.Shared;
+using E_Shop.Domain.ViewModels;
 using E_Shop.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace E_Shop.Web.Controllers
 {
-    public class HomeController : SiteBaseController
+    public class HomeController(IContactUsService contactUsService) : SiteBaseController
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+        
         public IActionResult Index()
         {
             return View();
@@ -29,7 +27,7 @@ namespace E_Shop.Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
+        #region ContactUs
         [Route("ContactUs")]
         public IActionResult ContactUs()
         {
@@ -38,9 +36,25 @@ namespace E_Shop.Web.Controllers
 
         [HttpPost]
         [Route("ContactUs")]
-        public IActionResult ContactUs(ContactUsMessage message)
+        public IActionResult ContactUs(ContactUsMessageViewModel model)
         {
-            return View();
+            if (!ModelState.IsValid) { return View(model); }
+            else
+            {
+                var result =  contactUsService.SendMessage(model);
+                switch (result)
+                {
+                    case true:
+                        TempData[SuccessMessage] = ErrorMessages.MessageSent;
+                        break;
+                    case false:
+                        TempData[ErrorMessage] = ErrorMessages.FailedMessage;
+                        return RedirectToAction("ContactUs");
+                }
+                return RedirectToAction("ContactUs");
+            }
         }
+        #endregion ContactUs
+
     }
 }

@@ -133,22 +133,41 @@ namespace E_Shop.Application.Services.Implementations
             return ErrorMessages.ResetPasswordSuccess;
         }
 
-        public async Task<ValidationErrorType> UpdateUser(UserViewModel model)
+        public async Task<ValidationErrorType> UpdateUser(UserViewModel model, bool EmailCheck)
         {
-            if (await EmailExist(model.EmailAddress))
-                return ValidationErrorType.EmailIsDuplicated;
-
-            var user = new User
+            if (EmailCheck)
             {
-                EmailAddress = model.EmailAddress,
-                Mobile = model.Mobile,
-                IsAdmin = model.IsAdmin,
-                FirstName = model.FirstName,
-                LastName = model.LastName
-            };
+                if (await EmailExist(model.EmailAddress))
+                    return ValidationErrorType.EmailIsDuplicated;
 
-            _repository.UpdateUser(user);
-            return ValidationErrorType.Success;
+                var user = await _repository.GetUserById(model.Id);
+
+
+                user.EmailAddress = model.EmailAddress;
+                user.Mobile = model.Mobile;
+                user.IsAdmin = model.IsAdmin;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+
+                _repository.UpdateUser(user);
+                return ValidationErrorType.Success;
+            }
+            else
+            {
+                var user = await _repository.GetUserById(model.Id);
+
+
+                user.EmailAddress = model.EmailAddress;
+                user.Mobile = model.Mobile;
+                user.IsAdmin = model.IsAdmin;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+
+                _repository.UpdateUser(user);
+                return ValidationErrorType.Success;
+            }
 
         }
 

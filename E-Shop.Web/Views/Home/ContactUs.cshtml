@@ -20,13 +20,14 @@
                     زیر استفاده کنید.
                 </div>
                 <!-- start of contact-us-form -->
-                <form method="post" action="ContactUs" class="contact-us-form">
+                <form method="post" asp-action="ContactUs" class="contact-us-form">
                     <div class="row">
                         <div class="col-md-6">
                             <!-- start of form-element -->
                             <div class="form-element-row mb-5">
                                 <label class="label">نام و نام خانوادگی</label>
                                 <input type="text" class="form-control" placeholder="نام کامل" asp-for="FullName">
+                                @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
                             </div>
                             <!-- end of form-element -->
                         </div>
@@ -36,6 +37,7 @@
                             <div class="form-element-row mb-5">
                                 <label class="label">ایمیل</label>
                                 <input type="text" class="form-control" placeholder="example@example.com" asp-for="Email">
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                             <!-- end of form-element -->
                         </div>
@@ -44,6 +46,7 @@
                             <div class="form-element-row mb-5">
                                 <label class="label">تلفن تماس</label>
                                 <input type="text" class="form-control" placeholder="09xxxxxxxxx" asp-for="Mobile">
+                                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
                             </div>
                             <!-- end of form-element -->
                         </div>
@@ -52,6 +55,7 @@
                             <div class="form-element-row mb-5">
                                 <label class="label">عنوان</label>
                                 <input type="text" class="form-control" placeholder="عنوان پیام" asp-for="Title">
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                             </div>
                             <!-- end of form-element -->
                         </div>
@@ -60,6 +64,7 @@
                             <div class="form-element-row mb-5">
                                 <label class="label">پیام</label>
                                 <textarea rows="5" class="form-control" placeholder="متن پیام" asp-for="Message"></textarea>
+                                @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
                             </div>
                             <!-- end of form-element -->
                         </div>

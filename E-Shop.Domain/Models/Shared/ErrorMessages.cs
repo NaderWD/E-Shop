@@ -19,5 +19,6 @@
         public const string ResetPasswordSuccess = "تغییر رمز عبور با موفقیت انجام شد";
         public const string ResetPasswordCodeError = "کد تایید اشتباه است";
         public const string WrongPassword = "رمز عبور اشتباه است";
+        public const string MessageSent = "پیام شما با موفقیت ارسال شد.";
     }
 }
