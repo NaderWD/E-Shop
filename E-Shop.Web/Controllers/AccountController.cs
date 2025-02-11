@@ -113,9 +113,7 @@ namespace E_Shop.Web.Controllers
         public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPassword)
         {
             if (!ModelState.IsValid) return View(forgetPassword);
-
             await _service.ForgetPasswordCode(forgetPassword);
-
             return RedirectToAction("ResetPassword", new { email = forgetPassword.EmailAddress });
         }
         #endregion
@@ -142,13 +140,12 @@ namespace E_Shop.Web.Controllers
 
 
         #region ReSend
-   
+        [HttpGet("ReSend")]
         public async Task<IActionResult> ReSend(string email)
         {
             await _service.ReSendCode(email);
             return RedirectToAction("ResetPassword", new {email});
         }
-
         #endregion
     }
 
