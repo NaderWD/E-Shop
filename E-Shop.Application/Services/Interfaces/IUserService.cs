@@ -18,5 +18,6 @@ namespace E_Shop.Application.Services.Interfaces
         Task<UserViewModel> GetUserById(int id);
         Task<IEnumerable<UserViewModel>> GetAllUsers();
         Task<bool> ConfirmEmailService(ConfirmEmailVM model);
+        Task<string> ReSendCode(string email);
     }
 }

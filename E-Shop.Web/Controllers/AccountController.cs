@@ -43,8 +43,7 @@ namespace E_Shop.Web.Controllers
         [HttpGet("/login")]
         public IActionResult Login()
         {
-            if (!User.Identity.IsAuthenticated) return View();
-            return RedirectToAction("Index");
+            return View();
         }
 
 
@@ -65,7 +64,7 @@ namespace E_Shop.Web.Controllers
             var properties = new AuthenticationProperties { IsPersistent = true };
             await HttpContext.SignInAsync(principal, properties);
             TempData[SuccessMessage] = "خوش آمدید";
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
 
         }
         #endregion
@@ -104,9 +103,9 @@ namespace E_Shop.Web.Controllers
 
         #region Forget Password
         [HttpGet("/ForgetPassword")]
-        public IActionResult ForgetPassword()
+        public IActionResult ForgetPassword(string email)
         {
-            return View();
+            return View(new ForgetPasswordVM { EmailAddress = email });
         }
 
 
@@ -114,9 +113,8 @@ namespace E_Shop.Web.Controllers
         public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPassword)
         {
             if (!ModelState.IsValid) return View(forgetPassword);
-
             await _service.ForgetPasswordCode(forgetPassword);
-            return RedirectToAction("ResetPassword");
+            return RedirectToAction("ResetPassword", new { email = forgetPassword.EmailAddress });
         }
         #endregion
 
@@ -124,9 +122,9 @@ namespace E_Shop.Web.Controllers
 
         #region Reset Password
         [HttpGet("/ResetPassword")]
-        public IActionResult ResetPassword()
+        public IActionResult ResetPassword(string email)
         {
-            return View();
+            return View(new ResetPasswordVM { EmailAddress = email });
         }
 
         [HttpPost("/ResetPassword")]
@@ -142,19 +140,11 @@ namespace E_Shop.Web.Controllers
 
 
         #region ReSend
-        [HttpGet]
+        [HttpGet("ReSend")]
         public async Task<IActionResult> ReSend(string email)
         {
-            var model = new ResetPasswordVM { EmailAddress = email };
-            return View(model);
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> ReSendCode(ForgetPasswordVM userVM)
-        {
-            await _service.ForgetPasswordCode(userVM);
-            return RedirectToAction("ResetPassword");
+            await _service.ReSendCode(email);
+            return RedirectToAction("ResetPassword", new {email});
         }
         #endregion
     }

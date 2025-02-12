@@ -207,5 +207,19 @@ namespace E_Shop.Application.Services.Implementations
 
             return true;
         }
+
+        public async Task<string> ReSendCode(string email)
+        {
+            var email2 = email.Trim().ToLower();
+            var user = await _repository.GetUserByEmail(email2);
+            var activeCode = CodeGenerator.GenerateCode();
+
+            user.ActivationCode = activeCode;
+            _repository.UpdateUser(user);
+            _repository.Save();
+
+            await _emailSender.SendEmailAsync(user.EmailAddress, "کد فعال سازی", $"کد تایید اکانت شما {activeCode} می باشد");
+            return ErrorMessages.ResetPasswordEmailSent;
+        }
     }
 }
