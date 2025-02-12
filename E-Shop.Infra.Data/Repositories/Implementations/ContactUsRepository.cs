@@ -12,6 +12,11 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
     {
         private readonly ShopDbContext _context = context;
 
+        public IEnumerable<ContactUsMessage> GetAll()
+        {
+            return _context.ContactUsMessages;
+        }
+
         public bool SendMessage(ContactUsMessage message)
         {
             _context.ContactUsMessages.Add(message);

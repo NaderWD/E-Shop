@@ -10,5 +10,6 @@ namespace E_Shop.Domain.Repositories.Interfaces
     public interface IContactUsRepository
     {
         public bool SendMessage(ContactUsMessage message);
+        public IEnumerable<ContactUsMessage> GetAll();
     }
 }

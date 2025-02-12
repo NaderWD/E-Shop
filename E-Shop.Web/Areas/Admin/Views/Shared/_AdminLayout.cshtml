@@ -49,7 +49,7 @@
     <script src="../../assets/vendor/js/template-customizer.js"></script>
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../../assets/js/config.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 </head>
 <body>
 
@@ -167,30 +167,10 @@
                             </li>
                             <!-- Quick links -->
                             <!-- Notification -->
-                            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
-                                <a class="nav-link dropdown-toggle hide-arrow"
-                                   href="javascript:void(0);"
-                                   data-bs-toggle="dropdown"
-                                   data-bs-auto-close="outside"
-                                   aria-expanded="false">
-                                    <i class="bx bx-bell bx-sm"></i>
-                                    <span class="badge bg-danger rounded-pill badge-notifications">5</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end py-0">
-                                    <li class="dropdown-menu-header border-bottom">
-                                        <div class="dropdown-header d-flex align-items-center py-3">
-                                            <h5 class="text-body mb-0 me-auto">Notification</h5>
-                                            <a href="javascript:void(0)"
-                                               class="dropdown-notifications-all text-body"
-                                               data-bs-toggle="tooltip"
-                                               data-bs-placement="top"
-                                               title="Mark all as read">
-                                                <i class="bx fs-4 bx-envelope-open"></i>
-                                            </a>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+                            
+
+                            @await Component.InvokeAsync("Notifications")
+
                             <!--/ Notification -->
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -361,6 +341,11 @@
                                     مدریت کاربران
                                 </a>
                             </li>
+                            <li class="menu-item active">
+                                <a asp-controller="ContactUsMessage" asp-action="Index" class="menu-link">
+                                    پیام کاربران
+                                </a>
+                            </li>
                         </ul>
                     </li>
 
@@ -427,6 +412,7 @@
 
     <!-- Page JS -->
     <script src="/assets/js/dashboards-analytics.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <partial name="_ErrorMessage">
 </body>
 
