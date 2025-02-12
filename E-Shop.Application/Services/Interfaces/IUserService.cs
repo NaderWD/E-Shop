@@ -13,11 +13,11 @@ namespace E_Shop.Application.Services.Interfaces
         Task<string> Register(RegisterVM userVM);
         Task<string> Login(LoginVM userVM);
         Task<ValidationErrorType> CreateUser(UserViewModel userVM);
-        Task<ValidationErrorType> UpdateUser(UserViewModel userVM , bool EmailCheck);
+        Task<ValidationErrorType> UpdateUser(UserViewModel userVM, bool EmailCheck);
         Task<bool> DeleteUser(int id);
         Task<UserViewModel> GetUserById(int id);
         Task<IEnumerable<UserViewModel>> GetAllUsers();
         Task<bool> ConfirmEmailService(ConfirmEmailVM model);
-        Task<string> ReSendCode(string email);
+        Task<string> ReSendCode(string email);  
     }
 }

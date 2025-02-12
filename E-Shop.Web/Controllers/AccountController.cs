@@ -64,7 +64,7 @@ namespace E_Shop.Web.Controllers
             var properties = new AuthenticationProperties { IsPersistent = true };
             await HttpContext.SignInAsync(principal, properties);
             TempData[SuccessMessage] = "خوش آمدید";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new { user.EmailAddress });
 
         }
         #endregion
@@ -144,7 +144,18 @@ namespace E_Shop.Web.Controllers
         public async Task<IActionResult> ReSend(string email)
         {
             await _service.ReSendCode(email);
-            return RedirectToAction("ResetPassword", new {email});
+            return RedirectToAction("ResetPassword", new { email });
+        }
+        #endregion
+
+
+
+        #region User Profile
+        [HttpGet("/UserProfile")]
+        public async Task<IActionResult> UserProfile(string email)
+        {
+            await _service.GetByEmail(email);
+            return View(new UserDetailsVM { EmailAddress = email });
         }
         #endregion
     }

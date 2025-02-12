@@ -221,5 +221,6 @@ namespace E_Shop.Application.Services.Implementations
             await _emailSender.SendEmailAsync(user.EmailAddress, "کد فعال سازی", $"کد تایید اکانت شما {activeCode} می باشد");
             return ErrorMessages.ResetPasswordEmailSent;
         }
+
     }
 }

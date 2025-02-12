@@ -20,7 +20,6 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         {
             var user = GetUserById(id);
             _context.Remove(user);
-            Save();
             return true;
         }
 
@@ -31,27 +30,8 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public async Task<IEnumerable<User>> GetAllUsers()
         {
-            List<User> users = [];
-            var models = await _context.Users.ToListAsync();
-            foreach (var item in models)
-            {
-                users.Add(new User()
-                {
-                    EmailAddress = item.EmailAddress,
-                    FirstName = item.FirstName,
-                    LastName = item.LastName,
-                    Id = item.Id,
-                    IsActive = item.IsActive,
-                    IsAdmin = item.IsAdmin,
-                    ActivationCode = item.ActivationCode,
-                    LastModifiedDate = item.LastModifiedDate,
-                    Mobile = item.Mobile,
-                    Password = item.Password,
-                    IsDelete = item.IsDelete,
+            return await _context.Users.ToListAsync();
 
-                });
-            }
-            return users;
         }
 
         public async Task<User> GetUserByActivationCode(string code)
@@ -80,7 +60,6 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         public bool UpdateUser(User user)
         {
             _context.Users.Update(user);
-            Save();
             return true;
         }
 
