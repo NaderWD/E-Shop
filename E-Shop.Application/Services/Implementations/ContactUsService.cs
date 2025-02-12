@@ -13,7 +13,33 @@ namespace E_Shop.Application.Services.Implementations
 {
     public class ContactUsService(IContactUsRepository contactUsRepository) : IContactUsService
     {
-        
+        public List<ContactUsMessageViewModel> GetAll()
+        {
+            var messages = contactUsRepository.GetAll().Where(m => m.IsDelete == false);
+            List<ContactUsMessageViewModel> models = new List<ContactUsMessageViewModel>();
+            
+            foreach (var message in messages)
+            {
+                models.Add(new ContactUsMessageViewModel
+                {
+                    Id = message.Id,
+                    FullName = message.FullName,
+                    Message = message.Message,
+                    Mobile = message.Mobile,
+                    Title = message.Title,
+                    Email = message.Email,
+                    
+                });
+
+            }
+            return models;
+        }
+
+        public List<ContactUsMessageViewModel> GetAllUnRead()
+        {
+           return GetAll().Where(m => m.IsRead == false).ToList();
+        }
+
         public bool SendMessage(ContactUsMessageViewModel message)
         {
             var model = new ContactUsMessage
@@ -25,7 +51,7 @@ namespace E_Shop.Application.Services.Implementations
                 Mobile = message.Mobile,
                 Message = message.Message,
                 LastModifiedDate = DateTime.Now,
-                
+
             };
             return contactUsRepository.SendMessage(model);
         }

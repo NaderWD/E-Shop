@@ -10,5 +10,7 @@ namespace E_Shop.Application.Services.Interfaces
     public interface IContactUsService
     {
         bool SendMessage(ContactUsMessageViewModel message);
+        List<ContactUsMessageViewModel> GetAll();
+        List<ContactUsMessageViewModel> GetAllUnRead();
     }
 }
