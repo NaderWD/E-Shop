@@ -227,16 +227,5 @@ namespace E_Shop.Application.Services.Implementations
             await _emailSender.SendEmailAsync(user.EmailAddress, "کد فعال سازی", $"کد تایید اکانت شما {activeCode} می باشد");
             return ErrorMessages.ResetPasswordEmailSent;
         }
-
-        public async Task SetActivationCodeExpiration(string email, TimeSpan expirationTime)
-        {
-            var email2 = email.Trim().ToLower();
-            var user = await _repository.GetUserByEmail(email2);
-            if (user != null && !string.IsNullOrEmpty(user.ActivationCode))
-            {
-                user.ActivationCode = null;
-                await _repository.UpdateUser(user);
-            }
-        }
     }
 }
