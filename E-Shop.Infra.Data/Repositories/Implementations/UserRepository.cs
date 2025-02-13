@@ -4,28 +4,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations
 {
-    public class UserRepository(ShopDbContext context) : IUserRepository
+    public class UserRepository(ShopDbContext _context) : IUserRepository
     {
 
-        private readonly ShopDbContext _context = context;
-
-
-        public bool CreateUser(User user)
+        public async Task<bool> CreateUser(User user)
         {
             user.CreateDate = DateTime.Now;
             user.LastModifiedDate = DateTime.Now;
-            _context.Users.Add(user);
+            await _context.Users.AddAsync(user);
             return true;
         }
 
-        public bool DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id)
         {
-            var user = GetUserById(id);
+            var user = await GetUserById(id);
             _context.Remove(user);
             return true;
         }
 
-        public bool EmailIsDuplicated(string email)
+        public async Task<bool> EmailIsDuplicated(string email)
         {
             return _context.Users.Any(u => u.EmailAddress == email);
         }
@@ -54,16 +51,14 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         }
 
 
-        public void Save()
+        public async Task Save()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public bool UpdateUser(User user)
+        public async Task<bool> UpdateUser(User user)
         {
-            _context.Attach(user);
-            user.LastModifiedDate = DateTime.Now;
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Users.Update(user);
             return true;
         }
 

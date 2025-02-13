@@ -19,4 +19,8 @@
     <ProjectReference Include="..\E-Shop.Infra.Data\E-Shop.Infra.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\TicketViewModels\" />
+  </ItemGroup>
+
 </Project>
