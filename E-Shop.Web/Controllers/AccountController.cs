@@ -8,11 +8,8 @@ using System.Security.Claims;
 
 namespace E_Shop.Web.Controllers
 {
-    public class AccountController(IUserService service, IEmailSender emailSender) : SiteBaseController
+    public class AccountController(IUserService _service) : SiteBaseController
     {
-        private readonly IUserService _service = service;
-        private readonly IEmailSender _emailSender = emailSender;
-
 
         #region Register
         [HttpGet("/register")]
@@ -32,7 +29,7 @@ namespace E_Shop.Web.Controllers
             TempData["Message"] = "Registration successful! Please check your email to confirm your account.";
             ViewBag.MessageType = "success";
 
-            return RedirectToAction("ConfirmEmail", "Account");
+            return RedirectToAction("ConfirmEmail", "Account", new { email = register.EmailAddress });
 
         }
         #endregion
@@ -84,9 +81,9 @@ namespace E_Shop.Web.Controllers
 
         #region Confirm Email
         [HttpGet("/confirmEmail")]
-        public IActionResult ConfirmEmail()
+        public IActionResult ConfirmEmail(string email)
         {
-            return View();
+            return View(new ConfirmEmailVM { EmailAddress = email });
         }
 
 

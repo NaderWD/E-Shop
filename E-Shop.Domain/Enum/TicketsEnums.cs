@@ -21,6 +21,7 @@
             Seen,
             Checking,
             Answered,
+            closed,
         }
     }
 }

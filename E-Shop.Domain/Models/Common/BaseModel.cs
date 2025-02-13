@@ -7,8 +7,10 @@ namespace E_Shop.Domain.Models.Common
         [Key]
         public int Id { get; set; }
 
-        public DateTime LastModifiedDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }    
 
-        public bool IsDelete { get; set; }
+        public DateTime CreateDate { get; set; }
+
+        public bool? IsDelete { get; set; }
     }
 }

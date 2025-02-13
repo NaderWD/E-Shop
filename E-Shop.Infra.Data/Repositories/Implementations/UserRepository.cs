@@ -11,8 +11,8 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public bool CreateUser(User user)
         {
+            user.CreateDate = DateTime.Now;
             _context.Users.Add(user);
-            Save();
             return true;
         }
 
@@ -59,7 +59,9 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public bool UpdateUser(User user)
         {
-            _context.Users.Update(user);
+            _context.Attach(user);
+            user.LastModifiedDate = DateTime.Now;
+            _context.Entry(user).State = EntityState.Modified;
             return true;
         }
 
