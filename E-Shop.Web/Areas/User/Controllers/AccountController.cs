@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace E_Shop.Web.Controllers
+namespace E_Shop.Web.Areas.User.Controllers
 {
-    public class AccountController(IUserService _service) : SiteBaseController
+    public class AccountController(IUserService _service) : UserBaseController
     {
 
         #region Register
@@ -62,7 +62,7 @@ namespace E_Shop.Web.Controllers
             var properties = new AuthenticationProperties { IsPersistent = true };
             await HttpContext.SignInAsync(principal, properties);
             TempData[SuccessMessage] = "خوش آمدید";
-            return RedirectToAction("Index", "Home", new { user.EmailAddress });
+            return RedirectToAction("Index", "Home", new { area = "", user.EmailAddress });
 
         }
         #endregion
@@ -139,7 +139,7 @@ namespace E_Shop.Web.Controllers
 
         #region ReSendForReset
         [HttpGet("ReSendForReset")]
-        public async Task<IActionResult> ReSendForReset(string email)      
+        public async Task<IActionResult> ReSendForReset(string email)
         {
             await _service.ReSendCode(email);
             return RedirectToAction("ResetPassword", new { email });

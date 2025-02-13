@@ -134,7 +134,7 @@ namespace E_Shop.Application.Services.Implementations
             await _repository.UpdateUser(user);
             await _repository.Save();
 
-            await _emailSender.SendEmailAsync(user.EmailAddress, "آفرین بر تو", $"کاربر گرامی رمز عبور شما در سایت بزرگ فروشگاهی یکتا فلان فلان با موفقیت تغییر کرد");
+            await _emailSender.SendEmailAsync(user.EmailAddress, "تغییر رمز عبور", $"کاربر گرامی رمز عبور شما در سایت بزرگ فروشگاهی یکتا فلان فلان با موفقیت تغییر کرد");
 
             return ErrorMessages.ResetPasswordSuccess;
         }
