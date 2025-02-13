@@ -9,9 +9,11 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         private readonly ShopDbContext _context = context;
 
+
         public bool CreateUser(User user)
         {
             user.CreateDate = DateTime.Now;
+            user.LastModifiedDate = DateTime.Now;
             _context.Users.Add(user);
             return true;
         }

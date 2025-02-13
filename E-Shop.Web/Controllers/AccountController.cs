@@ -1,5 +1,6 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels;
+using E_Shop.Application.ViewModels.AccountViewModels;
 using E_Shop.Domain.Models.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -91,7 +92,7 @@ namespace E_Shop.Web.Controllers
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailVM model)
         {
             var result = await _service.ConfirmEmailService(model);
-            if (!result) return RedirectToAction("register", "Account");
+            if (!result) return RedirectToAction("confirmEmail");
             return RedirectToAction("Login", "Account");
         }
         #endregion
@@ -136,12 +137,23 @@ namespace E_Shop.Web.Controllers
 
 
 
-        #region ReSend
-        [HttpGet("ReSend")]
-        public async Task<IActionResult> ReSend(string email)
+        #region ReSendForReset
+        [HttpGet("ReSendForReset")]
+        public async Task<IActionResult> ReSendForReset(string email)      
         {
             await _service.ReSendCode(email);
             return RedirectToAction("ResetPassword", new { email });
+        }
+        #endregion
+
+
+
+        #region ReSendForConfirm
+        [HttpGet("ReSendForConfirm")]
+        public async Task<IActionResult> ReSendForConfirm(string email)
+        {
+            await _service.ReSendCode(email);
+            return RedirectToAction("ConfirmEmail", new { email });
         }
         #endregion
 

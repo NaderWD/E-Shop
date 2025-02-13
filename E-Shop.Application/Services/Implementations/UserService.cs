@@ -1,10 +1,13 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels;
+using E_Shop.Application.ViewModels.AccountViewModels;
 using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.Shared;
 using E_Shop.Domain.Repositories.Interfaces;
+using E_Shop.Infra.Data.Repositories.Implementations;
+using System.Threading.Tasks;
 
 
 namespace E_Shop.Application.Services.Implementations
@@ -222,5 +225,15 @@ namespace E_Shop.Application.Services.Implementations
             return ErrorMessages.ResetPasswordEmailSent;
         }
 
+        public async Task SetActivationCodeExpiration(string email, TimeSpan expirationTime)
+        {
+            var email2 = email.Trim().ToLower();
+            var user = await _repository.GetUserByEmail(email2);
+            if (user != null && !string.IsNullOrEmpty(user.ActivationCode))
+            {
+                user.ActivationCode = null;
+                _repository.UpdateUser(user);
+            }
+        }
     }
 }

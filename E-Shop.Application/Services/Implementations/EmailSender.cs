@@ -6,7 +6,7 @@ namespace E_Shop.Application.Services.Implementations
 {
     public class EmailSender : IEmailSender
     {
-        public async Task SendEmailAsync(string email, string subject, string message)
+        public async Task<bool> SendEmailAsync(string email, string subject, string message)
         {
             MailMessage mailMessage = new();
             SmtpClient smtpClient = new("smtp.gmail.com");
@@ -21,6 +21,7 @@ namespace E_Shop.Application.Services.Implementations
             smtpClient.EnableSsl = true;
 
             await smtpClient.SendMailAsync(mailMessage);
+            return true;
         }
     }
 }
