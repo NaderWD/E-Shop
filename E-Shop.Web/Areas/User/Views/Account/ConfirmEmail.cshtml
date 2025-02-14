@@ -1,0 +1,55 @@
+﻿@model ConfirmEmailVM
+
+
+<main class="page-content page-auth">
+    <!-- start of auth-container -->
+    <div class="auth-container">
+        <div class="auth-title mb-3">تایید حساب کاربری</div>
+        <!-- start of auth-box -->
+        <div class="auth-box ui-box">
+            <!-- start of auth-form -->
+            <form asp-action="ConfirmEmail" class="auth-form">
+                <input type="hidden" asp-for="EmailAddress" />
+                <!-- start of form-element -->
+                <div class="form-element-row mb-3">
+                    <p>
+                        حساب کاربری شما ایجاد شد.
+                        برای تایید آن کد ارسال شده به ایمیل را وارد کنید
+                    </p>
+                </div>
+                <!-- end of form-element -->
+                <div class="form-element-row mb-5">
+                    <input type="text" class="form-control" placeholder="کد ارسال شده" maxlength="6" asp-for="ActivationCode">
+                    @Html.ValidationMessageFor(model => model.ActivationCode, "", new { @class = "text-danger" })
+                </div>
+                <!-- start of verify-code-wrapper -->
+                <div class="form-element-row mb-3">
+                    <button type="submit" class="btn btn-primary">تایید حساب کاربری</button>
+                </div>
+                <div class="verify-code-wrapper mt-3 mb-5">
+                    <div id="timerContainer">
+                        <span id="timer"></span>
+                        <a class="hidden"
+                           id="resendLink"
+                           asp-action="ReSendForConfirm"
+                           asp-route-email="@Model.EmailAddress"
+                           }>
+                            ارسال کد جدید
+                        </a>
+                    </div>
+                </div>
+                <div class="form-element-row">
+                    <a href="ForgetPassword" class="link mx-auto">ویرایش ایمیل<i class="ri-pencil-fill ms-1"></i></a>
+                </div>
+                <!-- end of form-element -->
+            </form>
+            <!-- end of auth-form -->
+        </div>
+        <!-- end of auth-box -->
+    </div>
+    <!-- end of auth-container -->
+</main>
+
+
+
+

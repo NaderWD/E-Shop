@@ -4,54 +4,33 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations
 {
-    public class UserRepository(ShopDbContext context) : IUserRepository
+    public class UserRepository(ShopDbContext _context) : IUserRepository
     {
 
-        private readonly ShopDbContext _context = context;
-
-        public bool CreateUser(User user)
+        public async Task<bool> CreateUser(User user)
         {
-            _context.Users.Add(user);
-            Save();
+            user.CreateDate = DateTime.Now;
+            user.LastModifiedDate = DateTime.Now;
+            await _context.Users.AddAsync(user);
             return true;
         }
 
-        public bool DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id)
         {
-            var user = GetUserById(id);
+            var user = await GetUserById(id);
             _context.Remove(user);
-            Save();
             return true;
         }
 
-        public bool EmailIsDuplicated(string email)
+        public async Task<bool> EmailIsDuplicated(string email)
         {
             return _context.Users.Any(u => u.EmailAddress == email && u.IsDelete == false);
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
         {
-            List<User> users = [];
-            var models = await _context.Users.ToListAsync();
-            foreach (var item in models)
-            {
-                users.Add(new User()
-                {
-                    EmailAddress = item.EmailAddress,
-                    FirstName = item.FirstName,
-                    LastName = item.LastName,
-                    Id = item.Id,
-                    IsActive = item.IsActive,
-                    IsAdmin = item.IsAdmin,
-                    ActivationCode = item.ActivationCode,
-                    LastModifiedDate = item.LastModifiedDate,
-                    Mobile = item.Mobile,
-                    Password = item.Password,
-                    IsDelete = item.IsDelete,
+            return await _context.Users.ToListAsync();
 
-                });
-            }
-            return users;
         }
 
         public async Task<User> GetUserByActivationCode(string code)
@@ -72,15 +51,14 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         }
 
 
-        public void Save()
+        public async Task Save()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public bool UpdateUser(User user)
+        public async Task<bool> UpdateUser(User user)
         {
             _context.Users.Update(user);
-            Save();
             return true;
         }
 

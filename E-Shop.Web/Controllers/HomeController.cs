@@ -1,6 +1,4 @@
-using E_Shop.Application.Services.Implementations;
 using E_Shop.Application.Services.Interfaces;
-using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.Shared;
 using E_Shop.Domain.ViewModels;
 using E_Shop.Web.Models;

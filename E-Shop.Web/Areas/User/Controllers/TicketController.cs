@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace E_Shop.Web.Areas.Admin.Controllers
+namespace E_Shop.Web.Areas.User.Controllers
 {
-
-    public class HomeController : AdminBaseController
+    public class TicketController : Controller
     {
-        
         public IActionResult Index()
         {
             return View();
         }
-        
-        
-        
     }
 }

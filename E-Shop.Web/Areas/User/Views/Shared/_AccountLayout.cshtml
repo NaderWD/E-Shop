@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <partial name="_AccountTopLinks" />
+    <title>یکتا کالا | حساب کاربری</title>
+</head>
+
+<body>
+
+    <div class="page-wrapper">
+        <partial name="_AccountHeader" />
+        @RenderBody()
+        <partial name="_AccountFooter" />
+    </div>
+    <partial name="_AccountScript" />
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
+
+
+
+
+
+
+<span class="app-brand-text demo text-body fw-bolder">یکتا کالا باشه ... ! </span>

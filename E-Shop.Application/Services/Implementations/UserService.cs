@@ -1,10 +1,13 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels;
+using E_Shop.Application.ViewModels.AccountViewModels;
 using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.Shared;
 using E_Shop.Domain.Repositories.Interfaces;
+using E_Shop.Infra.Data.Repositories.Implementations;
+using System.Threading.Tasks;
 
 
 namespace E_Shop.Application.Services.Implementations
@@ -16,8 +19,8 @@ namespace E_Shop.Application.Services.Implementations
         {
             var user = await _repository.GetUserById(id);
             user.IsDelete = true;
-            _repository.UpdateUser(user);
-            _repository.Save();
+            await _repository.UpdateUser(user);
+            await _repository.Save();
             return true;
         }
 
@@ -52,7 +55,7 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task<bool> EmailExist(string email)
         {
-            var check = _repository.EmailIsDuplicated(email);
+            var check = await _repository.EmailIsDuplicated(email);
             if (check) return true;
             return false;
         }
@@ -101,8 +104,8 @@ namespace E_Shop.Application.Services.Implementations
                 ActivationCode = activeCode,
                 IsActive = false,
             };
-            _repository.CreateUser(user);
-            _repository.Save();
+            await _repository.CreateUser(user);
+            await _repository.Save();
             await _emailSender.SendEmailAsync(userVM.EmailAddress, "کد فعال سازی", $"کد تایید اکانت شما {activeCode} می باشد");
 
             return ErrorMessages.registerConfirmationSuccess;
@@ -115,8 +118,8 @@ namespace E_Shop.Application.Services.Implementations
             var activeCode = CodeGenerator.GenerateCode();
 
             user.ActivationCode = activeCode;
-            _repository.UpdateUser(user);
-            _repository.Save();
+            await _repository.UpdateUser(user);
+            await _repository.Save();
 
             await _emailSender.SendEmailAsync(userVM.EmailAddress, "کد فعال سازی", $"کد تایید اکانت شما {activeCode} می باشد");
             return ErrorMessages.ResetPasswordEmailSent;
@@ -129,8 +132,11 @@ namespace E_Shop.Application.Services.Implementations
 
             user.Password = PasswordHasher.EncodePasswordMd5(password);
             user.ActivationCode = CodeGenerator.GenerateCode();
-            _repository.UpdateUser(user);
-            _repository.Save();
+            await _repository.UpdateUser(user);
+            await _repository.Save();
+
+            await _emailSender.SendEmailAsync(user.EmailAddress, "تغییر رمز عبور", $"کاربر گرامی رمز عبور شما در سایت بزرگ فروشگاهی یکتا فلان فلان با موفقیت تغییر کرد");
+
             return ErrorMessages.ResetPasswordSuccess;
         }
 
@@ -151,7 +157,7 @@ namespace E_Shop.Application.Services.Implementations
                 user.LastName = model.LastName;
 
 
-                _repository.UpdateUser(user);
+                await _repository.UpdateUser(user);
                 return ValidationErrorType.Success;
             }
             else
@@ -166,7 +172,7 @@ namespace E_Shop.Application.Services.Implementations
                 user.LastName = model.LastName;
 
 
-                _repository.UpdateUser(user);
+                await _repository.UpdateUser(user);
                 return ValidationErrorType.Success;
             }
 
@@ -189,7 +195,7 @@ namespace E_Shop.Application.Services.Implementations
                     Password = model.Password,
                 };
 
-                _repository.CreateUser(user);
+                await _repository.CreateUser(user);
                 return ValidationErrorType.Success;
             }
         }
@@ -201,8 +207,8 @@ namespace E_Shop.Application.Services.Implementations
 
             user.IsActive = true;
             user.ActivationCode = CodeGenerator.GenerateCode();
-            _repository.UpdateUser(user);
-            _repository.Save();
+            await _repository.UpdateUser(user);
+            await _repository.Save();
 
             await _emailSender.SendEmailAsync(user.EmailAddress, "آفرین بر تو", $"کاربر گرامی ثبت نام شما در سایت بزرگ فروشگاهی یکتا فلان فلان با موفقیت انجام شد");
 
@@ -216,8 +222,8 @@ namespace E_Shop.Application.Services.Implementations
             var activeCode = CodeGenerator.GenerateCode();
 
             user.ActivationCode = activeCode;
-            _repository.UpdateUser(user);
-            _repository.Save();
+            await _repository.UpdateUser(user);
+            await _repository.Save();
 
             await _emailSender.SendEmailAsync(user.EmailAddress, "کد فعال سازی", $"کد تایید اکانت شما {activeCode} می باشد");
             return ErrorMessages.ResetPasswordEmailSent;

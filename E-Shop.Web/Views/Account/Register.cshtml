@@ -1,111 +1,0 @@
-﻿@model RegisterVM
-
-
-
-<h4 class="mb-2">خرید های آسان و بصرفه ی شما از اینجا آغاز می شود 🚀</h4>
-<p class="mb-4">ماجراجویی خودت رو شروع کن</p>
-
-<form id="register" class="mb-3" method="POST" asp-action="Register" asp-controller="Account">
-    <div class="mb-3">
-        <label for="firstName" class="form-label">نام</label>
-        <input type="text"
-               class="form-control"
-               placeholder="نام را وارد کنید"
-               autofocus
-               asp-for="FirstName" />
-    </div>
-
-    <div class="mb-3">
-        <label for="lastName" class="form-label">نام خانوادگی</label>
-        <input type="text"
-               class="form-control"
-               placeholder="نام خانوادگی را وارد کنید"
-               autofocus
-               asp-for="LastName" />
-    </div>
-
-    <div class="mb-3">
-        <label for="email" class="form-label">ایمیل</label>
-        <input type="text"
-               class="form-control"
-               placeholder="ایمیل را وارد کنید"
-               autofocus
-               asp-for="EmailAddress" />
-    </div>
-
-    <div class="mb-3 form-password-toggle">
-        <label class="form-label" for="password">کلمه ی عبور</label>
-        <div class="input-group input-group-merge">
-            <input type="password"
-                   class="form-control"
-                   placeholder="کلمه ی عبور را وارد کنید"
-                   aria-describedby="password"
-                   asp-for="Password" />
-            <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-        </div>
-    </div>
-
-    <div class="mb-3 form-password-toggle">
-        <label class="form-label" for="password">تکرار کلمه ی عبور</label>
-        <div class="input-group input-group-merge">
-            <input type="password"
-                   class="form-control"
-                   placeholder="کلمه ی عبور را وارد کنید"
-                   aria-describedby="password"
-                   asp-for="RePassword" />
-            <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label for="mobile" class="form-label">موبایل</label>
-        <input type="text"
-               class="form-control"
-               placeholder="موبایل را وارد کنید"
-               autofocus
-               asp-for="Mobile" />
-    </div>
-
-    <div class="mb-3">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" />
-            <label class="form-check-label" for="terms-conditions">
-                قبول
-                <a href="javascript:void(0);">شرایط و قوانین</a>
-            </label>
-        </div>
-    </div>
-    <button class="btn btn-primary d-grid w-100">ثبت نام</button>
-</form>
-@if (ViewBag.MessageType != null)
-{
-    <div class="alert alert-success">
-        ایمیل برای شما ارسال شد
-    </div>
-}
-<p class="text-center">
-    <span>از قبل اکانت دارید ؟</span>
-    <a href="Login">
-        <span>ورود</span>
-    </a>
-</p>
-
-<div class="divider my-4">
-    <div class="divider-text">یا</div>
-</div>
-
-<div class="d-flex justify-content-center">
-    <a href="javascript:;" class="btn btn-icon btn-label-facebook me-3">
-        <i class="tf-icons bx bxl-facebook"></i>
-    </a>
-
-    <a href="javascript:;" class="btn btn-icon btn-label-google-plus me-3">
-        <i class="tf-icons bx bxl-google-plus"></i>
-    </a>
-
-    <a href="javascript:;" class="btn btn-icon btn-label-twitter">
-        <i class="tf-icons bx bxl-twitter"></i>
-    </a>
-</div>
-    </div>
-</div>
