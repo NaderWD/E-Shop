@@ -11,6 +11,11 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             await _context.AddAsync(ticket);
         }
 
+        public async Task AddMessage(TicketMessage message)
+        {
+            await _context.AddAsync(message);
+        }
+
         public async Task UpdateMessage(TicketMessage message)
         {
             _context.Update(message);
@@ -41,9 +46,14 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return await _context.Tickets.Where(t => t.UserId == userId).ToListAsync();
         }
 
-        public async Task AddMessage(TicketMessage message)
+        public async Task<int> GetMessageCounts(int ticketId)
         {
-            await _context.AddAsync(message);
+            return await _context.TicketMessages.CountAsync(x => x.TicketId == ticketId);
+        }
+
+        public async Task<int> GetTicketCounts(int userId)
+        {
+            return await _context.Tickets.CountAsync(x => x.UserId == userId);
         }
 
         public async Task UpdateTicket(Ticket ticket)
@@ -61,6 +71,11 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         {
             var ticket = await GetTicketById(ticketId);
             _context.Tickets.Remove(ticket);
+        }
+
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace E_Shop.Web.Areas.User.Controllers
 {
-    public class TicketController : Controller
+    public class UserTicketController : UserBaseController    
     {
-        public IActionResult Index()
+        public IActionResult CreateTicketMessage()
         {
             return View();
         }

@@ -10,6 +10,7 @@ namespace E_Shop.Domain.Models.TiketModels
         public Ticket? Ticket { get; set; }
         public int? UserId { get; set; }
         public User? User { get; set; }
-        public string? FileDir { get; set; }
+        public string? FilePath { get; set; }
+        public int? NumberOfMessages { get; set; }
     }
 }
