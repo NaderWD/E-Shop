@@ -37,5 +37,7 @@ namespace E_Shop.Domain.ViewModels
 
         public string? AdminAnswer { get; set; }
         public bool IsRead { get; set; }
+        public bool IsClosed { get; set; }
+
     }
 }

@@ -11,30 +11,27 @@
                     <th>عنوان</th>
                     <th>وضعیت پیام</th>
                     <th>عملیات ها</th>
-
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
-
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong> <a> @item.FullName</a></strong></td>
-                        <td>@item.Email</td>
                         <td>
-                            <a> @item.Title</a>
+                            <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                            <strong><a> @item.FullName</a></strong>
                         </td>
+                        <td>@item.Email</td>
+                        <td><a> @item.Title</a></td>
                         <td>
                             @if (item.IsRead)
                             {
                                 <span class="badge bg-label-primary me-1">خوانده شده</span>
                             }
-                            else 
+                            else
                             {
-                                <span class="badge bg-label-danger me-1">خوانده نشده</span>
+                                <span class="badge bg-label-danger me-1" id="status-@item.Id">خوانده نشده</span>
                             }
-
-
                         </td>
                         <td>
                             <div class="dropdown">
@@ -42,9 +39,26 @@
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> پاسخ دادن</a>
+                                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#message-@item.Id" aria-expanded="false" aria-controls="message-@item.Id" onclick="markAsRead(@item.Id)">
+                                        <i class="bx bx-show-alt me-1"></i> نمایش پیام
+                                    </a>
+                                    @if (item.IsClosed == false)
+                                    {
+                                        <a class="dropdown-item " asp-controller="ContactUsMessage" asp-action="SendAnswer" asp-route-Id="@item.Id"><i class="bx bx-edit-alt me-1"></i> پاسخ دادن</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item disabled" asp-controller="ContactUsMessage" asp-action="SendAnswer" asp-route-Id="@item.Id"><i class="bx bx-edit-alt me-1"></i> پاسخ دادن</a>
+                                    }
                                     <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> پاک کردن</a>
                                 </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="collapse" id="message-@item.Id">
+                        <td colspan="5">
+                            <div class="card card-body">
+                                @item.Message
                             </div>
                         </td>
                     </tr>
@@ -53,3 +67,5 @@
         </table>
     </div>
 </div>
+
+

@@ -11,14 +11,15 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             var model = await _userService.GetAllUsers(); 
             return View(model);
         }
-        public IActionResult CreateUser()
-        {
-            return View();
-        }
+
+        
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserViewModel model)
         {
-            if (!ModelState.IsValid) { return View(model); }
+            if (!ModelState.IsValid) 
+            { 
+                return PartialView("_AddUser", model);
+            }
             else
             {
                 var result = await _userService.CreateUser(model);
@@ -38,7 +39,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         public async Task<IActionResult> UpdateUser(int UserId)
         {
             var content = await _userService.GetUserById(UserId);
-            return View(content);
+            return PartialView("_UpdateUser", content);
         }
 
         [HttpPost]
@@ -46,7 +47,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return PartialView("_UpdateUser", model);
             }
             else
             {
@@ -81,9 +82,9 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> DeleteUser(int UserId)
         {
-            var result = _userService.DeleteUser(UserId);
+            var result = await _userService.DeleteUser(UserId);
 
-            if (result == null)
+            if (result == true)
             {
                 TempData[SuccessMessage] = ErrorMessages.UserDeleted;
                 return RedirectToAction("Index");

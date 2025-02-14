@@ -16,21 +16,21 @@
             <ul class="list-group list-group-flush">
                 @foreach (var item in Model)
                 {
-                    <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                    <div class="d-flex">
+                    <li class="list-group-item list-group-item-action dropdown-notifications-item " >
+                        <div class="d-flex" asp-Contriller="ContactUsMessage" asp-action="Index">
                         <div class="flex-shrink-0 me-3">
                             <div class="avatar">
-                                <img src="../../assets/img/avatars/2.png" alt="" class="w-px-40 h-auto rounded-circle">
+                                <img src="/assets/img/avatars/2.png" alt="" class="w-px-40 h-auto rounded-circle">
                             </div>
                         </div>
                         <div class="flex-grow-1">
-                            <h6 class="mb-1">New Message ✉️</h6>
+                            <h6 class="mb-1">پیام جدید ✉️</h6>
                             <p class="mb-0">یک پیام جدید از @item.FullName</p>
                            
                         </div>
                         <div class="flex-shrink-0 dropdown-notifications-actions">
                             <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                            <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
+                                <a href="javascript:void(0)" onclick="markAsRead(@item.Id)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
                         </div>
                     </div>
                 </li>
@@ -42,3 +42,4 @@
         </li>
     </ul>
 </li>
+
