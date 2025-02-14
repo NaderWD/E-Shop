@@ -8,6 +8,7 @@ namespace E_Shop.Web.Areas.Admin.Components
     {
         public IViewComponentResult Invoke()
         {
+            
             var content = contactUsService.GetAllUnRead();
             return View("GetNotifications", content);
         }

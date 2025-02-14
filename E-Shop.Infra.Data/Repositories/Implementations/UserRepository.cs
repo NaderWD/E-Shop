@@ -24,7 +24,7 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public async Task<bool> EmailIsDuplicated(string email)
         {
-            return _context.Users.Any(u => u.EmailAddress == email);
+            return _context.Users.Any(u => u.EmailAddress == email && u.IsDelete == false);
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()

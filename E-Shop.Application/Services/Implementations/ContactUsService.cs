@@ -3,6 +3,7 @@ using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
 using E_Shop.Domain.ViewModels;
 using E_Shop.Infra.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,14 @@ namespace E_Shop.Application.Services.Implementations
 {
     public class ContactUsService(IContactUsRepository contactUsRepository) : IContactUsService
     {
+        public bool DeleteMessage(int Id)
+        {
+            var user = contactUsRepository.GetMessageById(Id);
+            user.IsDelete = true;
+            contactUsRepository.UpdateMessage(user);
+            return true;
+        }
+
         public List<ContactUsMessageViewModel> GetAll()
         {
             var messages = contactUsRepository.GetAll().Where(m => m.IsDelete == false);
@@ -28,6 +37,8 @@ namespace E_Shop.Application.Services.Implementations
                     Mobile = message.Mobile,
                     Title = message.Title,
                     Email = message.Email,
+                    IsRead = message.IsRead,
+                    IsClosed = message.IsClosed,
                     
                 });
 
@@ -37,7 +48,46 @@ namespace E_Shop.Application.Services.Implementations
 
         public List<ContactUsMessageViewModel> GetAllUnRead()
         {
-           return GetAll().Where(m => m.IsRead == false).ToList();
+           return GetAll().Where(m => m.IsRead == false && m.IsDeleted == false).ToList();
+        }
+
+        public ContactUsMessageViewModel GetMessageById(int Id)
+        {
+            var message =  contactUsRepository.GetMessageById(Id);
+
+            var model = new ContactUsMessageViewModel
+            {
+                 Title =message.Title,
+                 Email = message.Email,
+                 IsRead = message.IsRead,
+                 Mobile = message.Mobile,
+                 Id = Id,
+                 IsClosed = message.IsClosed,
+                 FullName=message.FullName,
+                 Message=message.Message,
+                 AdminAnswer=message.AdminAnswer,
+
+            };
+           return model;
+               
+            
+        }
+
+        public bool MarkAsRead(int Id)
+        {
+            var message = contactUsRepository.GetMessageById(Id);
+            message.IsRead = true;
+            contactUsRepository.UpdateMessage(message);
+            return true;
+        }
+
+        public bool SendAnswer(int Id, string answer)
+        {
+            var message = contactUsRepository.GetMessageById(Id);
+            message.AdminAnswer = answer;
+            message.IsClosed = true;
+            contactUsRepository.UpdateMessage(message);
+            return true;
         }
 
         public bool SendMessage(ContactUsMessageViewModel message)

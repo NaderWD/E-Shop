@@ -41,6 +41,7 @@ namespace E_Shop.Application.Services.Implementations
                     Mobile = item.Mobile,
                     IsAdmin = item.IsAdmin,
                     Password = item.Password,
+                    IsActive = item.IsActive,
                 });
             }
             return users;

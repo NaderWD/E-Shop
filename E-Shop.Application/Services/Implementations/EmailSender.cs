@@ -8,6 +8,7 @@ namespace E_Shop.Application.Services.Implementations
     {
         public async Task<bool> SendEmailAsync(string email, string subject, string message)
         {
+
             MailMessage mailMessage = new();
             SmtpClient smtpClient = new("smtp.gmail.com");
             mailMessage.From = new MailAddress("NaderTempEmail@gmail.com");
@@ -20,8 +21,27 @@ namespace E_Shop.Application.Services.Implementations
             smtpClient.Credentials = new NetworkCredential("NaderTempEmail@gmail.com", "kagu fpev fqjz iiqe");
             smtpClient.EnableSsl = true;
 
-            await smtpClient.SendMailAsync(mailMessage);
-            return true;
+            int i = 0;
+            do
+            {
+                try
+                {
+                    await smtpClient.SendMailAsync(mailMessage);
+                    return true;
+                }
+                catch (Exception) 
+                {
+                    i++;
+                }
+              
+            }
+            while (i == 1);
+
+            return false;
+
+
+
+
         }
     }
 }

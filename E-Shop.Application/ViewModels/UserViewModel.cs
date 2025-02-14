@@ -31,6 +31,7 @@ namespace E_Shop.Application.ViewModels
 
         public bool IsAdmin { get; set; }
         public bool IsDelete { get; set; }
+        public bool IsActive { get; set; }
     }
     
 }

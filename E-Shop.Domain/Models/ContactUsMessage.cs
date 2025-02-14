@@ -38,6 +38,7 @@ namespace E_Shop.Domain.Models
 
         public string? AdminAnswer { get; set; }
         public bool IsRead { get; set; }
+        public bool IsClosed { get; set; }
 
 
 
