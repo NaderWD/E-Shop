@@ -13,6 +13,8 @@
         public enum Status
         {
             Open,
+            Seen,
+            UnSeen,
             InProgress,
             Resolved,
             closed,

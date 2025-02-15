@@ -8,7 +8,7 @@ namespace E_Shop.Application.ViewModels
 
         public string? LastName { get; set; }
 
-        public string EmailAddress { get; set; }
+        public string? EmailAddress { get; set; }
 
         public string? Mobile { get; set; }
     }

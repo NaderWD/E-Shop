@@ -4,7 +4,7 @@ namespace E_Shop.Web.Areas.User.Controllers
 {
     public class UserTicketController : UserBaseController    
     {
-        public IActionResult CreateTicketMessage()
+        public IActionResult Index()     
         {
             return View();
         }

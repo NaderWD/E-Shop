@@ -8,10 +8,10 @@ namespace E_Shop.Domain.ViewModels
 {
     public class ValidationResultViewModel
     {
-        public bool IsValidUsername { get; set; } = true;
-        public string UsernameErrorMessage { get; set; }
+        public bool? IsValidUsername { get; set; } = true;
+        public string? UsernameErrorMessage { get; set; }
 
-        public bool IsValidPassword { get; set; } = true;
-        public string PasswordErrorMessage { get; set; }
+        public bool? IsValidPassword { get; set; } = true;
+        public string? PasswordErrorMessage { get; set; }
     }
 }

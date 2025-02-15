@@ -20,11 +20,11 @@ namespace E_Shop.Application.ViewModels
 
         [MaxLength(255, ErrorMessage = "رمز عبور نباید بیشتر از ۲۵۵ کاراکتر باشد.")]
         [Required(ErrorMessage = "لطفا رمز جدید را وارد کنید.")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [MaxLength(500, ErrorMessage = "آدرس ایمیل نباید بیشتر از ۵۰۰ کاراکتر باشد.")]
         [Required(ErrorMessage = "وارد کردن آدرس ایمیل ضروری است.")]
-        public string EmailAddress { get; set; }
+        public string? EmailAddress { get; set; }
 
         [MaxLength(500, ErrorMessage = "شماره موبایل نباید بیشتر از ۵۰۰ کاراکتر باشد.")]
         public string? Mobile { get; set; }
