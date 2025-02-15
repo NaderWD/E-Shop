@@ -12,13 +12,17 @@ namespace E_Shop.Domain.Models
     public class ProductCategories : BaseModel
     {
         [Required(ErrorMessage = "نام نمی‌تواند خالی باشد")]
-        [MaxLength(100, ErrorMessage = "نام نباید بیشتر از ۱۰۰ کاراکتر باشد")] 
+        [MaxLength(100, ErrorMessage = "نام نباید بیشتر از ۱۰۰ کاراکتر باشد")]
         public string Name { get; set; }
 
         public int? ParentId { get; set; }
 
-        [ForeignKey ("ParentId")]
-        ProductCategories Parent {  get; set; }
-        List<ProductCategories> SubCategories { get; set; }
+        [ForeignKey(nameof(ParentId))]
+        public ProductCategories Parent { get; set; }
+
+        public List<ProductCategories> SubCategories { get; set; }
     }
+
+
+
 }

@@ -12,6 +12,7 @@ namespace E_Shop.Application.ViewModels
         [Required(ErrorMessage = "نام نمی‌تواند خالی باشد")]
         [MaxLength(100, ErrorMessage = "نام نباید بیشتر از ۱۰۰ کاراکتر باشد")]
         public string Name { get; set; }
+        public string ParentName { get; set; }
 
         public int? ParentId { get; set; }
 
