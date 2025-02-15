@@ -11,6 +11,6 @@ namespace E_Shop.Domain.Models.Common
 
         public DateTime? CreateDate { get; set; }
 
-        public bool? IsDelete { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

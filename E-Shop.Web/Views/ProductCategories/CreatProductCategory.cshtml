@@ -1,0 +1,27 @@
+﻿ @model E_Shop.Application.ViewModels.ProductCategoriesViewModel
+
+
+
+<form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" id="addNewUserForm" novalidate="novalidate" method="post" asp-action="CreateUser">
+    <div class="mb-3 fv-plugins-icon-container">
+        <label class="form-label" for="add-user-fullname">نام</label>
+        <input type="text" class="form-control" id="add-user-fullname" placeholder="" aria-label="" asp-for="Name">
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+        <div class="fv-plugins-message-container invalid-feedback"></div>
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label" for="user-role">User Role</label>
+        <select id="user-role" class="form-select">
+            <option value="subscriber">Subscriber</option>
+            
+        </select>
+    </div>
+    <partial name="_SelectProductCategoryParent" />
+
+    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit" asp-action="CreateUser">افزودن گروه</button>
+    <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas" asp-action="Index">لغو</button>
+    <input type="hidden">
+</form>
