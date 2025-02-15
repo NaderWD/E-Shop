@@ -8,6 +8,7 @@ namespace E_Shop.Infra.Data
     {
         public DbSet<User> Users { get; set; }
         public DbSet<ContactUsMessage> ContactUsMessages { get; set; }
+        public DbSet<ProductCategories> ProductCategories { get; set; }
 
     }
 }
