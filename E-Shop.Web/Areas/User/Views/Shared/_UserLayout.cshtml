@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <partial name="~/Views/Shared/_HeadRef.cshtml" />
+    <title>یکتا کالا | حساب کاربری</title>
+</head>
+
+<body>
+    <partial name="~/Views/Shared/_Header.cshtml" />
+    @RenderBody();
+    <partial name="~/Views/Shared/_Footer.cshtml" />
+    @await RenderSectionAsync("Scripts", required: false)
+    <partial name="~/Views/Shared/_BotScripts.cshtml" />
+    <partial name="~/Views/Shared/_ErrorMessage.cshtml">
+</body>
+
+</html>
