@@ -12,6 +12,6 @@ namespace E_Shop.Application.ViewModels
         public int Id { get; set; }
 
         [Required(ErrorMessage = "لطفا جواب را وارد کنید.")]
-        public string AdminAnswer { get; set; }
+        public string? AdminAnswer { get; set; }
     }
 }

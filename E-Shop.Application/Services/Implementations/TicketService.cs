@@ -2,6 +2,7 @@
 using E_Shop.Application.ViewModels.TicketViewModels;
 using E_Shop.Domain.Models.TiketModels;
 using E_Shop.Domain.Repositories.Interfaces;
+using static E_Shop.Domain.Enum.TicketsEnums;
 
 namespace E_Shop.Application.Services.Implementations
 {
@@ -10,12 +11,35 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task CreateTicket(CreateTicketVM ticketVM)
         {
-            throw new NotImplementedException();
+            Ticket ticket = new()
+            {
+                Id = ticketVM.Id,
+                Title = ticketVM.Title,
+                Description = ticketVM.Description,
+                Section = ticketVM.Section,
+                Status = Status.Open,
+                Messages = ticketVM.Messages,
+                Response = ticketVM.Response,
+                CreateDate = DateTime.Now,
+
+            };
+            await _repository.AddTicket(ticket);
+            await _repository.SaveChanges();
         }
 
         public async Task CreateMessage(CreateMessageVM messageVM)
         {
-            throw new NotImplementedException();
+            TicketMessage message = new()
+            {
+                Id = messageVM.Id,
+                Text = messageVM.Text,
+                FilePath = messageVM.FilePath,
+                CreateDate = DateTime.Now,
+                TicketId = messageVM.TicketId,
+                UserId = messageVM.UserId
+            };
+            await _repository.AddMessage(message);
+            await _repository.SaveChanges();
         }
 
         public async Task<IEnumerable<Ticket>> GetAllTickets()
@@ -53,14 +77,32 @@ namespace E_Shop.Application.Services.Implementations
             return await _repository.GetTicketCounts(userId);
         }
 
-        public Task UpdateTicket(UpdateTicketVM ticketVM)
+        public async Task UpdateTicket(UpdateTicketVM ticketVM)
         {
-            throw new NotImplementedException();
+            Ticket ticket = new()
+            {
+                Id = ticketVM.Id,
+                Title = ticketVM.Title,
+                Description = ticketVM.Description,
+                Section = ticketVM.Section,
+                Status = ticketVM.Status,
+                LastModifiedDate = DateTime.Now,
+            };
+            await _repository.UpdateTicket(ticket);
+            await _repository.SaveChanges();
         }
 
-        public Task UpdateMessage(UpdateMessageVM messageVM)
+        public async Task UpdateMessage(UpdateMessageVM messageVM)
         {
-            throw new NotImplementedException();
+            TicketMessage message = new()
+            {
+                Id = messageVM.Id,
+                Text = messageVM.Text,
+                FilePath = messageVM.FilePath,
+                LastModifiedDate = DateTime.Now,
+            };
+            await _repository.UpdateMessage(message);
+            await _repository.SaveChanges();
         }
 
         public async Task DeleteMessage(int messageId)

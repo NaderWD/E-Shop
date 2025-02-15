@@ -1,4 +1,5 @@
 ﻿using E_Shop.Domain.Models.Common;
+using static E_Shop.Domain.Enum.TicketsEnums;
 
 namespace E_Shop.Domain.Models.TiketModels
 {
@@ -6,9 +7,12 @@ namespace E_Shop.Domain.Models.TiketModels
     {
         public string? Title { get; set; }
         public string? Description { get; set; }
-        public string? Status { get; set; }
         public int? UserId { get; set; }
         public User? User { get; set; }
         public ICollection<TicketMessage>? Messages { get; set; }
+        public ICollection<TicketMessage>? Response { get; set; }
+        public Section? Section { get; set; }
+        public Status? Status { get; set; }
+        public bool? IsAdmin { get; set; }
     }
 }
