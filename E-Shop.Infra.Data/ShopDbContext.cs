@@ -11,6 +11,7 @@ namespace E_Shop.Infra.Data
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketMessage> TicketMessages { get; set; }
         public DbSet<ContactUsMessage> ContactUsMessages { get; set; }
+        public DbSet<ProductCategories> ProductCategories { get; set; }
 
     }
 }
