@@ -26,8 +26,8 @@ namespace E_Shop.Domain.Models
         [MaxLength(255)]
         public string? ActivationCode { get; set; }
 
-        public bool? IsAdmin { get; set; }
+        public bool IsAdmin { get; set; }
 
-        public bool? IsActive{get; set;}
+        public bool IsActive{get; set;}
     }
 }
