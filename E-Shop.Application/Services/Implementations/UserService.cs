@@ -6,8 +6,6 @@ using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.Shared;
 using E_Shop.Domain.Repositories.Interfaces;
-using E_Shop.Infra.Data.Repositories.Implementations;
-using System.Threading.Tasks;
 
 
 namespace E_Shop.Application.Services.Implementations

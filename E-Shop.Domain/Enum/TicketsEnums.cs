@@ -4,23 +4,19 @@
     {
         public enum Section
         {
-            Sell,
-            Service,
+            Sale,
             Support,
+            Billing,
+            Technical
         }
 
-        public enum Priority
+        public enum Status
         {
-            NoSoImportant,
-            Normal,
-            Important,
-        }
-
-        public enum State
-        {
+            Open,
             Seen,
-            Checking,
-            Answered,
+            UnSeen,
+            InProgress,
+            Resolved,
             closed,
         }
     }
