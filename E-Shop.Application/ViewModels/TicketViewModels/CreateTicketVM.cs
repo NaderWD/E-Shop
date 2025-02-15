@@ -15,7 +15,6 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         public int? UserId { get; set; }
         public User? User { get; set; }
         public ICollection<TicketMessage>? Messages { get; set; }
-        public ICollection<TicketMessage>? Response { get; set; }
         public Section? Section { get; set; }
         public Status? Status { get; set; }
     }

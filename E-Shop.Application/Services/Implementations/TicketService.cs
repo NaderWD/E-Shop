@@ -19,12 +19,11 @@ namespace E_Shop.Application.Services.Implementations
                 Section = ticketVM.Section,
                 Status = Status.Open,
                 Messages = ticketVM.Messages,
-                Response = ticketVM.Response,
                 CreateDate = DateTime.Now,
 
             };
             await _repository.AddTicket(ticket);
-            await _repository.SaveChanges();
+            await SaveChanges();
         }
 
         public async Task CreateMessage(CreateMessageVM messageVM)
@@ -39,7 +38,7 @@ namespace E_Shop.Application.Services.Implementations
                 UserId = messageVM.UserId
             };
             await _repository.AddMessage(message);
-            await _repository.SaveChanges();
+            await SaveChanges();
         }
 
         public async Task<IEnumerable<Ticket>> GetAllTickets()
@@ -89,7 +88,7 @@ namespace E_Shop.Application.Services.Implementations
                 LastModifiedDate = DateTime.Now,
             };
             await _repository.UpdateTicket(ticket);
-            await _repository.SaveChanges();
+            await SaveChanges();
         }
 
         public async Task UpdateMessage(UpdateMessageVM messageVM)
@@ -102,7 +101,7 @@ namespace E_Shop.Application.Services.Implementations
                 LastModifiedDate = DateTime.Now,
             };
             await _repository.UpdateMessage(message);
-            await _repository.SaveChanges();
+            await SaveChanges();
         }
 
         public async Task DeleteMessage(int messageId)
