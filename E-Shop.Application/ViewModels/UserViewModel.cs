@@ -29,9 +29,9 @@ namespace E_Shop.Application.ViewModels
         [MaxLength(500, ErrorMessage = "شماره موبایل نباید بیشتر از ۵۰۰ کاراکتر باشد.")]
         public string? Mobile { get; set; }
 
-        public bool? IsAdmin { get; set; }
-        public bool? IsDelete { get; set; }
-        public bool? IsActive { get; set; }
+        public bool IsAdmin { get; set; }
+        public bool IsDelete { get; set; }
+        public bool IsActive { get; set; }
     }
     
 }
