@@ -5,6 +5,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 {
     public class ProductCategoriesController(IProductCategoriesService productCategoriesService) : Controller
     {
+        
         public IActionResult Index()
         {
             var content = productCategoriesService.GetAll();

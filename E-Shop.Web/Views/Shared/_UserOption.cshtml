@@ -12,28 +12,28 @@
             <div class="profile-user-info ui-box">
                 <div class="profile-detail">
                     <div class="d-flex align-items-center">
-                        <div class="profile-avatar me-3">
-                            <img src="./theme-assets/images/avatar/default.png" alt="avatar">
-                        </div>
-                        <div class="profile-info overflow-y-hidden w-100 h-100">
-
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <div class="w-100 overflow-hidden">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="profile-avatar me-3">
+                                <div class="profile-info overflow-y-hidden w-100 h-100">
+                                    <img src="./theme-assets/images/avatar/default.png" alt="avatar">
                                     <a href="User" class="text-decoration-none text-dark fw-bold mb-2">
                                         @User.FindFirst(ClaimTypes.Name).Value
                                     </a>
-                                    <br />
-                                    <a href="Logout" class="text-decoration-none text-dark fw-light mb-2">خروج</a>
                                 </div>
-                            }
-                            else
-                            {
-                                <a href="Register" class="text-decoration-none text-dark fw-bold mb-2">ثبت نام</a>
-                                <br />
-                                <a href="Login" class="text-decoration-none text-dark fw-bold mb-2">ورود</a>
-                            }
-                        </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="profile-avatar me-3">
+                                <div class="profile-info overflow-y-hidden w-100 h-100">
+                                    <img src="./theme-assets/images/avatar/default.png" alt="avatar">
+                                    <a href="Register" class="text-decoration-none text-dark fw-bold mb-2">ثبت نام</a>
+                                    <br />
+                                    <a href="Login" class="text-decoration-none text-dark fw-bold mb-2">ورود</a>
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div class="user-options">
                         <ul>
@@ -72,7 +72,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <i class="nav-link-icon ri-copper-coin-fill"></i>
-                            باشگاه مشتریان
+                            رفتن به پنل ادمین
                         </a>
                     </li>
                     <li class="nav-item">

@@ -11,13 +11,6 @@
                 </div>
             </div>
             <div class="col-xl-9 col-lg-8 col-md-7">
-                <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
-                    <div>
-                        سفارش شما در انتظار پرداخت است. برای جلوگیری از لغو سفارش، لطفا پرداخت را انجام دهید.
-                        <a href="#" class="btn btn-sm btn-primary mx-3">سفارش های من</a>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
                 <div class="ui-box bg-white mb-5">
                     <div class="ui-box-title">
                         کالای غیراصل
@@ -62,10 +55,10 @@
                             ارسال پاسخ
                         </div>
                         <!-- start of add-ticket-form -->
-                            if(Model == null)
-                            {
-                                مدل خالیه
-                            }
+                            @* @if(Model == null) *@
+                            @* { *@
+                            @*     مدل خالیه *@
+                            @* } *@
                         <form asp-action="CreateMessage" class="add-ticket-form">
                             <div class="row">
                                 <div class="col-12">
@@ -93,9 +86,8 @@
                                             </div>
                                         </div>
                                         <div class="custom-input-file">
-                                            <input type="file" class="custom-input-file-input" name="attachment"
-                                                   id="attachment" asp-for="FilePath">
-                                            <label for="attachment" class="custom-input-file-label">
+                                            <input type="file" class="custom-input-file-input" asp-for="FilePath">
+                                            <label asp-for="FilePath" class="custom-input-file-label">
                                                 <span class="label">
                                                     <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
                                                 </span>

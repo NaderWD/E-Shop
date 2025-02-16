@@ -1,6 +1,8 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.TicketViewModels;
+using E_Shop.Domain.Models.TiketModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace E_Shop.Web.Areas.User.Controllers
 {
@@ -19,33 +21,35 @@ namespace E_Shop.Web.Areas.User.Controllers
 
         #region Create Ticket
         [HttpGet("CreateTicket")]
-        public IActionResult CreateTicket()
+        public IActionResult CreateTicket(int ticketId)
         {
-            return View();
+            return View(new TicketVM { Id = ticketId });
         }
 
         [HttpPost("CreateTicket")]
         public async Task<IActionResult> CreateTicket(TicketVM ticketVM)
         {
+            if (!ModelState.IsValid) return View(ticketVM);
             await _service.CreateTicket(ticketVM);
-            return RedirectToAction("UserTickets", new { ticketVM.Id, ticketVM.UserId });
+            return RedirectToAction("UserTickets", new { userId = ticketVM.UserId });
         }
         #endregion
 
 
 
         #region Create Message
-        [HttpGet("CreateMessage")]
-        public IActionResult CreateMessage()
+        public IActionResult CreateMessage(int ticketId)
         {
-            return View();
+            var model = new MessageVM { TicketId = ticketId };
+            return View(model);
         }
 
         [HttpPost("CreateMessage")]
         public async Task<IActionResult> CreateMessage(MessageVM message)
         {
+            if (!ModelState.IsValid) return View(message);
             await _service.CreateMessage(message);
-            return View();
+            return RedirectToAction("TicketMessages", new { ticketId = message.TicketId });
         }
         #endregion
 
