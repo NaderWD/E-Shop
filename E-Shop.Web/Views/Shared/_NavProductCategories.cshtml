@@ -6,18 +6,18 @@
     <div class="vertical-menu-items">
         <ul>
 
-            @foreach (var category in Model.Where(c => c.ParentId == null))
-            {
-                <li class="mega-menu-category show">
-                    <a href="#">@category.Name</a>
-                    <ul class="mega-menu">
-                        @foreach (var subcategory in Model.Where(s => s.ParentId == category.Id))
-                        {
-                            <li><a href="#">@subcategory.Name</a></li>
-                        }
-                    </ul>
-                </li>
-            }
+            @* @foreach (var category in Model.Where(c => c.ParentId == null)) *@
+            @* { *@
+            @*     <li class="mega-menu-category show"> *@
+            @*         <a href="#">@category.Name</a> *@
+            @*         <ul class="mega-menu"> *@
+            @*             @foreach (var subcategory in Model.Where(s => s.ParentId == category.Id)) *@
+            @*             { *@
+            @*                 <li><a href="#">@subcategory.Name</a></li> *@
+            @*             } *@
+            @*         </ul> *@
+            @*     </li> *@
+            @* } *@
             
         </ul>
     </div>

@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Application.ViewModels.TicketViewModels
 {
-    public class CreateMessageVM
+    public class MessageVM
     {
         [Key]
-        public int Id { get; set; }
-        public DateTime CreateDate { get; set; }
+        public int? Id { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
         public string? Text { get; set; }
         public int? TicketId { get; set; }
         public Ticket? Ticket { get; set; }
