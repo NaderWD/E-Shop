@@ -11,9 +11,16 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 {
     public class ProductCategoriesRepository(ShopDbContext dbContext) : IProductCategoriesRepository
     {
+        public bool CreateProductCategory(ProductCategories model)
+        {
+            dbContext.ProductCategories.Add(model);
+            dbContext.SaveChanges();
+            return true;
+        }
+
         public List<ProductCategories> GetAll()
         {
-           return dbContext.ProductCategories.Include(c => c.Parent).ToList();
+           return dbContext.ProductCategories.Include(c => c.Parent).Where(c => c.IsDelete == false).ToList();
         }
     }
 }

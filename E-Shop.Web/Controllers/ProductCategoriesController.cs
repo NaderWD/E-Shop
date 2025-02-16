@@ -11,12 +11,6 @@ namespace E_Shop.Web.Controllers
             var model = productCategoriesService.GetAll();
             return PartialView("_NavProductCategories", model);
         }
-        
-        public IActionResult CreatProductCategory()
-        {
-            var model = productCategoriesService.GetAll().Where(c => c.ParentId == null);
-            return View(model);
-        }
 
     }
 }

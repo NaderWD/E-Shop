@@ -327,10 +327,11 @@
 
                 <div class="menu-inner-shadow"></div>
 
+
                 <ul class="menu-inner py-1">
                     <!-- Dashboards -->
                     <li class="menu-item active open">
-                        <a  href="javascript:void(0);" class="menu-link menu-toggle">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Dashboards">داشبورد</div>
                         </a>
@@ -345,9 +346,16 @@
                                     پیام کاربران
                                 </a>
                             </li>
+                            <li class="menu-item dropdown">
+                                <a class="menu-link dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    مدیریت محصولات
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" asp-controller="ProductCategories" asp-action="Index">مدیریت گروه محصولات</a>
+                                </div>
+                            </li>
                         </ul>
                     </li>
-
                 </ul>
             </aside>
             <!-- / Menu -->

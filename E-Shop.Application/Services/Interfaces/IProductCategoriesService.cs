@@ -10,5 +10,7 @@ namespace E_Shop.Application.Services.Interfaces
     public interface IProductCategoriesService
     {
         List<ProductCategoriesViewModel> GetAll();
+        CreatProductCategoryViewModel GetCreatModel();
+        bool CreateproductCategory(CreatProductCategoryViewModel model);
     }
 }
