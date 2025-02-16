@@ -11,10 +11,8 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task CreateTicket(TicketVM ticketVM)
         {
-#pragma warning disable CS8629 // Nullable value type may be null.
             Ticket ticket = new()
             {
-                Id = (int)ticketVM.Id,
                 Title = ticketVM.Title,
                 Description = ticketVM.Description,
                 Section = ticketVM.Section,
@@ -31,7 +29,6 @@ namespace E_Shop.Application.Services.Implementations
         {
             TicketMessage message = new()
             {
-                Id = (int)messageVM.Id,
                 Text = messageVM.Text,
                 FilePath = messageVM.FilePath,
                 CreateDate = DateTime.Now,
@@ -81,7 +78,6 @@ namespace E_Shop.Application.Services.Implementations
         {
             Ticket ticket = new()
             {
-                Id = (int)ticketVM.Id,
                 Title = ticketVM.Title,
                 Description = ticketVM.Description,
                 Section = ticketVM.Section,
@@ -97,7 +93,6 @@ namespace E_Shop.Application.Services.Implementations
         {
             TicketMessage message = new()
             {
-                Id = (int)messageVM.Id,
                 Text = messageVM.Text,
                 FilePath = messageVM.FilePath,
                 LastModifiedDate = DateTime.Now,

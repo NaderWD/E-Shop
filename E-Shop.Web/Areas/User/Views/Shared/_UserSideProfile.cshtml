@@ -1,4 +1,5 @@
-﻿
+﻿@model UserDetailsVM
+
 
 
 <div class="profile-user-info py-3 ui-box bg-white">
@@ -8,11 +9,19 @@
                 <img src="./theme-assets/images/avatar/default.png" alt="avatar">
             </div>
             <div class="profile-info">
-                <a href="#" class="text-decoration-none text-dark fw-bold mb-2">
-                    جلال بهرامی
-                    راد
-                </a>
-                <div class="text-muted fs-7 fw-bold">۰۹xxxxxxxxx</div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="User" class="text-decoration-none text-dark fw-bold mb-2">
+                        @User.FindFirst(ClaimTypes.Name).Value
+                    </a>
+                    <div class="text-muted fs-7 fw-light"><small> @User.FindFirst(ClaimTypes.Email).Value </small></div>
+                }
+                else
+                {
+                    <a href="Register" class="text-decoration-none text-dark fw-bold mb-2">ثبت نام</a>
+                    <br />
+                    <a href="Login" class="text-decoration-none text-dark fw-bold mb-2">ورود</a>
+                }
             </div>
         </div>
         <div class="user-options">
@@ -56,6 +65,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="UserTickets">
+                <i class="nav-link-icon ri-chat-1-line"></i>
+                تیکت ها
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="#">
                 <i class="nav-link-icon ri-chat-1-line"></i>
                 نظرات
@@ -75,12 +90,6 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">
-                <i class="nav-link-icon ri-notification-line"></i>
-                پیغام ها
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
                 <i class="nav-link-icon ri-time-line"></i> بازدید
                 های
                 اخیر
@@ -93,7 +102,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="Logout">
                 <i class="nav-link-icon ri-logout-box-r-line"></i>
                 خروج
             </a>
