@@ -12,6 +12,8 @@ namespace E_Shop.Domain.Models.TiketModels
         public ICollection<TicketMessage>? Messages { get; set; }
         public Section? Section { get; set; }
         public Status? Status { get; set; }
+        public Priority? Priority { get; set; }
         public bool? IsAdmin { get; set; }
+        public string? FilePath { get; set; }
     }
 }

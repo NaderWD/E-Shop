@@ -38,6 +38,7 @@ namespace E_Shop.Web.Areas.User.Controllers
 
 
         #region Create Message
+        [HttpGet("CreateMessage")]
         public IActionResult CreateMessage(int ticketId)
         {
             var model = new MessageVM { TicketId = ticketId };

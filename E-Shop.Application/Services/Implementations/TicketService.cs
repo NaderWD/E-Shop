@@ -19,7 +19,8 @@ namespace E_Shop.Application.Services.Implementations
                 Status = Status.Open,
                 Messages = ticketVM.Messages,
                 CreateDate = DateTime.Now,
-
+                Priority = ticketVM.Priority,
+                FilePath = ticketVM.FilePath,
             };
             await _repository.AddTicket(ticket);
             await SaveChanges();

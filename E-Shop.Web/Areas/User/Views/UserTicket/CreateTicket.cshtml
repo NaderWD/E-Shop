@@ -11,13 +11,6 @@
                 </div>
             </div>
             <div class="col-xl-9 col-lg-8 col-md-7">
-                <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
-                    <div>
-                        سفارش شما در انتظار پرداخت است. برای جلوگیری از لغو سفارش، لطفا پرداخت را انجام دهید.
-                        <a href="#" class="btn btn-sm btn-primary mx-3">سفارش های من</a>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
                 <div class="ui-box bg-white mb-5">
                     <div class="ui-box-title">ایجاد تیکت جدید</div>
                     <div class="ui-box-subtitle">
@@ -43,22 +36,22 @@
                                     <!-- start of form-element -->
                                     <div class="form-element-row mb-5">
                                         <label class="label">بخش</label>
-                                        <select class="select2" asp-for="Section">
-                                            <option value="0">-</option>
-                                            <option value="0"></option>
+                                        <select class="select2 form-control" asp-for="Section"
+                                                asp-items="Html.GetEnumSelectList<TicketsEnums.Section>()">
+                                            <option value="">انتخاب کنید</option>
                                         </select>
                                     </div>
                                     <!-- end of form-element -->
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6">
                                     <!-- start of form-element -->
                                     <div class="form-element-row mb-5">
                                         <label class="label">اولویت</label>
-                                        <select class="select2" name="priority" id="priority">
-                                            <option value="0">انتخاب کنید</option>
-                                            <option value="0">عادی</option>
-                                            <option value="0">مهم</option>
-                                            <option value="0">خیلی مهم</option>
+                                        <select class="select2 form-control" asp-for="Priority"
+                                                asp-items="Html.GetEnumSelectList<TicketsEnums.Priority>()">
+                                            <option value="">انتخاب کنید</option>
                                         </select>
                                     </div>
                                     <!-- end of form-element -->

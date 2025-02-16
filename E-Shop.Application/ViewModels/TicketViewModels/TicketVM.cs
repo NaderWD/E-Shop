@@ -17,7 +17,8 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         public User? User { get; set; }
         public ICollection<TicketMessage>? Messages { get; set; }
         public Section? Section { get; set; }
-        public Status? Status { get; set; }       
+        public Status? Status { get; set; }
+        public Priority? Priority { get; set; }      
         public string? FilePath { get; set; }
     }
 }
