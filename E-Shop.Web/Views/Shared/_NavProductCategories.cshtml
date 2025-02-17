@@ -1,24 +1,27 @@
 ﻿@* @model List<ProductCategoriesViewModel> *@
 
 
-@* <div class="vertical-menu"> *@
-@*     <a href="#" class="vertical-menu-btn">دسته بندی کالاها <i class="ri-apps-fill icon"></i></a> *@
-@*     <div class="vertical-menu-items"> *@
-@*         <ul> *@
+<div class="vertical-menu">
+    <a href="#" class="vertical-menu-btn">دسته بندی کالاها <i class="ri-apps-fill icon"></i></a>
+    <div class="vertical-menu-items">
+        <ul>
+           @*  @if (Model.Any())
+            {
+                @foreach (var category in Model.Where(c => c.ParentId == null))
+                {
+                    <li class="mega-menu-category show">
+                        <a href="#">@category.Name</a>
+                        <ul class="mega-menu">
+                            @foreach (var subcategory in Model.Where(s => s.ParentId == category.Id))
+                            {
+                                <li><a href="#">@subcategory.Name</a></li>
+                            }
+                        </ul>
+                    </li>
+                }
+            } *@
 
-            @* @foreach (var category in Model.Where(c => c.ParentId == null)) *@
-            @* { *@
-            @*     <li class="mega-menu-category show"> *@
-            @*         <a href="#">@category.Name</a> *@
-            @*         <ul class="mega-menu"> *@
-            @*             @foreach (var subcategory in Model.Where(s => s.ParentId == category.Id)) *@
-            @*             { *@
-            @*                 <li><a href="#">@subcategory.Name</a></li> *@
-            @*             } *@
-            @*         </ul> *@
-            @*     </li> *@
-            @* } *@
-            
-@*         </ul> *@
-@*     </div> *@
-@* </div> *@
+
+        </ul>
+    </div>
+</div>

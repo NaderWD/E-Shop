@@ -1,93 +1,60 @@
 ﻿@model List<ProductCategoriesViewModel>
 
-
-<div class="content-wrapper">
-    <!-- Content -->
-
-    <div class="container-xxl flex-grow-1 container-p-y h-100">
-        <!-- Users List Table -->
-        <div class="card">
-
-            <button class="btn btn-secondary add-new btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" asp-action="CreatProductCategory">
-                <span>
-                    <i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">افزودن گروه </span>
-                </span>
-            </button>
-            <div class="card-datatable table-responsive">
-                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-
-                    <table class="datatables-users table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
-                        <thead>
-                            <tr>
-
-                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 162.4px;" aria-label="Billing: activate to sort column ascending">نام دسته بندی</th>
-                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 164.75px;" aria-label="Actions">گروه اصلی</th>
-                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 164.75px;" aria-label="Actions">عملیات ها</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr class="odd">
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@item.Name</strong></td>
-
-                                    @if (item.ParentId == null)
-                                    {
-                                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>---</strong></td>
-
-                                    }
-                                    else
-                                    {
-                                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@item.ParentName</strong></td>
-
-                                    }
-                                    <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);">
-                                                    <i class="bx bx-edit-alt me-1"></i> ویرایش
-                                                </a>
-                                                <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.Name')"><i class="bx bx-trash me-1"></i> حذف </a>
-
-                                                <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteProductCategory", new { CategoryId = item.Id })" style="display:none;">
-                                                    @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="UserId" value="@item.Id" />
-                                                </form>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                            }
-
-                        </tbody>
-                    </table>
-
-                    <div class="row mx-2">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">نمایش @Model.Count() از @Model.Count()</div>
-                        </div><div class="col-sm-12 col-md-6">
-                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                                <ul class="pagination">
-                                    <li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">
-                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="previous" tabindex="0" class="page-link">Previous</a>
-                                    </li>
-                                    <li class="paginate_button page-item next disabled" id="DataTables_Table_0_next">
-                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="next" tabindex="0" class="page-link">Next</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="card">
+    <div class="d-flex justify-content-between align-items-center mb-۱ ">
+        <h2 class="m-3">لیست کاربران</h2>
+        <a class="btn btn-primary m-3" asp-action="CreateProductCategory">افزودن گروه</a>
     </div>
-    <!-- / Content -->
 
-    <div class="content-backdrop fade"></div>
+    <div class="table-responsive text-nowrap">
+        <table class="table table-hover mb-5">
+            <thead>
+                <tr>
+
+                    <th>نام دسته بندی</th>
+                    <th>گروه اصلی</th>
+                    <th>عملیات ها</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model)
+                {
+                    <tr class="odd">
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@item.Name</strong></td>
+
+                        @if (item.ParentId == null)
+                        {
+                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>---</strong></td>
+
+                        }
+                        else
+                        {
+                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@item.ParentName</strong></td>
+
+                        }
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-action="UpdateProductCategory" asp-route-Id="@item.Id">
+                                        <i class="bx bx-edit-alt me-1"></i> ویرایش
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.Name')"><i class="bx bx-trash me-1"></i> حذف </a>
+
+                                    <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteProductCategory", new { CategoryId = item.Id })" style="display:none;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="UserId" value="@item.Id" />
+                                    </form>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            
+        </table>
+    </div>
 </div>
-
