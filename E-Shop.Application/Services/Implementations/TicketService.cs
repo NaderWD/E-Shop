@@ -9,28 +9,27 @@ namespace E_Shop.Application.Services.Implementations
     public class TicketService(ITicketRepository _repository) : ITicketService
     {
 
-        public async Task CreateTicket(CreateTicketVM ticketVM)
+        public async Task CreateTicket(TicketVM ticketVM)
         {
             Ticket ticket = new()
             {
-                Id = ticketVM.Id,
                 Title = ticketVM.Title,
                 Description = ticketVM.Description,
                 Section = ticketVM.Section,
                 Status = Status.Open,
                 Messages = ticketVM.Messages,
                 CreateDate = DateTime.Now,
-
+                Priority = ticketVM.Priority,
+                FilePath = ticketVM.FilePath,
             };
             await _repository.AddTicket(ticket);
             await SaveChanges();
         }
 
-        public async Task CreateMessage(CreateMessageVM messageVM)
+        public async Task CreateMessage(MessageVM messageVM)
         {
             TicketMessage message = new()
             {
-                Id = messageVM.Id,
                 Text = messageVM.Text,
                 FilePath = messageVM.FilePath,
                 CreateDate = DateTime.Now,
@@ -76,26 +75,25 @@ namespace E_Shop.Application.Services.Implementations
             return await _repository.GetTicketCounts(userId);
         }
 
-        public async Task UpdateTicket(UpdateTicketVM ticketVM)
+        public async Task UpdateTicket(TicketVM ticketVM)
         {
             Ticket ticket = new()
             {
-                Id = ticketVM.Id,
                 Title = ticketVM.Title,
                 Description = ticketVM.Description,
                 Section = ticketVM.Section,
                 Status = ticketVM.Status,
                 LastModifiedDate = DateTime.Now,
+                Messages = ticketVM.Messages
             };
             await _repository.UpdateTicket(ticket);
             await SaveChanges();
         }
 
-        public async Task UpdateMessage(UpdateMessageVM messageVM)
+        public async Task UpdateMessage(MessageVM messageVM)
         {
             TicketMessage message = new()
             {
-                Id = messageVM.Id,
                 Text = messageVM.Text,
                 FilePath = messageVM.FilePath,
                 LastModifiedDate = DateTime.Now,

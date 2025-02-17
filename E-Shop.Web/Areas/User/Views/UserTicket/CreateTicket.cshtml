@@ -1,4 +1,4 @@
-﻿@model CreateTicketVM
+﻿@model TicketVM
 
 
 
@@ -7,115 +7,10 @@
         <div class="row mb-5">
             <div class="col-xl-3 col-lg-4 col-md-5 mb-md-0 mb-4">
                 <div class="ui-sticky ui-sticky-top">
-                    <div class="profile-user-info py-3 ui-box bg-white">
-                        <div class="profile-detail">
-                            <div class="d-flex align-items-center">
-                                <div class="profile-avatar me-3">
-                                    <img src="./theme-assets/images/avatar/default.png" alt="avatar">
-                                </div>
-                                <div class="profile-info">
-                                    <a href="#" class="text-decoration-none text-dark fw-bold mb-2">
-                                        جلال بهرامی
-                                        راد
-                                    </a>
-                                    <div class="text-muted fs-7 fw-bold">۰۹xxxxxxxxx</div>
-                                </div>
-                            </div>
-                            <div class="user-options">
-                                <ul>
-                                    <li>
-                                        <span class="label">کیف پول</span>
-                                        <span class="detail">
-                                            <span class="d-block">
-                                                ۰ <span class="currency fs-7 fw-bold">تومان</span>
-                                            </span>
-                                            <a href="#"
-                                               class="link border-bottom-0 text-info fs-7 fw-bold">
-                                                افزایش
-                                                موجودی <i class="ri-arrow-left-s-line"></i>
-                                            </a>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="label">باشگاه مشتریان</span>
-                                        <span class="detail">
-                                            <span class="d-block">
-                                                ۰ <span class="score text-muted fs-7">امتیاز</span>
-                                            </span>
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <ul class="nav nav-items-with-icon flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-link-icon ri-file-list-3-line"></i>
-                                    سفارش
-                                    های من
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-link-icon ri-heart-3-line"></i> لیست
-                                    ها
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-link-icon ri-chat-1-line"></i>
-                                    نظرات
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-link-icon ri-map-pin-line"></i> نشانی
-                                    ها
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-link-icon ri-gift-line"></i> کارت های
-                                    هدیه
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-link-icon ri-notification-line"></i>
-                                    پیغام ها
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-link-icon ri-time-line"></i> بازدید
-                                    های
-                                    اخیر
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-link-icon ri-user-line"></i> اطلاعات
-                                    حساب
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-link-icon ri-logout-box-r-line"></i>
-                                    خروج
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <partial name="_UserSideProfile" />
                 </div>
             </div>
             <div class="col-xl-9 col-lg-8 col-md-7">
-                <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
-                    <div>
-                        سفارش شما در انتظار پرداخت است. برای جلوگیری از لغو سفارش، لطفا پرداخت را انجام دهید.
-                        <a href="#" class="btn btn-sm btn-primary mx-3">سفارش های من</a>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
                 <div class="ui-box bg-white mb-5">
                     <div class="ui-box-title">ایجاد تیکت جدید</div>
                     <div class="ui-box-subtitle">
@@ -125,13 +20,13 @@
                     </div>
                     <div class="ui-box-content">
                         <!-- start of add-ticket-form -->
-                        <form action="#" class="add-ticket-form">
+                        <form asp-action="CreateTicket" class="add-ticket-form">
                             <div class="row">
                                 <div class="col-md-6">
                                     <!-- start of form-element -->
                                     <div class="form-element-row mb-5">
                                         <label class="label">موضوع</label>
-                                        <input type="text" class="form-control" placeholder="">
+                                        <input type="text" class="form-control" placeholder="" asp-for="Title">
                                     </div>
                                     <!-- end of form-element -->
                                 </div>
@@ -141,29 +36,22 @@
                                     <!-- start of form-element -->
                                     <div class="form-element-row mb-5">
                                         <label class="label">بخش</label>
-                                        <select class="select2" name="department" id="department">
-                                            <option value="0">-</option>
-                                            <option value="0">پیشنهاد</option>
-                                            <option value="0">انتقاد یا شکایت</option>
-                                            <option value="0">پیگیری سفارش</option>
-                                            <option value="0">خدمات پس از فروش</option>
-                                            <option value="0">استعلام گارانتی</option>
-                                            <option value="0">مدیریت</option>
-                                            <option value="0">حسابداری و امور مالی</option>
-                                            <option value="0">سایر موضوعات</option>
+                                        <select class="select2 form-control" asp-for="Section"
+                                                asp-items="Html.GetEnumSelectList<TicketsEnums.Section>()">
+                                            <option value="">انتخاب کنید</option>
                                         </select>
                                     </div>
                                     <!-- end of form-element -->
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6">
                                     <!-- start of form-element -->
                                     <div class="form-element-row mb-5">
                                         <label class="label">اولویت</label>
-                                        <select class="select2" name="priority" id="priority">
-                                            <option value="0">انتخاب کنید</option>
-                                            <option value="0">عادی</option>
-                                            <option value="0">مهم</option>
-                                            <option value="0">خیلی مهم</option>
+                                        <select class="select2 form-control" asp-for="Priority"
+                                                asp-items="Html.GetEnumSelectList<TicketsEnums.Priority>()">
+                                            <option value="">انتخاب کنید</option>
                                         </select>
                                     </div>
                                     <!-- end of form-element -->
@@ -175,7 +63,7 @@
                                     <div class="form-element-row mb-5">
                                         <label class="label">پیام</label>
                                         <textarea rows="5" class="form-control"
-                                                  placeholder="متن پیام"></textarea>
+                                                  placeholder="متن پیام" asp-for="Messages"></textarea>
                                     </div>
                                     <!-- end of form-element -->
                                 </div>
@@ -195,9 +83,8 @@
                                             </div>
                                         </div>
                                         <div class="custom-input-file">
-                                            <input type="file" class="custom-input-file-input" name="attachment"
-                                                   id="attachment">
-                                            <label for="attachment" class="custom-input-file-label">
+                                            <input type="file" class="custom-input-file-input" asp-for="FilePath">
+                                            <label class="custom-input-file-label">
                                                 <span class="label">
                                                     <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
                                                 </span>

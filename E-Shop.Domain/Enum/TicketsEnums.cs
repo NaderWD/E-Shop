@@ -1,6 +1,8 @@
 ﻿namespace E_Shop.Domain.Enum
+
+
 {
-    public class TicketsEnums
+    public static class TicketsEnums
     {
         public enum Section
         {
@@ -18,6 +20,13 @@
             InProgress,
             Resolved,
             closed,
+        }
+
+        public enum Priority   
+        {
+            Normal,
+            Important,
+            veryImportant,
         }
     }
 }

@@ -5,8 +5,8 @@ namespace E_Shop.Application.Services.Interfaces
 {
     public interface ITicketService
     {
-        Task CreateTicket(CreateTicketVM ticketVM);
-        Task CreateMessage(CreateMessageVM messageVM);
+        Task CreateTicket(TicketVM ticketVM);
+        Task CreateMessage(MessageVM messageVM);
         Task<IEnumerable<Ticket>> GetAllTickets();
         Task<IEnumerable<Ticket>> GetTicketsByUserId(int userId);
         Task<Ticket> GetTicketById(int ticketId);
@@ -14,8 +14,8 @@ namespace E_Shop.Application.Services.Interfaces
         Task<TicketMessage> GetMessageById(int messageId);
         Task<int> GetMessageCounts(int ticketId);
         Task<int> GetTicketCounts(int userId);
-        Task UpdateTicket(UpdateTicketVM ticketVM);
-        Task UpdateMessage(UpdateMessageVM messageVM);
+        Task UpdateTicket(TicketVM ticketVM);
+        Task UpdateMessage(MessageVM messageVM);
         Task DeleteTicket(int ticketId);
         Task DeleteMessage(int messageId);
         Task SaveChanges();

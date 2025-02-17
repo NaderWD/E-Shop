@@ -10,6 +10,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 {
     public class ProductCategoriesController(IProductCategoriesService productCategoriesService) : AdminBaseController
     {
+        [Route("ProductList")]
         public IActionResult Index()
         {
             var content = productCategoriesService.GetAll();

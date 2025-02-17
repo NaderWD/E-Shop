@@ -54,16 +54,19 @@ namespace E_Shop.Web.Areas.User.Controllers
             var user = await _service.GetByEmail(userLogin.EmailAddress);
             var claims = new List<Claim>()
                     {
+                        new(ClaimTypes.Name, user.FirstName+" "+user.LastName),
                         new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                         new(ClaimTypes.Email, user.EmailAddress),
+                        new("IsAdmin", user.IsAdmin.ToString()),
                     };
+            if (user.IsAdmin) claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+
             var identify = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identify);
             var properties = new AuthenticationProperties { IsPersistent = true };
             await HttpContext.SignInAsync(principal, properties);
             TempData[SuccessMessage] = "خوش آمدید";
-            return RedirectToAction("Index", "Home", new { area = "", user.EmailAddress });
-
+            return Redirect("/");
         }
         #endregion
 
@@ -74,7 +77,7 @@ namespace E_Shop.Web.Areas.User.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction("Index");
+            return Redirect("/");
         }
         #endregion
 

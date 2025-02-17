@@ -1,8 +1,8 @@
-﻿@model E_Shop.Application.ViewModels.ContactUsAnswerViewModel
+﻿@model ContactUsAnswerViewModel
 
 <form method="post" class="form-send-message d-flex justify-content-between align-items-center">
     <input class="form-control message-input me-3 shadow-none" style="border: 1px solid #ced4da;" placeholder="پیام خود را تایپ کنید." asp-for="AdminAnswer" />
-    <input type="hidden" asp-for="Id"></input>
+    <input type="hidden" asp-for="Id"><input>
     <div class="message-actions d-flex align-items-center">
         <button class="btn btn-primary d-flex send-msg-btn" asp-controller="ContactUsMessage" asp-action="SendAnswer">
             <i class="bx bx-paper-plane me-md-1 me-0"></i>
