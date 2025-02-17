@@ -27,7 +27,7 @@ namespace E_Shop.Application.ViewModels
 
     public class CreatProductCategoryViewModel 
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "نام نمی‌تواند خالی باشد")]
         [MaxLength(100, ErrorMessage = "نام نباید بیشتر از ۱۰۰ کاراکتر باشد")]

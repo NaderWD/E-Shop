@@ -38,7 +38,7 @@
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0);">
+                                    <a class="dropdown-item" asp-action="UpdateProductCategory" asp-route-Id="@item.Id">
                                         <i class="bx bx-edit-alt me-1"></i> ویرایش
                                     </a>
                                     <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.Name')"><i class="bx bx-trash me-1"></i> حذف </a>

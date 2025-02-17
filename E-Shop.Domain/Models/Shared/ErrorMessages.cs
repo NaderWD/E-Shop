@@ -27,6 +27,9 @@
         
         public const string Categoryduplicated = "گروهی با این نام وجود دارد.";
         public const string ProductCategoryAdded = "گروه جدید با موفقیت اضافه شد.";
+        public const string ProductCategoryUpdated = "گروه مورد نظر با موفقیت ویرایش شد.";
+        public const string ProductCategoryDeleted = "گروه مورد نظر با موفقیت حذف شد.";
+
 
 
     }

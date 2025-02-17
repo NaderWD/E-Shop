@@ -11,8 +11,12 @@ namespace E_Shop.Domain.Repositories.Interfaces
     public interface IProductCategoriesRepository
     {
         List<ProductCategories> GetAll();
+        ProductCategories GetProductCategoryById(int Id);
 
         bool CreateProductCategory(ProductCategories model);
+        bool UpdateProductCategory(ProductCategories model);
+        bool Save();
+        
        
     }
 }

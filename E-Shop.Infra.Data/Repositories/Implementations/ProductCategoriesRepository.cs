@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,24 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
         public List<ProductCategories> GetAll()
         {
            return dbContext.ProductCategories.Include(c => c.Parent).Where(c => c.IsDelete == false).ToList();
+        }
+
+        public ProductCategories GetProductCategoryById(int Id)
+        {
+            return dbContext.ProductCategories.Where(c => c.Id == Id).Include(c => c.Parent).FirstOrDefault();
+        }
+
+        public bool Save()
+        {
+            dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool UpdateProductCategory(ProductCategories model)
+        {
+            dbContext.ProductCategories.Update(model);
+            
+            return true;
         }
     }
 }
