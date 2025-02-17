@@ -18,11 +18,11 @@
                     <div class="ui-box-content">
                         <!-- start of tickets -->
                         <div class="tickets">
-                            @foreach (var message in Model.Messages)
+                            @foreach (var message in Model.Text)
                             {
                                 string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                                 int userId;
-                                bool isUserMessage = int.TryParse(userIdString, out userId) && message.Ticket.UserId == userId;
+                                bool isUserMessage = int.TryParse(userIdString, out userId) && @Model.Ticket.UserId == userId;
 
                                 if (isUserMessage)
                                 {
@@ -30,9 +30,9 @@
                                     <div class="ticket fa-num">
                                         <div class="avatar"></div>
                                         <div class="text">
-                                            @message.Text
+                                            @message
                                         </div>
-                                        <div class="date">@message.CreateDate?.ToString("yyyy/MM/dd HH:mm:ss")</div>
+                                        <div class="date">@Model.CreateDate?.ToString("yyyy/MM/dd HH:mm:ss")</div>
                                     </div>
                                     <!-- end of user ticket -->
                                 }
@@ -42,9 +42,9 @@
                                     <div class="ticket reply fa-num">
                                         <div class="avatar staff"></div>
                                         <div class="text">
-                                            @message.Text
+                                            @message
                                         </div>
-                                        <div class="date">@message.CreateDate?.ToString("yyyy/MM/dd HH:mm:ss")</div>
+                                        <div class="date">@Model.CreateDate?.ToString("yyyy/MM/dd HH:mm:ss")</div>
                                     </div>
                                     <!-- end of admin ticket -->
                                 }

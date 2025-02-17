@@ -58,7 +58,7 @@
                                                     </span>
                                                 </td>
                                                 <td class="fa-num">@ticket.LastModifiedDate?.ToString("yyyy/MM/dd")</td>
-                                                <td class="fa-num">@ticket.Messages?.Count() ?? 0</td>
+                                                <td class="fa-num">@ticket.Message?.Count() ?? 0</td>
                                                 <td>
                                                     <a href="@Url.Action("TicketMessages", new { id = ticket.Id })" class="btn btn-circle btn-info my-1">
                                                         <i class="ri-eye-line"></i>

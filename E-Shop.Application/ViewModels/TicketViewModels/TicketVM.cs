@@ -9,16 +9,41 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
     {
         [Key]
         public int? Id { get; set; }
+
         public DateTime? CreateDate { get; set; }
+
         public DateTime? LastModifiedDate { get; set; }
+
+        [Display(Name = "موضوع")]
+        [Required(ErrorMessage = " لطفا {0} را وارد کنید")]
+        [MaxLength(255, ErrorMessage = "حداکثر تعداد کاراکتر مجاز 255 می باشد")]
         public string? Title { get; set; }
+
+        [Display(Name = "توضیخات")]
+        [Required(ErrorMessage = " لطفا {0} را وارد کنید")]
+        [MaxLength(255, ErrorMessage = "حداکثر تعداد کاراکتر مجاز 255 می باشد")]
         public string? Description { get; set; }
+
         public int? UserId { get; set; }
+
         public User? User { get; set; }
-        public ICollection<TicketMessage>? Messages { get; set; }
+
+        [Display(Name = "متن پیام")]
+        [Required(ErrorMessage = " لطفا {0} را وارد کنید")]
+        [MaxLength(2550, ErrorMessage = "حداکثر تعداد کاراکتر مجاز 2550 می باشد")]
+        public string Message { get; set; }
+
+        [Display(Name = "بخض")]
+        [Required(ErrorMessage = " لطفا {0} را انتخاب کنید")]
         public Section? Section { get; set; }
+
+        [Display(Name = "وضعیت")]
         public Status? Status { get; set; }
-        public Priority? Priority { get; set; }      
+
+        [Display(Name = "اولویت")]
+        [Required(ErrorMessage = " لطفا {0} را انتخاب کنید")]
+        public Priority? Priority { get; set; }
+
         public string? FilePath { get; set; }
     }
 }

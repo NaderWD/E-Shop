@@ -9,6 +9,5 @@ namespace E_Shop.Domain.Models.TiketModels
         public Ticket? Ticket { get; set; }
         public string? FilePath { get; set; }
         public string? Title { get; set; }
-        public IEnumerable<TicketMessage> Messages { get; set; }
     }
 }

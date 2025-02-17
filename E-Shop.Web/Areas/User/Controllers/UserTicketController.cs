@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace E_Shop.Web.Areas.User.Controllers
 {
-    public class UserTicketController(ITicketService _service) : UserBaseController
+    public class UserTicketController(ITicketService _service, ITicketMessageService _messageService) : UserBaseController
     {
         #region User Tickets
         [Route("UserTickets")]
@@ -49,7 +49,7 @@ namespace E_Shop.Web.Areas.User.Controllers
         public async Task<IActionResult> CreateMessage(MessageVM message)
         {
             if (!ModelState.IsValid) return View(message);
-            await _service.CreateMessage(message);
+            await _messageService.CreateMessage(message);
             return RedirectToAction("TicketMessages", new { ticketId = message.TicketId });
         }
         #endregion
@@ -60,7 +60,7 @@ namespace E_Shop.Web.Areas.User.Controllers
         [HttpGet("TicketMessages")]
         public async Task<IActionResult> TicketMessages(int ticketId)
         {
-            var model = await _service.GetMessagesByTicketId(ticketId);
+            var model = await _messageService.GetMessagesByTicketId(ticketId);
             return View(model);
         }
         #endregion
@@ -71,7 +71,7 @@ namespace E_Shop.Web.Areas.User.Controllers
         [HttpGet("NumberOfMessages")]
         public async Task<IActionResult> NumberOfMessages(int ticketId)
         {
-            var count = await _service.GetMessageCounts(ticketId);
+            var count = await _messageService.GetMessageCounts(ticketId);
             return RedirectToAction("UserTickets", new { ticketId, count });
         }
         #endregion
