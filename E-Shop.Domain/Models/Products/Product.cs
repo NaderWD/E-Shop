@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace E_Shop.Domain.Models.Products
 {
-    public class Products : BaseModel
+    public class Product : BaseModel
     {
         [StringLength(100)]
         public string Title { get; set; }
