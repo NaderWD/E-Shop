@@ -6,7 +6,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
     public class HomeController(IUserService _service) : AdminBaseController
     {
-        [Route("AdminPanel")]
+        [Route("Admin")]
         public IActionResult Index(int userId)
         {
 

@@ -39,39 +39,110 @@ namespace E_Shop.Application.Services.Implementations
             await SaveChanges();
         }
 
-        public async Task<IEnumerable<Ticket>> GetAllTickets()
+        public async Task<IEnumerable<TicketVM>> GetAllTickets()
         {
-            return await _repository.GetAllTickets();
+            IEnumerable<Ticket> ticket = await _repository.GetAllTickets();
+            List<TicketVM> tickets = [];
+            foreach (var item in ticket)
+            {
+                tickets.Add(new TicketVM
+                {
+                    Title = item.Title,
+                    Messages = item.Messages,
+                    Priority = item.Priority,
+                    Section = item.Section,
+                    Status = item.Status,
+                    CreateDate = item.CreateDate,
+                    Description = item.Description,
+                    FilePath = item.FilePath,
+                    LastModifiedDate = item.CreateDate,
+                });
+            }
+            return tickets;
         }
 
-        public async Task<TicketMessage> GetMessageById(int messageId)
+        public async Task<IEnumerable<TicketVM>> GetTicketsByUserId(int userId)
         {
-            return await _repository.GetMessageById(messageId);
+            IEnumerable<Ticket> ticket = await _repository.GetTicketsByUserId(userId);
+            List<TicketVM> tickets = [];
+            foreach (var item in ticket)
+            {
+                tickets.Add(new TicketVM
+                {
+                    Title = item.Title,
+                    Messages = item.Messages,
+                    Priority = item.Priority,
+                    Section = item.Section,
+                    Status = item.Status,
+                    CreateDate = item.CreateDate,
+                    Description = item.Description,
+                    FilePath = item.FilePath,
+                    LastModifiedDate = item.CreateDate,
+                });
+            }
+            return tickets;
         }
 
-        public async Task<IEnumerable<TicketMessage>> GetMessagesByTicketId(int ticketId)
+        public async Task<IEnumerable<MessageVM>> GetMessagesByTicketId(int ticketId)
         {
-            return await _repository.GetMessagesByTicketId(ticketId);
+            IEnumerable<TicketMessage> message = await _repository.GetMessagesByTicketId(ticketId);
+            List<MessageVM> messages = [];
+            foreach (var item in message)
+            {
+                messages.Add(new MessageVM
+                {
+                    Title = item.Title,
+                    Messages = item.Messages,
+                    Text = item.Text,
+                    CreateDate = item.CreateDate,
+                    FilePath = item.FilePath,
+                    LastModifiedDate = item.CreateDate,
+                });
+            }
+            return messages;
         }
 
-        public async Task<Ticket> GetTicketById(int ticketId)
+        public async Task<TicketVM> GetTicketById(int ticketId)
         {
-            return await _repository.GetTicketById(ticketId);
+            var item = await _repository.GetTicketById(ticketId);
+            var model = new TicketVM
+            {
+                Title = item.Title,
+                Messages = item.Messages,
+                Priority = item.Priority,
+                Section = item.Section,
+                Status = item.Status,
+                CreateDate = item.CreateDate,
+                Description = item.Description,
+                FilePath = item.FilePath,
+                LastModifiedDate = item.CreateDate,
+            };
+            return model;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTicketsByUserId(int userId)
+        public async Task<MessageVM> GetMessageById(int messageId)
         {
-            return await _repository.GetTicketsByUserId(userId);
-        }
-
-        public async Task<int> GetMessageCounts(int ticketId)
-        {
-            return await _repository.GetMessageCounts(ticketId);
+            var message = await _repository.GetMessageById(messageId);
+            var model = new MessageVM
+            {
+                Title = message.Title,
+                Text = message.Text,
+                CreateDate = message.CreateDate,
+                FilePath = message.FilePath,
+                LastModifiedDate = message.LastModifiedDate,
+                Messages = message.Messages,
+            };
+            return model;
         }
 
         public async Task<int> GetTicketCounts(int userId)
         {
             return await _repository.GetTicketCounts(userId);
+        }
+
+        public async Task<int> GetMessageCounts(int ticketId)
+        {
+            return await _repository.GetMessageCounts(ticketId);
         }
 
         public async Task UpdateTicket(TicketVM ticketVM)

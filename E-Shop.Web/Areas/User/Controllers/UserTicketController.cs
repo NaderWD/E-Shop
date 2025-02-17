@@ -10,10 +10,10 @@ namespace E_Shop.Web.Areas.User.Controllers
     {
         #region User Tickets
         [Route("UserTickets")]
-        public async Task<IActionResult> UserTickets(int ticketId, int userId)
+        public async Task<IActionResult> UserTickets(int userId)
         {
-            await _service.GetTicketsByUserId(userId);
-            return View();
+            var model = await _service.GetTicketsByUserId(userId);
+            return View(model);
         }
         #endregion
 
@@ -60,12 +60,7 @@ namespace E_Shop.Web.Areas.User.Controllers
         [HttpGet("TicketMessages")]
         public async Task<IActionResult> TicketMessages(int ticketId)
         {
-            var messages = await _service.GetMessagesByTicketId(ticketId);
-            var model = new MessageVM
-            {
-                TicketId = ticketId,
-                Messages = messages
-            };
+            var model = await _service.GetMessagesByTicketId(ticketId);
             return View(model);
         }
         #endregion
