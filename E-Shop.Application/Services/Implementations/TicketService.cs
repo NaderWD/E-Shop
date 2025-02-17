@@ -34,7 +34,6 @@ namespace E_Shop.Application.Services.Implementations
                 FilePath = messageVM.FilePath,
                 CreateDate = DateTime.Now,
                 TicketId = messageVM.TicketId,
-                UserId = messageVM.UserId
             };
             await _repository.AddMessage(message);
             await SaveChanges();

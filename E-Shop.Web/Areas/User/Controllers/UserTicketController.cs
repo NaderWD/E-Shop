@@ -56,28 +56,17 @@ namespace E_Shop.Web.Areas.User.Controllers
 
 
 
-        //#region Update Ticket
-        //[HttpGet("UpdateTicket")]
-        //public async Task<IActionResult> UpdateTicket(int ticketId)
-        //{
-        //    return View(new TicketVM { Id = ticketId });
-        //}
-
-        //[HttpPost("UpdateTicket")]
-        //public async Task<IActionResult> UpdateTicket(TicketVM ticket)
-        //{
-        //    await _service.UpdateTicket(ticket);
-        //    return RedirectToAction("UserTickets", new { ticket.Id, ticket.UserId });
-        //}
-        //#endregion
-
-
-
         #region Ticket Messages
         [HttpGet("TicketMessages")]
-        public IActionResult TicketMessages(int ticketId)
+        public async Task<IActionResult> TicketMessages(int ticketId)
         {
-            return View(new TicketVM { Id = ticketId });
+            var messages = await _service.GetMessagesByTicketId(ticketId);
+            var model = new MessageVM
+            {
+                TicketId = ticketId,
+                Messages = messages
+            };
+            return View(model);
         }
         #endregion
 

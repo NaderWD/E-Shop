@@ -13,41 +13,42 @@
             <div class="col-xl-9 col-lg-8 col-md-7">
                 <div class="ui-box bg-white mb-5">
                     <div class="ui-box-title">
-                        کالای غیراصل
+                        @Model.Title
                     </div>
                     <div class="ui-box-content">
                         <!-- start of tickets -->
                         <div class="tickets">
-                            <!-- start of ticket -->
-                            <div class="ticket fa-num">
-                                <div class="avatar"></div>
-                                <div class="text">
-                                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از
-                                    طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که
-                                    لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-                                    بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و
-                                    آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت
-                                    بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در
-                                    زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود
-                                    در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل
-                                    حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی
-                                    اساسا مورد استفاده قرار گیرد.
-                                </div>
-                                <div class="date">25 دی 1400</div>
-                            </div>
-                            <!-- end of ticket -->
-                            <!-- start of ticket -->
-                            <div class="ticket reply fa-num">
-                                <div class="avatar staff"></div>
-                                <div class="text">
-                                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-                                    طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که
-                                    لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود
-                                    ابزارهای کاربردی می باشد.
-                                </div>
-                                <div class="date">26 دی 1400</div>
-                            </div>
-                            <!-- end of ticket -->
+                            @foreach (var message in Model.Messages)
+                            {
+                                string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                                int userId;
+                                bool isUserMessage = int.TryParse(userIdString, out userId) && message.Ticket.UserId == userId;
+
+                                if (isUserMessage)
+                                {
+                                    <!-- start of user ticket -->
+                                    <div class="ticket fa-num">
+                                        <div class="avatar"></div>
+                                        <div class="text">
+                                            @message.Text
+                                        </div>
+                                        <div class="date">@message.CreateDate?.ToString("yyyy/MM/dd HH:mm:ss")</div>
+                                    </div>
+                                    <!-- end of user ticket -->
+                                }
+                                else
+                                {
+                                    <!-- start of admin ticket -->
+                                    <div class="ticket reply fa-num">
+                                        <div class="avatar staff"></div>
+                                        <div class="text">
+                                            @message.Text
+                                        </div>
+                                        <div class="date">@message.CreateDate?.ToString("yyyy/MM/dd HH:mm:ss")</div>
+                                    </div>
+                                    <!-- end of admin ticket -->
+                                }
+                            }
                         </div>
                         <!-- end of tickets -->
                         <div class="border-bottom my-4"></div>
@@ -55,54 +56,7 @@
                             ارسال پاسخ
                         </div>
                         <!-- start of add-ticket-form -->
-                            @* @if(Model == null) *@
-                            @* { *@
-                            @*     مدل خالیه *@
-                            @* } *@
-                        <form asp-action="CreateMessage" class="add-ticket-form">
-                            <div class="row">
-                                <div class="col-12">
-                                    <!-- start of form-element -->
-                                    <div class="form-element-row mb-5">
-                                        <label class="label">پیام</label>
-                                        <textarea rows="5" class="form-control"
-                                                  placeholder="متن پیام" asp-for="Text"></textarea>
-                                    </div>
-                                    <!-- end of form-element -->
-                                </div>
-                                <div class="col-12">
-                                    <!-- start of form-element -->
-                                    <div class="form-element-row form-element-row-file mb-5">
-                                        <div class="text-center">
-                                            <div class="fs-6 fw-bold text-dark">
-                                                عکس یا ویدیو خود را بارگذاری
-                                                کنید.
-                                            </div>
-                                            <div class="fs-7 fw-bold text-muted mb-4">
-                                                ( حداکثر ۵ تصویر jpeg یا
-                                                PNG
-                                                حداکثر یک
-                                                مگابایت، یک ویدیو MP4 حداکثر ۵۰ مگابایت )
-                                            </div>
-                                        </div>
-                                        <div class="custom-input-file">
-                                            <input type="file" class="custom-input-file-input" asp-for="FilePath">
-                                            <label asp-for="FilePath" class="custom-input-file-label">
-                                                <span class="label">
-                                                    <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <!-- end of form-element -->
-                                </div>
-                                <div class="col-12 text-end">
-                                    <button type="submit" class="btn btn-primary">
-                                        ارسال پاسخ <i class="ri-ball-pen-line ms-2"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        <partial name="_CreateMessage" model="new MessageVM { TicketId = Model.TicketId }" />
                         <!-- end of add-ticket-form -->
                     </div>
                 </div>
