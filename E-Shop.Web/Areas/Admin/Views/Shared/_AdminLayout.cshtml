@@ -16,8 +16,10 @@
             <partial name="_AdminSideBarMenu" />
             <div class="layout-page">
                 <partial name="_AdminTopNavBar" />
-                <div class="content-wrapper">
-                    @RenderBody()
+                <div class="content-wrapper container">
+                    <div class="content">
+                        @RenderBody()
+                    </div>
                     <partial name="_AdminFooter" />
                     <div class="content-backdrop fade"></div>
                 </div>
@@ -29,7 +31,7 @@
             <div class="drag-target"></div>
         </div>
         <partial name="_ErrorMessage">
-            < name="_AdminScripts" />
+            <partial name="_AdminScripts" />
             @await RenderSectionAsync("Scripts", required: false)
     </div>
 </body>

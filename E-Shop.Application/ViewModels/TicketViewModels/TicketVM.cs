@@ -19,10 +19,6 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         [MaxLength(255, ErrorMessage = "حداکثر تعداد کاراکتر مجاز 255 می باشد")]
         public string? Title { get; set; }
 
-        [Display(Name = "توضیخات")]
-        [Required(ErrorMessage = " لطفا {0} را وارد کنید")]
-        [MaxLength(255, ErrorMessage = "حداکثر تعداد کاراکتر مجاز 255 می باشد")]
-        public string? Description { get; set; }
 
         public int? UserId { get; set; }
 

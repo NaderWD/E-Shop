@@ -5,7 +5,7 @@ using E_Shop.Domain.Repositories.Interfaces;
 
 namespace E_Shop.Application.Services.Implementations
 {
-    class TicketMessageService(ITicketMessageRepository _repository) : ITicketMessageService
+    public class TicketMessageService(ITicketMessageRepository _repository) : ITicketMessageService
     {
         public async Task CreateMessage(MessageVM messageVM)
         {

@@ -13,7 +13,6 @@ namespace E_Shop.Application.Services.Implementations
             Ticket ticket = new()
             {
                 Title = ticketVM.Title,
-                Description = ticketVM.Description,
                 Section = ticketVM.Section,
                 Status = Status.Open,
                 CreateDate = DateTime.Now,
@@ -21,6 +20,7 @@ namespace E_Shop.Application.Services.Implementations
                 FilePath = ticketVM.FilePath,
             };
             await _repository.AddTicket(ticket);
+            await SaveChanges();
             var ticketMessage = new TicketMessage()
             {
                 TicketId = ticket.Id,
@@ -44,7 +44,6 @@ namespace E_Shop.Application.Services.Implementations
                     Section = item.Section,
                     Status = item.Status,
                     CreateDate = item.CreateDate,
-                    Description = item.Description,
                     FilePath = item.FilePath,
                     LastModifiedDate = item.CreateDate,
                 });
@@ -66,7 +65,6 @@ namespace E_Shop.Application.Services.Implementations
                     Section = item.Section,
                     Status = item.Status,
                     CreateDate = item.CreateDate,
-                    Description = item.Description,
                     FilePath = item.FilePath,
                     LastModifiedDate = item.CreateDate,
                 });
@@ -85,7 +83,6 @@ namespace E_Shop.Application.Services.Implementations
                 Section = item.Section,
                 Status = item.Status,
                 CreateDate = item.CreateDate,
-                Description = item.Description,
                 FilePath = item.FilePath,
                 LastModifiedDate = item.CreateDate,
             };
@@ -102,7 +99,6 @@ namespace E_Shop.Application.Services.Implementations
             Ticket ticket = new()
             {
                 Title = ticketVM.Title,
-                Description = ticketVM.Description,
                 Section = ticketVM.Section,
                 Status = ticketVM.Status,
                 LastModifiedDate = DateTime.Now,
