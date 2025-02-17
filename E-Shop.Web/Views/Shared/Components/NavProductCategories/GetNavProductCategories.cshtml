@@ -1,11 +1,11 @@
-﻿@* @model List<ProductCategoriesViewModel> *@
+﻿@model List<ProductCategoriesViewModel>
 
 
 <div class="vertical-menu">
     <a href="#" class="vertical-menu-btn">دسته بندی کالاها <i class="ri-apps-fill icon"></i></a>
     <div class="vertical-menu-items">
         <ul>
-           @*  @if (Model.Any())
+            @if (Model.Any())
             {
                 @foreach (var category in Model.Where(c => c.ParentId == null))
                 {
@@ -19,7 +19,7 @@
                         </ul>
                     </li>
                 }
-            } *@
+            }
 
 
         </ul>

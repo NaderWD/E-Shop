@@ -18,7 +18,8 @@
     <div class="page-header--bottom">
         <div class="container">
             <div class="d-flex align-items-center">
-                <partial name="_NavProductCategories" />
+                @await Component.InvokeAsync("NavProductCategories")
+
                 <partial name="_LeftTopNav" />
             </div>
         </div>
