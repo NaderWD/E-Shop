@@ -1,6 +1,9 @@
 ﻿@model IEnumerable<TicketVM>
 
 
+@{
+    int counter = 1;
+}
 
 <main class="page-content">
     <div class="container">
@@ -49,7 +52,7 @@
                                         @foreach (var ticket in Model)
                                         {
                                             <tr>
-                                                <td class="fa-num">@ticket.Id</td>
+                                                <td class="fa-num">@counter</td>
                                                 <td class="fa-num">@ticket.CreateDate?.ToString("yyyy/MM/dd HH:mm:ss")</td>
                                                 <td class="fa-num">
                                                     <span class="badge rounded-pill @("section-" + ticket.Section.ToString())">
@@ -70,7 +73,7 @@
                                                 <td class="fa-num">@ticket.LastModifiedDate?.ToString("yyyy/MM/dd")</td>
                                                 <td class="fa-num">@ticket.Message?.Count()</td>
                                                 <td>
-                                                    <a href="@Url.Action("TicketMessages", new { id = ticket.Id })" class="btn btn-circle btn-info my-1">
+                                                    <a href="@Url.Action("TicketMessages", new { ticketId = ticket.Id })" class="btn btn-circle btn-info my-1">
                                                         <i class="ri-eye-line"></i>
                                                     </a>
                                                     <a href="javascript:void(0)" class="btn btn-circle btn-danger my-1"
@@ -78,7 +81,9 @@
                                                         <i class="ri-close-line"></i>
                                                     </a>
                                                 </td>
+
                                             </tr>
+                                            counter++;
                                         }
                                     </tbody>
                                 </table>

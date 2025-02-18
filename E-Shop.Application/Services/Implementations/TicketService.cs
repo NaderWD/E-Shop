@@ -50,6 +50,7 @@ namespace E_Shop.Application.Services.Implementations
             {
                 tickets.Add(new TicketVM
                 {
+                    Id = item.Id,
                     Title = item.Title,
                     Message = item.Message,
                     Priority = item.Priority,
@@ -71,6 +72,7 @@ namespace E_Shop.Application.Services.Implementations
             {
                 tickets.Add(new TicketVM
                 {
+                    Id = item.Id,
                     Title = item.Title,
                     Message = item.Message,
                     Priority = item.Priority,
@@ -126,8 +128,9 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task DeleteTicket(int ticketId)
         {
-            TicketVM ticket = new() { Id = ticketId, };
-            await _repository.DeleteTicket(ticket.Id);
+            var message = await _messageRepository.GetMessageByTicketId(ticketId);
+            await _messageRepository.DeleteMessage(message.Id);
+            await _repository.DeleteTicket(ticketId);
             await SaveChanges();
         }
 

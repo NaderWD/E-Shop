@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace E_Shop.Domain.Enum
 
+
+namespace E_Shop.Domain.Enum
 
 {
     public static class TicketsEnums

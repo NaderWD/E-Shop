@@ -1,4 +1,4 @@
-﻿@model MessageVM
+﻿@* @model MessageVM
 
 
 
@@ -6,43 +6,26 @@
     <div class="row">
         <div class="col-12">
             <!-- start of form-element -->
-            <div class="form-element-row mb-5">
-                <label class="label">پیام</label>
-                <textarea rows="5" class="form-control"
-                          placeholder="متن پیام" asp-for="Text"></textarea>
+            <div class="form-element-row mb-3">
+                <textarea rows="3" class="form-control" placeholder="متن پیام" asp-for="Text"></textarea>
             </div>
             <!-- end of form-element -->
         </div>
-        <div class="col-12">
-            <!-- start of form-element -->
-            <div class="form-element-row form-element-row-file mb-5">
-                <div class="text-center">
-                    <div class="fs-6 fw-bold text-dark">
-                        عکس یا ویدیو خود را بارگذاری
-                        کنید.
-                    </div>
-                    <div class="fs-7 fw-bold text-muted mb-4">
-                        ( حداکثر ۵ تصویر jpeg یا
-                        PNG
-                        حداکثر یک
-                        مگابایت، یک ویدیو MP4 حداکثر ۵۰ مگابایت )
-                    </div>
-                </div>
-                <div class="custom-input-file">
-                    <input type="file" class="custom-input-file-input" asp-for="FilePath">
-                    <label class="custom-input-file-label">
-                        <span class="label">
-                            <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
-                        </span>
-                    </label>
-                </div>
+        <div class="col-12 d-flex justify-content-between align-items-center mb-3">
+            <!-- start of file attachment and sticker buttons -->
+            <div>
+                <label class="btn btn-secondary btn-file">
+                    <i class="fa fa-paperclip"></i> فایل
+                    <input type="file" class="d-none" asp-for="FilePath">
+                </label>
+                <button type="button" class="btn btn-secondary">
+                    <i class="fa fa-smile"></i> استیکر
+                </button>
             </div>
-            <!-- end of form-element -->
-        </div>
-        <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary px-4">
-                ثبت و ارسال <i class="ri-ball-pen-line ms-2"></i>
+            <!-- end of file attachment and sticker buttons -->
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-paper-plane"></i> ارسال
             </button>
         </div>
     </div>
-</form>
+</form>  *@

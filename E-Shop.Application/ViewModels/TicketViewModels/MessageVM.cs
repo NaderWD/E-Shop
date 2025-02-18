@@ -32,5 +32,7 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         public User? User { get; set; }
 
         public string? FilePath { get; set; }
+
+        public bool IsAdmin { get; set; }
     }
 }

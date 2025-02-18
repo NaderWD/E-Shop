@@ -7,6 +7,23 @@ namespace E_Shop.Web.Areas.User.Controllers
 {
     public class UserTicketController(ITicketService _service, ITicketMessageService _messageService) : UserBaseController
     {
+        private static List<MessageVM> _messages = [];
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(MessageVM message)
+        {
+            message.CreateDate = DateTime.Now;
+            _messages.Add(message);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Index()
+        {
+            return View(_messages);
+        }
+
+
+
+
         #region User Tickets
         [Route("UserTickets")]
         public async Task<IActionResult> UserTickets()
@@ -30,7 +47,6 @@ namespace E_Shop.Web.Areas.User.Controllers
         public async Task<IActionResult> CreateTicket(TicketVM ticketVM)
         {
             ticketVM.UserId = User.GetUserId();
-            ticketVM.IsAdmin = User.AdminCheck();
             if (!ModelState.IsValid) return View(ticketVM);
             await _service.CreateTicket(ticketVM);
             return RedirectToAction("UserTickets", new { userId = ticketVM.UserId });
@@ -40,18 +56,15 @@ namespace E_Shop.Web.Areas.User.Controllers
 
 
         #region Create Message
-        [HttpGet("CreateMessage")]
-        public IActionResult CreateMessage(int ticketId)
-        {
-            var model = new MessageVM { TicketId = ticketId };
-            return View(model);
-        }
-
         [HttpPost("CreateMessage")]
-        public async Task<IActionResult> CreateMessage(MessageVM message)
+        public async Task<IActionResult> CreateMessage(int ticketId)
         {
+            var message = new MessageVM { TicketId = ticketId };
             if (!ModelState.IsValid) return View(message);
             await _messageService.CreateMessage(message);
+            await _messageService.UpdateMessage(message);
+            var ticket = await _service.GetTicketById(ticketId);
+            await _service.UpdateTicket(ticket);
             return RedirectToAction("TicketMessages", new { ticketId = message.TicketId });
         }
         #endregion

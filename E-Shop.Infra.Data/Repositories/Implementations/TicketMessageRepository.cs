@@ -11,6 +11,11 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             await _context.AddAsync(message);
         }
 
+        public async Task<TicketMessage> GetMessageByTicketId(int ticketId)
+        {
+            return await _context.TicketMessages.FirstOrDefaultAsync(m => m.TicketId == ticketId);
+        }
+
         public async Task<IEnumerable<TicketMessage>> GetMessagesByTicketId(int ticketId)
         {
             return await _context.TicketMessages.Where(m => m.TicketId == ticketId).ToListAsync();
