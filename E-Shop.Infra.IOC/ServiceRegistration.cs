@@ -26,6 +26,9 @@ namespace E_Shop.Infra.IOC
 
             services.AddScoped<IProductCategoriesRepository, ProductCategoriesRepository>();
             services.AddScoped<IProductCategoriesService, ProductCategoriesService>();
+            
+            services.AddScoped<IProductsRepository, ProductsRepository>();
+            services.AddScoped<IProductsService, ProductService>();
 
             return services;
         }
