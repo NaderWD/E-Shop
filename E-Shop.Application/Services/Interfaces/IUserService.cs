@@ -1,5 +1,5 @@
-﻿using E_Shop.Application.ViewModels;
-using E_Shop.Application.ViewModels.AccountViewModels;
+﻿using E_Shop.Application.ViewModels.AccountViewModels;
+using E_Shop.Application.ViewModels.UserViewModels;
 using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models;
 
