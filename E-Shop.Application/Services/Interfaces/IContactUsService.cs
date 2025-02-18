@@ -1,4 +1,4 @@
-﻿using E_Shop.Application.ViewModels.ContactUsViewModels;
+﻿using E_Shop.Application.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

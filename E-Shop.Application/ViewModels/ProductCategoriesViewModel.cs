@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Shop.Application.ViewModels.ProductCategoryViewModels
+namespace E_Shop.Application.ViewModels
 {
     public class ProductCategoriesViewModel
     {

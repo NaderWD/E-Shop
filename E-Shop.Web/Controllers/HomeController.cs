@@ -1,5 +1,5 @@
 using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.ViewModels.ContactUsViewModels;
+using E_Shop.Application.ViewModels;
 using E_Shop.Domain.Models.Shared;
 using E_Shop.Web.Models;
 using Microsoft.AspNetCore.Mvc;
