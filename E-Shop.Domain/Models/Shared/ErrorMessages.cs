@@ -30,7 +30,9 @@
         public const string ProductCategoryUpdated = "گروه مورد نظر با موفقیت ویرایش شد.";
         public const string ProductCategoryDeleted = "گروه مورد نظر با موفقیت حذف شد.";
 
-
+        public const string ProductAdded = "محصول جدید با موفقیت اضافه شد.";
+        public const string ProductUpdated = "محصول مورد نظر با موفقیت ویرایش شد.";
+        public const string ProductDeleted = "محصول مورد نظر با موفقیت حذف شد.";
 
     }
 }

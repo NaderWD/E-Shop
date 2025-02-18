@@ -1,5 +1,6 @@
 ﻿using E_Shop.Domain.Models.Products;
 using E_Shop.Domain.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
        
         public List<Product> GetAll()
         {
-            return dbContext.Products.ToList();
+            return dbContext.Products.Include(p => p.Category).ToList();
         }
 
         public Product GetById(int Id)

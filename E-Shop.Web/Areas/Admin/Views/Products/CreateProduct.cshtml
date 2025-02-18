@@ -1,0 +1,87 @@
+﻿ @model E_Shop.Application.ViewModels.ProductsViewModel.CreateProductViewModel
+
+
+
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+
+<form class="add-new-product pt-0 fv-plugins-bootstrap5 fv-plugins-framework" id="addNewProductForm" novalidate="novalidate" method="post" asp-action="CreateProduct" enctype="multipart/form-data">
+    <div class="row">
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-product-title">عنوان</label>
+            <input type="text" class="form-control" id="add-product-title" placeholder="" aria-label="" asp-for="Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-product-price">قیمت</label>
+            <input type="number" class="form-control" id="add-product-price" placeholder="" aria-label="" asp-for="Price">
+            <span asp-validation-for="Price" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-product-image">تصویر</label>
+            <input type="file" class="form-control" id="add-product-image" placeholder="" aria-label="" asp-for="Image"> 
+            <span asp-validation-for="Image" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-product-category">دسته‌بندی</label>
+            <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" id="add-product-category" class="form-select">
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="mb-3 col-md-12 fv-plugins-icon-container">
+            <label class="form-label" for="add-product-description">توضیحات</label>
+            <textarea class="form-control" id="add-product-description" rows="3" asp-for="Description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-product-review">بررسی</label>
+            <textarea class="form-control" id="add-product-review" rows="3" asp-for="Review"></textarea>
+            <span asp-validation-for="Review" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-product-expertReview">بررسی کارشناس</label>
+            <textarea class="form-control" id="add-product-expertReview" rows="3" asp-for="ExpertReview"></textarea>
+            <span asp-validation-for="ExpertReview" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-product-inventory">موجودی</label>
+            <input type="number" class="form-control" id="add-product-inventory" placeholder="" aria-label="" asp-for="Inventory">
+            <span asp-validation-for="Inventory" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit" asp-action="CreateProduct">افزودن محصول</button>
+    <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" asp-action="ProductIndex">لغو</button>
+</form>
+
+<!-- Initialize CKEditor -->
+<script>
+    CKEDITOR.replace('add-product-description');
+    CKEDITOR.replace('add-product-review');
+    CKEDITOR.replace('add-product-expertReview');
+</script>
+
+
+
