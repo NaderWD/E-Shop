@@ -8,7 +8,7 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
     public class TicketVM
     {
         [Key]
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         public DateTime? CreateDate { get; set; }
 
@@ -41,5 +41,7 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         public Priority? Priority { get; set; }
 
         public string? FilePath { get; set; }
+
+        public bool? IsAdmin { get; set; }
     }
 }

@@ -1,4 +1,8 @@
-﻿@model ContactUsAnswerViewModel
+﻿@using E_Shop.Application.ViewModels
+@using E_Shop.Application.ViewModels.ContactUsViewModels
+@model ContactUsAnswerViewModel
+
+
 
 <form method="post" class="form-send-message d-flex justify-content-between align-items-center">
     <input class="form-control message-input me-3 shadow-none" style="border: 1px solid #ced4da;" placeholder="پیام خود را تایپ کنید." asp-for="AdminAnswer" />

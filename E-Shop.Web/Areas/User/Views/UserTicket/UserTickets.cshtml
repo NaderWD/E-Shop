@@ -38,6 +38,7 @@
                                             <th>زمان ایجاد</th>
                                             <th>بخش</th>
                                             <th>موضوع</th>
+                                            <th>درجه ی اهمیت</th>
                                             <th>وضعیت</th>
                                             <th>آخرین بروزرسانی</th>
                                             <th>تعداد پیام ها</th>
@@ -50,20 +51,30 @@
                                             <tr>
                                                 <td class="fa-num">@ticket.Id</td>
                                                 <td class="fa-num">@ticket.CreateDate?.ToString("yyyy/MM/dd HH:mm:ss")</td>
-                                                <td class="fa-num">@ticket.Section</td>
+                                                <td class="fa-num">
+                                                    <span class="badge rounded-pill @("section-" + ticket.Section.ToString())">
+                                                        @ticket.Section.GetDisplayName()
+                                                    </span>
+                                                </td>
                                                 <td class="fa-num">@ticket.Title</td>
                                                 <td class="fa-num">
-                                                    <span class="badge bg-warning rounded-pill">
-                                                        @ticket.Status
+                                                    <span class="badge rounded-pill @("Priority-" + ticket.Priority.ToString())">
+                                                        @ticket.Priority.GetDisplayName()
+                                                    </span>
+                                                </td>
+                                                <td class="fa-num">
+                                                    <span class="badge rounded-pill @("status-" + ticket.Status.ToString())">
+                                                        @ticket.Status.GetDisplayName()
                                                     </span>
                                                 </td>
                                                 <td class="fa-num">@ticket.LastModifiedDate?.ToString("yyyy/MM/dd")</td>
-                                                <td class="fa-num">@ticket.Message?.Count() ?? 0</td>
+                                                <td class="fa-num">@ticket.Message?.Count()</td>
                                                 <td>
                                                     <a href="@Url.Action("TicketMessages", new { id = ticket.Id })" class="btn btn-circle btn-info my-1">
                                                         <i class="ri-eye-line"></i>
                                                     </a>
-                                                    <a href="@Url.Action("DeleteTicket", new { id = ticket.Id })" class="btn btn-circle btn-danger my-1">
+                                                    <a href="javascript:void(0)" class="btn btn-circle btn-danger my-1"
+                                                       onclick="confirmDelete('@Url.Action("DeleteTicket", "UserTicket", new { ticketId = ticket.Id })')">
                                                         <i class="ri-close-line"></i>
                                                     </a>
                                                 </td>

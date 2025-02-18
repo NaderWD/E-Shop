@@ -1,8 +1,11 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.TicketViewModels;
+using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.TiketModels;
 using E_Shop.Domain.Repositories.Interfaces;
 using static E_Shop.Domain.Enum.TicketsEnums;
+using static E_Shop.Application.Tools.UserExtensions;
+using E_Shop.Application.Tools;
 
 namespace E_Shop.Application.Services.Implementations
 {
@@ -16,8 +19,11 @@ namespace E_Shop.Application.Services.Implementations
                 Section = ticketVM.Section,
                 Status = Status.Open,
                 CreateDate = DateTime.Now,
+                LastModifiedDate = DateTime.Now,
                 Priority = ticketVM.Priority,
                 FilePath = ticketVM.FilePath,
+                UserId = ticketVM.UserId,
+                IsAdmin = ticketVM.IsAdmin,
             };
             await _repository.AddTicket(ticket);
             await SaveChanges();
@@ -25,8 +31,14 @@ namespace E_Shop.Application.Services.Implementations
             {
                 TicketId = ticket.Id,
                 Text = ticketVM.Message,
+                CreateDate = DateTime.Now,
+                Title = ticketVM.Title,
+                FilePath = ticketVM.FilePath,
+                LastModifiedDate = ticketVM.LastModifiedDate,
+                UserId = ticketVM.UserId,
             };
             await _messageRepository.AddMessage(ticketMessage);
+            ticket.Message = ticketMessage.Text;
             await SaveChanges();
         }
 
@@ -96,21 +108,27 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task UpdateTicket(TicketVM ticketVM)
         {
-            Ticket ticket = new()
-            {
-                Title = ticketVM.Title,
-                Section = ticketVM.Section,
-                Status = ticketVM.Status,
-                LastModifiedDate = DateTime.Now,
-                Message = ticketVM.Message
-            };
+            var ticket = await _repository.GetTicketById(ticketVM.Id);
+            if (ticket == null) return;
+
+            ticket.Title = ticketVM.Title;
+            ticket.Section = ticketVM.Section;
+            ticket.Status = ticketVM.Status;
+            ticket.LastModifiedDate = DateTime.Now;
+            ticket.Priority = ticketVM.Priority;
+            ticket.FilePath = ticketVM.FilePath;
+            ticket.UserId = ticketVM.UserId;
+            ticket.IsAdmin = ticketVM.IsAdmin;
+
             await _repository.UpdateTicket(ticket);
-            await SaveChanges();
+            await _repository.SaveChanges();
         }
 
         public async Task DeleteTicket(int ticketId)
         {
-            await _repository.DeleteTicket(ticketId);
+            TicketVM ticket = new() { Id = ticketId, };
+            await _repository.DeleteTicket(ticket.Id);
+            await SaveChanges();
         }
 
         public async Task SaveChanges()

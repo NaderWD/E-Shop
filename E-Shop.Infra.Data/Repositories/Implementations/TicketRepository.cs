@@ -38,8 +38,9 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public async Task DeleteTicket(int ticketId)
         {
-            var ticket = await GetTicketById(ticketId);
+            var ticket = await GetTicketById(ticketId) ?? throw new NullReferenceException("Ticket not found.");
             _context.Tickets.Remove(ticket);
+            await SaveChanges();
         }
 
         public async Task SaveChanges()

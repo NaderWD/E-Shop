@@ -7,6 +7,7 @@ namespace E_Shop.Application.Services.Implementations
 {
     public class TicketMessageService(ITicketMessageRepository _repository) : ITicketMessageService
     {
+
         public async Task CreateMessage(MessageVM messageVM)
         {
             TicketMessage message = new()
