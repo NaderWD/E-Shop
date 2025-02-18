@@ -1,4 +1,6 @@
-﻿@model E_Shop.Domain.ViewModels.ContactUsMessageViewModel
+﻿@model ContactUsMessageViewModel
+
+
 
 <div class="card-center container">
     <div class="card" style="width: 40rem;">
@@ -35,7 +37,7 @@
                         </div>
                         <!-- Chat message form -->
                         <div class="chat-history-footer">
-                            <partial name="_ContactUsAnswerForm" model=" new  E_Shop.Application.ViewModels.ContactUsAnswerViewModel {Id = Model.Id}" />
+                            <partial name="_ContactUsAnswerForm" model=" new  E_Shop.Application.ViewModels.ContactUsViewModels.ContactUsAnswerViewModel {Id = Model.Id}" />
                         </div>
                     </div>
                 </div>

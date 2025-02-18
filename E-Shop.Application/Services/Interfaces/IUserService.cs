@@ -1,5 +1,5 @@
-﻿using E_Shop.Application.ViewModels;
-using E_Shop.Application.ViewModels.AccountViewModels;
+﻿using E_Shop.Application.ViewModels.AccountViewModels;
+using E_Shop.Application.ViewModels.UserViewModels;
 using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models;
 
@@ -20,6 +20,6 @@ namespace E_Shop.Application.Services.Interfaces
         Task<IEnumerable<UserViewModel>> GetAllUsers();
         Task<bool> ConfirmEmailService(ConfirmEmailVM model);
         Task<string> ReSendCode(string email);
-        Task<bool> CheckAdministrationById(int userId);
+        Task<bool> CheckAdmin(int userId);
     }
 }

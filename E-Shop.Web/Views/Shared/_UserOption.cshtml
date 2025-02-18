@@ -18,7 +18,7 @@
                                 <div class="profile-info overflow-y-hidden w-100 h-100">
                                     <img src="./theme-assets/images/avatar/default.png" alt="avatar">
                                     <a href="User" class="text-decoration-none text-dark fw-bold mb-2">
-                                        @User.FindFirst(ClaimTypes.Name).Value
+                                        @User.GetUsersName()
                                     </a>
                                 </div>
                             </div>

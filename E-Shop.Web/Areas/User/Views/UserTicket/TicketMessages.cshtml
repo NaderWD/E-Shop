@@ -20,11 +20,7 @@
                         <div class="tickets">
                             @foreach (var message in Model.Text)
                             {
-                                string userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                                int userId;
-                                bool isUserMessage = int.TryParse(userIdString, out userId) && @Model.Ticket.UserId == userId;
-
-                                if (isUserMessage)
+                                if (!User.AdminCheck())
                                 {
                                     <!-- start of user ticket -->
                                     <div class="ticket fa-num">

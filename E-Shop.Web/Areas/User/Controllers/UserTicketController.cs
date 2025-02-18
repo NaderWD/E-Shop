@@ -1,8 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
+using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.TicketViewModels;
-using E_Shop.Domain.Models.TiketModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace E_Shop.Web.Areas.User.Controllers
 {
@@ -10,8 +9,9 @@ namespace E_Shop.Web.Areas.User.Controllers
     {
         #region User Tickets
         [Route("UserTickets")]
-        public async Task<IActionResult> UserTickets(int userId)
+        public async Task<IActionResult> UserTickets()
         {
+            var userId = User.GetUserId();
             var model = await _service.GetTicketsByUserId(userId);
             return View(model);
         }
@@ -21,14 +21,16 @@ namespace E_Shop.Web.Areas.User.Controllers
 
         #region Create Ticket
         [HttpGet("CreateTicket")]
-        public IActionResult CreateTicket(int ticketId)
+        public IActionResult CreateTicket()
         {
-            return View(new TicketVM { Id = ticketId });
+            return View();
         }
 
         [HttpPost("CreateTicket")]
         public async Task<IActionResult> CreateTicket(TicketVM ticketVM)
         {
+            ticketVM.UserId = User.GetUserId();
+            ticketVM.IsAdmin = User.AdminCheck();
             if (!ModelState.IsValid) return View(ticketVM);
             await _service.CreateTicket(ticketVM);
             return RedirectToAction("UserTickets", new { userId = ticketVM.UserId });
@@ -80,10 +82,11 @@ namespace E_Shop.Web.Areas.User.Controllers
 
         #region Delete Ticket
         [HttpGet("DeleteTicket")]
-        public async Task<IActionResult> DeleteTicket(int ticketId, int userId)
+        public async Task<IActionResult> DeleteTicket(int ticketId)
         {
+            if (ticketId == 0) return BadRequest("Invalid ticket ID.");
             await _service.DeleteTicket(ticketId);
-            return RedirectToAction("UserTickets", new { userId });
+            return RedirectToAction("UserTickets", new { userId = User.GetUserId() });
         }
         #endregion
     }

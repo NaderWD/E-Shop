@@ -1,7 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
-using E_Shop.Application.ViewModels;
 using E_Shop.Application.ViewModels.AccountViewModels;
+using E_Shop.Application.ViewModels.UserViewModels;
 using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.Shared;
@@ -227,9 +227,11 @@ namespace E_Shop.Application.Services.Implementations
             return ErrorMessages.ResetPasswordEmailSent;
         }
 
-        public Task<bool> CheckAdministrationById(int userId)
+        public async Task<bool> CheckAdmin(int userId)
         {
-            throw new NotImplementedException();
+            var user = await GetUserById(userId);
+            if (user.IsAdmin == true) return true;
+            return false;
         }
     }
 }

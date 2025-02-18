@@ -1,5 +1,5 @@
 ﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.ViewModels;
+using E_Shop.Application.ViewModels.ProductCategoryViewModels;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;

@@ -1,7 +1,59 @@
-/* Write your code here */
-/*# sourceMappingURL=custom.css.map */
-
 
 .hidden {
     display: none;
+}
+
+/* CSS classes for Section enum */
+.section-Sale {
+    background-color: #f1c40f; /* Yellow */
+}
+
+.section-Support {
+    background-color: #3498db; /* Blue */
+}
+
+.section-Billing {
+    background-color: #e74c3c; /* Red */
+}
+
+.section-Technical {
+    background-color: #2ecc71; /* Green */
+}
+
+/* CSS classes for Priority enum */
+.priority-Normal {
+    background-color: #95a5a6; /* Gray */
+}
+
+.priority-Important {
+    background-color: #e67e22; /* Orange */
+}
+
+.priority-VeryImportant {
+    background-color: #e74c3c; /* Red */
+}
+
+/* CSS classes for Status enum */
+.status-Open {
+    background-color: #f1c40f; /* Yellow */
+}
+
+.status-Seen {
+    background-color: #3498db; /* Blue */
+}
+
+.status-UnSeen {
+    background-color: #e74c3c; /* Red */
+}
+
+.status-InProgress {
+    background-color: #2ecc71; /* Green */
+}
+
+.status-Resolved {
+    background-color: #9b59b6; /* Purple */
+}
+
+.status-Closed {
+    background-color: #7f8c8d; /* Dark Gray */
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Shop.Application.ViewModels
+namespace E_Shop.Application.ViewModels.ContactUsViewModels
 {
     public class ContactUsAnswerViewModel
     {

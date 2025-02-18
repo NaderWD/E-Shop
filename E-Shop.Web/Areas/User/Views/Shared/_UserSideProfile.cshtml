@@ -12,9 +12,9 @@
 
                     <div class="profile-info">
                         <a href="User" class="text-decoration-none text-dark fw-bold mb-2">
-                            @User.FindFirst(ClaimTypes.Name).Value
+                            @User.GetUsersName()
                         </a>
-                        <div class="text-muted fs-7 fw-light"><small> @User.FindFirst(ClaimTypes.Email).Value </small></div>
+                        <div class="text-muted fs-7 fw-light"><small> @User.GetUserEmail() </small></div>
                     </div>
                 </div>
             }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Shop.Domain.ViewModels
+namespace E_Shop.Application.ViewModels.CommonViewModels
 {
     public class ValidationResultViewModel
     {
