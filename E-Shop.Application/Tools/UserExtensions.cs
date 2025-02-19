@@ -53,18 +53,18 @@ namespace E_Shop.Application.Tools
 
 
 
-        #region Admin Check
-        public static bool AdminCheck(this ClaimsPrincipal adminCheck)
-        {
-            var admin = adminCheck.FindFirst(ClaimTypes.Role);
-            return admin != null;
-        }
+        //#region Admin Check
+        //public static bool AdminCheck(this ClaimsPrincipal adminCheck)
+        //{
+        //    var admin = adminCheck.FindFirst(ClaimTypes.Role);
+        //    return admin != null;
+        //}
 
-        public static bool AdminCheck(this IPrincipal principal)
-        {
-            if (principal is ClaimsPrincipal) return true;
-            return false;
-        }
-        #endregion
+        //public static bool AdminCheck(this IPrincipal principal)
+        //{
+        //    if (principal is ClaimsPrincipal) return true;
+        //    return false;
+        //}
+        //#endregion
     }
 }

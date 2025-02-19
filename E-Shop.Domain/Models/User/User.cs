@@ -1,5 +1,6 @@
 ﻿using E_Shop.Domain.Models.Common;
 using System.ComponentModel.DataAnnotations;
+using static E_Shop.Domain.Enum.UserEnums;
 
 namespace E_Shop.Domain.Models
 {
@@ -22,6 +23,12 @@ namespace E_Shop.Domain.Models
 
         [MaxLength(500, ErrorMessage = "شماره موبایل نباید بیشتر از ۵۰۰ کاراکتر باشد.")]
         public string? Mobile { get; set; }
+
+        public string? Image { get; set; }
+                                              
+        public string? Avatar { get; set; }
+
+        public AvatarStatus? AvatarStatus { get; set; }
 
         [MaxLength(255)]
         public string? ActivationCode { get; set; }

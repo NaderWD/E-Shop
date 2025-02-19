@@ -7,15 +7,15 @@ namespace E_Shop.Application.Services.Implementations
 {
     public class TicketMessageService(ITicketMessageRepository _repository) : ITicketMessageService
     {
-
-        public async Task CreateMessage(MessageVM messageVM)
+        public async Task AddMessageToTicket(MessageVM messageVM)
         {
             TicketMessage message = new()
             {
                 Text = messageVM.Text,
-                FilePath = messageVM.FilePath,
                 CreateDate = DateTime.Now,
                 TicketId = messageVM.TicketId,
+                LastModifiedDate = DateTime.Now,
+                IsAdminReply = messageVM.IsAdminReply
             };
             await _repository.AddMessage(message);
             await SaveChanges();
@@ -29,11 +29,31 @@ namespace E_Shop.Application.Services.Implementations
             {
                 messages.Add(new MessageVM
                 {
-                    Title = item.Title,
+                    Id = item.Id,
                     Text = item.Text,
                     CreateDate = item.CreateDate,
-                    FilePath = item.FilePath,
                     LastModifiedDate = item.CreateDate,
+                    TicketId = item.TicketId,
+                    IsDelete = item.IsDelete
+                });
+            }
+            return messages;
+        }
+
+        public async Task<IEnumerable<MessageVM>> GetDeletedMessagesByTicketId(int ticketId)
+        {
+            IEnumerable<TicketMessage> message = await _repository.GetDeletedMessagesByTicketId(ticketId);
+            List<MessageVM> messages = [];
+            foreach (var item in message)
+            {
+                messages.Add(new MessageVM
+                {
+                    Id = item.Id,
+                    Text = item.Text,
+                    CreateDate = item.CreateDate,
+                    LastModifiedDate = item.CreateDate,
+                    TicketId = item.TicketId,
+                    IsDelete = item.IsDelete
                 });
             }
             return messages;
@@ -41,14 +61,15 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task<MessageVM> GetMessageById(int messageId)
         {
-            var message = await _repository.GetMessageById(messageId);
+            var item = await _repository.GetMessageById(messageId);
             var model = new MessageVM
             {
-                Title = message.Title,
-                Text = message.Text,
-                CreateDate = message.CreateDate,
-                FilePath = message.FilePath,
-                LastModifiedDate = message.LastModifiedDate,
+                Id = item.Id,
+                Text = item.Text,
+                CreateDate = item.CreateDate,
+                LastModifiedDate = item.CreateDate,
+                TicketId = item.TicketId,
+                IsDelete = item.IsDelete
             };
             return model;
         }
@@ -63,11 +84,15 @@ namespace E_Shop.Application.Services.Implementations
             TicketMessage message = new()
             {
                 Text = messageVM.Text,
-                FilePath = messageVM.FilePath,
                 LastModifiedDate = DateTime.Now,
             };
             await _repository.UpdateMessage(message);
             await SaveChanges();
+        }
+
+        public async Task SoftDeleteMessage(int messageId)
+        {
+            await _repository.SoftDeleteMessage(messageId);
         }
 
         public async Task DeleteMessage(int messageId)
