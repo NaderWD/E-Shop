@@ -7,87 +7,46 @@ namespace E_Shop.Web.Areas.User.Controllers
 {
     public class UserTicketController(ITicketService _service, ITicketMessageService _messageService) : UserBaseController
     {
-        private static List<MessageVM> _messages = [];
-        [HttpPost]
-        public async Task<IActionResult> SendMessage(MessageVM message)
-        {
-            message.CreateDate = DateTime.Now;
-            _messages.Add(message);
-            return RedirectToAction("Index");
-        }
 
-        public IActionResult Index()
-        {
-            return View(_messages);
-        }
-
-
-
-
-        #region User Tickets
-        [Route("UserTickets")]
-        public async Task<IActionResult> UserTickets()
+        #region User Index
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
             var userId = User.GetUserId();
-            var model = await _service.GetTicketsByUserId(userId);
-            return View(model);
+            var tickets = await _service.GetTicketsByUserId(userId);
+            return View(tickets);
         }
         #endregion
 
 
 
-        #region Create Ticket
-        [HttpGet("CreateTicket")]
-        public IActionResult CreateTicket()
+        #region Details
+        [HttpGet("Details/{id}")]
+        public async Task<IActionResult> Details(int id)
+        {
+            var userId = User.GetUserId();
+            var ticket = await _service.GetTicketById(id);
+            if (ticket == null || ticket.UserId != userId) return NotFound();
+            return View(ticket);
+        }
+        #endregion 
+
+
+
+        #region Create
+        [HttpGet("Create")]
+        public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost("CreateTicket")]
-        public async Task<IActionResult> CreateTicket(TicketVM ticketVM)
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create(TicketVM ticketVM)
         {
-            ticketVM.UserId = User.GetUserId();
             if (!ModelState.IsValid) return View(ticketVM);
+            ticketVM.UserId = User.GetUserId();
             await _service.CreateTicket(ticketVM);
-            return RedirectToAction("UserTickets", new { userId = ticketVM.UserId });
-        }
-        #endregion
-
-
-
-        #region Create Message
-        [HttpPost("CreateMessage")]
-        public async Task<IActionResult> CreateMessage(int ticketId)
-        {
-            var message = new MessageVM { TicketId = ticketId };
-            if (!ModelState.IsValid) return View(message);
-            await _messageService.CreateMessage(message);
-            await _messageService.UpdateMessage(message);
-            var ticket = await _service.GetTicketById(ticketId);
-            await _service.UpdateTicket(ticket);
-            return RedirectToAction("TicketMessages", new { ticketId = message.TicketId });
-        }
-        #endregion
-
-
-
-        #region Ticket Messages
-        [HttpGet("TicketMessages")]
-        public async Task<IActionResult> TicketMessages(int ticketId)
-        {
-            var model = await _messageService.GetMessagesByTicketId(ticketId);
-            return View(model);
-        }
-        #endregion
-
-
-
-        #region Number Of Messages
-        [HttpGet("NumberOfMessages")]
-        public async Task<IActionResult> NumberOfMessages(int ticketId)
-        {
-            var count = await _messageService.GetMessageCounts(ticketId);
-            return RedirectToAction("UserTickets", new { ticketId, count });
+            return RedirectToAction(nameof(Index));
         }
         #endregion
 
@@ -95,11 +54,31 @@ namespace E_Shop.Web.Areas.User.Controllers
 
         #region Delete Ticket
         [HttpGet("DeleteTicket")]
-        public async Task<IActionResult> DeleteTicket(int ticketId)
+        public async Task<IActionResult> DeleteTicket(int id)
         {
-            if (ticketId == 0) return BadRequest("Invalid ticket ID.");
-            await _service.SoftDeleteTicket(ticketId);
-            return RedirectToAction("UserTickets", new { userId = User.GetUserId() });
+            var ticket = await _service.GetTicketById(id);
+            if (ticket == null || ticket.UserId == User.GetUserId()) return NotFound();
+            await _service.SoftDeleteTicket(id);
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
+
+
+
+        #region Reply To Ticket
+        [HttpPost("ReplyToTicket")]
+        public async Task<IActionResult> ReplyToTicket(int ticketId, string message, IFormFile attachment)
+        {
+            var ticket = await _service.GetTicketById(ticketId);
+            if (ticket == null || ticket.Id != User.GetUserId()) return NotFound();
+            var ticketMessage = new MessageVM
+            {
+                TicketId = ticketId,
+                Text = message,
+                IsAdminReply = false,
+            };
+            await _messageService.AddMessageToTicket(ticketMessage);
+            return RedirectToAction(nameof(Details), new { id = ticketId });
         }
         #endregion
     }

@@ -8,7 +8,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
     {
 
         #region View All Tickets
-        [Route("Admin/Tickets")]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var tickets = await _service.GetAllTickets();
@@ -18,8 +18,38 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
 
 
+        #region Details
+        [HttpGet("Details/{id}")]
+        public async Task<IActionResult> Details(int id)
+        {
+            var ticket = await _service.GetTicketById(id);
+            if (ticket == null) return NotFound();
+            return View(ticket);
+        }
+        #endregion
+
+
+
+        #region Create Ticket
+        [HttpGet("Create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create(TicketVM ticketVM)
+        {
+            if (!ModelState.IsValid) return View(ticketVM);
+            await _service.CreateTicket(ticketVM);
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
+
+
+
         #region Update Ticket
-        [HttpGet("Admin/Tickets/Edit/{id}")]
+        [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             var ticket = await _service.GetTicketById(id);
@@ -27,20 +57,20 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             return View(ticket);
         }
 
-        [HttpPost("Admin/Tickets/Edit/{id}")]
+        [HttpPost("Edit/{id}")]
         public async Task<IActionResult> Edit(int id, TicketVM ticketVM)
         {
             if (id != ticketVM.Id) return BadRequest();
             if (!ModelState.IsValid) return View(ticketVM);
             await _service.UpdateTicket(ticketVM);
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
         #endregion
 
 
 
         #region Delete Ticket
-        [HttpGet("Admin/Tickets/Delete/{id}")]
+        [HttpGet("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var ticket = await _service.GetTicketById(id);
@@ -48,7 +78,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             return View(ticket);
         }
 
-        [HttpPost("Admin/Tickets/Delete/{id}"), ActionName("Delete")]
+        [HttpPost("Delete/{id}"), ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _service.DeleteTicket(id);

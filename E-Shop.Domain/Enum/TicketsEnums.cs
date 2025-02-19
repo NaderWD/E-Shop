@@ -34,7 +34,7 @@ namespace E_Shop.Domain.Enum
             Resolved,
 
             [Display(Name = "بسته")]
-            closed,
+            Closed,
         }
 
         public enum Priority   

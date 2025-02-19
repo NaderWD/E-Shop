@@ -9,11 +9,6 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         [Key]
         public int? Id { get; set; }
 
-        [Display(Name = "موضوع")]
-        [Required(ErrorMessage = " لطفا {0} را وارد کنید")]
-        [MaxLength(255, ErrorMessage = "حداکثر تعداد کاراکتر مجاز 255 می باشد")]
-        public string? Title { get; set; }
-
         [Display(Name = "متن پیام")]
         [Required(ErrorMessage = " لطفا {0} را وارد کنید")]
         [MaxLength(2550, ErrorMessage = "حداکثر تعداد کاراکتر مجاز 0255 می باشد")]
@@ -27,13 +22,7 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
 
         public Ticket? Ticket { get; set; }
 
-        public int UserId { get; set; }
-
-        public User? User { get; set; }
-
-        public string? FilePath { get; set; }
-
-        public bool IsAdmin { get; set; }
+        public bool IsAdminReply { get; set; }
 
         public bool IsDelete { get; set; }   
     }

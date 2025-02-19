@@ -7,17 +7,15 @@ namespace E_Shop.Application.Services.Implementations
 {
     public class TicketMessageService(ITicketMessageRepository _repository) : ITicketMessageService
     {
-
-        public async Task CreateMessage(MessageVM messageVM)
+        public async Task AddMessageToTicket(MessageVM messageVM)
         {
             TicketMessage message = new()
             {
-                Title = messageVM.Title,
                 Text = messageVM.Text,
-                FilePath = messageVM.FilePath,
                 CreateDate = DateTime.Now,
                 TicketId = messageVM.TicketId,
                 LastModifiedDate = DateTime.Now,
+                IsAdminReply = messageVM.IsAdminReply
             };
             await _repository.AddMessage(message);
             await SaveChanges();
@@ -32,13 +30,10 @@ namespace E_Shop.Application.Services.Implementations
                 messages.Add(new MessageVM
                 {
                     Id = item.Id,
-                    Title = item.Title,
                     Text = item.Text,
                     CreateDate = item.CreateDate,
-                    FilePath = item.FilePath,
                     LastModifiedDate = item.CreateDate,
                     TicketId = item.TicketId,
-                    UserId = item.UserId,
                     IsDelete = item.IsDelete
                 });
             }
@@ -54,13 +49,10 @@ namespace E_Shop.Application.Services.Implementations
                 messages.Add(new MessageVM
                 {
                     Id = item.Id,
-                    Title = item.Title,
                     Text = item.Text,
                     CreateDate = item.CreateDate,
-                    FilePath = item.FilePath,
                     LastModifiedDate = item.CreateDate,
                     TicketId = item.TicketId,
-                    UserId = item.UserId,
                     IsDelete = item.IsDelete
                 });
             }
@@ -73,13 +65,10 @@ namespace E_Shop.Application.Services.Implementations
             var model = new MessageVM
             {
                 Id = item.Id,
-                Title = item.Title,
                 Text = item.Text,
                 CreateDate = item.CreateDate,
-                FilePath = item.FilePath,
                 LastModifiedDate = item.CreateDate,
                 TicketId = item.TicketId,
-                UserId = item.UserId,
                 IsDelete = item.IsDelete
             };
             return model;
@@ -95,7 +84,6 @@ namespace E_Shop.Application.Services.Implementations
             TicketMessage message = new()
             {
                 Text = messageVM.Text,
-                FilePath = messageVM.FilePath,
                 LastModifiedDate = DateTime.Now,
             };
             await _repository.UpdateMessage(message);

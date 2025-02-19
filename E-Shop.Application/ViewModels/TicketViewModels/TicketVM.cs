@@ -1,7 +1,6 @@
-﻿using E_Shop.Domain.Models.TiketModels;
-using E_Shop.Domain.Models;
-using static E_Shop.Domain.Enum.TicketsEnums;
+﻿using E_Shop.Domain.Models;
 using System.ComponentModel.DataAnnotations;
+using static E_Shop.Domain.Enum.TicketsEnums;
 
 namespace E_Shop.Application.ViewModels.TicketViewModels
 {
@@ -19,15 +18,9 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         [MaxLength(255, ErrorMessage = "حداکثر تعداد کاراکتر مجاز 255 می باشد")]
         public string? Title { get; set; }
 
-
         public int UserId { get; set; }
 
         public User? User { get; set; }
-
-        [Display(Name = "متن پیام")]
-        [Required(ErrorMessage = " لطفا {0} را وارد کنید")]
-        [MaxLength(2550, ErrorMessage = "حداکثر تعداد کاراکتر مجاز 2550 می باشد")]
-        public string Message { get; set; }
 
         [Display(Name = "بخض")]
         [Required(ErrorMessage = " لطفا {0} را انتخاب کنید")]
@@ -42,8 +35,10 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
 
         public string? FilePath { get; set; }
 
-        public bool? IsAdmin { get; set; }
+        public List<MessageVM> Messages { get; set; } = [];
 
-        public int IsDelete { get; set; }
+        public string? Message { get; set; }
+
+        public bool IsDelete { get; set; }
     }
 }
