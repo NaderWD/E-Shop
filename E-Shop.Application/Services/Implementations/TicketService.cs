@@ -86,6 +86,28 @@ namespace E_Shop.Application.Services.Implementations
             return tickets;
         }
 
+        public async Task<IEnumerable<TicketVM>> GetDeletedTicketsByUserId(int userId)
+        {
+            IEnumerable<Ticket> ticket = await _repository.GetDeletedTicketsByUserId(userId);
+            List<TicketVM> tickets = [];
+            foreach (var item in ticket)
+            {
+                tickets.Add(new TicketVM
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Message = item.Message,
+                    Priority = item.Priority,
+                    Section = item.Section,
+                    Status = item.Status,
+                    CreateDate = item.CreateDate,
+                    FilePath = item.FilePath,
+                    LastModifiedDate = item.CreateDate,
+                });
+            }
+            return tickets;
+        }
+
         public async Task<TicketVM> GetTicketById(int ticketId)
         {
             var item = await _repository.GetTicketById(ticketId);
@@ -124,6 +146,14 @@ namespace E_Shop.Application.Services.Implementations
 
             await _repository.UpdateTicket(ticket);
             await _repository.SaveChanges();
+        }
+
+        public async Task SoftDeleteTicket(int ticketId)
+        {
+            var messages = await _messageRepository.GetMessagesByTicketId(ticketId);
+            foreach (var item in messages) item.IsDelete = true;
+            await _repository.SoftDeleteTicket(ticketId);
+            await SaveChanges();
         }
 
         public async Task DeleteTicket(int ticketId)

@@ -98,7 +98,7 @@ namespace E_Shop.Web.Areas.User.Controllers
         public async Task<IActionResult> DeleteTicket(int ticketId)
         {
             if (ticketId == 0) return BadRequest("Invalid ticket ID.");
-            await _service.DeleteTicket(ticketId);
+            await _service.SoftDeleteTicket(ticketId);
             return RedirectToAction("UserTickets", new { userId = User.GetUserId() });
         }
         #endregion

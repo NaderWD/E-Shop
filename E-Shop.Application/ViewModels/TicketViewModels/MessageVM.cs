@@ -23,16 +23,18 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
 
         public DateTime? LastModifiedDate { get; set; }
 
-        public int? TicketId { get; set; }
+        public int TicketId { get; set; }
 
         public Ticket? Ticket { get; set; }
 
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
         public User? User { get; set; }
 
         public string? FilePath { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        public bool IsDelete { get; set; }   
     }
 }

@@ -20,7 +20,7 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         public string? Title { get; set; }
 
 
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
         public User? User { get; set; }
 
@@ -43,5 +43,7 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         public string? FilePath { get; set; }
 
         public bool? IsAdmin { get; set; }
+
+        public int IsDelete { get; set; }
     }
 }

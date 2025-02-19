@@ -12,10 +12,10 @@ namespace E_Shop.Domain.Enum
             [Display(Name = "فروش")]
             Sale,
 
-            [Display(Name = "پشتیبانی")]
+            [Display(Name = "پشتیبانی محصول")]
             Support,
 
-            [Display(Name = "مالی")]
+            [Display(Name = "مشکل در پرداخت")]
             Billing,
 
             [Display(Name = "فنی")]
@@ -26,12 +26,6 @@ namespace E_Shop.Domain.Enum
         {
             [Display(Name = "باز")]
             Open,
-
-            [Display(Name = "دیده شده")]
-            Seen,
-
-            [Display(Name = "دیده نشده")]
-            UnSeen,
 
             [Display(Name = "در حال بررسی")]
             InProgress,

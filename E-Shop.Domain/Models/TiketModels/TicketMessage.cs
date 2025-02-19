@@ -6,9 +6,9 @@ namespace E_Shop.Domain.Models.TiketModels
     {
         public string? Title { get; set; }
         public string? Text { get; set; }
-        public int? TicketId { get; set; }
+        public int TicketId { get; set; }
         public Ticket? Ticket { get; set; }
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         public User? User { get; set; }
         public string? FilePath { get; set; }
     }
