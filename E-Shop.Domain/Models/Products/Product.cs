@@ -37,5 +37,7 @@ namespace E_Shop.Domain.Models.Products
 
         [ForeignKey("CategoryId")]
         public ProductCategories Category { get; set; }
+
+        public ICollection<ProductColorMapping> Color { get; set; }
     }
 }

@@ -49,7 +49,12 @@ namespace E_Shop.Application.Services.Implementations
             model.Review = product.Review;
             model.ExpertReview = product.ExpertReview;
             model.Inventory = product.Inventory;
-            model.ImageName = product.ImageName;
+            
+            if (product.ImageName != null)
+            {
+                model.ImageName = product.ImageName;
+            }
+            
             model.Price = product.Price;
             model.CategoryId = product.CategoryId;
 
@@ -59,7 +64,7 @@ namespace E_Shop.Application.Services.Implementations
         
         public List<ProductViewModel> GetAll()
         {
-            var products = productsRepository.GetAll();
+            var products = productsRepository.GetAll().Where(p => p.IsDelete == false);
             List<ProductViewModel> model = new List<ProductViewModel>();
 
             foreach (var product in products)

@@ -5,6 +5,7 @@ using E_Shop.Domain.Models.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
@@ -24,6 +25,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             ViewBag.CategoryList = new SelectList(content.Category ?? new List<ProductCategoryViewModel>(), "Id", "Name");
             return View(content);
         }
+
         [HttpPost]
         public IActionResult CreateProduct(CreateProductViewModel model)
         {
@@ -51,7 +53,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 {
                     model.Image.CopyTo(stream);
                 }
-                model.ImageName = fileName;
+                model.ImageName = uniqueFileName;
             }
 
             var result = productsService.CreateProduct(model);
@@ -80,6 +82,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             ViewBag.CategoryList = new SelectList(content.Category ?? new List<ProductCategoryViewModel>(), "Id", "Name");
             return View(content);
         }
+
         [HttpPost]
         public IActionResult UpdateProduct(UpdateProductViewModel model)
         {
@@ -90,23 +93,28 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 return View(model);
             }
 
+            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/theme-assets/images/products", model.ImageName);
 
             if (model.Image != null && model.Image.Length > 0)
             {
+                
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
 
+                
                 var fileName = Path.GetFileNameWithoutExtension(model.Image.FileName);
                 var extension = Path.GetExtension(model.Image.FileName);
                 var uniqueFileName = $"{fileName}_{DateTime.Now.ToString("yyyyMMddHHmmss")}{extension}";
 
-
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/theme-assets/images/products", uniqueFileName);
-
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     model.Image.CopyTo(stream);
                 }
-                model.ImageName = fileName;
+                model.ImageName = uniqueFileName;
             }
 
             var result = productsService.UpdateProduct(model);
@@ -125,10 +133,17 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         #endregion Update Product
 
 
+
         #region Delete Product
 
-        public IActionResult DeleteProduct(int ProductId)
+        public IActionResult DeleteProduct(int ProductId , string ImageName)
         {
+            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/theme-assets/images/products", ImageName);
+            if (System.IO.File.Exists(oldFilePath))
+            {
+                System.IO.File.Delete(oldFilePath);
+            }
+
             var result = productsService.DeleteProduct(ProductId);
 
             if (result == true)

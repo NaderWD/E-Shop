@@ -13,7 +13,7 @@ namespace E_Shop.Application.Services.Implementations
 {
     public class ProductCategoriesService(IProductCategoriesRepository productCategoriesRepository) : IProductCategoriesService
     {
-       
+
         public List<ProductCategoriesViewModel> GetAll()
         {
             var category = productCategoriesRepository.GetAll();
@@ -63,7 +63,7 @@ namespace E_Shop.Application.Services.Implementations
                 }
                 return productCategories;
             }
-            else 
+            else
                 return new CreatProductCategoryViewModel();
         }
 
@@ -74,7 +74,7 @@ namespace E_Shop.Application.Services.Implementations
 
             foreach (var item in category.Where(c => c.ParentId == null))
             {
-                selectListitems.Add(new SelectListitem 
+                selectListitems.Add(new SelectListitem
                 {
                     Name = item.Name,
                     Id = item.Id,
@@ -90,16 +90,20 @@ namespace E_Shop.Application.Services.Implementations
 
 
             CreatProductCategoryViewModel productCategories = new CreatProductCategoryViewModel();
-            
+
             productCategories.ParentList = new List<SelectListitem>();
-            var selectitems =  GetSelectItems();
+            var selectitems = GetSelectItems();
 
             if (category != null)
             {
                 productCategories.Name = category.Name;
                 productCategories.Id = category.Id;
-                productCategories.ParentName = category.Parent.Name;
-                
+                if (category.Parent != null)
+                {
+                    productCategories.ParentName = category.Parent.Name;
+                }
+
+
                 foreach (var item in selectitems)
                 {
                     productCategories.ParentList.Add(new SelectListitem
@@ -115,7 +119,7 @@ namespace E_Shop.Application.Services.Implementations
                 return new CreatProductCategoryViewModel();
         }
 
-        public bool UpdateproductCategory(CreatProductCategoryViewModel model , bool IsDuplicatedCheck)
+        public bool UpdateproductCategory(CreatProductCategoryViewModel model, bool IsDuplicatedCheck)
         {
             if (IsDuplicatedCheck)
             {
@@ -132,7 +136,7 @@ namespace E_Shop.Application.Services.Implementations
                     return result;
                 }
             }
-            else 
+            else
             {
                 var category = productCategoriesRepository.GetProductCategoryById(model.Id);
 

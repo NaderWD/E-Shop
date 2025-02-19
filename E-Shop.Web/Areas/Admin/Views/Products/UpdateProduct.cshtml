@@ -27,6 +27,7 @@
             <input type="file" class="form-control" id="add-product-image" placeholder="" aria-label="" asp-for="Image"> 
             <span asp-validation-for="Image" class="text-danger"></span>
             <div class="fv-plugins-message-container invalid-feedback"></div>
+            <input type="hidden" value="@Model.ImageName" asp-for="ImageName" />
         </div>
 
         <div class="mb-3 col-md-6 fv-plugins-icon-container">
@@ -71,8 +72,9 @@
             <div class="fv-plugins-message-container invalid-feedback"></div>
         </div>
     </div>
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
 
-    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit" asp-action="UpdateProduct">افزودن محصول</button>
+    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit" asp-action="UpdateProduct">بروزرسانی محصول</button>
     <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" asp-action="ProductIndex">لغو</button>
 </form>
 

@@ -1,0 +1,47 @@
+﻿@model List<E_Shop.Application.ViewModels.Color.ColorViewModel>
+
+    <div class="container mt-5">
+        <h5 class="mb-4">لیست رنگ‌ها</h5>
+        <a type="button" class="btn btn-primary mb-3" asp-action="CreateColor">
+            افزودن رنگ جدید
+        </a>
+        <div class="table-responsive text-nowrap" style="min-height: 100vh;">
+            <table class="table card-table">
+                <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>کد</th>
+                        <th>عملیات ها</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Code</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-action="UpdateColor" asp-route-colorId="@item.Id">
+                                            <i class="bx bx-edit-alt me-1"></i> ویرایش
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.Name')">
+                                            <i class="bx bx-trash me-1"></i> حذف
+                                        </a>
+                                        <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteColor", new { colorId = item.Id })" style="display:none;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="colorId" value="@item.Id" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

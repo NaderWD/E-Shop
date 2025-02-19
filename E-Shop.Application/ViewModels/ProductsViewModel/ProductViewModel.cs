@@ -47,8 +47,8 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "لطفاً یک تصویر انتخاب کنید.")]
-        public IFormFile Image { get; set; }
+        
+        public IFormFile? Image { get; set; }
 
         [Required(ErrorMessage = "عنوان نباید خالی باشد.")]
         [StringLength(100, ErrorMessage = "عنوان باید کمتر از 100 کاراکتر باشد.")]
