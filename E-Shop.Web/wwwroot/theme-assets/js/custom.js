@@ -1,4 +1,5 @@
-﻿(function ($) {
+﻿
+(function ($) {
     "use strict";
     let THEME = {};
 
@@ -31,4 +32,21 @@ function confirmDelete(url) {
             window.location.href = url;
         }
     })
+}
+
+
+function readfile(input) {
+    const files = input.files;
+    const filelist = $("#files");
+    const invalidError = $("#InvalidFile");
+    filelist.empty();
+    invalidError.empty();
+
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var name = file.name;
+
+        var div = "<div>" + name + "</div>";
+        filelist.append(div);
+    }
 }

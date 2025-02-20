@@ -25,7 +25,7 @@ namespace E_Shop.Web.Areas.User.Controllers
 
 
 
-        #region Details & Chat Screen
+        #region Details & Save Message
         [HttpGet("/Ticket/Details")]
         public async Task<IActionResult> Details(int tiketId)
         {

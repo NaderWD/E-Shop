@@ -1,55 +1,66 @@
 ﻿@model TicketVM
+@{
+    int userId = User.GetUserId();
+}
 
 
 
-<main class="page-content">
-    <div class="container">
-        <div class="row mb-5">
-            <div class="col-xl-3 col-lg-4 col-md-5 mb-md-0 mb-4">
-                <div class="ui-sticky ui-sticky-top">
-                    <partial name="_UserSideProfile" />
-                </div>
-            </div>
-            <div class="col-xl-9 col-lg-8 col-md-7">
-                <div class="ui-box bg-white mb-5">
-                    <div class="ui-box-title">
-                        @Model.Title
-                    </div>
-                    <div class="ui-box-content">
-                        <!-- start of tickets -->
-                        <div class="tickets">
-                            <!-- start of ticket -->
-                            <div class="ticket fa-num">
-                                <div class="avatar"></div>
-                                <div class="text">
-                                    @Model.Message
-                                </div>
-                                <div class="date">@Model.CreateDate</div>
+
+<div class="col-xl-9 col-lg-8 col-md-7">
+    <div class="ui-box bg-white mb-5">
+        <div class="ui-box-title">
+            @Model.Title
+        </div>
+        <div class="ui-box-content">
+            <div class="tickets">
+                @foreach (var item in Model?.Messages.OrderByDescending(t => t.CreateDate))
+                {
+                    @if (item.SenderId != userId)
+                    {
+                        <div class="ticket fa-num">
+                            <div class="avatar"></div>
+                            <div class="text">
+                                @Model.Message
                             </div>
+                            @if (item.FilePath != null)
+                            {
+                                <span>
+                                    <a href="/TicketFiles/@item.FilePath" download="download"
+                                       class="btn btn-outline-light">دانلود فایل</a>
+                                </span>
                             }
-                            <!-- end of ticket -->
-                            <!-- start of ticket -->
-                            <div class="ticket reply fa-num">
-                                <div class="avatar staff"></div>
-                                <div class="text">
-                                    @Model.Message
-                                </div>
-                                <div class="date">@Model.CreateDate</div>
-                            </div>
-                            <!-- end of ticket -->
+                            <div class="date">@Model.CreateDate</div>
                         </div>
-                        <!-- end of tickets -->
-                        <div class="border-bottom my-4"></div>
-                        <div class="ui-box-title p-0 mb-4">
-                            ارسال پاسخ
+                    }
+                    else
+                    {
+
+                    }
+                    <div class="ticket reply fa-num">
+                        <div class="avatar staff"></div>
+                        <div class="text">
+                            @Model.Message
                         </div>
-                        <!-- start of add-ticket-form -->
-                        <partial name="_CreateMessage" model="new MessageVM { TicketId = Model.Id }" />
-                        <!-- end of add-ticket-form -->
+                        @if (item.FilePath != null)
+                        {
+                            <span>
+                                <a href="/TicketFiles/@item.FilePath" download="download"
+                                   class="btn btn-outline-light">دانلود فایل</a>
+                            </span>
+                        }
+                        <div class="date">@Model.CreateDate</div>
                     </div>
-                </div>
+                }
+                }
             </div>
+            <div class="border-bottom my-4"></div>
+            <div class="ui-box-title p-0 mb-4">
+                ارسال پاسخ
+            </div>
+            @if (Model.Status != Status.Closed)
+            {
+                <partial name="_SendMessage" model="new MessageVM { TicketId = Model.Id }" />
+            }
         </div>
     </div>
-</main>
-
+</div>
