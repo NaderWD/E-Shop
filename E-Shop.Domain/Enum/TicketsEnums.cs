@@ -24,9 +24,6 @@ namespace E_Shop.Domain.Enum
 
         public enum Status
         {
-            [Display(Name = "باز")]
-            Open,
-
             [Display(Name = "در حال بررسی")]
             InProgress,
 

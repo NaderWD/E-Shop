@@ -10,6 +10,7 @@ namespace E_Shop.Infra.IOC
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
+            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 

@@ -18,12 +18,12 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public async Task<IEnumerable<Ticket>> GetDeletedTicketsByUserId(int userId)
         {
-            return await _context.Tickets.Where(t => t.UserId == userId && t.IsDelete == true).ToListAsync();
+            return await _context.Tickets.Where(t => t.OwnerId == userId && t.IsDelete == true).ToListAsync();
         }
 
         public async Task<IEnumerable<Ticket>> GetTicketsByUserId(int userId)
         {
-            return await _context.Tickets.Where(t => t.UserId == userId && t.IsDelete == false).ToListAsync();
+            return await _context.Tickets.Where(t => t.OwnerId == userId && t.IsDelete == false).ToListAsync();
         }
 
         public async Task<Ticket> GetTicketById(int ticketId)
@@ -31,9 +31,14 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId && t.IsDelete == false);
         }
 
-        public async Task<int> GetTicketCounts(int userId)
+        public int? GetMessagesCountByTicketId(int ticketId)
         {
-            return await _context.Tickets.CountAsync(x => x.UserId == userId && x.IsDelete == false);
+            return _context.TicketMessages.Count(m => m.TicketId == ticketId);
+        }
+
+        public int? GetTicketsCountByUserId(int userId)   
+        {
+            return _context.Tickets.Count(t => t.OwnerId == userId);
         }
 
         public async Task UpdateTicket(Ticket ticket)
@@ -43,7 +48,7 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public async Task SoftDeleteTicket(int ticketId)
         {
-            var ticket = await GetTicketById(ticketId) ?? throw new NullReferenceException("Ticket not found.");
+            var ticket = await GetTicketById(ticketId) ?? throw new NullReferenceException("تیکت یافت نشد");
             ticket.IsDelete = true;
             _context.Tickets.Update(ticket);
         }

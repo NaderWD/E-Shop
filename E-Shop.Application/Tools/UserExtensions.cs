@@ -5,6 +5,7 @@ namespace E_Shop.Application.Tools
 {
     public static class UserExtensions
     {
+
         #region ID
         public static int GetUserId(this ClaimsPrincipal claims)
         {
@@ -51,20 +52,5 @@ namespace E_Shop.Application.Tools
         }
         #endregion
 
-
-
-        //#region Admin Check
-        //public static bool AdminCheck(this ClaimsPrincipal adminCheck)
-        //{
-        //    var admin = adminCheck.FindFirst(ClaimTypes.Role);
-        //    return admin != null;
-        //}
-
-        //public static bool AdminCheck(this IPrincipal principal)
-        //{
-        //    if (principal is ClaimsPrincipal) return true;
-        //    return false;
-        //}
-        //#endregion
     }
 }

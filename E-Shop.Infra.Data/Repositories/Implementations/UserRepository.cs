@@ -6,7 +6,6 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 {
     public class UserRepository(ShopDbContext _context) : IUserRepository
     {
-
         public async Task<bool> CreateUser(User user)
         {
             user.CreateDate = DateTime.Now;
@@ -39,6 +38,13 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return user;
         }
 
+        public async Task<bool> ChekAdmin(int id)
+        {
+            var user = await GetUserById(id);
+            if (user.IsAdmin == true) return true;
+            return false;
+        }
+
         public async Task<User> GetUserByEmail(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.EmailAddress == email);
@@ -61,7 +67,5 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             _context.Users.Update(user);
             return true;
         }
-
-
     }
 }

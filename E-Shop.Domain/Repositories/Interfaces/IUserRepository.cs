@@ -9,6 +9,7 @@ namespace E_Shop.Domain.Repositories.Interfaces
         Task<User> GetUserByEmail(string email);
         Task<User> GetUserByActivationCode(string code);
         Task<bool> EmailIsDuplicated(string email);
+        Task<bool> ChekAdmin(int id);
         Task<bool> CreateUser(User user);
         Task<bool> UpdateUser(User user);
         Task<bool> DeleteUser(int id);

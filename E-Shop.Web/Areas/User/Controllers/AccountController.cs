@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace E_Shop.Web.Areas.User.Controllers
 {
-    public class AccountController(IUserService _service) : UserBaseController
+    public class AccountController(IAccountService _service) : UserBaseController
     {
 
         #region Register

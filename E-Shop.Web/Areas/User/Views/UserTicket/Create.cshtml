@@ -1,7 +1,5 @@
 ﻿@model TicketVM
-@{
-    ViewData["Title"] = "ایجاد تیکت";
-}
+
 
 
 <main class="page-content">
@@ -21,57 +19,48 @@
                         کند.)
                     </div>
                     <div class="ui-box-content">
-                        <!-- start of add-ticket-form -->
-                        @* <form asp-action="CreateTicket" class="add-ticket-form" method="post"> 
+                        <form asp-action="Create" class="add-ticket-form" method="post">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <!-- start of form-element -->
                                     <div class="form-element-row mb-5">
-                                        <label class="label">موضوع</label>
-                                        <input type="text" class="form-control" placeholder="" asp-for="Title">
+                                        <label asp-for="Title" class="label">موضوع</label>
+                                        <input type="text" asp-for="Title" class="form-control" placeholder="موضوع تیکت">
+                                        <span asp-validation-for="Title" class="text-danger"></span>
                                     </div>
-                                    <!-- end of form-element -->
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <!-- start of form-element -->
                                     <div class="form-element-row mb-5">
-                                        <label class="label">بخش</label>
-                                        <select class="select2 form-control" asp-for="Section"
+                                        <label asp-for="Section" class="control-label">بخش</label>
+                                        <select asp-for="Section" class="form-control"
                                                 asp-items="Html.GetEnumSelectList<TicketsEnums.Section>()">
                                             <option value="">انتخاب کنید</option>
                                         </select>
+                                        <span asp-validation-for="Section" class="text-danger"></span>
                                     </div>
-                                    <!-- end of form-element -->
                                 </div>
                                 <div class="col-md-6">
-                                    <!-- start of form-element -->
                                     <div class="form-element-row mb-5">
-                                        <label class="label">اولویت</label>
-                                        <select class="select2 form-control" asp-for="Priority"
+                                        <label asp-for="Priority" class="control-label"></label>
+                                        <select asp-for="Priority" class="form-control"
                                                 asp-items="Html.GetEnumSelectList<TicketsEnums.Priority>()">
                                             <option value="">انتخاب کنید</option>
                                         </select>
+                                        <span asp-validation-for="Priority" class="text-danger"></span>
                                     </div>
-                                    <!-- end of form-element -->
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-12">
-                                    <!-- start of form-element -->
                                     <div class="form-element-row mb-5">
-                                        <label class="label">پیام</label>
-                                        <textarea rows="5" class="form-control"
-                                                  placeholder="متن پیام" asp-for="Message"></textarea>
+                                        <label asp-for="Message" class="label">پیام</label>
+                                        <textarea asp-for="Message" rows="5" class="form-control"
+                                                  placeholder="متن پیام"></textarea>
+                                        <span asp-validation-for="Message" class="text-danger"></span>
                                     </div>
-                                    <!-- end of form-element -->
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-12">
-                                    <!-- start of form-element -->
                                     <div class="form-element-row form-element-row-file mb-5">
                                         <div class="text-center">
                                             <div class="fs-6 fw-bold text-dark">
@@ -86,8 +75,9 @@
                                             </div>
                                         </div>
                                         <div class="custom-input-file">
-                                            <input type="file" class="custom-input-file-input" asp-for="FilePath">
-                                            <label class="custom-input-file-label">
+                                            <input type="file" class="custom-input-file-input" name="attachment"
+                                                   id="attachment">
+                                            <label for="attachment" class="custom-input-file-label">
                                                 <span class="label">
                                                     <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
                                                 </span>
@@ -102,42 +92,9 @@
                                     </button>
                                 </div>
                             </div>
-                        </form> *@
-
-                        <form asp-action="Create" class="add-ticket-form" method="post">
-                            <div class="form-group">
-                                <label asp-for="Title" class="control-label"></label>
-                                <input asp-for="Title" class="form-control" placeholder="موضوع تیکت" />
-                                <span asp-validation-for="Title" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Message" class="control-label"></label>
-                                <textarea asp-for="Message" class="form-control" placeholder="متن پیام"></textarea>
-                                <span asp-validation-for="Message" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Section" class="control-label">بخش</label>
-                                <select asp-for="Section" class="form-control"
-                                        asp-items="Html.GetEnumSelectList<TicketsEnums.Section>()">
-                                    <option value="">انتخاب کنید</option>
-                                </select>
-                                <span asp-validation-for="Section" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Priority" class="control-label"></label>
-                                <select asp-for="Priority" class="form-control"
-                                        asp-items="Html.GetEnumSelectList<TicketsEnums.Priority>()">
-                                    <option value="">انتخاب کنید</option>
-                                </select>
-                                <span asp-validation-for="Priority" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" value="Create" class="btn btn-primary" />
-                            </div>
                         </form>
-
                         <div>
-                            <a asp-action="Index">برگشت به لیست تیکت ها</a>
+                            <a asp-action="UserTickets">برگشت به لیست تیکت ها</a>
                         </div>
                         <!-- end of add-ticket-form -->
                     </div>
@@ -146,3 +103,7 @@
         </div>
     </div>
 </main>
+
+
+
+
