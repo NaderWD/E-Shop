@@ -11,7 +11,7 @@ namespace E_Shop.Application.Services.Implementations
     {
         public async Task AddMessageToTicket(MessageVM messageVM, IFormFile? attachment, int userId)
         {
-            if (messageVM.Id != userId) throw new Exception("شما مجاز به انجام این عملیات نیستید");
+            //if (messageVM.SenderId != userId) throw new Exception("شما مجاز به انجام این عملیات نیستید");
             if (attachment != null && attachment.Length > 0)
             {
                 if (!FileExtensions.IsImageOrPdf(attachment.FileName)) throw new Exception("فرمت فایل پشتیبانی نمیشود");
@@ -28,7 +28,7 @@ namespace E_Shop.Application.Services.Implementations
                 SenderId = userId,
             };
             var user = await _userRepository.GetUserById(userId);
-            if (user.IsAdmin) message.IsAdminReply = true;
+            //if (user.IsAdmin) message.IsAdminReply = true;
             await _repository.AddMessage(message);
             await SaveChanges();
             var ticket = await _ticketRepository.GetTicketById(messageVM.TicketId);

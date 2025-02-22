@@ -26,7 +26,6 @@ function confirmDelete(formId, fullname) {
     }).then((result) => {
         if (result.isConfirmed) {
             document.getElementById(formId).submit();
-
         }
     });
 }

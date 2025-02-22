@@ -1,6 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.TicketViewModels;
+using E_Shop.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,13 +27,13 @@ namespace E_Shop.Web.Areas.User.Controllers
 
 
         #region Details & Save Message
-        [HttpGet("User/UserTicket/Details/{tiketId}")]
-        public async Task<IActionResult> Details(int tiketId)
+        [HttpGet]
+        public async Task<IActionResult> Details(int ticketId)
         {
-            var ticket = _ticketService.GetTicketById(tiketId);
+            var ticket = await _ticketService.GetTicketById(ticketId);
             if (ticket == null) return NotFound();
-            var messages = await _messageService.GetMessagesByTicketId(tiketId);
-            return View(messages);
+            var messages = await _messageService.GetMessagesByTicketId(ticketId);
+            return View(ticket);
         }
 
         public async Task<IActionResult> SaveMessage(MessageVM messageVM, IFormFile? attachment)
@@ -50,7 +51,8 @@ namespace E_Shop.Web.Areas.User.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var userId = User.GetUserId();
+            return View(new TicketVM { OwnerId = userId });
         }
 
         [HttpPost]
@@ -66,7 +68,6 @@ namespace E_Shop.Web.Areas.User.Controllers
 
 
         #region Delete Ticket
-        [HttpGet]
         public async Task<IActionResult> DeleteTicket(int ticketId)
         {
             var ticket = await _ticketService.GetTicketById(ticketId);

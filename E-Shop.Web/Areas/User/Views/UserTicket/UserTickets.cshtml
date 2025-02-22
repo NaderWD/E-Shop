@@ -42,7 +42,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var ticket in Model.OrderByDescending(t => t.LastModifiedDate))
+                            @foreach (var ticket in Model.OrderBy(t => t.CreateDate))
                             {
                                 <tr>
                                     <td class="fa-num">@counter</td>
@@ -97,10 +97,18 @@
                                     <td class="fa-num">@ticket.LastModifiedDate</td>
                                     <td class="fa-num">@ticket.NumberOfMessages</td>
                                     <td>
-                                        <a asp-action="Details" asp-controller="UserTicket" asp-area="User" asp-route-id="@ticket.Id"
+
+                                        <a asp-action="Details" asp-controller="UserTicket" asp-area="User" asp-route-ticketId="@ticket.Id"
                                            class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
-                                        <a asp-action="DeleteTicket" asp-controller="UserTicket" asp-area="User" asp-route-id="@ticket.Id"
-                                           class="btn btn-circle btn-danger my-1"><i class="ri-close-line"></i></a>
+                                        <span>
+                                            <a class="badge bg-danger rounded-pill" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@ticket.Id', '@ticket.Title')">
+                                                <i class="bx bx-trash me-1"></i> حذف
+                                            </a>
+                                            <form id="deleteForm-@ticket.Id" method="post" action="@Url.Action("DeleteTicket", new { ticketId = ticket.Id , Title = ticket.Title })" style="display:none;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="ticketId" value="@ticket.Id" />
+                                            </form>
+                                        </span>
                                     </td>
                                 </tr>
                                 counter++;

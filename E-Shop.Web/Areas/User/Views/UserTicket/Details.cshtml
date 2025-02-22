@@ -15,12 +15,12 @@
             <div class="tickets">
                 @foreach (var item in Model?.Messages?.OrderByDescending(t => t.CreateDate).ToList())
                 {
-                    @if (item.SenderId != userId)
+                    @if (item.SenderId == userId)
                     {
                         <div class="ticket fa-num">
                             <div class="avatar"></div>
                             <div class="text">
-                                @Model.Message
+                                @item.Text
                             </div>
                             @if (item.FilePath != null)
                             {
@@ -29,28 +29,28 @@
                                        class="btn btn-outline-light">دانلود فایل</a>
                                 </span>
                             }
-                            <div class="date">@Model.CreateDate</div>
+                            <div class="date">@item.CreateDate</div>
                         </div>
                     }
                     else
                     {
 
-                    }
-                    <div class="ticket reply fa-num">
-                        <div class="avatar staff"></div>
-                        <div class="text">
-                            @Model.Message
+
+                        <div class="ticket reply fa-num">
+                            <div class="avatar staff"></div>
+                            <div class="text">
+                                @item.Text
+                            </div>
+                            @if (item.FilePath != null)
+                            {
+                                <span>
+                                    <a href="/TicketFiles/@item.FilePath" download="download"
+                                       class="btn btn-outline-light">دانلود فایل</a>
+                                </span>
+                            }
+                            <div class="date">@item.CreateDate</div>
                         </div>
-                        @if (item.FilePath != null)
-                        {
-                            <span>
-                                <a href="/TicketFiles/@item.FilePath" download="download"
-                                   class="btn btn-outline-light">دانلود فایل</a>
-                            </span>
-                        }
-                        <div class="date">@Model.CreateDate</div>
-                    </div>
-                }
+                    }
                 }
             </div>
             <div class="border-bottom my-4"></div>

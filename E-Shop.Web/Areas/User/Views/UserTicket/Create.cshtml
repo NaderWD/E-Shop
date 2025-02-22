@@ -13,6 +13,8 @@
         </div>
         <div class="ui-box-content">
             <form asp-action="Create" asp-controller="UserTicket" class="add-ticket-form" method="post" enctype="multipart/form-data">
+                <input asp-for="SenderId" type="hidden" value="@Model.OwnerId">
+                <input asp-for="OwnerId" type="hidden" value="@Model.OwnerId">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-element-row mb-5">

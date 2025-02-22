@@ -1,4 +1,4 @@
-﻿@model TicketVM
+﻿@model List<MessageVM>
 @{
     int adminId = User.GetUserId();
 }
@@ -23,16 +23,16 @@
                                 </div>
                                 <div class="chat-contact-info flex-grow-1 ms-3">
                                     <h6 class="m-0">@ViewBag.Name</h6>
-                                    <small class="user-status text-muted">@Model.Title</small>
+                                    <small class="user-status text-muted"></small>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="chat-history-body ps ps--active-y">
                         <ul class="list-unstyled chat-history mb-0">
-                            @foreach (var item in Model?.Messages?.OrderBy(x => x.CreateDate).ToList() ?? [])
+                            @foreach (var item in Model.ToList())
                             {
-                                @if (Model?.OwnerId != item.SenderId)
+                                @if (adminId == item.SenderId)
                                 {
                                     <li class="chat-message chat-message-right">
                                         <div class="d-flex overflow-hidden">
@@ -42,7 +42,7 @@
                                                 </div>
                                                 <div class="text-end text-muted mt-1">
                                                     <i class="bx bx-check-double text-success"></i>
-                                                    <small>@Model.CreateDate </small>
+                                                    <small>@item.CreateDate </small>
                                                     @if (item.FilePath != null)
                                                     {
                                                         <span> <a href="/TicketFiles/@item.FilePath" download="download">دانلود فایل</a></span>
@@ -71,7 +71,7 @@
                                                     <p class="mb-0">@item.Text</p>
                                                 </div>
                                                 <div class="text-muted mt-1">
-                                                    <small>@Model.CreateDate</small>
+                                                    <small>@item.CreateDate</small>
                                                     @if (item.FilePath != null)
                                                     {
                                                         <span>  <a href="/TicketFiles/@item.FilePath" download="download">دانلود فایل</a></span>
@@ -90,7 +90,10 @@
                             <div class="ps__thumb-y" tabindex="0" style="top: 188px; height: 52px;"></div>
                         </div>
                     </div>
-                    <partial name="_SendMessage" model="new MessageVM{ TicketId = @Model.Id }" />
+                    @foreach (var m in Model)
+                    {
+                        <partial name="_SendMessage" model="new MessageVM{ TicketId = m.TicketId }" />
+                    }
                 </div>
             </div>
             <div class="app-overlay"></div>

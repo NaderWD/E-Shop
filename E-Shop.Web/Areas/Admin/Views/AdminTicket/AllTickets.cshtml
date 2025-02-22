@@ -1,6 +1,8 @@
-﻿@using E_Shop.Domain.Models.TiketModels
-@model IEnumerable<TicketVM>
-
+﻿@model IEnumerable<TicketVM>
+@{
+    var name = User.GetUsersName();
+    var counter = 1;
+}
 
 
 
@@ -42,10 +44,9 @@
                         <tbody>
                             @foreach (var ticket in Model.OrderByDescending(t => t.LastModifiedDate).ToList())
                             {
-                                var counter = 1;
                                 <tr>
                                     <td class="fa-num">@counter</td>
-                                    <td class="fa-num">@ticket.User.FirstName @ticket.User.LastName</td>
+                                    <td class="fa-num">@name</td>
                                     <td class="fa-num">
                                         @if (ticket.Section == Section.Sale)
                                         {
@@ -96,12 +97,19 @@
                                     <td class="fa-num">@ticket.LastModifiedDate</td>
                                     <td class="fa-num">@ticket.NumberOfMessages</td>
                                     <td>
-                                        <a asp-action="SendMessage" asp-controller="AdminTicket" asp-area="Admin" asp-route-ticketId="@ticket.Id"
-                                           asp-route-userId="@ticket.OwnerId" class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
-                                        <a asp-action="EditTicket" asp-controller="AdminTicket" asp-area="Admin" asp-route-ticketId="@ticket.Id"
-                                           asp-route-userId="@ticket.OwnerId" class="btn btn-circle btn-warning my-1"><i class="ri-close-line"></i></a>
-                                        <a asp-action="DeleteTicket" asp-controller="AdminTicket" asp-area="Admin" asp-route-ticketId="@ticket.Id"
-                                           asp-route-userId="@ticket.OwnerId" class="btn btn-circle btn-danger my-1"><i class="ri-close-line"></i></a>
+                                        <span>
+                                            <a asp-action="SendMessage" asp-controller="AdminTicket" asp-area="Admin" asp-route-ticketId="@ticket.Id"
+                                               asp-route-userId="@ticket.OwnerId" class="badge bg-success rounded-pill">پاسخ</a>
+                                        </span>
+                                        <span>
+                                            <a class="badge bg-danger rounded-pill" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@ticket.Id', '@ticket.Title')">
+                                                <i class="bx bx-trash me-1"></i> حذف
+                                            </a>
+                                            <form id="deleteForm-@ticket.Id" method="post" action="@Url.Action("DeleteTicket", new { ticketId = ticket.Id , Title = ticket.Title })" style="display:none;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="ticketId" value="@ticket.Id" />
+                                            </form>
+                                        </span>
                                     </td>
                                 </tr>
                                 counter++;

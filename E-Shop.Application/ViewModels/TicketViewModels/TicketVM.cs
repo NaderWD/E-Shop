@@ -1,6 +1,7 @@
 ﻿using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.TiketModels;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static E_Shop.Domain.Enum.TicketsEnums;
 
 namespace E_Shop.Application.ViewModels.TicketViewModels
@@ -25,7 +26,7 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         public string? Title { get; set; }
 
         public int SenderId { get; set; }       
-                                             
+         
         public int OwnerId { get; set; }    
 
         public User? User { get; set; }
@@ -48,6 +49,6 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
         [Display(Name = "تعداد پیام ها")]
         public int? NumberOfMessages { get; set; }
 
-        public IEnumerable<MessageVM>? Messages { get; set; }
+        public List<MessageVM>? Messages { get; set; }
     }
 }

@@ -50,3 +50,8 @@ function readfile(input) {
         filelist.append(div);
     }
 }
+
+
+$(() => {
+    $("#sendTicketMessage").off("click");
+})
