@@ -7,15 +7,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace E_Shop.Application.Services.Implementations
 {
-    public class TicketMessageService(ITicketMessageRepository _repository, ITicketRepository _ticketRepository) : ITicketMessageService
+    public class TicketMessageService(ITicketMessageRepository _repository, ITicketRepository _ticketRepository, IUserRepository _userRepository) : ITicketMessageService
     {
         public async Task AddMessageToTicket(MessageVM messageVM, IFormFile? attachment, int userId)
         {
             if (messageVM.Id != userId) throw new Exception("شما مجاز به انجام این عملیات نیستید");
-            if (attachment != null)
-                if (!FileExtensions.IsImageOrPdf(attachment.FileName))
-                    throw new Exception("فرمت فایل پشتیبانی نمیشود");
-            messageVM.FilePath = SaveFile(attachment);
+            if (attachment != null && attachment.Length > 0)
+            {
+                if (!FileExtensions.IsImageOrPdf(attachment.FileName)) throw new Exception("فرمت فایل پشتیبانی نمیشود");
+                messageVM.FilePath = SaveFile(attachment);
+            }
             TicketMessage message = new()
             {
                 Text = messageVM.Text,
@@ -26,6 +27,8 @@ namespace E_Shop.Application.Services.Implementations
                 FilePath = messageVM.FilePath,
                 SenderId = userId,
             };
+            var user = await _userRepository.GetUserById(userId);
+            if (user.IsAdmin) message.IsAdminReply = true;
             await _repository.AddMessage(message);
             await SaveChanges();
             var ticket = await _ticketRepository.GetTicketById(messageVM.TicketId);

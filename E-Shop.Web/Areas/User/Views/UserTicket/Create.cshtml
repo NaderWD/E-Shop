@@ -12,7 +12,7 @@
             کند.)
         </div>
         <div class="ui-box-content">
-            <form asp-action="Create" asp-controller="UserTicket" class="add-ticket-form" method="post">
+            <form asp-action="Create" asp-controller="UserTicket" class="add-ticket-form" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-element-row mb-5">
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                             <div class="custom-input-file">
-                                <input type="file" accept=".jpg , .png , .pdf" class="custom-input-file-input" onchange="readfile(this)">
+                                <input asp-for="FilePath" type="file" accept=".jpg , .png , .pdf" class="custom-input-file-input" onchange="readfile(this)">
                                 <label asp-for="FilePath" class="custom-input-file-label">
                                     <span class="label">
                                         <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا pdf
@@ -92,6 +92,3 @@
         </div>
     </div>
 </div>
-
-
-

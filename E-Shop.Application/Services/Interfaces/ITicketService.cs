@@ -8,7 +8,7 @@ namespace E_Shop.Application.Services.Interfaces
     public interface ITicketService
     {
         Task CreateTicket(TicketVM ticketVM, IFormFile? attachment, int userId);
-        Task<IEnumerable<Ticket>> GetAllTickets();
+        Task<IEnumerable<TicketVM>> GetAllTickets();
         Task<IEnumerable<TicketVM>> GetDeletedTicketsByUserId(int userId);
         Task<IEnumerable<TicketVM>> GetTicketsByUserId(int userId);
         Task<TicketVM> GetTicketById(int ticketId);

@@ -30,7 +30,7 @@ namespace E_Shop.Application.ViewModels.TicketViewModels
 
         public User? User { get; set; }
 
-        [Display(Name = "بخض")]
+        [Display(Name = "بخش")]
         [Required(ErrorMessage = " لطفا {0} را انتخاب کنید")]
         public Section Section { get; set; }
 

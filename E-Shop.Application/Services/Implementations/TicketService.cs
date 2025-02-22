@@ -1,6 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.TicketViewModels;
+using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.TiketModels;
 using E_Shop.Domain.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -8,16 +9,19 @@ using static E_Shop.Domain.Enum.TicketsEnums;
 
 namespace E_Shop.Application.Services.Implementations
 {
-    public class TicketService(ITicketRepository _repository, ITicketMessageRepository _messageRepository) : ITicketService
+    public class TicketService(ITicketRepository _ticketRepository, ITicketMessageRepository _messageRepository, IUserRepository _userRepository) : ITicketService
     {
 
         public async Task CreateTicket(TicketVM ticketVM, IFormFile? attachment, int userId)
         {
-            if (attachment != null)
-                if (!FileExtensions.IsImageOrPdf(attachment.FileName))
-                    throw new Exception("فرمت فایل پشتیبانی نمیشود");
-            ticketVM.FilePath = SaveFile(attachment);
-
+            var user = await _userRepository.GetUserById(userId);
+            if (attachment != null && attachment.Length > 0)
+            {
+                if (!FileExtensions.IsImageOrPdf(attachment.FileName)) throw new Exception("فرمت فایل پشتیبانی نمیشود");
+                ticketVM.FilePath = SaveFile(attachment);
+            }
+            //User.GetUserId();
+            //var user = await _userRepository.GetUserById();
             Ticket ticket = new()
             {
                 Title = ticketVM.Title,
@@ -31,7 +35,7 @@ namespace E_Shop.Application.Services.Implementations
                 IsDelete = false,
 
             };
-            await _repository.AddTicket(ticket);
+            await _ticketRepository.AddTicket(ticket);
             await SaveChanges();
             TicketMessage ticketMessage = new()
             {
@@ -43,20 +47,17 @@ namespace E_Shop.Application.Services.Implementations
                 SenderId = ticketVM.SenderId,
                 IsDelete = false,
             };
+            if (user.IsAdmin) { ticketMessage.IsAdminReply = true; }
+            ;
             await _messageRepository.AddMessage(ticketMessage);
             ticket.NumberOfMessages = GetMessageCounts(ticketVM.Id);
-            await _repository.UpdateTicket(ticket);
+            await _ticketRepository.UpdateTicket(ticket);
             await SaveChanges();
         }
 
-        public async Task<IEnumerable<Ticket>> GetAllTickets()
+        public async Task<IEnumerable<TicketVM>> GetAllTickets()
         {
-            return await _repository.GetAllTickets();
-        }
-
-        public async Task<IEnumerable<TicketVM>> GetTicketsByUserId(int userId)
-        {
-            IEnumerable<Ticket> ticket = await _repository.GetTicketsByUserId(userId);
+            IEnumerable<Ticket> ticket = await _ticketRepository.GetAllTickets();
             List<TicketVM> tickets = [];
             foreach (var item in ticket)
             {
@@ -76,9 +77,32 @@ namespace E_Shop.Application.Services.Implementations
             return tickets;
         }
 
+        public async Task<IEnumerable<TicketVM>> GetTicketsByUserId(int userId)
+        {
+            IEnumerable<Ticket> ticket = await _ticketRepository.GetTicketsByUserId(userId);
+            List<TicketVM> tickets = [];
+            foreach (var item in ticket)
+            {
+                tickets.Add(new TicketVM
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Priority = item.Priority,
+                    Section = item.Section,
+                    Status = item.Status,
+                    CreateDate = item.CreateDate,
+                    FilePath = item.FilePath,
+                    LastModifiedDate = item.CreateDate,
+                    NumberOfMessages = GetMessageCounts(item.Id)
+                });
+            }
+            IEnumerable<TicketVM> myTickets = tickets;
+            return myTickets;
+        }
+
         public async Task<IEnumerable<TicketVM>> GetDeletedTicketsByUserId(int userId)
         {
-            IEnumerable<Ticket> ticket = await _repository.GetDeletedTicketsByUserId(userId);
+            IEnumerable<Ticket> ticket = await _ticketRepository.GetDeletedTicketsByUserId(userId);
             List<TicketVM> tickets = [];
             foreach (var item in ticket)
             {
@@ -100,7 +124,7 @@ namespace E_Shop.Application.Services.Implementations
 
         public async Task<TicketVM> GetTicketById(int ticketId)
         {
-            var ticket = await _repository.GetTicketById(ticketId);
+            var ticket = await _ticketRepository.GetTicketById(ticketId);
             if (ticket == null) return null;
             var messages = await _messageRepository.GetMessagesByTicketId(ticketId);
             List<MessageVM> ticketMessages = [];
@@ -142,17 +166,17 @@ namespace E_Shop.Application.Services.Implementations
 
         public int? GetTicketCounts(int userId)
         {
-            return _repository.GetTicketsCountByUserId(userId);
+            return _ticketRepository.GetTicketsCountByUserId(userId);
         }
 
         public int? GetMessageCounts(int ticketId)
         {
-            return _repository.GetMessagesCountByTicketId(ticketId);
+            return _ticketRepository.GetMessagesCountByTicketId(ticketId);
         }
 
         public async Task UpdateTicket(TicketVM ticketVM)
         {
-            var ticket = await _repository.GetTicketById(ticketVM.Id);
+            var ticket = await _ticketRepository.GetTicketById(ticketVM.Id);
             if (ticket == null) return;
 
             ticket.Title = ticketVM.Title;
@@ -164,16 +188,16 @@ namespace E_Shop.Application.Services.Implementations
             ticket.OwnerId = ticketVM.OwnerId;
             ticket.NumberOfMessages = GetMessageCounts(ticketVM.Id);
             ticket.IsDelete = ticketVM.IsDelete;
-            await _repository.UpdateTicket(ticket);
-            await _repository.SaveChanges();
+            await _ticketRepository.UpdateTicket(ticket);
+            await _ticketRepository.SaveChanges();
         }
 
         public async Task UpdateTicketStatus(int ticketId, Status status)
         {
-            var ticket = await _repository.GetTicketById(ticketId) ?? throw new Exception("تیکت پیدا نشد");
+            var ticket = await _ticketRepository.GetTicketById(ticketId) ?? throw new Exception("تیکت پیدا نشد");
             ticket.Status = status;
             ticket.LastModifiedDate = DateTime.Now;
-            await _repository.UpdateTicket(ticket);
+            await _ticketRepository.UpdateTicket(ticket);
             await SaveChanges();
         }
 
@@ -181,7 +205,7 @@ namespace E_Shop.Application.Services.Implementations
         {
             var messages = await _messageRepository.GetMessagesByTicketId(ticketId);
             foreach (var item in messages) item.IsDelete = true;
-            await _repository.SoftDeleteTicket(ticketId);
+            await _ticketRepository.SoftDeleteTicket(ticketId);
             await SaveChanges();
         }
 
@@ -189,7 +213,7 @@ namespace E_Shop.Application.Services.Implementations
         {
             var messages = await _messageRepository.GetMessagesByTicketId(ticketId);
             foreach (var message in messages) await _messageRepository.DeleteMessage(message.Id);
-            await _repository.DeleteTicket(ticketId);
+            await _ticketRepository.DeleteTicket(ticketId);
             await SaveChanges();
         }
 
@@ -197,13 +221,16 @@ namespace E_Shop.Application.Services.Implementations
         {
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(attachment.FileName);
             string savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + FilePath.TicketFilePath, fileName);
-            using var stream = new FileStream(savePath, FileMode.Create); attachment.CopyTo(stream);
+            using (var stream = new FileStream(savePath, FileMode.Create))
+            {
+                attachment.CopyTo(stream);
+            }
             return fileName;
         }
 
         public async Task SaveChanges()
         {
-            await _repository.SaveChanges();
+            await _ticketRepository.SaveChanges();
         }
     }
 }

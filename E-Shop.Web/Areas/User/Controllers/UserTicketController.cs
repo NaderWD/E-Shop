@@ -10,15 +10,15 @@ namespace E_Shop.Web.Areas.User.Controllers
 
 
     [Authorize]
-    public class UserTicketController(ITicketService _service, ITicketMessageService _messageService) : UserBaseController
+    public class UserTicketController(ITicketService _ticketService, ITicketMessageService _messageService) : UserBaseController
     {
 
-        #region User Index
-        [HttpGet("/UserTickets")]
+        #region User Tickets
+        [HttpGet]
         public async Task<IActionResult> UserTickets()
         {
             var userId = User.GetUserId();
-            var tickets = await _service.GetTicketsByUserId(userId);
+            var tickets = await _ticketService.GetTicketsByUserId(userId);
             return View(tickets);
         }
         #endregion
@@ -26,13 +26,13 @@ namespace E_Shop.Web.Areas.User.Controllers
 
 
         #region Details & Save Message
-        [HttpGet("/Ticket/Details")]
+        [HttpGet("User/UserTicket/Details/{tiketId}")]
         public async Task<IActionResult> Details(int tiketId)
         {
-            var userId = User.GetUserId();
-            var ticket = await _service.GetTicketById(tiketId);
-            if (ticket == null || ticket.OwnerId != userId) return NotFound();
-            return View(ticket);
+            var ticket = _ticketService.GetTicketById(tiketId);
+            if (ticket == null) return NotFound();
+            var messages = await _messageService.GetMessagesByTicketId(tiketId);
+            return View(messages);
         }
 
         public async Task<IActionResult> SaveMessage(MessageVM messageVM, IFormFile? attachment)
@@ -47,18 +47,18 @@ namespace E_Shop.Web.Areas.User.Controllers
 
 
         #region Create 
-        [HttpGet("/Ticket/Create")]
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost("/Ticket/Create")]
+        [HttpPost]
         public async Task<IActionResult> Create(TicketVM ticketVM, IFormFile? attachment)
         {
             if (!ModelState.IsValid) return View(ticketVM);
             var userId = User.GetUserId();
-            await _service.CreateTicket(ticketVM, attachment, userId);
+            await _ticketService.CreateTicket(ticketVM, attachment, userId);
             return RedirectToAction(nameof(UserTickets));
         }
         #endregion
@@ -66,12 +66,12 @@ namespace E_Shop.Web.Areas.User.Controllers
 
 
         #region Delete Ticket
-        [HttpGet("/Ticket/DeleteTicket")]
+        [HttpGet]
         public async Task<IActionResult> DeleteTicket(int ticketId)
         {
-            var ticket = await _service.GetTicketById(ticketId);
+            var ticket = await _ticketService.GetTicketById(ticketId);
             if (ticket == null || ticket.OwnerId != User.GetUserId()) return NotFound();
-            await _service.SoftDeleteTicket(ticketId);
+            await _ticketService.SoftDeleteTicket(ticketId);
             return RedirectToAction(nameof(UserTickets));
         }
         #endregion

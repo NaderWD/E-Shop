@@ -13,7 +13,7 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public async Task<IEnumerable<Ticket>> GetAllTickets()
         {
-            return await _context.Tickets.Where(t => t.IsDelete == false).ToListAsync();
+            return await _context.Tickets.Where(t => t.IsDelete == false).Include(m => m.User).Include(n => n.Messages).ToListAsync();
         }
 
         public async Task<IEnumerable<Ticket>> GetDeletedTicketsByUserId(int userId)
@@ -36,7 +36,7 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return _context.TicketMessages.Count(m => m.TicketId == ticketId);
         }
 
-        public int? GetTicketsCountByUserId(int userId)   
+        public int? GetTicketsCountByUserId(int userId)
         {
             return _context.Tickets.Count(t => t.OwnerId == userId);
         }

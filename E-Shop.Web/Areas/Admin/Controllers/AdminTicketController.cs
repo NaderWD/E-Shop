@@ -1,7 +1,6 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.TicketViewModels;
-using E_Shop.Application.ViewModels.UserViewModels;
 using Microsoft.AspNetCore.Mvc;
 using static E_Shop.Domain.Enum.TicketsEnums;
 
@@ -12,7 +11,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         #region View All Tickets
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> AllTickets()
         {
             var tickets = await _ticketService.GetAllTickets();
             return View(tickets);
@@ -25,7 +24,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateNewTicket()
         {
-            IEnumerable<UserViewModel> users = await _userService.GetAllUsers();
+            var users = await _userService.GetAllUsers();
             return View(users);
         }
         #endregion
@@ -34,20 +33,21 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         #region Send Ticket To User
         [HttpGet]
-        public async Task<IActionResult> SendMessage(int userId)
+        public async Task<IActionResult> SendTicket(int userId)
         {
-            var adminId = User.GetUserId();
+            var senderId = User.GetUserId();
             var user = await _userService.GetUserById(userId);
             ViewBag.Name = user.FirstName + " " + user.LastName;
-            return View(new TicketVM { OwnerId = userId, SenderId = adminId });
+            return View(new TicketVM { OwnerId = userId, SenderId = senderId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendMessage(TicketVM ticketVM, IFormFile? attachment)
+        public async Task<IActionResult> SendTicket(TicketVM ticketVM, IFormFile? attachment)
         {
             if (!ModelState.IsValid) return View(ticketVM);
-            await _ticketService.CreateTicket(ticketVM, attachment, User.GetUserId());
-            return View();
+            var userId = User.GetUserId();
+            await _ticketService.CreateTicket(ticketVM, attachment, userId);
+            return RedirectToAction(nameof(AllTickets));
         }
         #endregion
 
@@ -63,8 +63,8 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             return View(tikets);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SendMessage(MessageVM messageVM, IFormFile? attachment, Status status)
+        [HttpPost]                                        
+        public async Task<IActionResult> SaveMessage(MessageVM messageVM, IFormFile? attachment, Status status)
         {
             var ownerId = _ticketService.GetUserIdByTicketId(messageVM.TicketId);
             if (!ModelState.IsValid) return RedirectToAction(nameof(SendMessage), new { ticketId = messageVM.TicketId, userId = ownerId });
@@ -89,11 +89,12 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditTicket(TicketVM ticketVM)
+        public async Task<IActionResult> EditTicket(TicketVM ticketVM, Status status)
         {
             if (!ModelState.IsValid) return View(ticketVM);
+            await _ticketService.UpdateTicketStatus(ticketVM.Id, status);
             await _ticketService.UpdateTicket(ticketVM);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllTickets));
         }
         #endregion
 
@@ -101,7 +102,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         #region Delete Ticket
         [HttpGet]
-        public async Task<IActionResult> Delete(int ticketId)
+        public async Task<IActionResult> DeleteTicket(int ticketId)
         {
             var ticket = await _ticketService.GetTicketById(ticketId);
             if (ticket == null) return NotFound();
@@ -112,7 +113,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(int ticketId)
         {
             await _ticketService.DeleteTicket(ticketId);
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(AllTickets));
         }
         #endregion
 
