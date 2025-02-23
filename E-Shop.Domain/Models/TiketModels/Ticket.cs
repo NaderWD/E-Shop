@@ -7,6 +7,7 @@ namespace E_Shop.Domain.Models.TiketModels
     public class Ticket : BaseModel
     {
         public string Title { get; set; }
+        public int SenderId { get; set; }
         public int OwnerId { get; set; }
         [ForeignKey("OwnerId")]
         public User User { get; set; }

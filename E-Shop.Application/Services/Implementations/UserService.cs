@@ -19,9 +19,27 @@ namespace E_Shop.Application.Services.Implementations
             return true;
         }
 
-        public async Task<IEnumerable<UserViewModel>> GetAllUsers()
+        public async Task<List<UserDetailsVM>> GetAllUsersForShow()
         {
-            IEnumerable<User> model = await _repository.GetAllUsers();
+            List<User> model = await _repository.GetAllUsers();   
+            List<UserDetailsVM> users = [];
+
+            foreach (var item in model.Where(u => u.IsDelete == false))
+            {
+                users.Add(new UserDetailsVM
+                {
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    EmailAddress = item.EmailAddress,
+                    Mobile = item.Mobile,
+                });
+            }
+            return users;
+        }
+
+        public async Task<List<UserViewModel>> GetAllUsers()
+        {
+            List<User> model = await _repository.GetAllUsers();
             List<UserViewModel> users = [];
 
             foreach (var item in model.Where(u => u.IsDelete == false))

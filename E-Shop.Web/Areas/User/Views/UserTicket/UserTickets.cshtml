@@ -101,8 +101,8 @@
                                         <a asp-action="Details" asp-controller="UserTicket" asp-area="User" asp-route-ticketId="@ticket.Id"
                                            class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
                                         <span>
-                                            <a class="badge bg-danger rounded-pill" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@ticket.Id', '@ticket.Title')">
-                                                <i class="bx bx-trash me-1"></i> حذف
+                                            <a class="btn btn-circle bg-danger my-1" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@ticket.Id', '@ticket.Title')">
+                                                <i class="bx bx-trash me-1"></i>
                                             </a>
                                             <form id="deleteForm-@ticket.Id" method="post" action="@Url.Action("DeleteTicket", new { ticketId = ticket.Id , Title = ticket.Title })" style="display:none;">
                                                 @Html.AntiForgeryToken()

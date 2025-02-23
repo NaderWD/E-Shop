@@ -1,14 +1,14 @@
-﻿using E_Shop.Domain.Models;
-using E_Shop.Domain.Models.TiketModels;
+﻿using E_Shop.Domain.Models.TiketModels;
 
 namespace E_Shop.Domain.Repositories.Interfaces
 {
     public interface ITicketRepository
     {
         Task AddTicket(Ticket ticket);
-        Task<IEnumerable<Ticket>> GetAllTickets();
-        Task<IEnumerable<Ticket>> GetDeletedTicketsByUserId(int userId);
-        Task<IEnumerable<Ticket>> GetTicketsByUserId(int userId);
+        Task<List<Ticket>> GetAllTickets();
+        Task<List<Ticket>> GetDeletedTicketsByUserId(int userId);
+        Task<List<Ticket>> GetTicketsByUserId(int userId);         
+        Task<Ticket> GetLastTicketByUserId(int userId);
         Task<Ticket> GetTicketById(int ticketId);
         int? GetMessagesCountByTicketId(int ticketId);
         int? GetTicketsCountByUserId(int userId);

@@ -62,13 +62,13 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             var user = await _userService.GetUserById(userId);
             ViewBag.Name = user.FirstName + " " + user.LastName;
             return View(tikets);
-        }                                     
+        }
 
         [HttpPost]
         public async Task<IActionResult> SendMessage(MessageVM messageVM, IFormFile? attachment, Status status)
         {
-            var ownerId = _ticketService.GetUserIdByTicketId(messageVM.TicketId);
-            if (!ModelState.IsValid) return RedirectToAction(nameof(SendMessage), new { ticketId = messageVM.TicketId, userId = ownerId });
+            var ownerId = await _ticketService.GetUserIdByTicketId(messageVM.TicketId);
+            if (!ModelState.IsValid) return RedirectToAction(nameof(Chat), new { ticketId = messageVM.TicketId, userId = ownerId });
             var userId = User.GetUserId();
             await _messageService.AddMessageToTicket(messageVM, attachment, userId);
             await _ticketService.UpdateTicketStatus(messageVM.TicketId, status);
@@ -89,13 +89,38 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
         #endregion
 
+
+
+        #region Chat View
+        public async Task<IActionResult> Chat(int userId)
+        {
+            ChatVM model = new()
+            {
+                Users = await _userService.GetAllUsersForShow(),
+                SelectedUserId = userId,
+            };
+            if (userId != 0)
+            {
+                var adminId = User.GetUserId();
+                var ticket = await _ticketService.GetOrCreateConversation(userId, adminId);
+                model.SelectedTicketId = ticket.Id;
+                model.Messages = await _messageService.GetMessagesByTicketId(ticket.Id);
+                model.CurrentTicket = ticket;
+                await _ticketService.UpdateLastActivity(ticket.Id);
+            }
+            return View(model);
+        }
+        #endregion
+
+
+
         [HttpPost]
         public async Task<IActionResult> SaveMessage(MessageVM messageVM, IFormFile? attachment)
         {
             if (!ModelState.IsValid) return View("_SendMessage", messageVM);
             var userId = User.GetUserId();
             await _messageService.AddMessageToTicket(messageVM, attachment, userId);
-            return RedirectToAction(nameof(Details), new { messageVM.TicketId });
+            return RedirectToAction(nameof(SendMessage), new { messageVM.TicketId });
         }
     }
 }

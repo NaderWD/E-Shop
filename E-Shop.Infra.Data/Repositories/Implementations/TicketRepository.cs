@@ -1,6 +1,7 @@
 ﻿using E_Shop.Domain.Models.TiketModels;
 using E_Shop.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using static E_Shop.Domain.Enum.TicketsEnums;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations
 {
@@ -11,19 +12,36 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             await _context.AddAsync(ticket);
         }
 
-        public async Task<IEnumerable<Ticket>> GetAllTickets()
+        public async Task<List<Ticket>> GetAllTickets()
         {
-            return await _context.Tickets.Where(t => t.IsDelete == false).Include(m => m.User).Include(n => n.Messages).ToListAsync();
+            return await _context.Tickets.Where(t => t.IsDelete == false)
+                                         .Include(m => m.User)
+                                         .Include(n => n.Messages)
+                                         .ToListAsync();
         }
 
-        public async Task<IEnumerable<Ticket>> GetDeletedTicketsByUserId(int userId)
+        public async Task<List<Ticket>> GetDeletedTicketsByUserId(int userId)
         {
-            return await _context.Tickets.Where(t => t.OwnerId == userId && t.IsDelete == true).ToListAsync();
+            return await _context.Tickets.Where(t => t.OwnerId == userId && t.IsDelete == true)
+                                         .ToListAsync();
         }
 
-        public async Task<IEnumerable<Ticket>> GetTicketsByUserId(int userId)
+        public async Task<List<Ticket>> GetTicketsByUserId(int userId)
         {
-            return await _context.Tickets.Where(t => t.OwnerId == userId && t.IsDelete == false).ToListAsync();
+            return await _context.Tickets.Where(t => t.OwnerId == userId
+                                                  && t.IsDelete == false)
+                                    .Include(t => t.Messages)
+                                    .OrderByDescending(t => t.LastModifiedDate)
+                                    .ToListAsync();
+        }
+
+        public async Task<Ticket> GetLastTicketByUserId(int userId)
+        {
+
+            return await _context.Tickets.Where(t => t.OwnerId == userId &&
+                                                    !t.IsDelete &&
+                                                     t.Status != Status.Closed)
+                                         .FirstOrDefaultAsync();
         }
 
         public async Task<Ticket> GetTicketById(int ticketId)

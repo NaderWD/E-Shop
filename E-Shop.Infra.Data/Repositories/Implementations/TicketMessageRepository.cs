@@ -11,22 +11,22 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             await _context.AddAsync(message);
         }
 
-        public async Task<IEnumerable<TicketMessage>> GetMessagesByTicketId(int ticketId)
+        public async Task<List<TicketMessage>> GetMessagesByTicketId(int ticketId)
         {
             return await _context.TicketMessages.Where(m => m.TicketId == ticketId && m.IsDelete == false).ToListAsync();
         }
 
-        public async Task<IEnumerable<TicketMessage>> GetMessagesByUserId(int userId)
+        public async Task<List<TicketMessage>> GetMessagesByUserId(int userId)
         {
             return await _context.TicketMessages.Where(m => m.SenderId == userId && m.IsDelete == false).ToListAsync();
         }
 
-        public async Task<IEnumerable<TicketMessage>> GetDeletedMessagesByTicketId(int ticketId)
+        public async Task<List<TicketMessage>> GetDeletedMessagesByTicketId(int ticketId)
         {
             return await _context.TicketMessages.Where(m => m.TicketId == ticketId && m.IsDelete == true).ToListAsync();
         }
 
-        public async Task<IEnumerable<TicketMessage>> GetDeletedMessagesByUserId(int userId)
+        public async Task<List<TicketMessage>> GetDeletedMessagesByUserId(int userId)
         {
             return await _context.TicketMessages.Where(m => m.SenderId == userId && m.IsDelete == true).ToListAsync();
         }

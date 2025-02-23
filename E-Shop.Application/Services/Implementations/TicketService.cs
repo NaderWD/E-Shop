@@ -1,11 +1,9 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.TicketViewModels;
-using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.TiketModels;
 using E_Shop.Domain.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static E_Shop.Domain.Enum.TicketsEnums;
 
 namespace E_Shop.Application.Services.Implementations
@@ -52,7 +50,26 @@ namespace E_Shop.Application.Services.Implementations
             await SaveChanges();
         }
 
-        public async Task<IEnumerable<TicketVM>> GetAllTickets()
+        public async Task<TicketVM> GetOrCreateConversation(int userId, int adminId)
+        {
+            var existingTicket = await _ticketRepository.GetLastTicketByUserId(userId);
+            if (existingTicket != null) return existingTicket.ConvertToVM();
+            Ticket ticket = new()
+            {
+                Title = "تیکت ادمین",
+                OwnerId = userId,
+                SenderId = adminId,
+                LastModifiedDate = DateTime.Now,
+                CreateDate = DateTime.Now,
+                Status = Status.InProgress,
+                Priority = Priority.Important
+            };
+            await _ticketRepository.AddTicket(ticket);
+            await SaveChanges();
+            return ticket.ConvertToVM();
+        }
+
+        public async Task<List<TicketVM>> GetAllTickets()
         {
             var ticket = await _ticketRepository.GetAllTickets();
 
@@ -71,7 +88,7 @@ namespace E_Shop.Application.Services.Implementations
             }).ToList();
         }
 
-        public async Task<IEnumerable<TicketVM>> GetTicketsByUserId(int userId)
+        public async Task<List<TicketVM>> GetTicketsByUserId(int userId)
         {
             var tickets = await _ticketRepository.GetTicketsByUserId(userId);
             return [.. tickets.Select(item => new TicketVM()
@@ -90,7 +107,7 @@ namespace E_Shop.Application.Services.Implementations
             })];
         }
 
-        public async Task<IEnumerable<TicketVM>> GetDeletedTicketsByUserId(int userId)
+        public async Task<List<TicketVM>> GetDeletedTicketsByUserId(int userId)
         {
             IEnumerable<Ticket> ticket = await _ticketRepository.GetDeletedTicketsByUserId(userId);
             List<TicketVM> tickets = [];
@@ -118,17 +135,19 @@ namespace E_Shop.Application.Services.Implementations
             if (ticket == null) return null;
             var messages = await _messageRepository.GetMessagesByTicketId(ticketId);
 
-            var model = new TicketVM();
-            model.Messages = new List<MessageVM>();
+            var model = new TicketVM
+            {
+                Messages = [],
 
-            model.Id = ticket.Id;
-            model.Title = ticket.Title;
-            model.Priority = ticket.Priority;
-            model.Section = ticket.Section;
-            model.Status = ticket.Status;
-            model.CreateDate = ticket.CreateDate;
-            model.LastModifiedDate = ticket.LastModifiedDate;
-            model.OwnerId = ticket.OwnerId;
+                Id = ticket.Id,
+                Title = ticket.Title,
+                Priority = ticket.Priority,
+                Section = ticket.Section,
+                Status = ticket.Status,
+                CreateDate = ticket.CreateDate,
+                LastModifiedDate = ticket.LastModifiedDate,
+                OwnerId = ticket.OwnerId
+            };
 
             foreach (var message in messages)
             {
@@ -187,6 +206,14 @@ namespace E_Shop.Application.Services.Implementations
             ticket.Status = status;
             ticket.LastModifiedDate = DateTime.Now;
             await _ticketRepository.UpdateTicket(ticket);
+            await SaveChanges();
+        }
+
+        public async Task UpdateLastActivity(int ticketId)
+        {
+            var ticket = await _ticketRepository.GetTicketById(ticketId);
+            if (ticket == null) throw new Exception("تیکت پیدا نشد");
+            ticket.LastModifiedDate = DateTime.Now;
             await SaveChanges();
         }
 

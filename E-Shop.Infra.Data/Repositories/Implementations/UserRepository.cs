@@ -26,7 +26,7 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return _context.Users.Any(u => u.EmailAddress == email && u.IsDelete == false);
         }
 
-        public async Task<IEnumerable<User>> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
             return await _context.Users.ToListAsync();
 

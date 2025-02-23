@@ -28,7 +28,7 @@ namespace E_Shop.Application.Services.Implementations
                 SenderId = userId,
             };
             var user = await _userRepository.GetUserById(userId);
-            //if (user.IsAdmin) message.IsAdminReply = true;
+            if (user.IsAdmin) message.IsAdminReply = true;
             await _repository.AddMessage(message);
             await SaveChanges();
             var ticket = await _ticketRepository.GetTicketById(messageVM.TicketId);
@@ -37,9 +37,9 @@ namespace E_Shop.Application.Services.Implementations
             await SaveChanges();
         }
 
-        public async Task<IEnumerable<MessageVM>> GetMessagesByTicketId(int ticketId)
+        public async Task<List<MessageVM>> GetMessagesByTicketId(int ticketId)
         {
-            IEnumerable<TicketMessage> message = await _repository.GetMessagesByTicketId(ticketId);
+            List<TicketMessage> message = await _repository.GetMessagesByTicketId(ticketId);
             List<MessageVM> messages = [];
             foreach (var item in message)
             {
@@ -58,9 +58,9 @@ namespace E_Shop.Application.Services.Implementations
             return messages;
         }
 
-        public async Task<IEnumerable<MessageVM>> GetDeletedMessagesByTicketId(int ticketId)
+        public async Task<List<MessageVM>> GetDeletedMessagesByTicketId(int ticketId)
         {
-            IEnumerable<TicketMessage> message = await _repository.GetDeletedMessagesByTicketId(ticketId);
+            List<TicketMessage> message = await _repository.GetDeletedMessagesByTicketId(ticketId);
             List<MessageVM> messages = [];
             foreach (var item in message)
             {
