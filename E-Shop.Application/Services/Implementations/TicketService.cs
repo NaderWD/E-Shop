@@ -54,7 +54,7 @@ namespace E_Shop.Application.Services.Implementations
         {
             var ticket = await _ticketRepository.GetAllTickets();
 
-            return ticket.Select(item => new TicketVM()
+            return [.. ticket.Select(item => new TicketVM()
             {
                 Id = item.Id,
                 Title = item.Title,
@@ -66,7 +66,7 @@ namespace E_Shop.Application.Services.Implementations
                 LastModifiedDate = item.CreateDate,
                 NumberOfMessages = GetMessageCounts(item.Id),
                 OwnerId = item.OwnerId
-            }).ToList();
+            })];
         }
 
         public async Task<List<TicketVM>> GetTicketsByUserId(int userId)
