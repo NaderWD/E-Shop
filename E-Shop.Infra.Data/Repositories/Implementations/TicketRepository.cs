@@ -1,4 +1,4 @@
-﻿using E_Shop.Domain.Models.TiketModels;
+﻿using E_Shop.Domain.Models.Ticket;
 using E_Shop.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using static E_Shop.Domain.Enum.TicketsEnums;

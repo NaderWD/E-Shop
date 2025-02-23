@@ -1,4 +1,4 @@
-﻿using E_Shop.Domain.Models.TiketModels;
+﻿using E_Shop.Domain.Models.Ticket;
 
 namespace E_Shop.Domain.Repositories.Interfaces
 {

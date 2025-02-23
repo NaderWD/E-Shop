@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using static E_Shop.Domain.Enum.TicketsEnums;
 
-namespace E_Shop.Domain.Models.TiketModels
+namespace E_Shop.Domain.Models.Ticket
 {
     public class Ticket : BaseModel
     {

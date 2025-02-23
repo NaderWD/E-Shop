@@ -1,6 +1,6 @@
 ﻿using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.Products;
-using E_Shop.Domain.Models.TiketModels;
+using E_Shop.Domain.Models.Ticket;
 using Microsoft.EntityFrameworkCore;
 
 

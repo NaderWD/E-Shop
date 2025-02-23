@@ -1,7 +1,7 @@
 ﻿using E_Shop.Domain.Models.Common;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace E_Shop.Domain.Models.TiketModels
+namespace E_Shop.Domain.Models.Ticket
 {
     public class TicketMessage : BaseModel
     {
