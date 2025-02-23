@@ -7,7 +7,6 @@ namespace E_Shop.Application.Services.Interfaces
     public interface ITicketService
     {
         Task CreateTicket(TicketVM ticketVM, IFormFile? attachment, int userId);
-        Task<TicketVM> GetOrCreateConversation(int userId, int adminId);
         Task<List<TicketVM>> GetAllTickets();
         Task<List<TicketVM>> GetDeletedTicketsByUserId(int userId);
         Task<List<TicketVM>> GetTicketsByUserId(int userId);
@@ -17,7 +16,6 @@ namespace E_Shop.Application.Services.Interfaces
         int? GetMessageCounts(int ticketId);
         Task UpdateTicket(TicketVM ticketVM);
         Task UpdateTicketStatus(int ticketId, Status status);
-        Task UpdateLastActivity(int ticketId);
         Task SoftDeleteTicket(int ticketId);
         Task DeleteTicket(int ticketId);
         string SaveFile(IFormFile? attachment);

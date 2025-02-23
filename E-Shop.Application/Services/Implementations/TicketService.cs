@@ -50,25 +50,6 @@ namespace E_Shop.Application.Services.Implementations
             await SaveChanges();
         }
 
-        public async Task<TicketVM> GetOrCreateConversation(int userId, int adminId)
-        {
-            var existingTicket = await _ticketRepository.GetLastTicketByUserId(userId);
-            if (existingTicket != null) return existingTicket.ConvertToVM();
-            Ticket ticket = new()
-            {
-                Title = "تیکت ادمین",
-                OwnerId = userId,
-                SenderId = adminId,
-                LastModifiedDate = DateTime.Now,
-                CreateDate = DateTime.Now,
-                Status = Status.InProgress,
-                Priority = Priority.Important
-            };
-            await _ticketRepository.AddTicket(ticket);
-            await SaveChanges();
-            return ticket.ConvertToVM();
-        }
-
         public async Task<List<TicketVM>> GetAllTickets()
         {
             var ticket = await _ticketRepository.GetAllTickets();
@@ -206,14 +187,6 @@ namespace E_Shop.Application.Services.Implementations
             ticket.Status = status;
             ticket.LastModifiedDate = DateTime.Now;
             await _ticketRepository.UpdateTicket(ticket);
-            await SaveChanges();
-        }
-
-        public async Task UpdateLastActivity(int ticketId)
-        {
-            var ticket = await _ticketRepository.GetTicketById(ticketId);
-            if (ticket == null) throw new Exception("تیکت پیدا نشد");
-            ticket.LastModifiedDate = DateTime.Now;
             await SaveChanges();
         }
 
