@@ -1,5 +1,5 @@
-﻿using E_Shop.Domain.Models;
-using E_Shop.Domain.Repositories.Interfaces;
+﻿using E_Shop.Domain.Contracts.Users;
+using E_Shop.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations

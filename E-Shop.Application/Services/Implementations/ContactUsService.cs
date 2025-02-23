@@ -1,7 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.ContactUsViewModels;
+using E_Shop.Domain.Contracts.ContactUs;
 using E_Shop.Domain.Models;
-using E_Shop.Domain.Repositories.Interfaces;
 using E_Shop.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using System;

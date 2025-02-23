@@ -1,6 +1,9 @@
 ﻿using E_Shop.Application.Services.Implementations;
 using E_Shop.Application.Services.Interfaces;
-using E_Shop.Domain.Repositories.Interfaces;
+using E_Shop.Domain.Contracts.ContactUs;
+using E_Shop.Domain.Contracts.Products;
+using E_Shop.Domain.Contracts.Tickets;
+using E_Shop.Domain.Contracts.Users;
 using E_Shop.Infra.Data.Repositories.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 

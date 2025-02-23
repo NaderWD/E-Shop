@@ -1,6 +1,6 @@
 ﻿using E_Shop.Domain.Models;
 
-namespace E_Shop.Domain.Repositories.Interfaces
+namespace E_Shop.Domain.Contracts.Users
 {
     public interface IUserRepository
     {

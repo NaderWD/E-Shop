@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Shop.Domain.Repositories.Interfaces
+namespace E_Shop.Domain.Contracts.Products
 {
     public interface IProductCategoriesRepository
     {

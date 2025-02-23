@@ -1,7 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels;
+using E_Shop.Domain.Contracts.Products;
 using E_Shop.Domain.Models;
-using E_Shop.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;

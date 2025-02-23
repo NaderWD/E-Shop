@@ -1,4 +1,5 @@
-﻿using E_Shop.Domain.Models.Common;
+﻿using E_Shop.Domain.Models.Color;
+using E_Shop.Domain.Models.Common;
 using E_Shop.Domain.Models.Specification;
 using System.ComponentModel.DataAnnotations.Schema;
 

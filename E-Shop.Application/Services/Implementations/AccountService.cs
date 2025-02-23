@@ -1,9 +1,9 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.AccountViewModels;
+using E_Shop.Domain.Contracts.Users;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.Shared;
-using E_Shop.Domain.Repositories.Interfaces;
 
 namespace E_Shop.Application.Services.Implementations
 {

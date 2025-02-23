@@ -1,6 +1,6 @@
 ﻿using E_Shop.Domain.Models.Ticket;
 
-namespace E_Shop.Domain.Repositories.Interfaces
+namespace E_Shop.Domain.Contracts.Tickets
 {
     public interface ITicketRepository
     {

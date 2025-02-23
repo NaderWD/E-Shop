@@ -1,5 +1,5 @@
-﻿using E_Shop.Domain.Models.Ticket;
-using E_Shop.Domain.Repositories.Interfaces;
+﻿using E_Shop.Domain.Contracts.Tickets;
+using E_Shop.Domain.Models.Ticket;
 using Microsoft.EntityFrameworkCore;
 using static E_Shop.Domain.Enum.TicketsEnums;
 

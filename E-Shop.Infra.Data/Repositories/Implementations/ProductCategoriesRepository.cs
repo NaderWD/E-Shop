@@ -1,5 +1,5 @@
-﻿using E_Shop.Domain.Models.Products;
-using E_Shop.Domain.Repositories.Interfaces;
+﻿using E_Shop.Domain.Contracts.Products;
+using E_Shop.Domain.Models.Products;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

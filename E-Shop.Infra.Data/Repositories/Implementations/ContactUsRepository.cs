@@ -1,5 +1,5 @@
-﻿using E_Shop.Domain.Models;
-using E_Shop.Domain.Repositories.Interfaces;
+﻿using E_Shop.Domain.Contracts.ContactUs;
+using E_Shop.Domain.Models;
 
 namespace E_Shop.Infra.Data.Repositories.Implementations
 {

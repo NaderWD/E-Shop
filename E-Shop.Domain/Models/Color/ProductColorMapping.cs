@@ -1,13 +1,8 @@
 ﻿using E_Shop.Domain.Models.Common;
 using E_Shop.Domain.Models.Products;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace E_Shop.Domain.Models
+namespace E_Shop.Domain.Models.Color
 {
     public  class ProductColorMapping : BaseModel
     {

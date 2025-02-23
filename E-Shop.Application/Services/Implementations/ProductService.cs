@@ -1,8 +1,8 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels;
 using E_Shop.Application.ViewModels.ProductsViewModel;
+using E_Shop.Domain.Contracts.Products;
 using E_Shop.Domain.Models.Products;
-using E_Shop.Domain.Repositories.Interfaces;
 using E_Shop.Infra.Data.Repositories.Implementations;
 using System;
 using System.Collections.Generic;

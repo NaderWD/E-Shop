@@ -1,5 +1,5 @@
-﻿using E_Shop.Domain.Models;
-using E_Shop.Domain.Repositories.Interfaces;
+﻿using E_Shop.Domain.Contracts.Colors;
+using E_Shop.Domain.Models.Color;
 using System;
 using System.Collections.Generic;
 using System.Linq;
