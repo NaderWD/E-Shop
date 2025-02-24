@@ -1,13 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels;
-using E_Shop.Domain.Contracts.Products;
-using E_Shop.Domain.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using E_Shop.Domain.Contracts.ProductCont;
+using E_Shop.Domain.Models.ProductModels;
 
 namespace E_Shop.Application.Services.Implementations
 {
@@ -168,11 +162,12 @@ namespace E_Shop.Application.Services.Implementations
             if (productCategoriesRepository.GetAll().Any(c => c.Name == model.Name)) { return false; }
             else
             {
-                var category = new ProductCategories();
-
-                category.Name = model.Name;
-                category.ParentId = model.ParentId;
-                category.CreateDate = DateTime.Now;
+                var category = new ProductCategories
+                {
+                    Name = model.Name,
+                    ParentId = model.ParentId,
+                    CreateDate = DateTime.Now
+                };
                 return productCategoriesRepository.CreateProductCategory(category);
             }
 

@@ -1,4 +1,4 @@
-﻿using E_Shop.Domain.Models.Ticket;
+﻿using E_Shop.Domain.Models.TicketModels;
 using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Application.ViewModels.TicketViewModels

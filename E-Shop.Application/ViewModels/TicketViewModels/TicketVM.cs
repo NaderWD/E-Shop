@@ -1,7 +1,5 @@
-﻿using E_Shop.Domain.Models;
-using E_Shop.Domain.Models.TiketModels;
+﻿using E_Shop.Domain.Models.UserModels;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static E_Shop.Domain.Enum.TicketsEnums;
 
 namespace E_Shop.Application.ViewModels.TicketViewModels

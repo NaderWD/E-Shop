@@ -1,8 +1,8 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.UserViewModels;
-using E_Shop.Domain.Contracts.Users;
+using E_Shop.Domain.Contracts.UserCont;
 using E_Shop.Domain.Enum;
-using E_Shop.Domain.Models;
+using E_Shop.Domain.Models.UserModels;
 
 
 namespace E_Shop.Application.Services.Implementations

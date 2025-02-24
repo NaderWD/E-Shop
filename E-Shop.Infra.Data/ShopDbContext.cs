@@ -1,7 +1,8 @@
-﻿using E_Shop.Domain.Models;
-using E_Shop.Domain.Models.Color;
-using E_Shop.Domain.Models.Products;
-using E_Shop.Domain.Models.Ticket;
+﻿using E_Shop.Domain.Models.ColorModels;
+using E_Shop.Domain.Models.ContactUsModels;
+using E_Shop.Domain.Models.ProductModels;
+using E_Shop.Domain.Models.TicketModels;
+using E_Shop.Domain.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
 
 

@@ -1,5 +1,4 @@
-﻿using E_Shop.Domain.Models.Common;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Application.ViewModels.AccountViewModels
 {

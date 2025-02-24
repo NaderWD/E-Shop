@@ -1,7 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.Color;
-using E_Shop.Domain.Contracts.Colors;
-using E_Shop.Domain.Models.Color;
+using E_Shop.Domain.Contracts.ColorCont;
+using E_Shop.Domain.Models.ColorModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

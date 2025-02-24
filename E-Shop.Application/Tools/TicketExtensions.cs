@@ -1,5 +1,5 @@
 ﻿using E_Shop.Application.ViewModels.TicketViewModels;
-using E_Shop.Domain.Models.Ticket;
+using E_Shop.Domain.Models.TicketModels;
 
 namespace E_Shop.Application.Tools
 {

@@ -1,14 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.ContactUsViewModels;
-using E_Shop.Domain.Contracts.ContactUs;
-using E_Shop.Domain.Models;
-using E_Shop.Infra.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using E_Shop.Domain.Contracts.ContactUsCont;
+using E_Shop.Domain.Models.ContactUsModels;
 
 namespace E_Shop.Application.Services.Implementations
 {

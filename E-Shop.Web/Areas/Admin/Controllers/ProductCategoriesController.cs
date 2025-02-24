@@ -2,7 +2,7 @@
 using E_Shop.Application.Services.Implementations;
 using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels;
-using E_Shop.Domain.Models.Shared;
+using E_Shop.Domain.Models.ValidationModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 

@@ -1,10 +1,13 @@
 ﻿using E_Shop.Application.Services.Implementations;
 using E_Shop.Application.Services.Interfaces;
-using E_Shop.Domain.Contracts.ContactUs;
-using E_Shop.Domain.Contracts.Products;
-using E_Shop.Domain.Contracts.Tickets;
-using E_Shop.Domain.Contracts.Users;
-using E_Shop.Infra.Data.Repositories.Implementations;
+using E_Shop.Domain.Contracts.ContactUsCont;
+using E_Shop.Domain.Contracts.ProductCont;
+using E_Shop.Domain.Contracts.TicketCont;
+using E_Shop.Domain.Contracts.UserCont;
+using E_Shop.Infra.Data.Repositories.ContactUsRepo;
+using E_Shop.Infra.Data.Repositories.ProductRepo;
+using E_Shop.Infra.Data.Repositories.TicketRepo;
+using E_Shop.Infra.Data.Repositories.UserRepo;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace E_Shop.Infra.IOC

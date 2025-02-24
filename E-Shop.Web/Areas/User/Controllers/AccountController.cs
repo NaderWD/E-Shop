@@ -1,11 +1,11 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.UserViewModels;
 using E_Shop.Application.ViewModels.AccountViewModels;
-using E_Shop.Domain.Models.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using E_Shop.Domain.Models.ValidationModels;
 
 namespace E_Shop.Web.Areas.User.Controllers
 {

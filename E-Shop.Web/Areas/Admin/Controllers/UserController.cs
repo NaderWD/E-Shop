@@ -1,6 +1,6 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.UserViewModels;
-using E_Shop.Domain.Models.Shared;
+using E_Shop.Domain.Models.ValidationModels;
 using Microsoft.AspNetCore.Mvc;
 
 

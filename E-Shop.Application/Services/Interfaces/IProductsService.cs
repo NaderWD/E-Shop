@@ -1,11 +1,5 @@
 ﻿using E_Shop.Application.ViewModels;
 using E_Shop.Application.ViewModels.ProductsViewModel;
-using E_Shop.Domain.Models.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace E_Shop.Application.Services.Interfaces
 {
