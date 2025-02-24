@@ -1,4 +1,4 @@
-﻿using E_Shop.Application.ViewModels.Color;
+﻿using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Domain.Models;
 using System;
 using System.Collections.Generic;

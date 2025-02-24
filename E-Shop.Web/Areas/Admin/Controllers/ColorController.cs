@@ -1,9 +1,10 @@
 ﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.ViewModels.Color;
-using E_Shop.Domain.Models.Shared;
+using E_Shop.Application.ViewModels.ColorViewModels;
+using E_Shop.Domain.Models;
 using E_Shop.Application.Services.ColorServices;
 using E_Shop.Application.ViewModels.ColorViewModels;
 using Microsoft.AspNetCore.Mvc;
+using E_Shop.Domain.Models.ValidationModels;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {

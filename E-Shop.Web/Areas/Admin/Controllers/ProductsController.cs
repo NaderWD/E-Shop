@@ -1,4 +1,7 @@
-﻿using E_Shop.Application.Services.ProductServices;
+﻿using E_Shop.Application.Services.ColorServices;
+using E_Shop.Application.Services.Interfaces;
+using E_Shop.Application.Services.ProductServices;
+using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Application.ViewModels.ProductsViewModel;
 using E_Shop.Domain.Models.ValidationModels;
 using Microsoft.AspNetCore.Mvc;
@@ -190,9 +193,9 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             
         }
 
-        public IActionResult RemoveColor(int ColorId)
+        public IActionResult RemoveColor(int MappingId)
         {
-            var result = productColorService.RemoveColor(ColorId);
+            var result = productColorService.RemoveColor(MappingId);
             switch (result)
             {
                 case false:

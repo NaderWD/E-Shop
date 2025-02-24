@@ -1,5 +1,5 @@
 ﻿using E_Shop.Domain.Models;
-using E_Shop.Domain.Models.Products;
+using E_Shop.Domain.Models.ColorModels;
 using E_Shop.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;

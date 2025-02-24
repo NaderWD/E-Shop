@@ -1,5 +1,6 @@
 ﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.ViewModels.Color;
+using E_Shop.Application.ViewModels.ColorViewModels;
+using E_Shop.Application.ViewModels.ProductsViewModel;
 using E_Shop.Domain.Models;
 using E_Shop.Domain.Repositories.Interfaces;
 using System;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using E_Shop.Domain.Contracts.ColorCont;
+using E_Shop.Domain.Models.ColorModels;
 
 namespace E_Shop.Application.Services.Implementations
 {
@@ -36,6 +39,7 @@ namespace E_Shop.Application.Services.Implementations
             {
                 model.Add(new AddColorToProductViewModel
                 {
+                    Id = color.Id,
                     Name = color.Color.Name,
                     ColorId = color.Color.Id,
                     Code = color.Color.Code,

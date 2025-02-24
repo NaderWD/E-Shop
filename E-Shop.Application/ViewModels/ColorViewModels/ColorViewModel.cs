@@ -56,7 +56,9 @@ namespace E_Shop.Application.ViewModels.ColorViewModels
 
     public class AddColorToProductViewModel
     {
-        
+
+        public int Id { get; set; }
+
         [StringLength(50, ErrorMessage = "نام نمی‌تواند بیشتر از ۵۰ کاراکتر باشد")]
         public string? Name { get; set; }
 
