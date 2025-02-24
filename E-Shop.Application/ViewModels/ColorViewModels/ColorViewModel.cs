@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Shop.Application.ViewModels.Color
+namespace E_Shop.Application.ViewModels.ColorViewModels
 {
     public class ColorViewModel
     {

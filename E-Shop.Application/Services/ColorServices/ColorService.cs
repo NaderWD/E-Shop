@@ -1,4 +1,4 @@
-﻿using E_Shop.Application.ViewModels.Color;
+﻿using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Domain.Contracts.ColorCont;
 using E_Shop.Domain.Models.ColorModels;
 using System;
