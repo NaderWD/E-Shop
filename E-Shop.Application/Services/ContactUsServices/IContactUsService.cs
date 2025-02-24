@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Shop.Application.Services.Interfaces
+namespace E_Shop.Application.Services.ContactUsServices
 {
     public interface IContactUsService
     {

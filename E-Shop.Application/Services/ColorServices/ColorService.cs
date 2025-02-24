@@ -1,5 +1,4 @@
-﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.ViewModels.Color;
+﻿using E_Shop.Application.ViewModels.Color;
 using E_Shop.Domain.Contracts.ColorCont;
 using E_Shop.Domain.Models.ColorModels;
 using System;
@@ -9,7 +8,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Shop.Application.Services.Implementations
+namespace E_Shop.Application.Services.ColorServices
 {
     public class ColorService(IColorRepository colorRepository) : IColorService
     {

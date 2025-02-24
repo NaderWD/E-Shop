@@ -6,7 +6,7 @@ namespace E_Shop.Domain.Contracts.SpecificationCont
     {
         Task Create(Specification specification);
         Task<List<Specification>> GetAll();
-        Task<ProductSpecification> GetById(int specificationId);
+        Task<Specification> GetById(int specificationId);
         Task Update(Specification specification);
         Task Delete(int specificationId);
         Task Save();

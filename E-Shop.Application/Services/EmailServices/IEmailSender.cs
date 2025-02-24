@@ -1,4 +1,4 @@
-﻿namespace E_Shop.Application.Services.Interfaces
+﻿namespace E_Shop.Application.Services.EmailServices
 {
     public interface IEmailSender
     {

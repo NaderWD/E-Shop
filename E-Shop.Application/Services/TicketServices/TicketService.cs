@@ -1,5 +1,4 @@
-﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.Tools;
+﻿using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.TicketViewModels;
 using E_Shop.Domain.Contracts.TicketCont;
 using E_Shop.Domain.Contracts.UserCont;
@@ -7,7 +6,7 @@ using E_Shop.Domain.Models.TicketModels;
 using Microsoft.AspNetCore.Http;
 using static E_Shop.Domain.Enum.TicketsEnums;
 
-namespace E_Shop.Application.Services.Implementations
+namespace E_Shop.Application.Services.TicketServices
 {
     public class TicketService(ITicketRepository _ticketRepository, ITicketMessageRepository _messageRepository, IUserRepository _userRepository) : ITicketService
     {

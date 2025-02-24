@@ -1,7 +1,7 @@
 ﻿using E_Shop.Application.ViewModels.UserViewModels;
 using E_Shop.Domain.Enum;
 
-namespace E_Shop.Application.Services.Interfaces
+namespace E_Shop.Application.Services.UserServices
 {
     public interface IUserService
     {

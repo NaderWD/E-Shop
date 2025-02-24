@@ -1,9 +1,8 @@
-﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.ViewModels.ContactUsViewModels;
+﻿using E_Shop.Application.ViewModels.ContactUsViewModels;
 using E_Shop.Domain.Contracts.ContactUsCont;
 using E_Shop.Domain.Models.ContactUsModels;
 
-namespace E_Shop.Application.Services.Implementations
+namespace E_Shop.Application.Services.ContactUsServices
 {
     public class ContactUsService(IContactUsRepository contactUsRepository) : IContactUsService
     {

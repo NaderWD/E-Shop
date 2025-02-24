@@ -1,11 +1,11 @@
-﻿using E_Shop.Application.Services.Interfaces;
+﻿using E_Shop.Application.Services.EmailServices;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.AccountViewModels;
 using E_Shop.Domain.Contracts.UserCont;
 using E_Shop.Domain.Models.UserModels;
 using E_Shop.Domain.Models.ValidationModels;
 
-namespace E_Shop.Application.Services.Implementations
+namespace E_Shop.Application.Services.AccountServices
 {
     public class AccountService(IUserRepository _repository, IEmailSender _emailSender, IUserRepository _userRepository) : IAccountService
     {
@@ -13,7 +13,7 @@ namespace E_Shop.Application.Services.Implementations
         public async Task<string> Login(LoginVM login)
         {
             var user = await GetByEmail(login.EmailAddress);
-            var password = PasswordHasher.EncodePasswordMd5(login.Password);
+            var password = login.Password.EncodePasswordMd5();
 
             if (user == null) return ErrorMessages.UserNotExistError;
             if (password != user.Password) return ErrorMessages.WrongPassword;
@@ -33,7 +33,7 @@ namespace E_Shop.Application.Services.Implementations
                 LastName = userVM.LastName,
                 EmailAddress = userVM.EmailAddress.Trim().ToLower(),
                 Mobile = userVM.Mobile,
-                Password = PasswordHasher.EncodePasswordMd5(userVM.Password),
+                Password = userVM.Password.EncodePasswordMd5(),
                 ActivationCode = activeCode,
                 IsActive = false,
             };
@@ -63,7 +63,7 @@ namespace E_Shop.Application.Services.Implementations
             User user = await _repository.GetUserByEmail(resetPassword.EmailAddress);
             if (user.ActivationCode != code) return ErrorMessages.ResetPasswordCodeError;
 
-            user.Password = PasswordHasher.EncodePasswordMd5(password);
+            user.Password = password.EncodePasswordMd5();
             user.ActivationCode = CodeGenerator.GenerateCode();
             await _repository.UpdateUser(user);
             await _repository.Save();

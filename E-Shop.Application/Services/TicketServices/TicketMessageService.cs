@@ -1,12 +1,11 @@
-﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.Tools;
+﻿using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.TicketViewModels;
 using E_Shop.Domain.Contracts.TicketCont;
 using E_Shop.Domain.Contracts.UserCont;
 using E_Shop.Domain.Models.TicketModels;
 using Microsoft.AspNetCore.Http;
 
-namespace E_Shop.Application.Services.Implementations
+namespace E_Shop.Application.Services.TicketServices
 {
     public class TicketMessageService(ITicketMessageRepository _repository, ITicketRepository _ticketRepository, IUserRepository _userRepository) : ITicketMessageService
     {

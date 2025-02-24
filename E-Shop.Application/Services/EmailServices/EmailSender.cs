@@ -1,8 +1,7 @@
-﻿using E_Shop.Application.Services.Interfaces;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 
-namespace E_Shop.Application.Services.Implementations
+namespace E_Shop.Application.Services.EmailServices
 {
     public class EmailSender : IEmailSender
     {

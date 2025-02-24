@@ -1,4 +1,4 @@
-﻿using E_Shop.Application.Services.Interfaces;
+﻿using E_Shop.Application.Services.TicketServices;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.TicketViewModels;
 using E_Shop.Domain.Models;

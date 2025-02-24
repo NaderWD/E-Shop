@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using static E_Shop.Domain.Enum.TicketsEnums;
 
-namespace E_Shop.Application.Services.Interfaces
+namespace E_Shop.Application.Services.TicketServices
 {
     public interface ITicketService
     {

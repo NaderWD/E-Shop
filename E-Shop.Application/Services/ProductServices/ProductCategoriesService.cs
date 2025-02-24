@@ -1,9 +1,8 @@
-﻿using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.ViewModels;
+﻿using E_Shop.Application.ViewModels;
 using E_Shop.Domain.Contracts.ProductCont;
 using E_Shop.Domain.Models.ProductModels;
 
-namespace E_Shop.Application.Services.Implementations
+namespace E_Shop.Application.Services.ProductServices
 {
     public class ProductCategoriesService(IProductCategoriesRepository productCategoriesRepository) : IProductCategoriesService
     {

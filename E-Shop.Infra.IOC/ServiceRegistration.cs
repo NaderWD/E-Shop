@@ -1,11 +1,18 @@
-﻿using E_Shop.Application.Services.Implementations;
-using E_Shop.Application.Services.Interfaces;
+﻿using E_Shop.Application.Services.AccountServices;
+using E_Shop.Application.Services.ContactUsServices;
+using E_Shop.Application.Services.EmailServices;
+using E_Shop.Application.Services.ProductServices;
+using E_Shop.Application.Services.SpecificationServices;
+using E_Shop.Application.Services.TicketServices;
+using E_Shop.Application.Services.UserServices;
 using E_Shop.Domain.Contracts.ContactUsCont;
 using E_Shop.Domain.Contracts.ProductCont;
+using E_Shop.Domain.Contracts.SpecificationCont;
 using E_Shop.Domain.Contracts.TicketCont;
 using E_Shop.Domain.Contracts.UserCont;
 using E_Shop.Infra.Data.Repositories.ContactUsRepo;
 using E_Shop.Infra.Data.Repositories.ProductRepo;
+using E_Shop.Infra.Data.Repositories.SpecificationRepo;
 using E_Shop.Infra.Data.Repositories.TicketRepo;
 using E_Shop.Infra.Data.Repositories.UserRepo;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,9 +23,9 @@ namespace E_Shop.Infra.IOC
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
-            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             services.AddScoped<IEmailSender, EmailSender>();
 
@@ -36,6 +43,10 @@ namespace E_Shop.Infra.IOC
             
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<IProductsService, ProductService>();
+
+            services.AddScoped<ISpecificationRepository, SpecificationRepository>();
+            services.AddScoped<IProductSpecificationRepository, ProductSpecificationRepository>();
+            services.AddScoped<ISpecificationService, SpecificationService>();
 
             return services;
         }

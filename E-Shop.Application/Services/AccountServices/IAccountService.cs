@@ -1,7 +1,7 @@
 ﻿using E_Shop.Application.ViewModels.AccountViewModels;
 using E_Shop.Domain.Models.UserModels;
 
-namespace E_Shop.Application.Services.Interfaces
+namespace E_Shop.Application.Services.AccountServices
 {
     public interface IAccountService
     {

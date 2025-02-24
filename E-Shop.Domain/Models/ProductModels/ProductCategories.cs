@@ -10,6 +10,5 @@ namespace E_Shop.Domain.Models.ProductModels
         [ForeignKey(nameof(ParentId))]
         public ProductCategories Parent { get; set; }
         public List<ProductCategories> SubCategories { get; set; }
-        public ICollection<CategorySpecification>? CategorySpecification { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using E_Shop.Application.ViewModels;
 using E_Shop.Application.ViewModels.ProductsViewModel;
 
-namespace E_Shop.Application.Services.Interfaces
+namespace E_Shop.Application.Services.ProductServices
 {
     public interface IProductsService
     {

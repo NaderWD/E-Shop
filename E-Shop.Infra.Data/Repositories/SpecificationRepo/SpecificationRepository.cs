@@ -1,38 +1,40 @@
 ﻿using E_Shop.Domain.Contracts.SpecificationCont;
 using E_Shop.Domain.Models.SpecificationModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Shop.Infra.Data.Repositories.SpecificationRepo
 {
-    public class SpecificationRepository : ISpecificationRepository
+    public class SpecificationRepository(ShopDbContext _context) : ISpecificationRepository
     {
-        public Task Create(Specification specification)
+        public async Task Create(Specification specification)
         {
-            throw new NotImplementedException();
+            await _context.Specifications.AddAsync(specification);
         }
 
-        public Task Delete(int specificationId)
+        public async Task<List<Specification>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Specifications.ToListAsync();
         }
 
-        public Task<List<Specification>> GetAll()
+        public async Task<Specification> GetById(int specificationId)
         {
-            throw new NotImplementedException();
+            return await _context.Specifications.FirstOrDefaultAsync(x => x.Id == specificationId && !x.IsDelete);
         }
 
-        public Task<ProductSpecification> GetById(int specificationId)
+        public async Task Update(Specification specification)
         {
-            throw new NotImplementedException();
+            _context.Specifications.Update(specification);
         }
 
-        public Task Save()
+        public async Task Delete(int specificationId)
         {
-            throw new NotImplementedException();
+            var specification = await GetById(specificationId);
+            _context.Specifications.Remove(specification);
         }
 
-        public Task Update(Specification specification)
+        public async Task Save()
         {
-            throw new NotImplementedException();
+            await _context.SaveChangesAsync();
         }
     }
 }

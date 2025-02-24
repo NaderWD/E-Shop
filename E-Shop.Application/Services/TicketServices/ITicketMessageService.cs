@@ -1,7 +1,7 @@
 ﻿using E_Shop.Application.ViewModels.TicketViewModels;
 using Microsoft.AspNetCore.Http;
 
-namespace E_Shop.Application.Services.Interfaces
+namespace E_Shop.Application.Services.TicketServices
 {
     public interface ITicketMessageService
     {
