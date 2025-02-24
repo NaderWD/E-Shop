@@ -19,5 +19,6 @@ namespace E_Shop.Application.Services.Interfaces
         bool CreateProduct(CreateProductViewModel product);
         bool UpdateProduct(UpdateProductViewModel product);
         bool DeleteProduct(int Id);
+        
     }
 }

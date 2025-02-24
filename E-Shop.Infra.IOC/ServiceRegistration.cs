@@ -26,10 +26,15 @@ namespace E_Shop.Infra.IOC
 
             services.AddScoped<IProductCategoriesRepository, ProductCategoriesRepository>();
             services.AddScoped<IProductCategoriesService, ProductCategoriesService>();
-            
+
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<IProductsService, ProductService>();
 
+            services.AddScoped<IColorRepository, ColorRepository>();
+            services.AddScoped<IColorService, ColorService>();
+
+            services.AddScoped<IProductColorRepository, ProductColorRepository>();
+            services.AddScoped<IProductColorService, ProductColorService>();
             return services;
         }
     }

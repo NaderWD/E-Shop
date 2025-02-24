@@ -1,6 +1,6 @@
-﻿@using E_Shop.Application.ViewModels.Color
+﻿@model List<E_Shop.Application.ViewModels.Color.AddColorToProductViewModel>
 
-@model List<ColorViewModel>
+
 
 <div class="content-wrapper">
     <!-- Content -->
@@ -47,10 +47,12 @@
                                             <span class="dt-down-arrow"></span>
                                         </button>
                                     </div>
-                                    <button class="btn btn-secondary add-new btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddColor">
-                                        <span>
-                                            <i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">افزودن رنگ</span>
-                                        </span>
+                                    <button class="btn btn-secondary add-new btn-primary" aria-controls="DataTables_Table_0" type="button" >
+                                        <a asp-action="AddColor" asp-route-productId="@ViewBag.ProductId">
+                                            <span>
+                                                <i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">افزودن رنگ</span>
+                                            </span>
+                                       </a> 
                                     </button>
                                 </div>
                             </div>
@@ -62,38 +64,52 @@
                                 <th class="control sorting_disabled dtr-hidden" rowspan="1" colspan="1" style="width: 51.5875px; display: none;" aria-label=""></th>
                                 <th class="sorting sorting_desc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 125.3px;" aria-sort="descending" aria-label="Color: activate to sort column ascending">نام رنگ</th>
                                 <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 123.2px;" aria-label="Code: activate to sort column ascending">کد رنگ</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 100px;" aria-label="Default: activate to sort column ascending">پیش‌فرض</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 100px;" aria-label="Price: activate to sort column ascending">قیمت</th>
                                 <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 164.75px;" aria-label="Actions">عملیات ها</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
+                            @if (Model.Any())
                             {
-                                <tr class="odd">
-                                    <td><i class="fas fa-palette fa-lg text-primary me-3"></i> <strong>@item.Name</strong></td>
-                                    <td>
-                                        <span class="badge" style="background-color: @item.Code; color: white;">@item.Code</span>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);" onclick="loadColorData(@item.Id)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasUpdateColor">
-                                                    <i class="bx bx-edit-alt me-1"></i> ویرایش
-                                                </a>
-                                                <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.Name')">
-                                                    <i class="bx bx-trash me-1"></i> حذف
-                                                </a>
-                                                <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteColor", new { id = item.Id })" style="display:none;">
-                                                    @Html.AntiForgeryToken()
-                                                    <input type="hidden" value="@item.Id" />
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </td>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="odd">
+                                        <td><i class="fas fa-palette fa-lg text-primary me-3"></i> <strong>@item.Name</strong></td>
+                                        <td>
+                                            <span class="badge" style="background-color: @item.Code; color: white;">@item.Code</span>
+                                        </td>
+                                        <td>
+                                            @if (item.IsDefault)
+                                            {
+                                                <span class="badge bg-label-success">پیش‌فرض</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-label-secondary">غیر پیش‌فرض</span>
+                                            }
+                                        </td>
+                                        <td>@item.Price.ToString("N0") تومان</td>
+                                        <td>
+                                            <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.ColorId', '@item.Name')">
+                                                <i class="bx bx-trash me-1"></i> حذف
+                                            </a>
+                                            <form id="deleteForm-@item.ColorId" method="post" action="@Url.Action("RemoveColor", new { ColorId = item.ColorId })" style="display:none;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.ColorId" />
+                                            </form>
+
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td><p>رنگی وجود ندارد</p></td>
                                 </tr>
                             }
+                            
                         </tbody>
                     </table>
 
@@ -116,44 +132,9 @@
                     </div>
                 </div>
             </div>
-            <!-- Offcanvas to add new color -->
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddColor" aria-labelledby="offcanvasAddColorLabel">
-                <div class="offcanvas-header">
-                    <h5 id="offcanvasAddColorLabel" class="offcanvas-title">افزودن رنگ</h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body mx-0 flex-grow-0">
-                    <partial name="_AddColor" model="new CreateColorViewModel()" />
-                </div>
-            </div>
-
-            <!-- Offcanvas to update color -->
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasUpdateColor" aria-labelledby="offcanvasUpdateColorLabel">
-                <div class="offcanvas-header">
-                    <h5 id="offcanvasUpdateColorLabel" class="offcanvas-title">بروزرسانی رنگ</h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body mx-0 flex-grow-0">
-                    <partial name="_UpdateColor" model="new ColorViewModel()" />
-                </div>
-            </div>
+            
         </div>
     </div>
     <!-- / Content -->
     <div class="content-backdrop fade"></div>
 </div>
-
-<script>
-    function loadColorData(colorId) {
-        $.ajax({
-            url: '@Url.Action("UpdateColor")',
-            type: 'GET',
-            data: { colorId: colorId },
-            success: function (data) {
-                var offcanvasBody = document.querySelector('#offcanvasUpdateColor .offcanvas-body');
-                offcanvasBody.innerHTML = data;
-            }
-        });
-    }
-
-</script>

@@ -1,5 +1,7 @@
 ﻿using E_Shop.Application.Services.Implementations;
 using E_Shop.Application.Services.Interfaces;
+using E_Shop.Application.ViewModels;
+using E_Shop.Application.ViewModels.Color;
 using E_Shop.Application.ViewModels.ProductsViewModel;
 using E_Shop.Domain.Models.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +11,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
-    public class ProductsController(IProductsService productsService) : AdminBaseController
+    public class ProductsController(IProductsService productsService , IProductColorService productColorService, IColorService colorservice) : AdminBaseController
     {
         public IActionResult ProductIndex()
         {
@@ -17,8 +19,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             return View(content);
         }
 
-
-        #region Create Product0
+        #region Create Product
         public IActionResult CreateProduct()
         {
             var content = productsService.GetProductCreateModel();
@@ -73,7 +74,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         }
         #endregion Create Product
-
 
         #region Update Product
         public IActionResult UpdateProduct(int productId)
@@ -132,8 +132,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
         #endregion Update Product
 
-
-
         #region Delete Product
 
         public IActionResult DeleteProduct(int ProductId , string ImageName)
@@ -159,5 +157,59 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
 
         #endregion Delete Product
+
+        #region ProductColor
+        public IActionResult ProductColor(int productId)
+        {
+            var content = productColorService.GetAllColorForProduct(productId);
+            ViewBag.ProductId = productId;
+            return View(content);
+        }
+        
+        public IActionResult AddColor(int productId)
+        {
+            
+            ViewBag.ProductId = productId;
+            var content = colorservice.GetAll();
+            ViewBag.Colors = content ?? new List<ColorViewModel>();
+            
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddColor(AddColorToProductViewModel model)
+        {
+            if (!ModelState.IsValid) { return View(model); }
+            var result = productColorService.AddMapping(model);
+            
+            switch (result)
+            {
+                case false:
+                    TempData[ErrorMessage] = ErrorMessages.FailedMessage;
+                    return RedirectToAction("ProductIndex");
+
+                case true:
+                    TempData[SuccessMessage] = ErrorMessages.ProductAdded;
+                    return RedirectToAction("ProductIndex");
+            }
+            
+        }
+
+        public IActionResult RemoveColor(int ColorId)
+        {
+            var result = productColorService.RemoveColor(ColorId);
+            switch (result)
+            {
+                case false:
+                    TempData[ErrorMessage] = ErrorMessages.FailedMessage;
+                    return RedirectToAction("ProductIndex");
+
+                case true:
+                    TempData[SuccessMessage] = ErrorMessages.ProductAdded;
+                    break;
+            }
+            return RedirectToAction("ProductIndex");
+        }
+        #endregion
     }
 }

@@ -50,6 +50,8 @@ namespace E_Shop.Application.Services.Implementations
             return model;
         }
 
+      
+
         public ColorViewModel GetById(int Id)
         {
             var color = colorRepository.GetById(Id);

@@ -1,0 +1,17 @@
+﻿@model E_Shop.Application.ViewModels.Color.ColorViewModel
+
+
+<form asp-action="UpdateColor" method="post">
+    <div class="mb-3 col-lg-6 col-sm-12">
+        <label asp-for="Name" class="form-label">نام رنگ</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3 col-lg-6 col-sm-12">
+        <label asp-for="Code" class="form-label">کد رنگ</label>
+        <input type="color" asp-for="Code" class="form-control" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <input type="hidden" value="@Model.Id" asp-for="Id" />
+    <button type="submit" class="btn btn-primary" asp-action="UpdateColor">بروزرسانی رنگ</button>
+</form>

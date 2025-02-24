@@ -1,0 +1,61 @@
+﻿using E_Shop.Application.Services.Interfaces;
+using E_Shop.Application.ViewModels.Color;
+using E_Shop.Domain.Models;
+using E_Shop.Domain.Repositories.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace E_Shop.Application.Services.Implementations
+{
+    public class ProductColorService(IProductColorRepository productColor , IColorRepository colorRepository) : IProductColorService
+    {
+        public bool AddMapping(AddColorToProductViewModel model)
+        {
+            ProductColorMapping mapping = new ProductColorMapping();
+            mapping.ProductId = model.ProductId;
+            mapping.ColorId = model.ColorId;
+            mapping.Price = model.Price;
+            mapping.IsDefault = model.IsDefault;
+            
+
+
+            var result = productColor.AddMapping(mapping);
+            return result;
+        }
+
+        public List<AddColorToProductViewModel> GetAllColorForProduct(int productId)
+        {
+            var colorList = productColor.GetAllColorForProduct(productId);
+
+            var model = new List<AddColorToProductViewModel>();
+
+            foreach (var color in colorList)
+            {
+                model.Add(new AddColorToProductViewModel
+                {
+                    Name = color.Color.Name,
+                    ColorId = color.Color.Id,
+                    Code = color.Color.Code,
+                    Price = color.Price,
+                    IsDefault = color.IsDefault,
+                    ProductId = color.ProductId,
+                });
+            }
+            return model;
+            
+        }
+
+        public bool RemoveColor(int Id)
+        {
+            var mapping = productColor.GetById(Id);
+            mapping.IsDelete = true;
+            productColor.Update(mapping);
+
+            return mapping.IsDelete;
+
+        }
+    }
+}

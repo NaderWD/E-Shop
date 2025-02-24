@@ -1,5 +1,6 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.Color;
+using E_Shop.Domain.Models.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
@@ -8,14 +9,8 @@ namespace E_Shop.Web.Areas.Admin.Controllers
     {
         public IActionResult ColorIndex()
         {
-            var colors = colorService.GetAll();
+            var colors = colorService.GetAll().ToList();
             return View(colors);
-        }
-
-        
-        public IActionResult CreateColor()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -26,14 +21,25 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 return View(model);
             }
 
-            colorService.Create(model);
-            return RedirectToAction("ColorViewModelList");
+            var result = colorService.Create(model);
+            if (result == true)
+            {
+                TempData[SuccessMessage] = ErrorMessages.ColorAdded;
+                return RedirectToAction("ColorIndex");
+            }
+            else
+            {
+                TempData[ErrorMessage] = ErrorMessages.FailedMessage;
+                return RedirectToAction("ColorIndex");
+            }
+
+            
         }
 
         public IActionResult UpdateColor(int colorId)
         {
             var color = colorService.GetById(colorId);
-            return View(color);
+            return PartialView("_UpdateColor" ,color);
         }
 
         [HttpPost]
@@ -44,15 +50,33 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 return View(model);
             }
 
-            colorService.Update(model);
-            return RedirectToAction("ColorViewModelList");
+            var result = colorService.Update(model);
+            if (result == true)
+            {
+                TempData[SuccessMessage] = ErrorMessages.ColorUpdate;
+                return RedirectToAction("ColorIndex");
+            }
+            else
+            {
+                TempData[ErrorMessage] = ErrorMessages.FailedMessage;
+                return RedirectToAction("ColorIndex");
+            }
         }
 
         [HttpPost]
-        public IActionResult DeleteColor(int colorId)
+        public IActionResult DeleteColor(int Id)
         {
-            colorService.Delete(colorId);
-            return RedirectToAction("ColorViewModelList");
+            var result = colorService.Delete(Id);
+            if (result == true)
+            {
+                TempData[SuccessMessage] = ErrorMessages.ColorDeleted;
+                return RedirectToAction("ColorIndex");
+            }
+            else
+            {
+                TempData[ErrorMessage] = ErrorMessages.FailedMessage;
+                return RedirectToAction("ColorIndex");
+            }
         }
     }
 

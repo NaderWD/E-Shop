@@ -8,14 +8,11 @@ using System.Threading.Tasks;
 
 namespace E_Shop.Application.Services.Interfaces
 {
-    public interface IColorService
+    public interface IProductColorService
     {
-        bool Create(ColorViewModel color);
-        bool Delete(int Id);
-        bool Update(ColorViewModel color);
-
-        ColorViewModel GetById(int Id);
-        List<ColorViewModel> GetAll();
-       
+        public List<AddColorToProductViewModel> GetAllColorForProduct(int productId);
+        bool AddMapping(AddColorToProductViewModel model);
+        bool RemoveColor(int Id);
+        
     }
 }

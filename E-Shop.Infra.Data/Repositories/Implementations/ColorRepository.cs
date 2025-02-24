@@ -10,18 +10,14 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 {
     public class ColorRepository(ShopDbContext dbContext) : IColorRepository
     {
-
         public List<ColorModel> GetAll()
         {
-            return dbContext.Color.ToList();
+            return dbContext.Color.Where(c => c.IsDelete == false).ToList();
         }
-
         public ColorModel GetById(int Id)
         {
             return dbContext.Color.Find(Id);
         }
-
-
         public bool Create(ColorModel color)
         {
             dbContext.Add(color);

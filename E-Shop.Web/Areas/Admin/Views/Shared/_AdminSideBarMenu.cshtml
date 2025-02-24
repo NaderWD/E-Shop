@@ -77,25 +77,18 @@
                         تیکت ها
                     </a>
                 </li>
-                <li class="menu-item dropdown">
-                    <a class="menu-link dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        مدیریت محصولات
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" asp-controller="ProductCategories" asp-action="Index">مدیریت گروه محصولات</a>
-                    </div>
-                </li>
+
             </ul>
         </li>
 
-       
+
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">محصولات و بلاگ</span>
         </li>
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cart"></i>
-                <div >محصولات</div>
+                <div>محصولات</div>
             </a>
 
             <ul class="menu-sub">
@@ -104,27 +97,34 @@
                         <div>مدیریت محصولات</div>
                     </a>
                 </li>
-                <li  class="menu-item">
+                <li class="menu-item">
                     <a asp-controller="Products" asp-action="CreateProduct" class="menu-link">
                         <div>افزودن محصول</div>
                     </a>
-                </li><li  class="menu-item">
+                </li>
+                <li class="menu-item">
                     <a asp-controller="ProductCategories" asp-action="Index" class="menu-link">
                         <div>مدیریت گروه محصولات</div>
                     </a>
                 </li>
-               
+
+                <li class="menu-item">
+                    <a asp-controller="Color" asp-action="ColorIndex" class="menu-link">
+                        <div>مدیریت رنگ محصولات</div>
+                    </a>
+                </li>
+
             </ul>
         </li>
 
-       
+
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text"></span>
         </li>
         <li class="menu-item">
             <a class="menu-link">
                 <i class="menu-icon tf-icons bx bx-chat"></i>
-                <div >تیکت</div>
+                <div>تیکت</div>
             </a>
         </li>
         <li class="menu-item">

@@ -34,5 +34,8 @@
         public const string ProductUpdated = "محصول مورد نظر با موفقیت ویرایش شد.";
         public const string ProductDeleted = "محصول مورد نظر با موفقیت حذف شد.";
 
+        public const string ColorAdded = "رنگ مورد نظر با موفقیت اضافه شد.";
+        public const string ColorUpdate = "رنگ مورد نظر با موفقیت برورزرسانی شد.";
+        public const string ColorDeleted = "رنگ مورد نظر با موفقیت حذف شد.";
     }
 }

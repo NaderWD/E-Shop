@@ -1,0 +1,37 @@
+﻿@using E_Shop.Application.ViewModels.Color
+@model AddColorToProductViewModel
+<div class="container w-50">
+    <form asp-action="AddColor" method="post">
+        <input type="hidden" asp-for="ProductId" value="@ViewBag.ProductId" />
+        <div class="mb-3">
+            <label class="form-label">انتخاب رنگ</label>
+            <select asp-for="ColorId" class="form-select">
+                <option value="">-- انتخاب کنید --</option>
+                @if (ViewBag.Colors != null)
+                {
+                    foreach (var color in ViewBag.Colors)
+                    {
+                        <option value="@color.Id" data-name="@color.Name" data-code="@color.Code">@color.Name - @color.Code</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="ColorId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="IsDefault" class="form-label">پیش‌فرض</label>
+            <div class="form-check">
+                <input asp-for="IsDefault" class="form-check-input" />
+                <label asp-for="IsDefault" class="form-check-label">رنگ پیش‌فرض</label>
+            </div>
+            <span asp-validation-for="IsDefault" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Price" class="form-label">قیمت (تومان)</label>
+            <input asp-for="Price" class="form-control" type="number" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">افزودن رنگ</button>
+        <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas" asp-action="ProductColorIndex">لغو</button>
+    </form>
+</div>
