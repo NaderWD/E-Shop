@@ -1,6 +1,8 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.Color;
 using E_Shop.Domain.Models.Shared;
+using E_Shop.Application.Services.ColorServices;
+using E_Shop.Application.ViewModels.ColorViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Shop.Web.Areas.Admin.Controllers

@@ -1,4 +1,4 @@
-﻿using E_Shop.Application.Services.Interfaces;
+﻿using E_Shop.Application.Services.ContactUsServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Shop.Web.Areas.Admin.Components

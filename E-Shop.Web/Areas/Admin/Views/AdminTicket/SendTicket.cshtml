@@ -1,0 +1,54 @@
+﻿@model TicketVM
+
+
+
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="app-chat overflow-hidden card">
+        <div class="row g-0">
+            <div class="col-md mb-4 mb-md-0">
+                @if (ViewBag.IsSuccess != null)
+                {
+                    <div class="alert alert-success"> @ViewBag.IsSuccess </div>
+                }
+                <div class="card">
+                    <h5 class="card-header"> ارسال تیکت به کاربر : @ViewBag.Name</h5>
+                    <div class="card-body">
+                        <form asp-action="SendTicket" asp-controller="AdminTicket" asp-area="Admin" method="post"
+                              enctype="multipart/form-data" class="browser-default-validation">
+                            <input asp-for="OwnerId" type="hidden" />
+                            <input asp-for="SenderId" type="hidden" />
+                            <div class="mb-3">
+                                <label asp-for="Title" class="form-label" for="basic-default-name"></label>
+                                <input asp-for="Title" type="text" class="form-control">
+                                <span asp-validation-for="Title"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Section" class="form-label" for="basic-default-country"></label>
+                                <select asp-for="Section" asp-items="Html.GetEnumSelectList<Section>()" class="form-select">
+                                    <option selected="selected" value="">انتخاب کنید</option>
+                                </select>
+                                <span asp-validation-for="Section"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Message" class="form-label" for="basic-default-name"></label>
+                                <textarea asp-for="Message" type="text" class="form-control"></textarea>
+                                <span asp-validation-for="Message"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="basic-default-upload-file">انتخاب فایل</label>
+                                <input asp-for="FilePath" type="file" accept=".jpg,.png,.pdf" class="form-control" id="basic-default-upload-file">
+                                <span asp-validation-for="FilePath"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary"> ارسال</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

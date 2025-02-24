@@ -1,13 +1,8 @@
-﻿using E_Shop.Application.Services.Implementations;
-using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.ViewModels;
-using E_Shop.Application.ViewModels.Color;
+﻿using E_Shop.Application.Services.ProductServices;
 using E_Shop.Application.ViewModels.ProductsViewModel;
-using E_Shop.Domain.Models.Shared;
+using E_Shop.Domain.Models.ValidationModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {

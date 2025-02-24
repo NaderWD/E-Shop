@@ -1,0 +1,52 @@
+﻿@model MessageVM
+
+
+
+<form asp-action="SaveMessage" asp-controller="UserTicket" method="post"
+      enctype="multipart/form-data" class="add-ticket-form">
+    <input type="hidden" asp-for="TicketId" value="" />
+    <div class="row">
+        <div class="col-12">
+            <!-- start of form-element -->
+            <div class="form-element-row mb-5">
+                <label class="label">پیام</label>
+                <textarea rows="5" class="form-control" asp-for="Text"
+                          placeholder="متن پیام"></textarea>
+                <span asp-validation-for="Text"></span>
+            </div>
+            <!-- end of form-element -->
+        </div>
+        <div class="col-12">
+            <!-- start of form-element -->
+            <div class="form-element-row form-element-row-file mb-5">
+                <div class="text-center">
+                    <div class="fs-6 fw-bold text-dark">
+                        عکس یا فایل خود را بارگذاری کنید .
+                    </div>
+                    <div class="fs-7 fw-bold text-muted mb-4">
+                        (pdf , Jpg , Png)
+                    </div>
+                </div>
+                <div class="custom-input-file">
+                    <input type="file" accept=".jpg , .png , .pdf" class="custom-input-file-input" name="attachment"
+                           id="attachment">
+                    <label asp-for="FilePath" class="custom-input-file-label">
+                        <span class="label">
+                            <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
+                        </span>
+                    </label>
+                </div>
+                <div class="text-center">
+                    <span id="InvalidFile" asp-validation-for="FilePath" class="text-danger"></span>
+                    <div id="files"></div>
+                </div>
+            </div>
+            <!-- end of form-element -->
+        </div>
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary">
+                ارسال پاسخ <i class="ri-ball-pen-line ms-2"></i>
+            </button>
+        </div>
+    </div>
+</form>

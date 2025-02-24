@@ -1,0 +1,122 @@
+﻿@model IEnumerable<TicketVM>
+@{
+    int counter = 1;
+}
+
+
+
+
+<div class="col-xl-9 col-lg-8 col-md-7">
+    <div class="container ui-box bg-white mb-5">
+        <div class="ui-box-title align-items-center justify-content-between">
+            تیکتهای شما
+            <a asp-action="Create" asp-controller="UserTicket" class="btn btn-outline-light">تیکت جدید <i class="ri-add-line ms-2"></i></a>
+        </div>
+        @if (Model == null || !Model.Any())
+        {
+            <div class="ui-box-empty-content">
+                <div class="ui-box-empty-content-icon">
+                    <img src="/theme-assets/images/theme/orders.svg" alt="">
+                </div>
+                <div class="ui-box-empty-content-message">
+                    تیکتی وجود ندارد.
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ui-box-content">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>@Html.DisplayNameFor(m => m.CreateDate)</th>
+                                <th>@Html.DisplayNameFor(m => m.Section)</th>
+                                <th>@Html.DisplayNameFor(m => m.Title)</th>
+                                <th>@Html.DisplayNameFor(m => m.Priority)</th>
+                                <th>@Html.DisplayNameFor(m => m.Status)</th>
+                                <th>@Html.DisplayNameFor(m => m.LastModifiedDate)</th>
+                                <th>@Html.DisplayNameFor(m => m.NumberOfMessages)</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ticket in Model.OrderBy(t => t.CreateDate))
+                            {
+                                <tr>
+                                    <td class="fa-num">@counter</td>
+                                    <td class="fa-num">@ticket.CreateDate</td>
+                                    <td class="fa-num">
+                                        @if (ticket.Section == Section.Sale)
+                                        {
+                                            <span class="badge bg-success rounded-pill">فروش</span>
+                                        }
+                                        else if (ticket.Section == Section.Billing)
+                                        {
+                                            <span class="badge bg-success rounded-pill">پرداخت</span>
+                                        }
+                                        else if (ticket.Section == Section.Support)
+                                        {
+                                            <span class="badge bg-success rounded-pill">پشتیبانی</span>
+                                        }
+                                        else if (ticket.Section == Section.Technical)
+                                        {
+                                            <span class="badge bg-success rounded-pill">فنی</span>
+                                        }
+                                    </td>
+                                    <td class="fa-num">@ticket.Title</td>
+                                    <td class="fa-num">
+                                        @if (ticket.Priority == Priority.Normal)
+                                        {
+                                            <span class="badge bg-success rounded-pill">معمولی</span>
+                                        }
+                                        else if (ticket.Priority == Priority.Important)
+                                        {
+                                            <span class="badge bg-warning rounded-pill">مهم</span>
+                                        }
+                                        else if (ticket.Priority == Priority.VeryImportant)
+                                        {
+                                            <span class="badge bg-danger rounded-pill">خیلی مهم</span>
+                                        }
+                                    </td>
+                                    <td class="fa-num">
+                                        @if (ticket.Status == Status.InProgress)
+                                        {
+                                            <span class="badge bg-warning rounded-pill">در حال بررسی</span>
+                                        }
+                                        else if (ticket.Status == Status.Closed)
+                                        {
+                                            <span class="badge bg-danger rounded-pill">بسته</span>
+                                        }
+                                        else if (ticket.Status == Status.Resolved)
+                                        {
+                                            <span class="badge bg-success rounded-pill">پاسخ داده شد</span>
+                                        }
+                                    </td>
+                                    <td class="fa-num">@ticket.LastModifiedDate</td>
+                                    <td class="fa-num">@ticket.NumberOfMessages</td>
+                                    <td>
+
+                                        <a asp-action="Details" asp-controller="UserTicket" asp-area="User" asp-route-ticketId="@ticket.Id"
+                                           class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
+                                        <span>
+                                            <a class="btn btn-circle bg-danger my-1" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@ticket.Id', '@ticket.Title')">
+                                                <i class="bx bx-trash me-1"></i>
+                                            </a>
+                                            <form id="deleteForm-@ticket.Id" method="post" action="@Url.Action("DeleteTicket", new { ticketId = ticket.Id , Title = ticket.Title })" style="display:none;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="ticketId" value="@ticket.Id" />
+                                            </form>
+                                        </span>
+                                    </td>
+                                </tr>
+                                counter++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+</div>

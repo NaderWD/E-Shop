@@ -1,10 +1,7 @@
 ﻿
-
-
-
 <div class="user-options">
     <div class="user-option user-option--account">
-        <a href="UserProfile" class="user-option-btn user-option-btn--account">
+        <a asp-action="Index" asp-controller="Home" asp-area="User" class="user-option-btn user-option-btn--account">
             <i class="ri-user-fill icon"></i>
             <i class="ri-arrow-down-s-fill icon fs-7 text-muted"></i>
         </a>
@@ -17,7 +14,7 @@
                             <div class="profile-avatar me-3">
                                 <div class="profile-info overflow-y-hidden w-100 h-100">
                                     <img src="./theme-assets/images/avatar/default.png" alt="avatar">
-                                    <a href="User" class="text-decoration-none text-dark fw-bold mb-2">
+                                    <a asp-action="Index" asp-controller="Home" asp-area="User" class="text-decoration-none text-dark fw-bold mb-2">
                                         @User.GetUsersName()
                                     </a>
                                 </div>
@@ -72,7 +69,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Admin">
+                        <a class="nav-link" asp-action="Index" asp-controller="Home" asp-area="Admin">
                             <i class="nav-link-icon ri-copper-coin-fill"></i>
                             رفتن به پنل ادمین
                         </a>

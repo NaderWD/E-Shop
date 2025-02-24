@@ -1,0 +1,102 @@
+﻿@model List<MessageVM>
+@{
+    int adminId = User.GetUserId();
+}
+
+
+
+
+<link rel="stylesheet" href="/Admin/assets/vendor/css/pages/app-chat.css" />
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="app-chat overflow-hidden card">
+        <div class="row g-0">
+            <div class="col app-chat-history">
+                <div class="chat-history-wrapper">
+                    <div class="chat-history-header border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex overflow-hidden align-items-center">
+                                <i class="bx bx-menu bx-sm cursor-pointer d-lg-none d-block me-2" data-bs-toggle="sidebar"
+                                   data-overlay="" data-target="#app-chat-contacts"></i>
+                                <div class="flex-shrink-0 avatar">
+                                    <img src="/theme-assets/images/avatar/female.png" alt="Avatar" class="rounded-circle"
+                                         data-bs-toggle="sidebar" data-overlay="" data-target="#app-chat-sidebar-right">
+                                </div>
+                                <div class="chat-contact-info flex-grow-1 ms-3">
+                                    <h6 class="m-0">@ViewBag.Name</h6>
+                                    <small class="user-status text-muted"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-history-body ps ps--active-y">
+                        <ul class="list-unstyled chat-history mb-0">
+                            @foreach (var item in Model.ToList())
+                            {
+                                @if (adminId == item.SenderId)
+                                {
+                                    <li class="chat-message chat-message-right">
+                                        <div class="d-flex overflow-hidden">
+                                            <div class="chat-message-wrapper flex-grow-1">
+                                                <div class="chat-message-text">
+                                                    <p class="mb-0">@item.Text</p>
+                                                </div>
+                                                <div class="text-end text-muted mt-1">
+                                                    <i class="bx bx-check-double text-success"></i>
+                                                    <small>@item.CreateDate </small>
+                                                    @if (item.FilePath != null)
+                                                    {
+                                                        <span> <a href="/TicketFiles/@item.FilePath" download="download">دانلود فایل</a></span>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="user-avatar flex-shrink-0 ms-3">
+                                                <div class="avatar avatar-sm">
+                                                    <img src="/theme-assets/images/avatar/default.png" alt="Avatar" class="rounded-circle">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="chat-message">
+                                        <div class="d-flex overflow-hidden">
+                                            <div class="user-avatar flex-shrink-0 me-3">
+                                                <div class="avatar avatar-sm">
+                                                    <img src="~/theme-assets/images/avatar/female.png" alt="Avatar" class="rounded-circle">
+                                                </div>
+                                            </div>
+                                            <div class="chat-message-wrapper flex-grow-1">
+                                                <div class="chat-message-text">
+                                                    <p class="mb-0">@item.Text</p>
+                                                </div>
+                                                <div class="text-muted mt-1">
+                                                    <small>@item.CreateDate</small>
+                                                    @if (item.FilePath != null)
+                                                    {
+                                                        <span>  <a href="/TicketFiles/@item.FilePath" download="download">دانلود فایل</a></span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                        <div class="ps__rail-x" style="left: 0px; bottom: -857px;">
+                            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                        </div>
+                        <div class="ps__rail-y" style="top: 857px; height: 241px; right: 0px;">
+                            <div class="ps__thumb-y" tabindex="0" style="top: 188px; height: 52px;"></div>
+                        </div>
+                    </div>
+                    @foreach (var m in Model)
+                    {
+                        <partial name="_SendMessage" model="new MessageVM{ TicketId = m.TicketId }" />
+                    }
+                </div>
+            </div>
+            <div class="app-overlay"></div>
+        </div>
+    </div>
+</div>

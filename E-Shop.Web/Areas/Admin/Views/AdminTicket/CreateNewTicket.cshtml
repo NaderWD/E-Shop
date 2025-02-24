@@ -1,0 +1,61 @@
+﻿@model List<UserDetailsVM>
+@{
+    int counter = 0;
+}
+
+
+
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card" style="min-height: 500px">
+        <div class="tab-content pt-0">
+            <div class="tab-pane fade show active" id="navs-pills-browser" role="tabpanel">
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="ui-box-empty-content">
+                        <div class="ui-box-empty-content-icon">
+                            <img src="/theme-assets/images/theme/orders.svg" alt="">
+                        </div>
+                        <div class="ui-box-empty-content-message">
+                            کاربری وجود ندارد.
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <h5 class="card-header">لیست  کاربران</h5>
+
+                    <div class="table text-nowrap">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ردیف</th>
+                                    <th>نام و نام خانوادکی</th>
+                                    <th>تلفن همراه</th>
+                                    <th>پست الکترونیک</th>
+                                    <th class="w-50">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                @foreach (var user in Model)
+                                {
+                                    counter++;
+                                    <tr>
+                                        <td>@counter</td>
+                                        <td>@user.FirstName @user.LastName</td>
+                                        <td>@user.Mobile</td>
+                                        <td>@user.EmailAddress</td>
+                                        <th>
+                                            <a asp-controller="AdminTicket" asp-action="SendTicket" asp-route-userId="@user.Id"
+                                               class="btn btn-sm btn-info m-3">ارسال تیکت</a>
+                                        </th>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
