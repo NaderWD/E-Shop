@@ -16,7 +16,7 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
 
         public bool DeleteProduct(int Id)
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool UpdateProduct(Product product)
@@ -27,11 +27,11 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
         }
         #endregion Product CRUD
 
-        public void Save() 
+        public void Save()
         {
             dbContext.SaveChanges();
         }
-       
+
         public List<Product> GetAll()
         {
             return dbContext.Products.Include(p => p.Category).ToList();
@@ -40,6 +40,18 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
         public Product GetById(int Id)
         {
             return dbContext.Products.Find(Id);
+        }
+
+
+
+        public async Task<Product> GetProductById(int productId)
+            => await dbContext.Products.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == productId);
+
+        public async Task<bool> IsCategoryExist(int categoryId)
+        {
+            var category = await dbContext.Products.FirstOrDefaultAsync(x => x.CategoryId == categoryId);
+            if (category == null) return false;
+            return true;
         }
     }
 }

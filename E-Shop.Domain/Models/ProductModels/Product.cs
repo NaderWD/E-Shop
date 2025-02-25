@@ -14,6 +14,7 @@ namespace E_Shop.Domain.Models.ProductModels
         public string? Review { get; set; }
         public string? ExpertReview { get; set; }
         public int Inventory { get; set; }
+
         [ForeignKey("CategoryId")]
         public ProductCategories Category { get; set; }
         public ICollection<ProductColorMapping> Color { get; set; }

@@ -1,12 +1,6 @@
 ﻿using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Domain.Contracts.ColorCont;
 using E_Shop.Domain.Models.ColorModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace E_Shop.Application.Services.ColorServices
 {
@@ -14,13 +8,14 @@ namespace E_Shop.Application.Services.ColorServices
     {
         public bool Create(ColorViewModel color)
         {
-            ColorModel model = new ColorModel();
+            ColorModel model = new()
+            {
+                CreateDate = DateTime.Now,
+                Code = color.Code,
+                Name = color.Name
+            };
 
-            model.CreateDate= DateTime.Now;
-            model.Code = color.Code;
-            model.Name = color.Name;    
-            
-            
+
             return colorRepository.Create(model);
         }
 
@@ -35,7 +30,7 @@ namespace E_Shop.Application.Services.ColorServices
         {
             var colors = colorRepository.GetAll();
 
-            List<ColorViewModel> model = new List<ColorViewModel>();
+            List<ColorViewModel> model = [];
 
             foreach (var color in colors)
             {
@@ -54,10 +49,12 @@ namespace E_Shop.Application.Services.ColorServices
         public ColorViewModel GetById(int Id)
         {
             var color = colorRepository.GetById(Id);
-            ColorViewModel  model = new ColorViewModel();
-            model.Id = color.Id;
-            model.Name = color.Name;
-            model.Code = color.Code;
+            ColorViewModel model = new()
+            {
+                Id = color.Id,
+                Name = color.Name,
+                Code = color.Code
+            };
 
             return model;
         }

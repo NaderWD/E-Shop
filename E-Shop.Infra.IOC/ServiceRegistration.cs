@@ -17,7 +17,6 @@ using E_Shop.Infra.Data.Repositories.TicketRepo;
 using E_Shop.Infra.Data.Repositories.UserRepo;
 using Microsoft.Extensions.DependencyInjection;
 using E_Shop.Domain.Contracts.ColorCont;
-using E_Shop.Domain.Repositories.Interfaces;
 using E_Shop.Application.Services.ColorServices;
 using E_Shop.Infra.Data.Repositories.ColorRepo;
 using E_Shop.Infra.Data.Repositories.Implementations;
@@ -58,7 +57,6 @@ namespace E_Shop.Infra.IOC
             services.AddScoped<IProductColorService, ProductColorService>();
 
             services.AddScoped<ISpecificationRepository, SpecificationRepository>();
-            services.AddScoped<IProductSpecificationRepository, ProductSpecificationRepository>();
             services.AddScoped<ISpecificationService, SpecificationService>();
 
             return services;

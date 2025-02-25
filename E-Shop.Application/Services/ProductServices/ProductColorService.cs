@@ -2,7 +2,6 @@
 using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Application.ViewModels.ProductsViewModel;
 using E_Shop.Domain.Models;
-using E_Shop.Domain.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

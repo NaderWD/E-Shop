@@ -31,7 +31,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>@Html.DisplayNameFor(m => m.User.FirstName) @Html.DisplayNameFor(m => m.User.LastName)</th>
+                                <th>نام کاربر</th>
                                 <th>@Html.DisplayNameFor(m => m.Section)</th>
                                 <th>@Html.DisplayNameFor(m => m.Title)</th>
                                 <th>@Html.DisplayNameFor(m => m.Priority)</th>
@@ -98,13 +98,16 @@
                                     <td class="fa-num">@ticket.NumberOfMessages</td>
                                     <td>
                                         <span>
-                                            <a asp-action="SendMessage" asp-controller="AdminTicket" asp-area="Admin" asp-route-ticketId="@ticket.Id"
-                                               asp-route-userId="@ticket.OwnerId" class="badge bg-success rounded-pill">پاسخ</a>
+                                            <button type="button" asp-action="SendMessage" asp-controller="AdminTicket" asp-area="Admin" asp-route-ticketId="@ticket.Id"
+                                                    asp-route-userId="@ticket.OwnerId" class="btn rounded-pill btn-success">
+                                                <i class="bx bx-reply me-1"></i>
+                                                پاسخ
+                                            </button>
                                         </span>
                                         <span>
-                                            <a class="badge bg-danger rounded-pill" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@ticket.Id', '@ticket.Title')">
+                                            <button class="btn rounded-pill btn-danger" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@ticket.Id', '@ticket.Title')">
                                                 <i class="bx bx-trash me-1"></i> حذف
-                                            </a>
+                                            </button>
                                             <form id="deleteForm-@ticket.Id" method="post" action="@Url.Action("DeleteTicket", new { ticketId = ticket.Id , Title = ticket.Title })" style="display:none;">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="ticketId" value="@ticket.Id" />

@@ -1,9 +1,4 @@
 ﻿using E_Shop.Domain.Models.ProductModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace E_Shop.Domain.Contracts.ProductCont
 {
@@ -16,5 +11,8 @@ namespace E_Shop.Domain.Contracts.ProductCont
         bool DeleteProduct(int Id);
         public void Save();
 
+
+        Task<Product> GetProductById(int productId);
+        Task<bool> IsCategoryExist(int categoryId);
     }
 }

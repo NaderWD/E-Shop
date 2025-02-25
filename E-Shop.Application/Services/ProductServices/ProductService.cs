@@ -1,5 +1,4 @@
-﻿using E_Shop.Application.ViewModels;
-using E_Shop.Application.ViewModels.ProductsViewModel;
+﻿using E_Shop.Application.ViewModels.ProductsViewModel;
 using E_Shop.Domain.Contracts.ProductCont;
 using E_Shop.Domain.Models.ProductModels;
 

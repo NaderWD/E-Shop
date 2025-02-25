@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace E_Shop.Application.ViewModels.ProductsViewModel
 {
     public class ProductViewModel
     {
         public int Id { get; set; }
+
         [Required(ErrorMessage = "عنوان نباید خالی باشد.")]
         [StringLength(100, ErrorMessage = "عنوان باید کمتر از 100 کاراکتر باشد.")]
         public string Title { get; set; }
@@ -47,7 +43,6 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
     {
         public int Id { get; set; }
 
-        
         public IFormFile? Image { get; set; }
 
         [Required(ErrorMessage = "عنوان نباید خالی باشد.")]
@@ -82,8 +77,6 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
     
     public class CreateProductViewModel
     {
-        
-
         [Required(ErrorMessage = "لطفاً یک تصویر انتخاب کنید.")]
         public IFormFile Image { get; set; }
 

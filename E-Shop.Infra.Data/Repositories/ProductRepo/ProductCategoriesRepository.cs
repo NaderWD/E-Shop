@@ -15,7 +15,7 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
 
         public List<ProductCategories> GetAll()
         {
-           return dbContext.ProductCategories.Include(c => c.Parent).Where(c => c.IsDelete == false).ToList();
+            return dbContext.ProductCategories.Include(c => c.Parent).Where(c => c.IsDelete == false).ToList();
         }
 
         public ProductCategories GetProductCategoryById(int Id)
@@ -32,8 +32,19 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
         public bool UpdateProductCategory(ProductCategories model)
         {
             dbContext.ProductCategories.Update(model);
-            
+
             return true;
         }
+
+
+
+        public async Task<bool> Exist(int categoryId)
+            => await dbContext.ProductCategories.AnyAsync(x => x.Id == categoryId);
+
+        public async Task<List<ProductCategories>> GetAllSubCategories()
+            => await dbContext.ProductCategories.Where(x => x.ParentId != null)
+                                                .Include(x => x.Parent)
+                                                .OrderBy(x => x.Name)
+                                                .ToListAsync();
     }
 }
