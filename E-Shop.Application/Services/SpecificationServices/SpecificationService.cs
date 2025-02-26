@@ -140,9 +140,9 @@ namespace E_Shop.Application.Services.SpecificationServices
             await Save();
         }
 
-        public async Task UpdateProductSpec(UpdateProductSpecVM Update)
+        public async Task UpdateProductSpec(UpdateProductSpecVM update)
         {
-            var produstSpec = await _specRepo.GetProductSpecBySpecId(Update.Id);
+            var produstSpec = await _specRepo.GetProductSpecBySpecId(update.Id);
             _ = new UpdateProductSpecVM()
             {
                 ProductId = produstSpec.ProductId,

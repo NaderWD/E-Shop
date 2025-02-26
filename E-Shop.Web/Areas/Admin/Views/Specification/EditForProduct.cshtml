@@ -1,16 +1,13 @@
-﻿@model ProductSpecAddVM
+﻿@model UpdateProductSpecVM
 
-<h2>Edit Product Specification</h2>
+<h2>تغییر مشخصه</h2>
 
 <form asp-action="Edit">
     <input type="hidden" asp-for="ProductId" />
-    <input type="hidden" asp-for="SelectedSpecificationId" />
 
     <div class="form-group">
-        <label>Specification</label>
-        <input class="form-control"
-               value="@Model.AvailabeSpecifications.First(s => s.Id == Model.SelectedSpecificationId).Name"
-               disabled />
+        <label>مشخصه</label>
+        
     </div>
 
     <div class="form-group">
@@ -19,5 +16,5 @@
         <span asp-validation-for="Value" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
 </form>

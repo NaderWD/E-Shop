@@ -1,7 +1,6 @@
 ﻿using E_Shop.Application.Services.SpecificationServices;
 using E_Shop.Application.ViewModels.SpecificationViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
@@ -66,17 +65,16 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
 
 
-        #region Product Specification
-        public async Task<IActionResult> Add(int productId)
+        #region Add Specification To Product
+        [HttpGet]
+        public async Task<IActionResult> AddToProduct(int productId)
         {
             var model = await _service.GetProductSpecModel(productId);
             return View(model);
         }
 
-        // POST: ProductSpecifications/Add
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(ProductSpecAddVM model)
+        public async Task<IActionResult> AddToProduct(ProductSpecAddVM model)
         {
             if (ModelState.IsValid)
             {
@@ -86,38 +84,33 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             model.AvailabeSpecifications = (await _service.GetProductSpecModel(model.ProductId)).AvailabeSpecifications;
             return View(model);
         }
+        #endregion
 
-        // GET: ProductSpecifications/Edit/5
-        public async Task<IActionResult> Edit(int productId, int specId)
+
+
+        #region Edit For Product
+        [HttpGet]
+        public async Task<IActionResult> EditForProduct(int productId, int specId)
         {
             var productSpec = await _service.GetProductSpec(productId, specId);
-            if (productSpec == null)
+            if (productSpec == null) return NotFound();
+            UpdateProductSpecVM model = new()
             {
-                return NotFound();
-            }
-
-            var model = new ProductSpecAddVM
-            {
+                Id = productSpec.Id,
                 ProductId = productId,
-                SelectedSpecificationId = specId,
                 Value = productSpec.Value,
-                AvailabeSpecifications = (await _service.GetProductSpecModel(productId)).AvailabeSpecifications
+                Specs = await _service.GetSpecListByProductId(productId)
             };
-
             return View(model);
         }
 
-        
+
         [HttpPost]
-        public async Task<IActionResult> Edit(int productId, int specId, ProductSpecAddVM model)
+        public async Task<IActionResult> EditForProduct(int productId, UpdateProductSpecVM model)
         {
-            if (ModelState.IsValid)
-            {
-                await _service.UpdateProductSpec(model);
-                return RedirectToAction("Details", "Products", new { id = model.ProductId });
-            }
-            model.AvailabeSpecifications = (await _service.GetProductSpecModel(model.ProductId)).AvailabeSpecifications;
-            return View(model);
+            if (!ModelState.IsValid) return View(model);
+            await _service.UpdateProductSpec(model);
+            return RedirectToAction("Details", "Products", new { id = model.ProductId });
         }
         #endregion
 

@@ -50,8 +50,10 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
 
 
     #region For Product Specifications
-    public class ProductSpecAddVM
+    public class ProductSpecAddVM    
     {
+        public int Id { get; set; }
+
         public int ProductId { get; set; }
 
         [Display(Name = "مشخصه ی انتخاب شده")]
@@ -63,7 +65,7 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
         [MaxLength(100)]
         public string Value { get; set; }
 
-        public List<SpecOptionVM> AvailabeSpecifications { get; set; } = [];
+        public List<SpecOptionVM>? AvailabeSpecifications { get; set; } = [];
     }
 
     public class SpecOptionVM
