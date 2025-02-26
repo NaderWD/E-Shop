@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using E_Shop.Domain.Models.ColorModels;
 
-namespace E_Shop.Domain.Repositories.Interfaces
+namespace E_Shop.Domain.Contracts.ColorCont
 {
     public interface IProductColorRepository
     {

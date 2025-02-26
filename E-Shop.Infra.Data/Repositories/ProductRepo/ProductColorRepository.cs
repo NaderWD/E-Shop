@@ -1,6 +1,6 @@
-﻿using E_Shop.Domain.Models;
+﻿using E_Shop.Domain.Contracts.ColorCont;
+using E_Shop.Domain.Models;
 using E_Shop.Domain.Models.ColorModels;
-using E_Shop.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -13,7 +13,7 @@ namespace E_Shop.Application.Services.TicketServices
 
         public async Task CreateTicket(TicketVM ticketVM, IFormFile? attachment, int userId)
         {
-            var user = await _userRepository.GetUserById(userId);
+            _ = await _userRepository.GetUserById(userId);
             if (attachment != null && attachment.Length > 0)
             {
                 if (!FileExtensions.IsImageOrPdf(attachment.FileName)) throw new Exception("فرمت فایل پشتیبانی نمیشود");

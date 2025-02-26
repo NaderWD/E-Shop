@@ -1,13 +1,5 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.ColorViewModels;
-using E_Shop.Application.ViewModels.ProductsViewModel;
-using E_Shop.Domain.Models;
-using E_Shop.Domain.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using E_Shop.Domain.Contracts.ColorCont;
 using E_Shop.Domain.Models.ColorModels;
 
@@ -17,12 +9,14 @@ namespace E_Shop.Application.Services.Implementations
     {
         public bool AddMapping(AddColorToProductViewModel model)
         {
-            ProductColorMapping mapping = new ProductColorMapping();
-            mapping.ProductId = model.ProductId;
-            mapping.ColorId = model.ColorId;
-            mapping.Price = model.Price;
-            mapping.IsDefault = model.IsDefault;
-            
+            ProductColorMapping mapping = new()
+            {
+                ProductId = model.ProductId,
+                ColorId = model.ColorId,
+                Price = model.Price,
+                IsDefault = model.IsDefault
+            };
+
 
 
             var result = productColor.AddMapping(mapping);

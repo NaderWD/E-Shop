@@ -1,4 +1,4 @@
-﻿using E_Shop.Application.ViewModels;
+﻿using E_Shop.Application.ViewModels.ProductsViewModel;
 using E_Shop.Domain.Contracts.ProductCont;
 using E_Shop.Domain.Models.ProductModels;
 
@@ -10,7 +10,7 @@ namespace E_Shop.Application.Services.ProductServices
         public List<ProductCategoriesViewModel> GetAll()
         {
             var category = productCategoriesRepository.GetAll();
-            List<ProductCategoriesViewModel> productCategories = new List<ProductCategoriesViewModel>();
+            List<ProductCategoriesViewModel> productCategories = [];
 
             foreach (var categoryItem in category)
             {
@@ -41,8 +41,10 @@ namespace E_Shop.Application.Services.ProductServices
         {
             var category = productCategoriesRepository.GetAll();
 
-            CreatProductCategoryViewModel productCategories = new CreatProductCategoryViewModel();
-            productCategories.ParentList = new List<SelectListitem>();
+            CreatProductCategoryViewModel productCategories = new()
+            {
+                ParentList = []
+            };
             if (category != null)
             {
                 foreach (var item in category.Where(c => c.ParentId == null))
@@ -63,7 +65,7 @@ namespace E_Shop.Application.Services.ProductServices
         public List<SelectListitem> GetSelectItems()
         {
             var category = productCategoriesRepository.GetAll();
-            List<SelectListitem> selectListitems = new List<SelectListitem>();
+            List<SelectListitem> selectListitems = [];
 
             foreach (var item in category.Where(c => c.ParentId == null))
             {
@@ -82,9 +84,10 @@ namespace E_Shop.Application.Services.ProductServices
             var category = productCategoriesRepository.GetProductCategoryById(Id);
 
 
-            CreatProductCategoryViewModel productCategories = new CreatProductCategoryViewModel();
-
-            productCategories.ParentList = new List<SelectListitem>();
+            CreatProductCategoryViewModel productCategories = new()
+            {
+                ParentList = []
+            };
             var selectitems = GetSelectItems();
 
             if (category != null)
@@ -175,11 +178,12 @@ namespace E_Shop.Application.Services.ProductServices
         public ProductCategoriesViewModel GetProductCategoryById(int Id)
         {
             var category = productCategoriesRepository.GetProductCategoryById(Id);
-            ProductCategoriesViewModel model = new ProductCategoriesViewModel();
-
-            model.Name = category.Name;
-            model.ParentId = category.ParentId;
-            model.CreateDate = DateTime.Now;
+            ProductCategoriesViewModel model = new()
+            {
+                Name = category.Name,
+                ParentId = category.ParentId,
+                CreateDate = DateTime.Now
+            };
             return model;
 
         }

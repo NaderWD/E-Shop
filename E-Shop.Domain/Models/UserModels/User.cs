@@ -5,26 +5,27 @@ namespace E_Shop.Domain.Models.UserModels
 {
     public class User : BaseModel
     {
-        [MaxLength(255, ErrorMessage = "نام نباید بیشتر از ۲۵۵ کاراکتر باشد.")]
-        [Required(ErrorMessage = "وارد کردن نام ضروری است.")]
+        [Display(Name = "")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید.")]
         public string? FirstName { get; set; }
 
-        [MaxLength(255, ErrorMessage = "نام خانوادگی نباید بیشتر از ۲۵۵ کاراکتر باشد.")]
+        [Display(Name = "نام")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید.")]
         public string? LastName { get; set; }
 
-        [MaxLength(255, ErrorMessage = "رمز عبور نباید بیشتر از ۲۵۵ کاراکتر باشد.")]
-        [Required(ErrorMessage = "لطفا رمز جدید را وارد کنید.")]
+        [Display(Name = "نام خانوادکی")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید.")]
         public string? Password { get; set; }
 
-        [MaxLength(500, ErrorMessage = "آدرس ایمیل نباید بیشتر از ۵۰۰ کاراکتر باشد.")]
-        [Required(ErrorMessage = "وارد کردن آدرس ایمیل ضروری است.")]
+        [Display(Name = "ایمیل")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید.")]
         public string? EmailAddress { get; set; }
 
-        [MaxLength(500, ErrorMessage = "شماره موبایل نباید بیشتر از ۵۰۰ کاراکتر باشد.")]
+        [Display(Name = "موبایل")]
         public string? Mobile { get; set; }
 
         public string? Image { get; set; }
-                                              
+
         public string? Avatar { get; set; }
 
         public AvatarStatus? AvatarStatus { get; set; }
@@ -34,6 +35,6 @@ namespace E_Shop.Domain.Models.UserModels
 
         public bool IsAdmin { get; set; }
 
-        public bool IsActive{get; set;}
+        public bool IsActive { get; set; }
     }
 }

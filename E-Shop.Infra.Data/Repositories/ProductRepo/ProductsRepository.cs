@@ -16,7 +16,7 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
 
         public bool DeleteProduct(int Id)
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool UpdateProduct(Product product)
@@ -27,11 +27,11 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
         }
         #endregion Product CRUD
 
-        public void Save() 
+        public void Save()
         {
             dbContext.SaveChanges();
         }
-       
+
         public List<Product> GetAll()
         {
             return dbContext.Products.Include(p => p.Category).ToList();

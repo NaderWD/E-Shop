@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace E_Shop.Application.ViewModels
+namespace E_Shop.Application.ViewModels.ProductsViewModel
 {
     public class ProductCategoriesViewModel
     {
