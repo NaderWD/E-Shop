@@ -1,17 +1,16 @@
-﻿@model List<E_Shop.Application.ViewModels.ColorViewModels.AddColorToProductViewModel>
-
-
+﻿@using E_Shop.Application.ViewModels.ProductsViewModel
+@model List<ProductGalleryViewModel>
 
 <div class="content-wrapper">
     <!-- Content -->
     <div class="container-xxl flex-grow-1 container-p-y h-100">
-        <!-- Colors List Table -->
+        <!-- Gallery Images List Table -->
         <div class="card">
             <div class="card-header border-bottom">
-                <h5 class="card-title">Search Filter</h5>
+                <h5 class="card-title">تصاویر گالری محصول</h5>
                 <div class="d-flex justify-content-between align-items-center row py-1 gap-3 gap-md-0">
-                    <div class="col-md-4 color_name"></div>
-                    <div class="col-md-4 color_code"></div>
+                    <div class="col-md-4 image_name"></div>
+                    <div class="col-md-4 image_preview"></div>
                 </div>
             </div>
             <div class="card-datatable table-responsive">
@@ -47,25 +46,23 @@
                                             <span class="dt-down-arrow"></span>
                                         </button>
                                     </div>
-                                    <button class="btn btn-secondary add-new btn-primary" aria-controls="DataTables_Table_0" type="button" >
-                                        <a asp-action="AddColor" asp-route-productId="@TempData["productId"]">
+                                    <button class="btn btn-secondary add-new btn-primary" aria-controls="DataTables_Table_0" type="button">
+                                        <a asp-action="AddProductGallery" asp-route-productId="@ViewBag.ProductId">
                                             <span>
-                                                <i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">افزودن رنگ</span>
+                                                <i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">افزودن تصویر</span>
                                             </span>
-                                       </a> 
+                                        </a>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <table class="datatables-colors table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                    <table class="datatables-gallery table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
                         <thead>
                             <tr>
                                 <th class="control sorting_disabled dtr-hidden" rowspan="1" colspan="1" style="width: 51.5875px; display: none;" aria-label=""></th>
-                                <th class="sorting sorting_desc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 125.3px;" aria-sort="descending" aria-label="Color: activate to sort column ascending">نام رنگ</th>
-                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 123.2px;" aria-label="Code: activate to sort column ascending">کد رنگ</th>
-                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 100px;" aria-label="Default: activate to sort column ascending">پیش‌فرض</th>
-                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 100px;" aria-label="Price: activate to sort column ascending">قیمت</th>
+                                <th class="sorting sorting_desc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 125.3px;" aria-sort="descending" aria-label="Image: activate to sort column ascending">نام تصویر</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 123.2px;" aria-label="Preview: activate to sort column ascending">پیش‌نمایش</th>
                                 <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 164.75px;" aria-label="Actions">عملیات ها</th>
                             </tr>
                         </thead>
@@ -75,30 +72,20 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr class="odd">
-                                        <td><i class="fas fa-palette fa-lg text-primary me-3"></i> <strong>@item.Name</strong></td>
+                                        <td><i class="fas fa-image fa-lg text-primary me-3"></i> <strong>@item.ImageName</strong></td>
                                         <td>
-                                            <span class="badge" style="background-color: @item.Code; color: white;">@item.Code</span>
+                                            <img src="~/theme-assets/images/products/@item.ImageName" alt="@item.ImageName" style="width: 100px; height: auto;" />
                                         </td>
                                         <td>
-                                            @if (item.IsDefault)
-                                            {
-                                                <span class="badge bg-label-success">پیش‌فرض</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="badge bg-label-secondary">غیر پیش‌فرض</span>
-                                            }
-                                        </td>
-                                        <td>@item.Price.ToString("N0") تومان</td>
-                                        <td>
-                                            <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.ColorId', '@item.Name')">
-                                                <i class="bx bx-trash me-1"></i> حذف
-                                            </a>
-                                            <form id="deleteForm-@item.ColorId" method="post" action="@Url.Action("RemoveColor", new { MappingId = item.Id })" style="display:none;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="id" value="@item.Id" />
-                                            </form>
-
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.ImageName')">
+                                                    <i class="bx bx-trash me-1"></i> حذف
+                                                </a>
+                                                <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteGalleryImage", new { id = item.Id })" style="display:none;">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 }
@@ -106,10 +93,9 @@
                             else
                             {
                                 <tr>
-                                    <td><p>رنگی وجود ندارد</p></td>
+                                    <td colspan="4"><p>تصویری وجود ندارد</p></td>
                                 </tr>
                             }
-                            
                         </tbody>
                     </table>
 
@@ -132,7 +118,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
     <!-- / Content -->

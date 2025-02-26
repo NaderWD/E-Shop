@@ -44,6 +44,10 @@
                                         <i class="bx bx-edit-alt me-1"></i> لیست رنگ ها
                                     </a>
 
+                                    <a class="dropdown-item" asp-controller="ProductGallery" asp-action="ProductGalleryIndex" asp-route-productId="@item.Id">
+                                        <i class="bx bx-edit-alt me-1"></i> گالری محصول
+                                    </a>
+
                                     <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.Title')">
                                         <i class="bx bx-trash me-1"></i> حذف 
                                     </a>

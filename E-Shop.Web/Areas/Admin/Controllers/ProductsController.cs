@@ -90,8 +90,8 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 ViewBag.CategoryList = new SelectList(content.Category ?? new List<ProductCategoryViewModel>(), "Id", "Name");
                 return View(model);
             }
-
-            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/theme-assets/images/products", model.ImageName);
+            var imagename = productsService.GetById(model.Id).ImageName;
+            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/theme-assets/images/products", imagename);
 
             if (model.Image != null && model.Image.Length > 0)
             {
@@ -160,7 +160,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         public IActionResult ProductColor(int productId)
         {
             var content = productColorService.GetAllColorForProduct(productId);
-            ViewBag.ProductId = productId;
+            TempData["productId"]= productId;
             return View(content);
         }
         

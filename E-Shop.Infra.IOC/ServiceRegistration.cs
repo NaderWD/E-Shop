@@ -57,6 +57,9 @@ namespace E_Shop.Infra.IOC
             services.AddScoped<IProductColorRepository, ProductColorRepository>();
             services.AddScoped<IProductColorService, ProductColorService>();
 
+            services.AddScoped<IProductGalleryRepository, ProductGalleryRepository>();
+            services.AddScoped<IProductGalleryService, ProductGalleryService>();
+
             services.AddScoped<ISpecificationRepository, SpecificationRepository>();
             services.AddScoped<IProductSpecificationRepository, ProductSpecificationRepository>();
             services.AddScoped<ISpecificationService, SpecificationService>();

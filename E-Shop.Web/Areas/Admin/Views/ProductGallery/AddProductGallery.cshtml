@@ -1,0 +1,22 @@
+﻿@model AddProductGalleryViewModel
+
+
+<form class="add-new-product pt-0 fv-plugins-bootstrap5 fv-plugins-framework" id="addNewProductGalleryForm" novalidate="novalidate" method="post" asp-action="AddProductGallery" enctype="multipart/form-data">
+    <input type="hidden" asp-for="ProductId" value="@ViewBag.ProductId" />
+
+    <div class="row">
+        @for (int i = 0; i < 5; i++)
+        {
+            <div class="mb-3 col-md-6">
+                <label class="form-label">تصویر @(i + 1)</label>
+                <input type="file" class="form-control" asp-for="Images[i]">
+                <span asp-validation-for="Images[i]" class="text-danger"></span>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">افزودن گالری محصول</button>
+    <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" asp-controller="Products" asp-action="ProductIndex">لغو</button>
+</form>
+
+

@@ -18,5 +18,6 @@ namespace E_Shop.Domain.Models.ProductModels
         public ProductCategories Category { get; set; }
         public ICollection<ProductColorMapping> Color { get; set; }
         public ICollection<ProductSpecification>? ProductSpecification { get; set; }
+        public List<ProductGallery> ProductGalleries { get; set; }
     }
 }
