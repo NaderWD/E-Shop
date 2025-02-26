@@ -37,5 +37,9 @@
         public const string ColorAdded = "رنگ مورد نظر با موفقیت اضافه شد.";
         public const string ColorUpdate = "رنگ مورد نظر با موفقیت برورزرسانی شد.";
         public const string ColorDeleted = "رنگ مورد نظر با موفقیت حذف شد.";
+        
+        public const string GalleryAdded = "تصویر مورد نظر با موفقیت اضافه شد.";
+        
+        public const string GalleryDeleted = "تصویر مورد نظر با موفقیت حذف شد.";
     }
 }

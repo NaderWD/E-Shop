@@ -18,7 +18,7 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
 
         public List<ProductGallery> GetGalleryByProductId(int id)
         {
-            return dbContext.ProductGallery.Where(p => p.ProductId == id).ToList();
+            return dbContext.ProductGallery.Where(p => p.ProductId == id && p.IsDelete == false).ToList();
         }
 
         public bool CreateGallery(ProductGallery productGallery)

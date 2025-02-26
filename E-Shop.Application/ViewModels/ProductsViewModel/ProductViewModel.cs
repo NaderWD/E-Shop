@@ -85,7 +85,7 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
         public string Title { get; set; }
 
         [Required(ErrorMessage = "قیمت نباید خالی باشد.")]
-        [Range(0, int.MaxValue, ErrorMessage = "قیمت باید یک عدد مثبت باشد.")]
+        [Range(0, long.MaxValue, ErrorMessage = "قیمت باید یک عدد مثبت باشد.")]
         public int Price { get; set; }
 
         [StringLength(500, ErrorMessage = "توضیحات باید کمتر از 500 کاراکتر باشد.")]

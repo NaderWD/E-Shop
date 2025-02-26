@@ -46,13 +46,11 @@
                                             <span class="dt-down-arrow"></span>
                                         </button>
                                     </div>
-                                    <button class="btn btn-secondary add-new btn-primary" aria-controls="DataTables_Table_0" type="button">
-                                        <a asp-action="AddProductGallery" asp-route-productId="@ViewBag.ProductId">
-                                            <span>
-                                                <i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">افزودن تصویر</span>
-                                            </span>
-                                        </a>
-                                    </button>
+                                    <a class="btn btn-secondary add-new btn-primary" asp-action="AddProductGallery" asp-route-productId="@ViewData["ProductId"]">
+                                        <span>
+                                            <i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">افزودن تصویر</span>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -60,7 +58,7 @@
                     <table class="datatables-gallery table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
                         <thead>
                             <tr>
-                                <th class="control sorting_disabled dtr-hidden" rowspan="1" colspan="1" style="width: 51.5875px; display: none;" aria-label=""></th>
+
                                 <th class="sorting sorting_desc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 125.3px;" aria-sort="descending" aria-label="Image: activate to sort column ascending">نام تصویر</th>
                                 <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 123.2px;" aria-label="Preview: activate to sort column ascending">پیش‌نمایش</th>
                                 <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 164.75px;" aria-label="Actions">عملیات ها</th>
@@ -77,15 +75,15 @@
                                             <img src="~/theme-assets/images/products/@item.ImageName" alt="@item.ImageName" style="width: 100px; height: auto;" />
                                         </td>
                                         <td>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.ImageName')">
-                                                    <i class="bx bx-trash me-1"></i> حذف
-                                                </a>
-                                                <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteGalleryImage", new { id = item.Id })" style="display:none;">
-                                                    @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="id" value="@item.Id" />
-                                                </form>
-                                            </div>
+
+                                            <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.ImageName')">
+                                                <i class="bx bx-trash me-1"></i> حذف
+                                            </a>
+                                            <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteProductGallery", new { Id = item.Id })" style="display:none;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                            </form>
+
                                         </td>
                                     </tr>
                                 }

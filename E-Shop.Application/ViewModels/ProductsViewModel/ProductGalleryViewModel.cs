@@ -17,7 +17,7 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
     public class AddProductGalleryViewModel
     {
         public List<IFormFile> Images { get; set; }
-        public string ImageName { get; set; }
+        public string? ImageName { get; set; }
         public int ProductId { get; set; }
 
     }

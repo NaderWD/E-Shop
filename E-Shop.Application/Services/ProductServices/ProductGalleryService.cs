@@ -13,13 +13,13 @@ namespace E_Shop.Application.Services.ProductServices
     {
         public bool CreateGallery(AddProductGalleryViewModel productGallery)
         {
-            var model = new ProductGallery();
-            
+
+
             foreach (var item in productGallery.Images)
             {
+                var model = new ProductGallery();
                 if (item != null && item.Length > 0)
                 {
-
                     var fileName = Path.GetFileNameWithoutExtension(item.FileName);
                     var extension = Path.GetExtension(item.FileName);
                     var uniqueFileName = $"{fileName}_{DateTime.Now.ToString("yyyyMMddHHmmss")}{extension}";
@@ -32,7 +32,7 @@ namespace E_Shop.Application.Services.ProductServices
                     {
                         item.CopyTo(stream);
                     }
-                    
+
                     model.ImageName = uniqueFileName;
                     model.ProductId = productGallery.ProductId;
                     model.CreateDate = DateTime.Now;
@@ -47,20 +47,17 @@ namespace E_Shop.Application.Services.ProductServices
 
         public bool DeleteGallery(int id)
         {
-            var model = productGalleryRepository.GetGalleryByProductId(id);
-            
-            foreach (var item in model)
+            var model = productGalleryRepository.GetGalleryById(id);
+
+            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/theme-assets/images/products", model.ImageName);
+            if (System.IO.File.Exists(oldFilePath))
             {
-                var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/theme-assets/images/products", item.ImageName);
-                if (System.IO.File.Exists(oldFilePath))
-                {
-                    System.IO.File.Delete(oldFilePath);
-                }
-                item.IsDelete = true;
-                productGalleryRepository.UpdateGallery(item);
-                productGalleryRepository.SaveChange();
+                System.IO.File.Delete(oldFilePath);
             }
-            
+            model.IsDelete = true;
+            productGalleryRepository.UpdateGallery(model);
+            productGalleryRepository.SaveChange();
+
             return true;
         }
 
@@ -72,12 +69,12 @@ namespace E_Shop.Application.Services.ProductServices
 
             foreach (var item in Gallery)
             {
-                model.Add(new ProductGalleryViewModel 
+                model.Add(new ProductGalleryViewModel
                 {
                     ProductId = item.ProductId,
                     ImageName = item.ImageName,
                     Id = item.Id,
-                    
+
                 });
             }
 
@@ -103,7 +100,7 @@ namespace E_Shop.Application.Services.ProductServices
             List<ProductGalleryViewModel> model = new List<ProductGalleryViewModel>();
             foreach (var item in Gallery)
             {
-                model.Add(new ProductGalleryViewModel 
+                model.Add(new ProductGalleryViewModel
                 {
                     Id = item.Id,
                     ProductId = item.ProductId,
@@ -118,7 +115,7 @@ namespace E_Shop.Application.Services.ProductServices
             var model = productGalleryRepository.GetGalleryById(productGallery.Id);
             model.ImageName = productGallery.ImageName;
             model.ProductId = productGallery.ProductId;
-            
+
             productGalleryRepository.UpdateGallery(model);
             productGalleryRepository.SaveChange();
             return true;
