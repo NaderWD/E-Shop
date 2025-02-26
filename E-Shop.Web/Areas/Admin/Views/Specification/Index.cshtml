@@ -1,0 +1,26 @@
+﻿@model IEnumerable<SpecListVM>
+
+<h2>Specifications</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Linked Categories</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var spec in Model.OrderBy(s => s.Name))
+        {
+            <tr>
+                <td>@spec.Name</td>
+                <td>@spec.LinkedCategoriesCount</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@spec.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@spec.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

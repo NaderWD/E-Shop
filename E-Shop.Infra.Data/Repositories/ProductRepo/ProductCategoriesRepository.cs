@@ -35,16 +35,5 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
 
             return true;
         }
-
-
-
-        public async Task<bool> Exist(int categoryId)
-            => await dbContext.ProductCategories.AnyAsync(x => x.Id == categoryId);
-
-        public async Task<List<ProductCategories>> GetAllSubCategories()
-            => await dbContext.ProductCategories.Where(x => x.ParentId != null)
-                                                .Include(x => x.Parent)
-                                                .OrderBy(x => x.Name)
-                                                .ToListAsync();
     }
 }

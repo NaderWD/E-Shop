@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using E_Shop.Domain.Models.SpecificationModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Application.ViewModels.SpecificationViewModels
 {
 
     #region For Createion
-    public class SpecificationCreateVM
+    public class SpecCreateVM
     {
+        public int Id { get; set; }
+
         [Display(Name = "نام مشخصه")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(100)]
@@ -29,14 +32,14 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
 
 
     #region For Display
-    public class SpecificationDetailsVM
+    public class SpecDetailsVM
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public List<string> Categories { get; set; } = [];
     }
 
-    public class SpecificationListVM
+    public class SpecListVM
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -47,11 +50,11 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
 
 
     #region For Product Specifications
-    public class ProductSpecificationAddVM
+    public class ProductSpecAddVM
     {
         public int ProductId { get; set; }
 
-        [Display(Name = "مشخصه")]
+        [Display(Name = "مشخصه ی انتخاب شده")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int SelectedSpecificationId { get; set; }
 
@@ -60,13 +63,21 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
         [MaxLength(100)]
         public string Value { get; set; }
 
-        public List<SpecificationOptionVM> AvailabeSpecifications { get; set; } = [];
+        public List<SpecOptionVM> AvailabeSpecifications { get; set; } = [];
     }
 
-    public class SpecificationOptionVM
+    public class SpecOptionVM
     {
         public int Id { get; set; }
         public string Name { get; set; }
+    }
+
+    public class UpdateProductSpecVM
+    {
+        public int Id { get; set; }
+        public string Value { get; set; }
+        public int ProductId { get; set; }
+        public List<Specification> Specs { get; set; } = [];
     }
     #endregion
 

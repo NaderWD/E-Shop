@@ -10,9 +10,5 @@ namespace E_Shop.Domain.Contracts.ProductCont
         bool UpdateProduct(Product product);
         bool DeleteProduct(int Id);
         public void Save();
-
-
-        Task<Product> GetProductById(int productId);
-        Task<bool> IsCategoryExist(int categoryId);
     }
 }

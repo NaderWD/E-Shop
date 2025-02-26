@@ -1,52 +1,73 @@
-﻿using E_Shop.Application.ViewModels.ProductsViewModel;
-using E_Shop.Application.ViewModels.SpecificationViewModels;
-using E_Shop.Domain.Contracts.ProductCont;
+﻿using E_Shop.Application.ViewModels.SpecificationViewModels;
 using E_Shop.Domain.Contracts.SpecificationCont;
 using E_Shop.Domain.Models.SpecificationModels;
 
 namespace E_Shop.Application.Services.SpecificationServices
 {
-    public class SpecificationService(ISpecificationRepository _repository,
-IProductCategoriesRepository _categoryRepo, IProductsRepository _productsRepo) : ISpecificationService
-    {                                                                          
-        public async Task CreateSpecification(SpecificationCreateVM createVM)
-        {
-            var createdSpec = _repository.Create(new Specification { Name = createVM.Name });
-            foreach (var categoryId in createVM.SelectedCategoryIds)
-                await AddCategoryToSpecification(categoryId, createdSpec.Id);
-            await Save();
-        }
-
-        public async Task AddCategoryToSpecification(int categoryId, int specId)
+    public class SpecificationService(ISpecificationRepository _specRepo) : ISpecificationService
+    {
+        public async Task AddCategoryToSpec(int categoryId, int specId)
         {
             var categorySpec = new CategorySpecification
             {
                 CategoryId = categoryId,
                 SpecificationId = specId
             };
-            await _repository.CreateCategorySpecification(categorySpec);
+            var checkSpec = await _specRepo.IsSpecificationExist(specId);
+            if (checkSpec) await _specRepo.UpdateCategorySpec(categorySpec);
+            if (!checkSpec) await _specRepo.CreateCategorySpec(categorySpec);
+            await Save();
         }
 
-        public async Task AddSpecificationToProduct(ProductSpecificationAddVM specificationAddVM)
+        public async Task CreateSpec(SpecCreateVM createVM)
         {
-            var product = await _productsRepo.GetProductById(specificationAddVM.ProductId);
-            var validSpecs = await _repository.GetSpecificationsByCategoryId(product.CategoryId);
-            if (!validSpecs.Any(x => x.Id == specificationAddVM.SelectedSpecificationId))
-                throw new InvalidOperationException("مشخصه ای برای اضافه کردن به این محصول وجود ندارد");
+            var Spec = _specRepo.CreateSpec(new Specification { Name = createVM.Name });
+            foreach (var categoryId in createVM.SelectedCategoryIds)
+                await AddCategoryToSpec(categoryId, Spec.Id);
+            await Save();
+        }
+
+        public async Task AddSpecToProduct(ProductSpecAddVM specAddVM)
+        {
+            var product = await _specRepo.GetProductById(specAddVM.ProductId);
+            var validSpecs = await _specRepo.GetSpecListByCategoryId(product.CategoryId);
+            if (!validSpecs.Any(x => x.Id == specAddVM.SelectedSpecificationId))
+                throw new InvalidOperationException("مشخصه ی مناسبی برای اضافه کردن به این محصول وجود ندارد");
             ProductSpecification productSpec = new()
             {
-                ProductId = specificationAddVM.ProductId,
-                SpecificationId = specificationAddVM.SelectedSpecificationId,
-                Value = specificationAddVM.Value
+                ProductId = specAddVM.ProductId,
+                SpecificationId = specAddVM.SelectedSpecificationId,
+                Value = specAddVM.Value
             };
-            await _repository.CreateProductSpecification(productSpec);
+            await _specRepo.CreateProductSpec(productSpec);
+            await Save();
         }
 
-        public async Task<SpecificationDetailsVM> GetSpecificationsDetails(int specId)
+        public async Task<List<SpecListVM>> GetAllSpecs()
         {
-            var spec = await _repository.GetSpecificationById(specId);
-            var categories = await _repository.GetCategoriesForSpecification(specId);
-            SpecificationDetailsVM specVM = new()
+            var spec = await _specRepo.GetAllSpecs();
+            var specList = spec.Select(s => new SpecListVM
+            {
+                Id = s.Id,
+                Name = s.Name,
+                LinkedCategoriesCount = s.CategorySpecifications.Count
+            }).ToList();
+            return specList;
+        }
+
+        public async Task<List<Specification>> GetAvailableSpecs(int productId)
+        {
+            var product = await _specRepo.GetProductById(productId);
+            if (product == null) return null;
+            var categories = await _specRepo.GetSpecListByCategoryId(product.CategoryId);
+            return categories;
+        }
+
+        public async Task<SpecDetailsVM> GetSpecDetails(int specId)
+        {
+            var spec = await _specRepo.GetSpecById(specId);
+            var categories = await _specRepo.GetCategoryListBySpecId(specId);
+            SpecDetailsVM specVM = new()
             {
                 Id = spec.Id,
                 Name = spec.Name,
@@ -55,10 +76,30 @@ IProductCategoriesRepository _categoryRepo, IProductsRepository _productsRepo) :
             return specVM;
         }
 
-        public async Task<SpecificationCreateVM> GetSpecificationCreateModel()
+        public async Task<SpecCreateVM> GetSpecByIdForEditProduct(int specId) // بپرس
         {
-            var categories = await _categoryRepo.GetAllSubCategories();
-            return new SpecificationCreateVM
+            var spec = await _specRepo.GetSpecById(specId);
+            var availableCategories = await _specRepo.GetCategoryListBySpecId(specId);
+            List<int> selectedCategoryIds = [.. spec.CategorySpecifications.Select(v => v.CategoryId)];
+            SpecCreateVM editSpec = new()
+            {
+                Id = spec.Id,
+                Name = spec.Name,
+                SelectedCategoryIds = selectedCategoryIds,
+                AvailableCategories = [.. availableCategories.Select(c => new CategorySelectionVM
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    IsSelected = selectedCategoryIds.Contains(c.Id)
+                })]
+            };
+            return editSpec;
+        }
+
+        public async Task<SpecCreateVM> GetSpecCreateModel()
+        {
+            var categories = await _specRepo.GetSubCategoryList();
+            return new SpecCreateVM
             {
                 AvailableCategories = [.. categories.Select(x => new CategorySelectionVM
                 {
@@ -68,13 +109,16 @@ IProductCategoriesRepository _categoryRepo, IProductsRepository _productsRepo) :
             };
         }
 
-        public async Task<ProductSpecificationAddVM> GetProductSpecificationModel(int productId)
+        public async Task<List<Specification>> GetSpecListByProductId(int productId)
+           => await _specRepo.GetSpecListByProductId(productId);
+
+        public async Task<ProductSpecAddVM> GetProductSpecModel(int productId)
         {
-            var specs = await GetAvailableSpecifications(productId);
-            return new ProductSpecificationAddVM
+            var specs = await GetAvailableSpecs(productId);
+            return new ProductSpecAddVM
             {
                 ProductId = productId,
-                AvailabeSpecifications = [.. specs.Select(x => new SpecificationOptionVM
+                AvailabeSpecifications = [.. specs.Select(x => new SpecOptionVM
                 {
                     Id = x.Id,
                     Name = x.Name
@@ -82,38 +126,57 @@ IProductCategoriesRepository _categoryRepo, IProductsRepository _productsRepo) :
             };
         }
 
-        public async Task<List<Specification>> GetAvailableSpecifications(int productId)
+        public async Task<ProductSpecification> GetProductSpec(int productId, int specId)
+            => await _specRepo.GetProductSpecBySpecId(specId);
+
+        public async Task UpdateSpec(SpecCreateVM specUpdate)  //بپرس
         {
-            var product = _productsRepo.GetProductById(productId);
-            if (product == null) return null;
-            var categories = await _repository.GetSpecificationsByCategoryId(product.Id);
-            return categories;
+            var spec = await _specRepo.GetSpecById(specUpdate.Id);
+            var categories = spec.CategorySpecifications.Select(x => x.CategoryId).ToList();
+            spec.Name = specUpdate.Name;
+            categories = specUpdate.SelectedCategoryIds;
+            spec.LastModifiedDate = DateTime.Now;
+            await _specRepo.UpdateSpec(spec);
+            await Save();
         }
 
-        public Task<List<ProductCategoriesViewModel>> GetCategoriesForSpecification(int specId)
+        public async Task UpdateProductSpec(UpdateProductSpecVM Update)
         {
-            throw new NotImplementedException();
+            var produstSpec = await _specRepo.GetProductSpecBySpecId(Update.Id);
+            _ = new UpdateProductSpecVM()
+            {
+                ProductId = produstSpec.ProductId,
+                Value = produstSpec.Value,
+                Specs = await GetSpecListByProductId(produstSpec.ProductId)
+            };
+            await _specRepo.UpdateProductSpec(produstSpec);
+            await Save();
         }
 
-        public Task<List<Specification>> GetSpecificationsByCategoryId(int categoryId)
+        public async Task DeleteSpec(int specId)
         {
-            throw new NotImplementedException();
+            var spec = await _specRepo.GetSpecById(specId) ?? throw new Exception("مشخصه وجود ندارد");
+            spec.IsDelete = true;
+            await _specRepo.UpdateSpec(spec);
+            await Save();
         }
 
-        public Task<List<Specification>> GetSpecificationsForProduct(int productId)
+        public async Task DeleteCategorySpec(int specId)
         {
-            throw new NotImplementedException();
+            var categorySpec = await _specRepo.GetCategorySpecBySpecId(specId) ?? throw new Exception();
+            categorySpec.IsDelete = true;
+            await _specRepo.UpdateCategorySpec(categorySpec);
+            await Save();
         }
 
-        public Task RemoveProductSpecification(int productId, int specId)
+        public async Task DeleteProductSpec(int specId)
         {
-            throw new NotImplementedException();
+            var productSpec = await _specRepo.GetProductSpecBySpecId(specId) ?? throw new Exception();
+            productSpec.IsDelete = true;
+            await _specRepo.UpdateProductSpec(productSpec);
+            await Save();
         }
 
-        public async Task Save()
-        {
-            await _repository.Save();
-        }
-
+        public async Task Save() => await _specRepo.Save();
     }
 }

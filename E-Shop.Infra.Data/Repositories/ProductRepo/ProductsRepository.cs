@@ -41,17 +41,5 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
         {
             return dbContext.Products.Find(Id);
         }
-
-
-
-        public async Task<Product> GetProductById(int productId)
-            => await dbContext.Products.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == productId);
-
-        public async Task<bool> IsCategoryExist(int categoryId)
-        {
-            var category = await dbContext.Products.FirstOrDefaultAsync(x => x.CategoryId == categoryId);
-            if (category == null) return false;
-            return true;
-        }
     }
 }

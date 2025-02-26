@@ -5,14 +5,37 @@ namespace E_Shop.Domain.Contracts.SpecificationCont
 {
     public interface ISpecificationRepository
     {
-        Task Create(Specification spec);         
-        Task CreateCategorySpecification(CategorySpecification categorySpec);
-        Task CreateProductSpecification(ProductSpecification productSpec);
-        Task<Specification> GetSpecificationById(int specId);
-        Task<List<ProductCategories>> GetCategoriesForSpecification(int specId);
-        Task RemoveProductSpecification(int productId, int specId);
-        Task<List<Specification>> GetSpecificationsForProduct(int productId);
-        Task<List<Specification>> GetSpecificationsByCategoryId(int categoryId);
+
+        #region Specification
+        Task CreateSpec(Specification spec);
+        Task<List<Specification>> GetAllSpecs();
+        Task<Specification> GetSpecById(int specId);
+        Task UpdateSpec(Specification spec);
+        Task<bool> IsSpecificationExist(int specId);
         Task Save();
+        #endregion
+
+
+
+        #region CategorySpecification
+        Task CreateCategorySpec(CategorySpecification categorySpec);
+        Task<List<ProductCategories>> GetSubCategoryList();
+        Task<List<ProductCategories>> GetCategoryListBySpecId(int specId);
+        Task<List<Specification>> GetSpecListByCategoryId(int categoryId);
+        Task<CategorySpecification> GetCategorySpecBySpecId(int specId);
+        Task UpdateCategorySpec(CategorySpecification categorySpec);
+        Task<bool> IsCategoryExist(int categoryId);
+        #endregion
+
+
+
+        #region ProductSpecification
+        Task CreateProductSpec(ProductSpecification productSpec);
+        Task<ProductSpecification> GetProductSpecBySpecId(int specId);
+        Task<List<Specification>> GetSpecListByProductId(int productId);
+        Task<Product> GetProductById(int productId);
+        Task UpdateProductSpec(ProductSpecification productSpec);
+        #endregion
+
     }
 }
