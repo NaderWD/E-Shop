@@ -1,26 +1,42 @@
 ﻿using E_Shop.Application.ViewModels.SpecificationViewModels;
+using E_Shop.Domain.Models.ProductModels;
 using E_Shop.Domain.Models.SpecificationModels;
 
 namespace E_Shop.Application.Services.SpecificationServices
 {
     public interface ISpecificationService
     {
-        Task AddCategoryToSpec(int categoryId, int specId);
-        Task CreateSpec(SpecCreateVM createVM);
-        Task AddSpecToProduct(ProductSpecAddVM specAddVM);
-        Task<List<SpecListVM>> GetAllSpecs();
-        Task<SpecDetailsVM> GetSpecDetails(int specId);
-        Task<SpecCreateVM> GetSpecByIdForEditProduct(int specId);
-        Task<SpecCreateVM> GetSpecCreateModel();
-        Task<List<Specification>> GetSpecListByProductId(int productId);
-        Task<List<Specification>> GetAvailableSpecs(int productId);
-        Task<ProductSpecAddVM> GetProductSpecModel(int productId);
-        Task<ProductSpecification> GetProductSpec(int productId, int specId);
-        Task UpdateSpec(SpecCreateVM specUpdate);
-        Task UpdateProductSpec(UpdateProductSpecVM productSpecUpdate);
-        Task DeleteSpec(int specId);          
-        Task DeleteCategorySpec(int specId);
-        Task DeleteProductSpec(int specId);
+
+        #region Specification
+        Task CreateSpecification(SpecCreateVM specVM);
+        Task<List<SpecListVM>> GetAllSpecifications();
+        Task<SpecDetailsVM> GetSpecificationDetails(int specId);
+        Task<SpecCreateVM> GetSpecificationForEdit(int specId);
+        Task UpdateSpecification(SpecCreateVM specVM);
+        Task DeleteSpecification(int specId);
         Task Save();
+        #endregion                              
+
+
+
+        #region CategorySpecification
+        Task CreateCategorySpecification(CategorySpecVM categorySpec);
+        Task<List<ProductCategories>> GetAllCategoriesList();
+        Task UpdateCategorySpecifications(int specId, List<int> selectedCategoryIds);
+        Task DeleteCategorySpecification(int specId);
+        Task<bool> CheckCategorySpecExist(int categoryId);
+        #endregion
+
+
+
+        #region ProductSpecification
+        Task CreateProductSpecification(ProductSpecVM productSpec);
+        Task AddSpecificationToProduct(AddSpecToProductVM addSpecVM);
+        Task<List<SpecVM>> GetAvailableSpecificationsToAddProduct(int productId);
+        Task<List<SpecVM>> GetSpecificationListByProductId(int productId);
+        Task UpdateProductSpecifications(int productId, List<int> selectedSpecIds);
+        Task DeleteProductSpecification(int specId);
+        #endregion
+
     }
 }

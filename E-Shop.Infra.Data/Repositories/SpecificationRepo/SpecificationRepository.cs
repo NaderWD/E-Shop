@@ -26,9 +26,6 @@ namespace E_Shop.Infra.Data.Repositories.SpecificationRepo
         public async Task UpdateSpec(Specification spec)
             => _context.Specifications.Update(spec);
 
-        public async Task<bool> IsSpecificationExist(int specId)
-            => await _context.Specifications.AnyAsync(x => x.Id == specId && !x.IsDelete);
-
         public async Task Save()
             => await _context.SaveChangesAsync();
         #endregion
@@ -39,11 +36,17 @@ namespace E_Shop.Infra.Data.Repositories.SpecificationRepo
         public async Task CreateCategorySpec(CategorySpecification categorySpec)
             => await _context.CategorySpecifications.AddAsync(categorySpec);
 
-        public async Task<List<ProductCategories>> GetSubCategoryList()
-            => await _context.ProductCategories.Where(x => x.ParentId != null && !x.IsDelete)
-                                               .Include(x => x.Parent)
-                                               .OrderBy(x => x.Name)
-                                               .ToListAsync();
+        public async Task<List<CategorySpecification>> GetCategorySpecListBySpecId(int specId)
+            => await _context.CategorySpecifications.Where(x => x.SpecificationId == specId && !x.IsDelete).ToListAsync();
+
+        public async Task<CategorySpecification> GetCategorySpecByCategoryId(int categoryId)
+            => await _context.CategorySpecifications.FirstOrDefaultAsync(x => x.CategoryId == categoryId && !x.IsDelete);
+
+        public async Task<List<ProductCategories>> GetAllCategoryList()
+                    => await _context.ProductCategories.Where(x => !x.IsDelete)
+                                                       .Include(x => x.Parent)
+                                                       .OrderBy(x => x.Name)
+                                                       .ToListAsync();
 
         public async Task<List<ProductCategories>> GetCategoryListBySpecId(int specId)
             => await _context.CategorySpecifications.Where(x => x.SpecificationId == specId && !x.IsDelete)
@@ -57,16 +60,16 @@ namespace E_Shop.Infra.Data.Repositories.SpecificationRepo
                                                     .Select(x => x.Specification)
                                                     .ToListAsync();
 
-        public async Task<CategorySpecification> GetCategorySpecBySpecId(int specId)
-            => await _context.CategorySpecifications.FirstOrDefaultAsync(x => x.SpecificationId == specId
-                                                                                 && !x.IsDelete);
-
         public async Task UpdateCategorySpec(CategorySpecification categorySpec)
             => _context.CategorySpecifications.Update(categorySpec);
 
-        public async Task<bool> IsCategoryExist(int categoryId)
-            => await _context.CategorySpecifications.AnyAsync(x => x.CategoryId == categoryId && !x.IsDelete);
-        #endregion  
+        public async Task<bool> CheckCategorySpecExist(int categoryId)
+        {
+            var Check = await _context.CategorySpecifications.AnyAsync(x => x.CategoryId == categoryId && !x.IsDelete);
+            if (!Check) return false;
+            return true;
+        }
+        #endregion
 
 
 
@@ -75,20 +78,32 @@ namespace E_Shop.Infra.Data.Repositories.SpecificationRepo
             => await _context.ProductSpecifications.AddAsync(productSpec);
 
         public async Task<ProductSpecification> GetProductSpecBySpecId(int specId)
-            => await _context.ProductSpecifications.FirstOrDefaultAsync(x => x.SpecificationId == specId
-                                                                         && !x.IsDelete);
+            => await _context.ProductSpecifications.FirstOrDefaultAsync(x => x.SpecificationId == specId && !x.IsDelete);
+
+        public async Task<List<ProductSpecification>> GetProductSpecListBySpecId(int specId)
+                    => await _context.ProductSpecifications.Where(x => x.SpecificationId == specId && !x.IsDelete).ToListAsync();
+
+        public async Task<List<ProductSpecification>> GetProductSpecListByProductId(int productId)
+            => await _context.ProductSpecifications.Where(x => x.ProductId == productId && !x.IsDelete).ToListAsync();
 
         public async Task<List<Specification>> GetSpecListByProductId(int productId)
-            => await _context.ProductSpecifications.Where(x => x.ProductId == productId && !x.IsDelete)
-                                                   .Include(c => c.Specification)    
-                                                   .Select(cv => cv.Specification!)
-                                                   .ToListAsync();
+                    => await _context.ProductSpecifications.Where(x => x.ProductId == productId && !x.IsDelete)
+                                                           .Include(c => c.Specification)
+                                                           .Select(cv => cv.Specification!)
+                                                           .ToListAsync();
 
         public async Task<Product> GetProductById(int productId)
             => await _context.Products.FirstOrDefaultAsync(x => x.Id == productId && !x.IsDelete);
 
         public async Task UpdateProductSpec(ProductSpecification productSpec)
             => _context.ProductSpecifications.Update(productSpec);
+
+        public async Task<bool> CheckProductSpecExist(int specId)
+        {
+            var check = await _context.ProductSpecifications.AnyAsync(x => x.SpecificationId == specId && !x.IsDelete);
+            if (!check) return false;
+            return true;
+        }
         #endregion
 
     }

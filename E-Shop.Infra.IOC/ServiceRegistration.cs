@@ -21,7 +21,6 @@ using E_Shop.Application.Services.ColorServices;
 using E_Shop.Infra.Data.Repositories.ColorRepo;
 using E_Shop.Infra.Data.Repositories.Implementations;
 using E_Shop.Application.Services.Interfaces;
-using E_Shop.Application.Services.Implementations;
 
 namespace E_Shop.Infra.IOC
 {

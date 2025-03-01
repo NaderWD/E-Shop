@@ -1,11 +1,11 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Domain.Contracts.ColorCont;
-using E_Shop.Domain.Models.ColorModels;
+using E_Shop.Domain.Models.ColorModels;                                  
 
-namespace E_Shop.Application.Services.Implementations
+namespace E_Shop.Application.Services.ProductServices
 {
-    public class ProductColorService(IProductColorRepository productColor , IColorRepository colorRepository) : IProductColorService
+    public class ProductColorService(IProductColorRepository productColor) : IProductColorService
     {
         public bool AddMapping(AddColorToProductViewModel model)
         {

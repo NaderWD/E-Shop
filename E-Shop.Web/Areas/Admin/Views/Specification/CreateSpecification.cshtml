@@ -1,0 +1,32 @@
+﻿@model SpecCreateVM
+
+
+
+
+<form asp-action="CreateSpecification" method="post">
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" placeholder="نام مشخصه" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            @foreach (var category in Model.AllCategories)
+            {
+                <div class="col-6 col-md-3 mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="CategoryIds" value="@category.Id">
+                        <label class="form-check-label">@category.Name</label>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">ایجاد</button>
+    </div>
+</form>

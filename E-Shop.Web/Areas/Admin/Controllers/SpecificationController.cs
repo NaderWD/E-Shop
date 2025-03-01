@@ -1,16 +1,21 @@
 ﻿using E_Shop.Application.Services.SpecificationServices;
+using E_Shop.Application.ViewModels.ProductsViewModel;
 using E_Shop.Application.ViewModels.SpecificationViewModels;
+using E_Shop.Domain.Models.ProductModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
     public class SpecificationController(ISpecificationService _service) : AdminBaseController
     {
+
         #region All Specifications
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> AllSpecifications()
         {
-            return View(await _service.GetAllSpecs());
+            return View(await _service.GetAllSpecifications());
         }
         #endregion
 
@@ -18,18 +23,30 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         #region Create Specification
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> CreateSpecification()
         {
-            return View(await _service.GetSpecCreateModel());
+            SpecCreateVM specVM = new()
+            {
+                AllCategories = await _service.GetAllCategoriesList()
+            };
+            return View(specVM);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(SpecCreateVM createVM)
+        public async Task<IActionResult> CreateSpecification(SpecCreateVM createVM, List<int> CategoryIds)
         {
-            if (!ModelState.IsValid) return View(createVM);
-            createVM.AvailableCategories = (await _service.GetSpecCreateModel()).AvailableCategories;
-            await _service.CreateSpec(createVM);
-            return RedirectToAction(nameof(Index));
+            if (!ModelState.IsValid)
+            {
+                SpecCreateVM specVM = new()
+                {
+                    AllCategories = await _service.GetAllCategoriesList()
+                };
+                return View(specVM);
+            }
+            createVM.SelectedCategoryIds = CategoryIds;
+            createVM.NumberOfLinkedCategory = CategoryIds.Count;
+            await _service.CreateSpecification(createVM);
+            return RedirectToAction(nameof(AllSpecifications));
         }
         #endregion
 
@@ -37,31 +54,37 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         #region Edit Specifications  
         [HttpGet]
-        public async Task<IActionResult> Edit(int specId)
+        public async Task<IActionResult> EditSpecification(int specId)
         {
-            return View(await _service.GetSpecByIdForEditProduct(specId));
+            return View(await _service.GetSpecificationForEdit(specId));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int specId, SpecCreateVM createVM)
+        public async Task<IActionResult> EditSpecification(int specId, SpecCreateVM createVM, List<int> CategoryIds)
         {
-            if (specId != createVM.Id) return NotFound();
-            if (!ModelState.IsValid) return View(createVM);
-            createVM.AvailableCategories = (await _service.GetSpecCreateModel()).AvailableCategories;
-            await _service.UpdateSpec(createVM);
-            return RedirectToAction(nameof(Index));
+            if (specId != createVM.SpecId) return NotFound();
+            if (!ModelState.IsValid)
+            {
+                createVM.AllCategories = await _service.GetAllCategoriesList();
+                createVM.SelectedCategoryIds = CategoryIds;
+                createVM.NumberOfLinkedCategory = CategoryIds.Count;
+                return View(createVM);
+            }
+            createVM.SelectedCategoryIds = CategoryIds;
+            await _service.UpdateSpecification(createVM);
+            return RedirectToAction(nameof(AllSpecifications));
         }
         #endregion
 
 
 
         #region Delete Specifications
-        public async Task<IActionResult> Delete(int specId)
+        public async Task<IActionResult> DeleteSpecification(int specId)
         {
-            await _service.DeleteSpec(specId);
-            return RedirectToAction(nameof(Index));
+            await _service.DeleteSpecification(specId);
+            return RedirectToAction(nameof(AllSpecifications));
         }
-        #endregion
+        #endregion                                                    
 
 
 
@@ -69,20 +92,27 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> AddToProduct(int productId)
         {
-            var model = await _service.GetProductSpecModel(productId);
-            return View(model);
+            AddSpecToProductVM specModel = new()
+            {
+                AvailabeSpecifications = await _service.GetAvailableSpecificationsToAddProduct(productId)
+            };
+            return View(specModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddToProduct(ProductSpecAddVM model)
+        [HttpPost]                                                                                
+        public async Task<IActionResult> AddToProduct(AddSpecToProductVM model, List<int> specIds)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _service.AddSpecToProduct(model);
-                return RedirectToAction("Details", "Products", new { id = model.ProductId });
+                AddSpecToProductVM specModel = new()
+                {
+                    AvailabeSpecifications = await _service.GetAvailableSpecificationsToAddProduct(model.ProductId)
+                };
+                return View(specModel);
             }
-            model.AvailabeSpecifications = (await _service.GetProductSpecModel(model.ProductId)).AvailabeSpecifications;
-            return View(model);
+            model.SelectedSpecificationIds = specIds;
+            await _service.AddSpecificationToProduct(model);
+            return RedirectToAction("Details", "Products", new { id = model.ProductId });
         }
         #endregion
 
@@ -90,26 +120,25 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         #region Edit For Product
         [HttpGet]
-        public async Task<IActionResult> EditForProduct(int productId, int specId)
+        public async Task<IActionResult> EditForProduct(int productId)
         {
-            var productSpec = await _service.GetProductSpec(productId, specId);
-            if (productSpec == null) return NotFound();
-            UpdateProductSpecVM model = new()
+            var specs = await _service.GetSpecificationListByProductId(productId);
+            AddSpecToProductVM updateVm = new()
             {
-                Id = productSpec.Id,
                 ProductId = productId,
-                Value = productSpec.Value,
-                Specs = await _service.GetSpecListByProductId(productId)
+                SelectedSpecificationIds = [.. specs.Select(c => c.SpecId)],
+                AvailabeSpecifications = await _service.GetAvailableSpecificationsToAddProduct(productId)
             };
-            return View(model);
+            return View(updateVm);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> EditForProduct(int productId, UpdateProductSpecVM model)
+        public async Task<IActionResult> EditForProduct(int productId,AddSpecToProductVM model, List<int> selectedSpecsIds)
         {
             if (!ModelState.IsValid) return View(model);
-            await _service.UpdateProductSpec(model);
+            await _service.AddSpecificationToProduct(model);
+            await _service.UpdateProductSpecifications(productId, selectedSpecsIds);
             return RedirectToAction("Details", "Products", new { id = model.ProductId });
         }
         #endregion

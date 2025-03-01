@@ -1,5 +1,7 @@
-﻿@using E_Shop.Application.ViewModels.ColorViewModels
-@model AddColorToProductViewModel
+﻿@model AddColorToProductViewModel
+
+
+
 <div class="container w-50">
     <form asp-action="AddColor" method="post">
         <input type="hidden" asp-for="ProductId" value="@ViewBag.ProductId" />

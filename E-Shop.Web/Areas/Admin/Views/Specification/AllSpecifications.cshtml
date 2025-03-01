@@ -1,37 +1,37 @@
-﻿@model List<ProductCategoriesViewModel>
+﻿@model List<SpecListVM>
 
 
 
 
 <div class="card">
     <div class="d-flex justify-content-between align-items-center mb-۱ ">
-        <h2 class="m-3">لیست کاربران</h2>
-        <a class="btn btn-primary m-3" asp-action="CreateProductCategory">افزودن گروه</a>
+        <h2 class="m-3">لیست مشخصه های محصولات</h2>
+        <a class="btn btn-primary m-3" asp-action="CreateSpecification" asp-controller="Specification">افزودن مشخصه</a>
     </div>
 
     <div class="table-responsive text-nowrap">
         <table class="table table-hover mb-5">
             <thead>
                 <tr>
-                    <th>نام دسته بندی</th>
-                    <th>گروه اصلی</th>
+                    <th>نام مشخصه</th>
+                    <th>تعداد دسته بندی های لینک شده</th>
                     <th>عملیات ها</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
-                @foreach (var item in Model)
+                @foreach (var spec in Model)
                 {
                     <tr class="odd">
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@item.Name</strong></td>
+                        <td><i class="fab fa-arrows-to-circle fa-lg text-success me-3"></i> <strong>@spec.Name</strong></td>
 
-                        @if (item.ParentId == null)
+                        @if (spec.LinkedCategoriesCount == 0)
                         {
-                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>---</strong></td>
+                            <td><i class="fab me-3"></i> <strong>---</strong></td>
 
                         }
                         else
                         {
-                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@item.ParentName</strong></td>
+                            <td><i class="fab me-3"></i> <strong>@spec.LinkedCategoriesCount</strong></td>
 
                         }
                         <td>
@@ -40,14 +40,14 @@
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-action="UpdateProductCategory" asp-route-Id="@item.Id">
+                                    <a class="dropdown-item" asp-action="EditSpecification" asp-route-specId="@spec.SpecId">
                                         <i class="bx bx-edit-alt me-1"></i> ویرایش
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.Name')"><i class="bx bx-trash me-1"></i> حذف </a>
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@spec.SpecId', '@spec.Name')"><i class="bx bx-trash me-1"></i> حذف </a>
 
-                                    <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteProductCategory", new { CategoryId = item.Id })" style="display:none;">
+                                    <form id="deleteForm-@spec.SpecId" method="post" action="@Url.Action("DeleteSpecification", new { specId = spec.SpecId })" style="display:none;">
                                         @Html.AntiForgeryToken()
-                                        <input type="hidden" name="UserId" value="@item.Id" />
+                                        <input type="hidden" name="UserId" value="@spec.SpecId" />
                                     </form>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                     </tr>
                 }
             </tbody>
-            
+
         </table>
     </div>
 </div>
