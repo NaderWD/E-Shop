@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
-    public class ProductsController(IProductsService productsService , IProductColorService productColorService, IColorService colorservice) : AdminBaseController
+    public class ProductsController(IProductsService productsService, IProductColorService productColorService, IColorService colorservice) : AdminBaseController
     {
-        public IActionResult ProductIndex()
+        public IActionResult ProductIndex(FilterProductViewModel filter)
         {
-            var content = productsService.GetAll();
+           
+            var content = productsService.Filter(filter);
+            ViewBag.CategoryList = new SelectList(content.Category ?? new List<ProductCategoryViewModel>(), "Id", "Name");
             return View(content);
         }
 
@@ -95,13 +97,13 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
             if (model.Image != null && model.Image.Length > 0)
             {
-                
+
                 if (System.IO.File.Exists(oldFilePath))
                 {
                     System.IO.File.Delete(oldFilePath);
                 }
 
-                
+
                 var fileName = Path.GetFileNameWithoutExtension(model.Image.FileName);
                 var extension = Path.GetExtension(model.Image.FileName);
                 var uniqueFileName = $"{fileName}_{DateTime.Now.ToString("yyyyMMddHHmmss")}{extension}";
@@ -132,7 +134,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
         #region Delete Product
 
-        public IActionResult DeleteProduct(int ProductId , string ImageName)
+        public IActionResult DeleteProduct(int ProductId, string ImageName)
         {
             var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/theme-assets/images/products", ImageName);
             if (System.IO.File.Exists(oldFilePath))
@@ -160,17 +162,17 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         public IActionResult ProductColor(int productId)
         {
             var content = productColorService.GetAllColorForProduct(productId);
-            TempData["productId"]= productId;
+            TempData["productId"] = productId;
             return View(content);
         }
-        
+
         public IActionResult AddColor(int productId)
         {
-            
+
             ViewBag.ProductId = productId;
             var content = colorservice.GetAll();
             ViewBag.Colors = content ?? new List<ColorViewModel>();
-            
+
             return View();
         }
 
@@ -179,7 +181,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) { return View(model); }
             var result = productColorService.AddMapping(model);
-            
+
             switch (result)
             {
                 case false:
@@ -190,7 +192,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                     TempData[SuccessMessage] = ErrorMessages.ProductAdded;
                     return RedirectToAction("ProductIndex");
             }
-            
+
         }
 
         public IActionResult RemoveColor(int MappingId)

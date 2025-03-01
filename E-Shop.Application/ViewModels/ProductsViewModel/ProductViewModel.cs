@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using E_Shop.Application.ViewModels.ColorViewModels;
+using E_Shop.Application.ViewModels.Common;
+using E_Shop.Application.ViewModels.SpecificationViewModels;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Application.ViewModels.ProductsViewModel
@@ -116,5 +119,31 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
 
         public string Name { get; set; }
     }
+
+    public class ProductArchiveViewModel
+    {
+
+        public List<ProductViewModel> Product { get; set; }
+        public List<ColorViewModel> color { get; set; }
+        public ProductCategoriesViewModel Category { get; set; }
+        public List<ProductSpecVM> Specification { get; set; }
+    }
+
+    public class FilterProductViewModel : Paging<ProductViewModel>
+    {
+
+        [Display(Name = "عنوان")]
+        public string? Title { get; set; }
+
+        [Display(Name ="دسته بندی")]
+        public int? CategoryId { get; set; }
+        
+        [Display(Name ="موجودی")]
+        public int? Inventory { get; set; }
+
+        public List<ProductCategoryViewModel>? Category { get; set; }
+    }
+
+
 
 }

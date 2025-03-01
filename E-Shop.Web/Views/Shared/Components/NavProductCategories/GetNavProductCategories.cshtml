@@ -11,11 +11,11 @@
                 @foreach (var category in Model.Where(c => c.ParentId == null))
                 {
                     <li class="mega-menu-category show">
-                        <a href="#">@category.Name</a>
+                        <a asp-controller="Product" asp-action="ProductsArchive" asp-route-categoryId="@category.Id">@category.Name</a>
                         <ul class="mega-menu">
                             @foreach (var subcategory in Model.Where(s => s.ParentId == category.Id))
                             {
-                                <li><a href="#">@subcategory.Name</a></li>
+                                <li><a asp-controller="Product" asp-action="ProductsArchive" asp-route-categoryId="@subcategory.Id">@subcategory.Name</a></li>
                             }
                         </ul>
                     </li>

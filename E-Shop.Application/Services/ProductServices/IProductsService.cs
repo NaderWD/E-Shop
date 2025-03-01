@@ -4,8 +4,9 @@ namespace E_Shop.Application.Services.ProductServices
 {
     public interface IProductsService
     {
-        List<ProductViewModel>GetAll();
+        FilterProductViewModel Filter(FilterProductViewModel filter);
         ProductViewModel GetById(int Id);
+        ProductArchiveViewModel GetByCategoryId(int Id);
         CreateProductViewModel GetProductCreateModel();
         UpdateProductViewModel GetProductUpdateModel(int Id);
         public List<SelectListitem> GetSelectItems();

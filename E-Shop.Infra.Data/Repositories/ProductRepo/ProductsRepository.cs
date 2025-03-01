@@ -32,14 +32,25 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
             dbContext.SaveChanges();
         }
 
-        public List<Product> GetAll()
+        public IQueryable<Product> Filter()
         {
-            return dbContext.Products.Include(p => p.Category).ToList();
+            return dbContext.Products.Include(p => p.Category);
         }
 
         public Product GetById(int Id)
         {
             return dbContext.Products.Find(Id);
         }
+
+        public IQueryable<Product> GetByCategoryId(int Id)
+        {
+            return dbContext.Products.Where(p => p.CategoryId == Id)
+                .Include(p => p.Category)
+                .Include(p => p.Color)
+                .ThenInclude(p => p.Color)
+                .Include(p => p.ProductSpecification);
+        }
+
+
     }
 }

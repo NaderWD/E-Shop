@@ -1,76 +1,129 @@
-﻿@model List<ProductViewModel>
-
-
+﻿@model FilterProductViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
 
 <div class="container mt-5">
     <h5 class="mb-4">لیست محصولات</h5>
+
+    <!-- Filter Form -->
+    <form asp-action="ProductIndex" method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="CategoryId" class="form-label"></label>
+                <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-control">
+                    <option value="">همه دسته‌بندی‌ها</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Inventory" class="form-label"></label>
+                <input asp-for="Inventory" class="form-control" type="number" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">فیلتر</button>
+    </form>
+
+    <!-- Add Product Button -->
     <a type="button" class="btn btn-primary mb-3" asp-action="CreateProduct">
         افزودن محصول جدید
     </a>
+
+    <!-- Product Table -->
     <div class="table-responsive text-nowrap" style="min-height: 100vh;">
         <table class="table card-table">
             <thead>
                 <tr>
                     <th>عنوان</th>
                     <th>قیمت</th>
-                    <th>توضیحات</th>
-                    <th>نام تصویر</th>
                     <th>دسته‌بندی</th>
                     <th>موجودی</th>
-                    <th>عملیات ها</th>
+                    <th>عملیات‌ها</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
-                @foreach (var item in Model)
+                @if (Model.Entities.Any())
+                {
+                    @foreach (var item in Model.Entities)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.Price</td>
+                            <td>@item.CategoryName</td>
+                            <td>@item.Inventory</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-action="UpdateProduct" asp-route-productId="@item.Id">
+                                            <i class="bx bx-edit-alt me-1"></i> ویرایش
+                                        </a>
+                                        <a class="dropdown-item" asp-action="ProductColor" asp-route-productId="@item.Id">
+                                            <i class="bx bx-edit-alt me-1"></i> لیست رنگ‌ها
+                                        </a>
+                                        <a class="dropdown-item" asp-controller="ProductGallery" asp-action="ProductGalleryIndex" asp-route-productId="@item.Id">
+                                            <i class="bx bx-edit-alt me-1"></i> گالری محصول
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.Title')">
+                                            <i class="bx bx-trash me-1"></i> حذف
+                                        </a>
+                                        <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteProduct", new { ProductId = item.Id, ImageName = item.ImageName })" style="display:none;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="ProductId" value="@item.Id" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="collapse" id="product-details-@item.Id">
+                            <td colspan="7">
+                                <div class="card card-body">
+                                    <strong>بررسی:</strong> @item.Review<br />
+                                    <strong>بررسی کارشناس:</strong> @item.ExpertReview
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>@item.Title</td>
-                        <td>@item.Price</td>
-                        <td>@Html.Raw(@item.Description)</td>
-                        <td>@item.ImageName</td>
-                        <td>@item.CategoryName</td>
-                        <td>@item.Inventory</td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-action="UpdateProduct" asp-route-productId="@item.Id">
-                                        <i class="bx bx-edit-alt me-1"></i> ویرایش
-                                    </a>
-
-                                    <a class="dropdown-item" asp-action="ProductColor" asp-route-productId="@item.Id">
-                                        <i class="bx bx-edit-alt me-1"></i> لیست رنگ ها
-                                    </a>
-
-                                    <a class="dropdown-item" asp-controller="ProductGallery" asp-action="ProductGalleryIndex" asp-route-productId="@item.Id">
-                                        <i class="bx bx-edit-alt me-1"></i> گالری محصول
-                                    </a>
-
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.Title')">
-                                        <i class="bx bx-trash me-1"></i> حذف 
-                                    </a>
-                                    <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteProduct", new { ProductId = item.Id , ImageName= item.ImageName })" style="display:none;">
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" name="ProductId" value="@item.Id" />
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="collapse" id="product-details-@item.Id">
-                        <td colspan="7">
-                            <div class="card card-body">
-                                <strong>بررسی:</strong> @item.Review<br />
-                                <strong>بررسی کارشناس:</strong> @item.ExpertReview
-                            </div>
-                        </td>
+                        <td colspan="7" class="text-center">محصولی یافت نشد.</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <!-- Pagination -->
+    @if (Model.Entities.Any())
+    {
+        <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination justify-content-center">
+                @if (Model.Page > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="ProductIndex" asp-route-page="@(Model.Page - 1)" asp-route-title="@Model.Title" asp-route-categoryId="@Model.CategoryId" asp-route-inventory="@Model.Inventory">قبلی</a>
+                    </li>
+                }
+                @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+                {
+                    <li class="page-item @(i == Model.Page ? "active" : "")">
+                        <a class="page-link" asp-action="ProductIndex" asp-route-page="@i" asp-route-title="@Model.Title" asp-route-categoryId="@Model.CategoryId" asp-route-inventory="@Model.Inventory">@i</a>
+                    </li>
+                }
+                @if (Model.Page < Model.Count)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="ProductIndex" asp-route-page="@(Model.Page + 1)" asp-route-title="@Model.Title" asp-route-categoryId="@Model.CategoryId" asp-route-inventory="@Model.Inventory">بعدی</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
 </div>
 
 <!-- Add Product Modal -->
@@ -91,4 +144,3 @@
         </div>
     </div>
 </div>
-

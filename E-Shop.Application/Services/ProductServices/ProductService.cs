@@ -1,4 +1,6 @@
-﻿using E_Shop.Application.ViewModels.ProductsViewModel;
+﻿using E_Shop.Application.ViewModels.ColorViewModels;
+using E_Shop.Application.ViewModels.ProductsViewModel;
+using E_Shop.Application.ViewModels.SpecificationViewModels;
 using E_Shop.Domain.Contracts.ProductCont;
 using E_Shop.Domain.Models.ProductModels;
 
@@ -55,29 +57,7 @@ namespace E_Shop.Application.Services.ProductServices
         }
         #endregion Product CRUD
 
-        public List<ProductViewModel> GetAll()
-        {
-            var products = productsRepository.GetAll().Where(p => p.IsDelete == false);
-            List<ProductViewModel> model = [];
-
-            foreach (var product in products)
-            {
-                model.Add(new ProductViewModel
-                {
-                    Id = product.Id,
-                    Title = product.Title,
-                    Description = product.Description,
-                    Review = product.Review,
-                    ExpertReview = product.ExpertReview,
-                    Inventory = product.Inventory,
-                    ImageName = product.ImageName,
-                    Price = product.Price,
-                    CategoryId = product.CategoryId,
-                    CategoryName = product.Category.Name,
-                });
-            }
-            return model;
-        }
+       
 
         public ProductViewModel GetById(int Id)
         {
@@ -151,19 +131,112 @@ namespace E_Shop.Application.Services.ProductServices
 
         public List<SelectListitem> GetSelectItems()
         {
-            var category = productsRepository.GetAll();
+            var category = productCategoriesRepository.GetAll();
             List<SelectListitem> selectListitems = [];
 
             foreach (var item in category)
             {
                 selectListitems.Add(new SelectListitem
                 {
-                    Name = item.Category.Name,
-                    Id = item.CategoryId,
+                    Name = item.Name,
+                    Id = item.Id,
                 });
 
             }
             return selectListitems;
+        }
+
+        public ProductArchiveViewModel GetByCategoryId(int Id)
+        {
+            var products = productsRepository.GetByCategoryId(Id);
+            ProductArchiveViewModel model = new ProductArchiveViewModel();
+
+            foreach (var item in products)
+            {
+                model.Product.Add(new ProductViewModel
+                {
+                    Title = item.Title,
+                    Description = item.Description,
+                    Review = item.Review,
+                    ExpertReview = item.ExpertReview,
+                    Inventory = item.Inventory,
+                    ImageName = item.ImageName,
+                    Price = item.Price,
+                    CategoryId = item.CategoryId,
+                });
+                model.Category.Name = item.Category.Name;
+                model.Category.Id = item.Category.Id;
+
+                foreach (var color in item.Color)
+                {
+                    model.color.Add(new ColorViewModel
+                    {
+                        Name = color.Color.Name,
+                        Code = color.Color.Code,
+                        Id = color.Color.Id,
+                    });
+                }
+
+                foreach (var speci in item.ProductSpecification)
+                {
+                    model.Specification.Add(new ProductSpecVM
+                    {
+                        SpecId = speci.Id,
+                        Value = speci.Value,
+                    });
+                }
+
+
+            }
+
+            return model;
+        }
+
+        public FilterProductViewModel Filter(FilterProductViewModel filter)
+        {
+            var query = productsRepository.Filter();
+
+            #region Filter
+
+            if (filter.Title != null)
+            {
+                query = query.Where(q => q.Title.Contains(filter.Title));
+            }
+
+            if (filter.Inventory != null)
+            {
+                query = query.Where(q => q.Inventory == filter.Inventory);
+            }
+
+            if (filter.CategoryId != null)
+            {
+                query = query.Where(q => q.CategoryId == filter.CategoryId);
+            }
+
+            #endregion
+
+            var productCategories = GetSelectItems();
+            filter.Category = new List<ProductCategoryViewModel>();
+            foreach (var item in productCategories)
+            {
+                filter.Category.Add(new ProductCategoryViewModel
+                {
+                    Name = item.Name,
+                    Id = item.Id,
+                });
+            }
+            var products = query.Select(q=> new ProductViewModel 
+            {
+                CategoryName = q.Category.Name,
+                Title = q.Title,
+                Price = q.Price,
+                Inventory = q.Inventory,
+
+            });
+
+            filter.ToPaged(products);
+            
+            return filter;
         }
     }
 }
