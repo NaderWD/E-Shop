@@ -1,4 +1,5 @@
 ﻿using E_Shop.Domain.Models.ColorModels;
+using E_Shop.Domain.Models.CommentModels;
 using E_Shop.Domain.Models.ContactUsModels;
 using E_Shop.Domain.Models.ProductModels;
 using E_Shop.Domain.Models.SpecificationModels;
@@ -16,23 +17,20 @@ namespace E_Shop.Infra.Data
         public DbSet<ContactUsMessage> ContactUsMessages { get; set; }
 
         public DbSet<Ticket> Tickets { get; set; }
-
         public DbSet<TicketMessage> TicketMessages { get; set; }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategories> ProductCategories { get; set; }
 
         public DbSet<ColorModel> Color { get; set; }
-
         public DbSet<ProductColorMapping> ProductColorMapping { get; set; }
 
         public DbSet<Specification> Specifications { get; set; }
-
         public DbSet<ProductSpecification> ProductSpecifications { get; set; }
         public DbSet<CategorySpecification> CategorySpecifications { get; set; }
 
         public DbSet<ProductGallery> ProductGallery { get; set; }
 
-
+        public DbSet<Comment> Comments { get; set; }    
     }
 }
