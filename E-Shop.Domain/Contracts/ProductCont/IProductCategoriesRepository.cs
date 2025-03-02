@@ -9,5 +9,6 @@ namespace E_Shop.Domain.Contracts.ProductCont
         bool CreateProductCategory(ProductCategories model);
         bool UpdateProductCategory(ProductCategories model);
         bool Save();
+
     }
-}
+}                                               

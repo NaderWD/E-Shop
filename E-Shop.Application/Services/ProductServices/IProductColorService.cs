@@ -1,12 +1,6 @@
 ﻿using E_Shop.Application.ViewModels.ColorViewModels;
-using E_Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace E_Shop.Application.Services.Interfaces
+namespace E_Shop.Application.Services.ProductServices
 {
     public interface IProductColorService
     {

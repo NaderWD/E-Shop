@@ -21,7 +21,7 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
 
         public List<ProductColorMapping> GetAllColorForProduct(int productId)
         {
-            return dbContext.ProductColorMapping.Where(m => m.ProductId == productId).Include(p => p.Product).Include(c=>c.Color).ToList();
+            return dbContext.ProductColorMapping.Where(m => m.ProductId == productId).Include(p => p.Product).Include(c => c.Color).ToList();
         }
 
         public ProductColorMapping GetById(int id)
@@ -39,5 +39,6 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             dbContext.ProductColorMapping.Update(model);
             return true;
         }
+
     }
 }

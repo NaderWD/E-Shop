@@ -20,7 +20,6 @@ using E_Shop.Domain.Contracts.ColorCont;
 using E_Shop.Application.Services.ColorServices;
 using E_Shop.Infra.Data.Repositories.ColorRepo;
 using E_Shop.Infra.Data.Repositories.Implementations;
-using E_Shop.Application.Services.Interfaces;
 
 namespace E_Shop.Infra.IOC
 {

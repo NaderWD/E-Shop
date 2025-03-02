@@ -7,7 +7,6 @@ namespace E_Shop.Application.Services.SpecificationServices
 {
     public class SpecificationService(ISpecificationRepository _repository) : ISpecificationService
     {
-
         #region Specification
         public async Task CreateSpecification(SpecCreateVM specVM)
         {
@@ -83,8 +82,8 @@ namespace E_Shop.Application.Services.SpecificationServices
         public async Task DeleteSpecification(int specId)
         {
             var spec = await _repository.GetSpecById(specId);
-            await DeleteCategorySpecification(spec.Id);
-            await DeleteProductSpecification(spec.Id);
+            await DeleteCategorySpecification(spec.CategorySpecificationId);
+            await DeleteProductSpecification(spec.ProductSpecificationId);
             spec.IsDelete = true;
             await Save();
         }
@@ -94,8 +93,6 @@ namespace E_Shop.Application.Services.SpecificationServices
             await _repository.Save();
         }
         #endregion
-
-
 
         #region CategorySpecification
         public async Task CreateCategorySpecification(CategorySpecVM categorySpec)
@@ -120,48 +117,27 @@ namespace E_Shop.Application.Services.SpecificationServices
         {
             var categorySpecList = await _repository.GetCategorySpecListBySpecId(specId);
             foreach (var categorySpec in categorySpecList)
-            {
                 if (!selectedCategoryIds.Contains(categorySpec.CategoryId))
                 {
-                    categorySpec.IsDelete = true;
-                    await _repository.UpdateCategorySpec(categorySpec);
+                    await DeleteCategorySpecification(categorySpec.Id);
                 }
-            }
             foreach (var categoryId in selectedCategoryIds)
             {
-                if (!await CheckCategorySpecExist(categoryId))
+                CategorySpecification catSpec = new()
                 {
-                    CategorySpecification catSpec = new()
-                    {
-                        CategoryId = categoryId,
-                        SpecificationId = specId,
-                        LastModifiedDate = DateTime.Now,
-                        CreateDate = DateTime.Now,
-                        IsDelete = false
-                    };
-                    await _repository.CreateCategorySpec(catSpec);
-                }
-                else
-                {
-                    var existingCategorySpec = await _repository.GetCategorySpecByCategoryId(categoryId);
-                    if (existingCategorySpec.IsDelete)
-                    {
-                        existingCategorySpec.IsDelete = false;
-                        await _repository.UpdateCategorySpec(existingCategorySpec);
-                    }
-                }
-
+                    CategoryId = categoryId,
+                    SpecificationId = specId,
+                    LastModifiedDate = DateTime.Now,
+                    CreateDate = DateTime.Now,
+                    IsDelete = false
+                };
+                await _repository.CreateCategorySpec(catSpec);
             }
         }
 
-        public async Task DeleteCategorySpecification(int SpecId)
+        public async Task DeleteCategorySpecification(int catSpecId)
         {
-            var catSpecs = await _repository.GetCategorySpecListBySpecId(SpecId);
-            foreach (var catSpec in catSpecs)
-            {
-                catSpec.IsDelete = true;
-                await _repository.UpdateCategorySpec(catSpec);
-            }
+            await _repository.DeleteCategorySpec(catSpecId);
             await Save();
         }
 
@@ -172,8 +148,6 @@ namespace E_Shop.Application.Services.SpecificationServices
             return true;
         }
         #endregion                       
-
-
 
         #region ProductSpecification
         public async Task CreateProductSpecification(ProductSpecVM productSpec)
@@ -237,61 +211,60 @@ namespace E_Shop.Application.Services.SpecificationServices
             });
             return listSpecVM;
         }
+        // ask if its right
+        public async Task<ProSpecDetailsFinalVM> GetSpecificationDetailByProductId(int productId)
+        {
+            var product = await _repository.GetProductById(productId);
+            var proSpecList = await _repository.GetProductSpecListByProductId(productId);
+            List<ProductSpecDetailVM> specVMList = [];
+            foreach (var spec in proSpecList)
+                specVMList.Add(new ProductSpecDetailVM
+                {
+                    SpecId = spec.Id,
+                    SpecName = spec.Specification.Name,
+                    Value = spec.Value
+                });
+            ProSpecDetailsFinalVM finalVm = new()
+            {
+                ProductId = product.Id,
+                ProSpecVM = specVMList
+            };
+            return finalVm;
+        }
 
         public async Task UpdateProductSpecifications(int productId, List<int> selectedSpecIds)
         {
             var productSpecList = await _repository.GetProductSpecListByProductId(productId);
             foreach (var productSpec in productSpecList)
-            {
                 if (!selectedSpecIds.Contains(productSpec.SpecificationId))
                 {
-                    productSpec.IsDelete = true;
-                    await _repository.UpdateProductSpec(productSpec);
+                    await DeleteProductSpecification(productSpec.Id);
                 }
-            }
             foreach (var specId in selectedSpecIds)
             {
-                if (!await CheckProductSpecExist(specId))
+                ProductSpecification proSpec = new()
                 {
-                    ProductSpecification proSpec = new()
-                    {
-                        ProductId = productId,
-                        SpecificationId = specId,
-                        LastModifiedDate = DateTime.Now,
-                        CreateDate = DateTime.Now,
-                        IsDelete = false
-                    };
-                    await _repository.CreateProductSpec(proSpec);
-                }
-                else
-                {
-                    var existingProductSpec = await _repository.GetProductSpecBySpecId(specId);
-                    if (existingProductSpec.IsDelete)
-                    {
-                        existingProductSpec.IsDelete = false;
-                        await _repository.UpdateProductSpec(existingProductSpec);
-                    }
-                }
-
+                    ProductId = productId,
+                    SpecificationId = specId,
+                    LastModifiedDate = DateTime.Now,
+                    CreateDate = DateTime.Now,
+                    IsDelete = false
+                };
+                await _repository.CreateProductSpec(proSpec);
             }
         }
 
-        public async Task DeleteProductSpecification(int specId)
+        public async Task DeleteProductSpecification(int proSpecId)
         {
-            var proSpecs = await _repository.GetProductSpecListBySpecId(specId);
-            foreach (var proSpec in proSpecs)
-            {
-                proSpec.IsDelete = true;
-                await _repository.UpdateProductSpec(proSpec);
-            }
+            await _repository.DeleteProductSpec(proSpecId);
             await Save();
         }
 
-        public async Task<bool> CheckProductSpecExist(int specId)
+        public async Task DeleteProductSpecificationForProduct(int specId)
         {
-            var check = await _repository.CheckProductSpecExist(specId);
-            if (!check) return false;
-            return true;
+            var proSpec = await _repository.GetProductSpecBySpecId(specId);
+            await _repository.DeleteProductSpec(proSpec.Id);
+            await Save();
         }
         #endregion
 

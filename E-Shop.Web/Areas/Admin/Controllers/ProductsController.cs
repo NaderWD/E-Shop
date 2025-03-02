@@ -1,5 +1,4 @@
 ﻿using E_Shop.Application.Services.ColorServices;
-using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.Services.ProductServices;
 using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Application.ViewModels.ProductsViewModel;
