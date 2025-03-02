@@ -227,6 +227,7 @@ namespace E_Shop.Application.Services.ProductServices
             }
             var products = query.Select(q=> new ProductViewModel 
             {
+                Id = q.Id,
                 CategoryName = q.Category.Name,
                 Title = q.Title,
                 Price = q.Price,
@@ -237,6 +238,11 @@ namespace E_Shop.Application.Services.ProductServices
             filter.ToPaged(products);
             
             return filter;
+        }
+
+        public ProductArchiveViewModel ArchiveFilter(ProductArchiveViewModel filter)
+        {
+            var query = productsRepository.ArchiveFilter(filter.CategoryId);
         }
     }
 }

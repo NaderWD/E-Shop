@@ -5,6 +5,7 @@ namespace E_Shop.Application.Services.ProductServices
     public interface IProductsService
     {
         FilterProductViewModel Filter(FilterProductViewModel filter);
+        ProductArchiveViewModel ArchiveFilter(ProductArchiveViewModel filter);
         ProductViewModel GetById(int Id);
         ProductArchiveViewModel GetByCategoryId(int Id);
         CreateProductViewModel GetProductCreateModel();

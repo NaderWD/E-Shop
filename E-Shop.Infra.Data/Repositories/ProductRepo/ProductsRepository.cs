@@ -51,6 +51,13 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
                 .Include(p => p.ProductSpecification);
         }
 
-
+        public IQueryable<Product> ArchiveFilter(int categoryId)
+        {
+            return dbContext.Products.Where(p => p.CategoryId == categoryId)
+                .Include(p => p.Category)
+                .Include(p => p.Color)
+                .ThenInclude(p => p.Color)
+                .Include(p => p.ProductSpecification); 
+        }
     }
 }

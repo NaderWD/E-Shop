@@ -11,6 +11,7 @@ namespace E_Shop.Domain.Contracts.ColorCont
     public interface IProductColorRepository
     {
         public List<ProductColorMapping> GetAllColorForProduct(int productId);
+        public List<ProductColorMapping> GetDefaultColorForProduct(int productId);
         ProductColorMapping GetById(int id);
         bool Update(ProductColorMapping model);
         bool AddMapping(ProductColorMapping model);

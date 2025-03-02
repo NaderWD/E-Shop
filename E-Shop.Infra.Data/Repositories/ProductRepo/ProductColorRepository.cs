@@ -29,6 +29,11 @@ namespace E_Shop.Infra.Data.Repositories.Implementations
             return dbContext.ProductColorMapping.Find(id);
         }
 
+        public List<ProductColorMapping> GetDefaultColorForProduct(int productId)
+        {
+            return dbContext.ProductColorMapping.Where(m => m.ProductId == productId && m.IsDefault == true).ToList();
+        }
+
         public bool Update(ProductColorMapping model)
         {
             dbContext.ProductColorMapping.Update(model);

@@ -1,5 +1,5 @@
 ﻿@using E_Shop.Application.ViewModels.ProductsViewModel
-@model List<ProductArchiveViewModel>
+@model FilterProductViewModel
 
 <main class="page-content">
     <div class="container">
@@ -452,7 +452,7 @@
                                     <div class="ui-box-content">
                                         <div class="row mx-0">
 
-                                            @foreach (var item in Model)
+                                            @foreach (var item in Model.Entities)
                                             {
                                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
                                                     <!-- start of product-card -->

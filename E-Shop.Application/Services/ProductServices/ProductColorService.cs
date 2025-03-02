@@ -1,7 +1,7 @@
 ﻿using E_Shop.Application.Services.Interfaces;
 using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Domain.Contracts.ColorCont;
-using E_Shop.Domain.Models.ColorModels;                                  
+using E_Shop.Domain.Models.ColorModels;
 
 namespace E_Shop.Application.Services.ProductServices
 {
@@ -9,6 +9,24 @@ namespace E_Shop.Application.Services.ProductServices
     {
         public bool AddMapping(AddColorToProductViewModel model)
         {
+            var colors = productColor.GetDefaultColorForProduct(model.ProductId);
+            if (colors.Any())
+            {
+                if (model.IsDefault == true)
+                {
+                    foreach (var item in colors)
+                    {
+                        item.IsDefault = false;
+                        productColor.Update(item);
+                    }
+                }
+            }
+
+            else
+            {
+                model.IsDefault = true;
+            }
+
             ProductColorMapping mapping = new()
             {
                 ProductId = model.ProductId,
@@ -16,8 +34,6 @@ namespace E_Shop.Application.Services.ProductServices
                 Price = model.Price,
                 IsDefault = model.IsDefault
             };
-
-
 
             var result = productColor.AddMapping(mapping);
             return result;
@@ -43,7 +59,7 @@ namespace E_Shop.Application.Services.ProductServices
                 });
             }
             return model;
-            
+
         }
 
         public bool RemoveColor(int Id)

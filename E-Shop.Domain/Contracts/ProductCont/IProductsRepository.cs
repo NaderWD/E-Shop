@@ -5,6 +5,7 @@ namespace E_Shop.Domain.Contracts.ProductCont
     public interface IProductsRepository
     {
         IQueryable<Product> Filter();
+        IQueryable<Product> ArchiveFilter(int categoryId);
         Product GetById(int Id);
         IQueryable<Product> GetByCategoryId(int Id);
         bool CreateProduct(Product product);

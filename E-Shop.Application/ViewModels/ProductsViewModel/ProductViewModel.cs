@@ -40,6 +40,8 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
         [Required(ErrorMessage = "موجودی نباید خالی باشد.")]
         [Range(0, int.MaxValue, ErrorMessage = "موجودی باید یک عدد مثبت باشد.")]
         public int Inventory { get; set; }
+
+        public List<ColorViewModel> color { get; set; }
     }
 
     public class UpdateProductViewModel
@@ -120,11 +122,17 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
         public string Name { get; set; }
     }
 
-    public class ProductArchiveViewModel
+    public class ProductArchiveViewModel : Paging<ProductViewModel>
     {
+        [Display(Name = "عنوان")]
+        public string? Title { get; set; }
 
-        public List<ProductViewModel> Product { get; set; }
-        public List<ColorViewModel> color { get; set; }
+        [Display(Name = "دسته بندی")]
+        public int CategoryId { get; set; }
+
+        [Display(Name = "موجودی")]
+        public int? Inventory { get; set; }
+
         public ProductCategoriesViewModel Category { get; set; }
         public List<ProductSpecVM> Specification { get; set; }
     }
