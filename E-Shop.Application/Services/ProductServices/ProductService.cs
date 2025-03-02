@@ -225,6 +225,7 @@ namespace E_Shop.Application.Services.ProductServices
                     Id = item.Id,
                 });
             }
+
             var products = query.Select(q=> new ProductViewModel 
             {
                 Id = q.Id,
@@ -232,7 +233,6 @@ namespace E_Shop.Application.Services.ProductServices
                 Title = q.Title,
                 Price = q.Price,
                 Inventory = q.Inventory,
-
             });
 
             filter.ToPaged(products);
@@ -243,6 +243,38 @@ namespace E_Shop.Application.Services.ProductServices
         public ProductArchiveViewModel ArchiveFilter(ProductArchiveViewModel filter)
         {
             var query = productsRepository.ArchiveFilter(filter.CategoryId);
+
+            #region Filter
+            if (filter.Title != null)
+            {
+                query = query.Where(q => q.Title.Contains(filter.Title));
+            }
+
+            if (filter.Inventory != null)
+            {
+                query = query.Where(q => q.Inventory == filter.Inventory);
+            }
+            #endregion
+
+            var productsQuery = query.Select(q => new ProductViewModel
+            {
+                Id = q.Id,
+                CategoryName = q.Category.Name,
+                Title = q.Title,
+                Price = q.Price,
+                Inventory = q.Inventory,
+                Colors = q.Color.Select(color => new ColorViewModel()
+                {
+                    Id = color.ColorId , 
+                    Name = color.Color.Name, 
+                    Code = color.Color.Code
+                }).ToList()
+            });
+
+            filter.ToPaged(productsQuery);
+            return filter;
+
+
         }
     }
 }

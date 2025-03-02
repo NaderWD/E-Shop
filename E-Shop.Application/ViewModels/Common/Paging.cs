@@ -30,7 +30,6 @@ namespace E_Shop.Application.ViewModels.Common
 
         public void ToPaged(IQueryable<T> queryable) 
         {
-
             Skip = (Page -1)* Take;
             var allEntitiesCount = queryable.Count();
             Count = Convert.ToInt32(Math.Ceiling((double)allEntitiesCount / Take));

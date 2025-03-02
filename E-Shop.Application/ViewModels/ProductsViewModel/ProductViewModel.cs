@@ -41,7 +41,7 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
         [Range(0, int.MaxValue, ErrorMessage = "موجودی باید یک عدد مثبت باشد.")]
         public int Inventory { get; set; }
 
-        public List<ColorViewModel> color { get; set; }
+        public List<ColorViewModel> Colors { get; set; }
     }
 
     public class UpdateProductViewModel
@@ -135,6 +135,7 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
 
         public ProductCategoriesViewModel Category { get; set; }
         public List<ProductSpecVM> Specification { get; set; }
+        public List<ColorViewModel> color { get; set; }
     }
 
     public class FilterProductViewModel : Paging<ProductViewModel>
