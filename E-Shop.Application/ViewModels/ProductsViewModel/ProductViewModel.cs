@@ -1,6 +1,9 @@
 ﻿using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Application.ViewModels.Common;
 using E_Shop.Application.ViewModels.SpecificationViewModels;
+using E_Shop.Domain.Models.ColorModels;
+using E_Shop.Domain.Models.CommentModels;
+using E_Shop.Domain.Models.SpecificationModels;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
@@ -64,7 +67,7 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
 
         [Required(ErrorMessage = "شناسه دسته‌بندی نباید خالی باشد.")]
         public int CategoryId { get; set; }
-        
+
         [DataType(DataType.MultilineText)]
         public string? Review { get; set; }
 
@@ -77,7 +80,7 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
 
         public List<ProductCategoryViewModel>? Category { get; set; }
     }
-    
+
     public class CreateProductViewModel
     {
         [Required(ErrorMessage = "لطفاً یک تصویر انتخاب کنید.")]
@@ -99,7 +102,7 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
 
         [Required(ErrorMessage = "شناسه دسته‌بندی نباید خالی باشد.")]
         public int CategoryId { get; set; }
-        
+
         [DataType(DataType.MultilineText)]
         public string? Review { get; set; }
 
@@ -122,7 +125,6 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
 
     public class ProductArchiveViewModel
     {
-
         public List<ProductViewModel> Product { get; set; }
         public List<ColorViewModel> color { get; set; }
         public ProductCategoriesViewModel Category { get; set; }
@@ -131,19 +133,36 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
 
     public class FilterProductViewModel : Paging<ProductViewModel>
     {
-
         [Display(Name = "عنوان")]
         public string? Title { get; set; }
 
-        [Display(Name ="دسته بندی")]
+        [Display(Name = "دسته بندی")]
         public int? CategoryId { get; set; }
-        
-        [Display(Name ="موجودی")]
+
+        [Display(Name = "موجودی")]
         public int? Inventory { get; set; }
 
         public List<ProductCategoryViewModel>? Category { get; set; }
     }
 
+    public class ProductDetailsVM
+    {
+        public int ProductId { get; set; }
+        public string Title { get; set; }
+        public int Price { get; set; }
+        public string Description { get; set; }
+        public int Inventory { get; set; }
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
+        public string? ImageName { get; set; }
+        public IFormFile? Image { get; set; }
+        public string? Review { get; set; }
+        public string? ExpertReview { get; set; }
+        public List<Specification>? Specifications { get; set; }
+        public List<Comment>? Comments { get; set; }
+        public List<Reply>? Replies { get; set; }
+        public List<ColorModel>? Colors { get; set; }
+    }
 
 
 }

@@ -31,6 +31,7 @@ namespace E_Shop.Infra.Data
 
         public DbSet<ProductGallery> ProductGallery { get; set; }
 
-        public DbSet<Comment> Comments { get; set; }    
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Reply> Replies { get; set; }   
     }
 }

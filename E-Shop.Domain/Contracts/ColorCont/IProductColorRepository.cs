@@ -14,5 +14,7 @@ namespace E_Shop.Domain.Contracts.ColorCont
         ProductColorMapping GetById(int id);
         bool Update(ProductColorMapping model);
         bool AddMapping(ProductColorMapping model);
+
+
     }
 }

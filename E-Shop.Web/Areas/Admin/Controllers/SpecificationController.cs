@@ -1,16 +1,12 @@
 ﻿using E_Shop.Application.Services.SpecificationServices;
-using E_Shop.Application.ViewModels.ProductsViewModel;
 using E_Shop.Application.ViewModels.SpecificationViewModels;
-using E_Shop.Domain.Models.ProductModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
     public class SpecificationController(ISpecificationService _service) : AdminBaseController
     {
-
         #region All Specifications
         [HttpGet]
         public async Task<IActionResult> AllSpecifications()
@@ -19,7 +15,13 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
         #endregion
 
-
+        #region Specification Details
+        [HttpGet]
+        public async Task<ActionResult> SpecificationDetails(int productId)
+        {
+            return View(await _service.GetSpecificationDetailByProductId(productId));
+        }
+        #endregion
 
         #region Create Specification
         [HttpGet]
@@ -50,8 +52,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
         #endregion
 
-
-
         #region Edit Specifications  
         [HttpGet]
         public async Task<IActionResult> EditSpecification(int specId)
@@ -76,17 +76,14 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
         #endregion
 
-
-
         #region Delete Specifications
+        [HttpGet]
         public async Task<IActionResult> DeleteSpecification(int specId)
         {
             await _service.DeleteSpecification(specId);
             return RedirectToAction(nameof(AllSpecifications));
         }
         #endregion                                                    
-
-
 
         #region Add Specification To Product
         [HttpGet]
@@ -99,7 +96,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             return View(specModel);
         }
 
-        [HttpPost]                                                                                
+        [HttpPost]
         public async Task<IActionResult> AddToProduct(AddSpecToProductVM model, List<int> specIds)
         {
             if (!ModelState.IsValid)
@@ -115,8 +112,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             return RedirectToAction("Details", "Products", new { id = model.ProductId });
         }
         #endregion
-
-
 
         #region Edit For Product
         [HttpGet]
@@ -134,7 +129,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> EditForProduct(int productId,AddSpecToProductVM model, List<int> selectedSpecsIds)
+        public async Task<IActionResult> EditForProduct(int productId, AddSpecToProductVM model, List<int> selectedSpecsIds)
         {
             if (!ModelState.IsValid) return View(model);
             await _service.AddSpecificationToProduct(model);
@@ -143,6 +138,13 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
         #endregion
 
-
+        #region Delete For Product
+        [HttpGet]
+        public async Task<IActionResult> DeleteSpecificationForProduct(int specId)
+        {
+            await _service.DeleteProductSpecificationForProduct(specId);
+            return RedirectToAction(nameof(SpecificationDetails));
+        }
+        #endregion
     }
 }

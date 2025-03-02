@@ -1,0 +1,52 @@
+﻿@model ProSpecDetailsFinalVM
+
+
+
+
+<div class="card">
+    <div class="d-flex justify-content-between align-items-center mb-۱ ">
+        <h2 class="m-3"> مشخصه های محصول</h2>
+        <a class="btn btn-primary m-3" asp-action="AddToProduct" asp-controller="Specification" asp-route-productId="@Model.ProductId">افزودن مشخصه</a>
+    </div>
+
+    <div class="table-responsive text-nowrap">
+        <table class="table table-hover mb-5">
+            <thead>
+                <tr>
+                    <th>نام مشخصه</th>
+                    <th>مقدار</th>
+                    <th>عملیات ها</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var spec in Model.ProSpecVM)
+                {
+                    <tr class="odd">
+                        <td><i class="fab fa-arrows-to-circle fa-lg text-success me-3"></i> <strong>@spec.SpecName</strong></td>
+                        <td><i class="fab fa-arrows-to-circle fa-lg text-success me-3"></i> <strong>@spec.Value</strong></td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-action="EditSpecification" asp-route-specId="@spec.SpecId">
+                                        <i class="bx bx-edit-alt me-1"></i> ویرایش
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@spec.SpecId', '@spec.SpecName')"><i class="bx bx-trash me-1"></i> حذف </a>
+
+                                    <form id="deleteForm-@spec.SpecId" method="post" action="@Url.Action("DeleteSpecificationForProduct", new { specId = spec.SpecId })" style="display:none;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="UserId" value="@spec.SpecId" />
+                                    </form>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>

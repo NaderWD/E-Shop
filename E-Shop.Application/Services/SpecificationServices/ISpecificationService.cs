@@ -1,12 +1,10 @@
 ﻿using E_Shop.Application.ViewModels.SpecificationViewModels;
 using E_Shop.Domain.Models.ProductModels;
-using E_Shop.Domain.Models.SpecificationModels;
 
 namespace E_Shop.Application.Services.SpecificationServices
 {
     public interface ISpecificationService
     {
-
         #region Specification
         Task CreateSpecification(SpecCreateVM specVM);
         Task<List<SpecListVM>> GetAllSpecifications();
@@ -17,8 +15,6 @@ namespace E_Shop.Application.Services.SpecificationServices
         Task Save();
         #endregion                              
 
-
-
         #region CategorySpecification
         Task CreateCategorySpecification(CategorySpecVM categorySpec);
         Task<List<ProductCategories>> GetAllCategoriesList();
@@ -27,16 +23,15 @@ namespace E_Shop.Application.Services.SpecificationServices
         Task<bool> CheckCategorySpecExist(int categoryId);
         #endregion
 
-
-
         #region ProductSpecification
         Task CreateProductSpecification(ProductSpecVM productSpec);
         Task AddSpecificationToProduct(AddSpecToProductVM addSpecVM);
         Task<List<SpecVM>> GetAvailableSpecificationsToAddProduct(int productId);
         Task<List<SpecVM>> GetSpecificationListByProductId(int productId);
+        Task<ProSpecDetailsFinalVM> GetSpecificationDetailByProductId(int productId);
         Task UpdateProductSpecifications(int productId, List<int> selectedSpecIds);
-        Task DeleteProductSpecification(int specId);
+        Task DeleteProductSpecification(int proSpecId);
+        Task DeleteProductSpecificationForProduct(int specId);
         #endregion
-
     }
 }
