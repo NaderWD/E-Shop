@@ -10,7 +10,7 @@ namespace E_Shop.Domain.Models.CommentModels
         public bool IsApproved { get; set; }
         public int ProductId { get; set; }
         public Product Product { get; set; }
-        public IQueryable<Reply> Replies { get; set; }
+        public IQueryable<Reply> Replies { get; set; }            
         public CommentStatus Status { get; set; }
         public int LikeCounts { get; set; } = 0;
         public int DisLikeCounts { get; set; } = 0;
