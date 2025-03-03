@@ -147,7 +147,6 @@ namespace E_Shop.Application.Services.ProductServices
             return selectListitems;
         }
 
-
         public FilterProductViewModel Filter(FilterProductViewModel filter)
         {
             var query = productsRepository.Filter();

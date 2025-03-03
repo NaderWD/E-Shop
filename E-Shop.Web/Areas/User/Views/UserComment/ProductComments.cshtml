@@ -1,0 +1,47 @@
+﻿@model List<CommentVM>
+
+
+
+
+<div class="card">
+    @if (!Model.Any())
+    {
+        <div class="m-3">
+            <h3>هنوز نظری ثبت نشده است</h3>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive text-nowrap">
+            <table class="table table-hover mb-5">
+                <tbody class="table-border-bottom-0">
+                    @foreach (var comment in Model)
+                    {
+                        <tr class="odd">
+                            <td>
+                                <strong>@comment.AuthorName</strong> - <i>@comment.ProductName</i>
+                                <br />
+                                <span>@comment.Text</span>
+                                <br />
+                                <small class="text-muted">@comment.CreateDate?.ToString("yyyy-MM-dd")</small>
+                            </td>
+                        </tr>
+                        @if (comment.Replies != null && comment.Replies.Any())
+                        {
+                            foreach (var reply in comment.Replies)
+                            {
+                                <tr class="even">
+                                    <td class="ms-4">
+                                        <strong>@reply.AuthorName</strong>: @reply.Text
+                                        <br />
+                                        <small class="text-muted">@reply.CreateDate?.ToString("yyyy-MM-dd")</small>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

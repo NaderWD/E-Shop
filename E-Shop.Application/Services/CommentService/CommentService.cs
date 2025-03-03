@@ -1,37 +1,152 @@
 ﻿using E_Shop.Application.ViewModels.CommentViewModels;
+using E_Shop.Domain.Contracts.CommentCont;
+using E_Shop.Domain.Models.CommentModels;
+using E_Shop.Domain.Models.ProductModels;
+using static E_Shop.Domain.Enum.CommentEnums;
 
 namespace E_Shop.Application.Services.CommentService
 {
-    public class CommentService : ICommentService
+    public class CommentService(ICommentRepository _repository) : ICommentService
     {
-        public Task CreateComment(CreateCommentVM commentVM, int userId)
+        public async Task CreateComment(CreateCommentVM commentVM)
         {
-            throw new NotImplementedException();
+            Comment comment = new()
+            {
+                AuthorName = commentVM.AuthorName,
+                Text = commentVM.Text,
+                Status = CommentStatus.InProgress,
+                ProductId = commentVM.ProductId,
+                IsApproved = false,
+                CreateDate = DateTime.Now,
+                LastModifiedDate = DateTime.Now,
+                LikeCounts = 0,
+                DisLikeCounts = 0,
+                Evaluations = []
+            };
+            foreach (var eval in commentVM.PositiveEvaluations)
+            {
+                comment.Evaluations.Add(new Evaluation { Text = eval.Text, IsPositive = true });
+            }
+
+            // Add negative evaluations
+            foreach (var eval in commentVM.NegativeEvaluations)
+            {
+                comment.Evaluations.Add(new Evaluation { Text = eval.Text, IsPositive = false });
+            }
+            await _repository.AddCommentAsync(comment);
+            await Save();
         }
 
-        public Task CreateReply(CreateReplyVM replyVM, int userId)
+        public async Task CreateReply(CreateReplyVM replyVM, bool isAdmin = false)
         {
-            throw new NotImplementedException();
+            Reply reply = new()
+            {
+                AuthorName = replyVM.AuthorName,
+                Text = replyVM.Text,
+                CommentId = replyVM.CommentId,
+                CreateDate = DateTime.Now,
+                LastModifiedDate = DateTime.Now,
+                IsAdminReply = isAdmin,
+            };
+            await _repository.AddReplyAsync(reply);
+            await Save();
         }
 
-        public Task<IQueryable<CommentVM>> GetApprovedCommentListByProductId(int productId)
+        public async Task<int> LikeComment(int commentId)
         {
-            throw new NotImplementedException();
+            var comment = await _repository.GetCommentByIdAsync(commentId);
+            comment.LikeCounts++;
+            await Save();
+            return comment.LikeCounts;
         }
 
-        public Task<IQueryable<CommentVM>> GetUnApprovedCommentList(int productId)
-        {
-            throw new NotImplementedException();
+        public async Task<int> DisLikeComment(int commentId)
+        {                                               
+            var comment = await _repository.GetCommentByIdAsync(commentId);
+            comment.DisLikeCounts++;
+            await Save();
+            return comment.DisLikeCounts;
         }
 
-        public Task ApproveComment(int commentId)
+        public async Task<IQueryable<CommentVM>> GetApprovedCommentListByProductId(int productId)
         {
-            throw new NotImplementedException();
+            var comments = await _repository.GetApprovedCommentsByProductIdAsync(productId);
+            return comments.Select(c => new CommentVM
+            {
+                Id = c.Id,
+                AuthorName = c.AuthorName,
+                ProductName = c.Product.Title,
+                Text = c.Text,
+                CreateDate = c.CreateDate,
+                LastModifiedDate = c.LastModifiedDate,
+                Replies = c.Replies.Select(r => new ReplyVM
+                {
+                    Id = r.Id,
+                    AuthorName = r.AuthorName,
+                    Text = r.Text,
+                    CreateDate = r.CreateDate,
+                    LastModifiedDate = r.LastModifiedDate
+                }).ToList(),
+            }).AsQueryable();
         }
 
-        public Task<ProductCommentVM> GetProductById(int productId)
+        public async Task<IQueryable<CommentVM>> GetUnApprovedCommentList()
         {
-            throw new NotImplementedException();
+            var comments = await _repository.GetUnapprovedCommentsAsync();
+            return comments.Select(c => new CommentVM
+            {
+                Id = c.Id,
+                AuthorName = c.AuthorName,
+                Text = c.Text,
+                LikeCount = c.LikeCounts,
+                CreateDate = c.CreateDate,
+                ProductName = c.Product.Title
+            }).AsQueryable();
         }
+
+        public async Task ApproveComment(int commentId)
+        {
+            await _repository.ApproveCommentAsync(commentId);
+            await Save();
+        }
+
+        public async Task<ProductCommentVM> GetProductById(int productId)
+        {
+            var product = await _repository.GetProductByIdAsync(productId);
+            return new ProductCommentVM()
+            {
+                Id = product.Id,
+                Name = product.Title,
+                Description = product.Description,
+                Comments = [.. product.Comments.Where(x => x.IsApproved).Select(c => new CommentVM
+                {
+                    Id = c.Id,
+                    AuthorName = c.AuthorName,
+                    Text = c.Text,
+                    LikeCount = c.LikeCounts,
+                    ProductName = c.Product.Title,
+                    CreateDate = c.CreateDate,
+                    LastModifiedDate = c.LastModifiedDate,
+                    Replies = [.. c.Replies.Select(r => new ReplyVM
+                    {
+                        Id = r.Id,
+                        AuthorName = r.AuthorName,
+                        Text = r.Text,
+                        CreateDate = r.CreateDate,
+                        LastModifiedDate = r.LastModifiedDate
+                    })]
+                })]
+            };
+        }
+
+        public async Task DeleteComment(int commentId)
+        {
+            var comment = await _repository.GetCommentByIdAsync(commentId);
+            comment.IsDelete = true;
+            await _repository.UpdateCommentAsync(comment);
+            await Save();
+        }
+
+        public async Task Save() => await _repository.Save();
     }
 }

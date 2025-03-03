@@ -31,6 +31,9 @@ namespace E_Shop.Infra.Data.Repositories.CommentRepo
             if (comment != null) comment.IsApproved = true;
         }
 
+        public async Task UpdateCommentAsync(Comment comment)
+            => _context.Comments.Update(comment);
+
         public async Task DeleteComment(int commentId)
             => _context.Comments.Remove(await GetCommentByIdAsync(commentId));
 

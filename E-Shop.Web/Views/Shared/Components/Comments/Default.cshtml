@@ -1,0 +1,55 @@
+﻿@model List<CommentVM>
+
+<div class="comments">
+    @foreach (var comment in Model)
+    {
+        <div class="comment">
+            <div class="comment-header">
+                <span>@comment.CreateDate?.ToString("dd MMM yyyy")</span>
+                <span>@comment.AuthorName</span>
+            </div>
+            <div class="comment-body">
+                <p>@comment.Text</p>
+                @if (comment.Evaluations != null && comment.Evaluations.Any())
+                {
+                    <ul class="evaluations-list">
+                        @foreach (var evaluation in comment.Evaluations)
+                        {
+                            <li class="comment-evaluation @(evaluation.IsPositive ? "positive" : "negative")">
+                                @(evaluation.IsPositive ? "👍" : "👎") @evaluation.Text
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+            <div class="comment-footer">
+                <span class="me-2">آیا این دیدگاه برایتان مفید بود؟</span>
+                <button class="comment-like" onclick="likeComment(@comment.Id)">
+                    لایک (<span id="likeCount-@comment.Id">@comment.LikeCount</span>)
+                </button>
+                <button class="comment-dislike" onclick="dislikeComment(@comment.Id)">
+                    دیس‌لایک (<span id="dislikeCount-@comment.Id">@comment.DisLikeCount</span>)
+                </button>
+            </div>
+        </div>
+        <hr />
+    }
+</div>
+
+<script>
+    function likeComment(commentId) {
+        $.post('@Url.Action("LikeComment", "UserComment")', { commentId: commentId }, function (data) {
+            if (data.success) {
+                $('#likeCount-' + commentId).text(data.likeCount);
+            }
+        });
+    }
+
+    function dislikeComment(commentId) {
+        $.post('@Url.Action("DislikeComment", "UserComment")', { commentId: commentId }, function (data) {
+            if (data.success) {
+                $('#dislikeCount-' + commentId).text(data.dislikeCount);
+            }
+        });
+    }
+</script>
