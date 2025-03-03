@@ -1,6 +1,7 @@
 ﻿using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Application.ViewModels.Common;
 using E_Shop.Application.ViewModels.SpecificationViewModels;
+using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models.ColorModels;
 using E_Shop.Domain.Models.CommentModels;
 using E_Shop.Domain.Models.SpecificationModels;
@@ -134,7 +135,10 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
         public int CategoryId { get; set; }
 
         [Display(Name = "موجودی")]
-        public int? Inventory { get; set; }
+        public bool Inventory { get; set; }
+
+        public ProductEnums SortBy { get; set; }
+        public SortOrder SortOrder { get; set; }
 
         public ProductCategoriesViewModel Category { get; set; }
         public List<ProductSpecVM> Specification { get; set; }

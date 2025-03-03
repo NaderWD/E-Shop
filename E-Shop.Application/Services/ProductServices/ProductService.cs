@@ -146,52 +146,7 @@ namespace E_Shop.Application.Services.ProductServices
             return selectListitems;
         }
 
-        public ProductArchiveViewModel GetByCategoryId(int Id)
-        {
-            var products = productsRepository.GetByCategoryId(Id);
-            ProductArchiveViewModel model = new ProductArchiveViewModel();
-
-            foreach (var item in products)
-            {
-                model.Product.Add(new ProductViewModel
-                {
-                    Title = item.Title,
-                    Description = item.Description,
-                    Review = item.Review,
-                    ExpertReview = item.ExpertReview,
-                    Inventory = item.Inventory,
-                    ImageName = item.ImageName,
-                    Price = item.Price,
-                    CategoryId = item.CategoryId,
-                });
-                model.Category.Name = item.Category.Name;
-                model.Category.Id = item.Category.Id;
-
-                foreach (var color in item.Color)
-                {
-                    model.color.Add(new ColorViewModel
-                    {
-                        Name = color.Color.Name,
-                        Code = color.Color.Code,
-                        Id = color.Color.Id,
-                    });
-                }
-
-                foreach (var speci in item.ProductSpecification)
-                {
-                    model.Specification.Add(new ProductSpecVM
-                    {
-                        SpecId = speci.Id,
-                        Value = speci.Value,
-                    });
-                }
-
-
-            }
-
-            return model;
-        }
-
+       
         public FilterProductViewModel Filter(FilterProductViewModel filter)
         {
             var query = productsRepository.Filter();
@@ -250,9 +205,26 @@ namespace E_Shop.Application.Services.ProductServices
                 query = query.Where(q => q.Title.Contains(filter.Title));
             }
 
-            if (filter.Inventory != null)
+            if (filter.Inventory == true)
             {
-                query = query.Where(q => q.Inventory == filter.Inventory);
+                query = query.Where(q => q.Inventory > 0);
+            }
+            #endregion
+
+            #region Sorting
+            switch (filter.SortBy)
+            {
+                case Domain.Enum.ProductEnums.MostExpensive:
+                    query = filter.SortOrder == Domain.Enum.SortOrder.Ascending
+                    ? query.OrderBy(p => p.Price)
+                    : query.OrderByDescending(p => p.Price);
+                    break;
+                case Domain.Enum.ProductEnums.MostRecent:
+                    query = query.OrderByDescending(p => p.CreateDate);
+                    break;
+                default:
+                    query = query.OrderBy(p => p.Id);
+                    break;
             }
             #endregion
 
@@ -263,18 +235,55 @@ namespace E_Shop.Application.Services.ProductServices
                 Title = q.Title,
                 Price = q.Price,
                 Inventory = q.Inventory,
+                ImageName = q.ImageName,
                 Colors = q.Color.Select(color => new ColorViewModel()
                 {
                     Id = color.ColorId , 
                     Name = color.Color.Name, 
                     Code = color.Color.Code
-                }).ToList()
+                }).ToList(),
+                
+                
             });
+
+            filter.Category = new ProductCategoriesViewModel();
+            filter.Category.Name = query.Select(q => q.Category.Name).FirstOrDefault();
+            filter.Category.ParentName = query.Select(q => q.Category.Parent.Name).FirstOrDefault();
+            filter.Category.ParentId = query.Select(q => q.Category.Parent.Id).FirstOrDefault();
 
             filter.ToPaged(productsQuery);
             return filter;
 
 
+        }
+
+        public ProductViewModel GetByIdForDetails(int productId , int colorId )
+        {
+
+            
+            var product = productsRepository.GetByIdForDetails(productId);
+            ProductViewModel model = new()
+            {
+                Title = product.Title,
+                Description = product.Description,
+                Review = product.Review,
+                ExpertReview = product.ExpertReview,
+                Inventory = product.Inventory,
+                ImageName = product.ImageName,
+                CategoryId = product.CategoryId,
+                CategoryName = product.Category.Name,
+            };
+
+            if (colorId != 0)
+            {
+                model.Price = product.Price + product.Color.Where(c => c.ColorId == colorId).FirstOrDefault().Price;
+            }
+            else 
+            {
+                model.Price = product.Price + product.Color.Where(c => c.IsDefault == true).FirstOrDefault().Price;
+            }
+
+            return model;
         }
     }
 }

@@ -20,6 +20,7 @@ namespace E_Shop.Domain.Enum
     }
     public enum SortOrder 
     {
-
+        Ascending,
+        Descending,
     }
 }

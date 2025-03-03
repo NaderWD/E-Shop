@@ -7,7 +7,8 @@ namespace E_Shop.Application.Services.ProductServices
         FilterProductViewModel Filter(FilterProductViewModel filter);
         ProductArchiveViewModel ArchiveFilter(ProductArchiveViewModel filter);
         ProductViewModel GetById(int Id);
-        ProductArchiveViewModel GetByCategoryId(int Id);
+        ProductViewModel GetByIdForDetails(int Id, int colorId);
+       
         CreateProductViewModel GetProductCreateModel();
         UpdateProductViewModel GetProductUpdateModel(int Id);
         public List<SelectListitem> GetSelectItems();
