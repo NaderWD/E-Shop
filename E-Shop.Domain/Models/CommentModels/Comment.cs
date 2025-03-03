@@ -12,5 +12,9 @@ namespace E_Shop.Domain.Models.CommentModels
         public Product Product { get; set; }
         public IQueryable<Reply> Replies { get; set; }
         public CommentStatus Status { get; set; }
+        public int LikeCounts { get; set; } = 0;
+        public int DisLikeCounts { get; set; } = 0;
+        public IQueryable<Like> Likes { get; set; }
+        public List<Evaluation> Evaluations { get; set; } = [];
     }
 }

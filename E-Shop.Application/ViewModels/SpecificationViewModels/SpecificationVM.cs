@@ -44,15 +44,12 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
     public class AddSpecToProductVM
     {
         public int SpecId { get; set; }
-
+                                                                                     
         public int ProductId { get; set; }
 
         public List<int>? SelectedSpecificationIds { get; set; }
 
-        [Display(Name = "مقدار")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [MaxLength(100)]
-        public string Value { get; set; }
+        public List<string> Values { get; set; }
 
         public List<SpecVM> AvailabeSpecifications { get; set; } = [];
     }
@@ -78,8 +75,8 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
     }
 
     public class ProSpecDetailsFinalVM
-    {                                                                          
-        public int ProductId { get; set; }             
+    {
+        public int ProductId { get; set; }
         public List<ProductSpecDetailVM>? ProSpecVM { get; set; }
     }
 }

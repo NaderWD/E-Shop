@@ -1,0 +1,51 @@
+﻿@model CreateCommentVM
+
+
+
+<h2>افزودن دیدگاه</h2>
+<form asp-action="CreateComment" method="post">
+    <div class="form-group">
+        <label>نام</label>
+        <input asp-for="AuthorName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>متن دیدگاه</label>
+        <textarea asp-for="Text" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label>نقاط قوت</label>
+        <div id="positive-evaluations">
+            @for (int i = 0; i < Model.PositiveEvaluations.Count; i++)
+            {
+                <input type="text" asp-for="PositiveEvaluations[i].Text" class="form-control mb-2" placeholder="نقطه قوت" />
+            }
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addPositiveEvaluation()">افزودن نقطه قوت</button>
+    </div>
+    <div class="form-group">
+        <label>نقاط ضعف</label>
+        <div id="negative-evaluations">
+            @for (int i = 0; i < Model.NegativeEvaluations.Count; i++)
+            {
+                <input type="text" asp-for="NegativeEvaluations[i].Text" class="form-control mb-2" placeholder="نقطه ضعف" />
+            }
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addNegativeEvaluation()">افزودن نقطه ضعف</button>
+    </div>
+    <input type="hidden" asp-for="ProductId" />
+    <button type="submit" class="btn btn-primary">ثبت دیدگاه</button>
+</form>
+
+@section Scripts {
+    <script>
+        function addPositiveEvaluation() {
+            var index = $('#positive-evaluations input').length;
+            $('#positive-evaluations').append('<input type="text" name="PositiveEvaluations[' + index + '].Text" class="form-control mb-2" placeholder="نقطه قوت" />');
+        }
+
+        function addNegativeEvaluation() {
+            var index = $('#negative-evaluations input').length;
+            $('#negative-evaluations').append('<input type="text" name="NegativeEvaluations[' + index + '].Text" class="form-control mb-2" placeholder="نقطه ضعف" />');
+        }
+    </script>
+}

@@ -1,24 +1,27 @@
 ﻿@model AddSpecToProductVM
 
-
-
-
 <form asp-action="AddToProduct" method="post">
     <input type="hidden" asp-for="ProductId" />
-
     <div class="container mt-3">
-        <div class="row">
-            @foreach (var specification in Model.AvailabeSpecifications)
+        <div class="row mt-3">
+            @for (int i = 0; i < Model.AvailabeSpecifications.Count; i++)
             {
-                <div class="col-6 col-md-3 mb-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="specIds" value="@specification.SpecId">
-                        <label class="form-check-label">@specification.Name</label>
+                var spec = Model.AvailabeSpecifications[i];
+                <div class="form-row align-items-center mb-3">
+                    <div class="form-check col-md-3">
+                        <input class="form-check-input" type="checkbox" name="SelectedSpecificationIds" value="@spec.SpecId">
+                        <label class="form-check-label">@spec.Name</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" name="Value[@i]" class="form-control" placeholder="مقدار" />
+                        </div>
                     </div>
                 </div>
             }
         </div>
-
-        <button type="submit" class="btn btn-primary mt-3">اضافه کردن</button>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <button type="submit" class="btn btn-primary mt-3">ایجاد</button>
+        <a asp-action="SpecificationDetails" asp-route-productId="@Model.ProductId" class="btn btn-primary mt-3">بازگشت</a>
     </div>
 </form>

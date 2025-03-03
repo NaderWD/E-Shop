@@ -1,0 +1,30 @@
+﻿@model CreateProductRatingVM
+
+
+
+
+<h2>افزودن امتیاز</h2>
+<form asp-action="CreateRating" method="post">
+    <input type="hidden" asp-for="ProductId" />
+    <div class="form-group">
+        <label asp-for="RaterName"></label>
+        <input asp-for="RaterName" class="form-control" />
+        <span asp-validation-for="RaterName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="OverallRating"></label>
+        <input asp-for="OverallRating" class="form-control" type="number" step="0.1" min="1" max="5" />
+        <span asp-validation-for="OverallRating" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BuildQuality"></label>
+        <input asp-for="BuildQuality" class="form-control" type="number" step="0.1" min="1" max="5" />
+        <span asp-validation-for="BuildQuality" class="text-danger"></span>
+    </div>
+    <!-- Repeat for ValueForMoney, Innovation, Features, EaseOfUse, Design -->
+    <button type="submit" class="btn btn-primary">ثبت امتیاز</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

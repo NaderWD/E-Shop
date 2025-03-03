@@ -88,10 +88,7 @@ namespace E_Shop.Application.Services.SpecificationServices
             await Save();
         }
 
-        public async Task Save()
-        {
-            await _repository.Save();
-        }
+        public async Task Save() => await _repository.Save();
         #endregion
 
         #region CategorySpecification
@@ -183,18 +180,22 @@ namespace E_Shop.Application.Services.SpecificationServices
         {
             var product = await _repository.GetProductById(addSpecVM.ProductId);
             addSpecVM.AvailabeSpecifications = await GetAvailableSpecificationsToAddProduct(product.Id);
-            foreach (var specId in addSpecVM.SelectedSpecificationIds)
+            for (int i = 0; i < addSpecVM.SelectedSpecificationIds.Count; i++)
             {
+                var specId = addSpecVM.SelectedSpecificationIds[i];
+                var specValue = addSpecVM.Values[i];
                 ProductSpecification proSpec = new()
                 {
                     ProductId = product.Id,
                     SpecificationId = specId,
-                    Value = addSpecVM.Value,
+                    Value = specValue,
                     CreateDate = DateTime.Now,
                     LastModifiedDate = DateTime.Now
                 };
                 await _repository.CreateProductSpec(proSpec);
             }
+
+            await UpdateProductSpecifications(product.Id, addSpecVM.SelectedSpecificationIds);
             await Save();
         }
 
@@ -267,6 +268,5 @@ namespace E_Shop.Application.Services.SpecificationServices
             await Save();
         }
         #endregion
-
     }
 }

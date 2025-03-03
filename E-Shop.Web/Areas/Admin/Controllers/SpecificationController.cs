@@ -46,8 +46,9 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 return View(specVM);
             }
             createVM.SelectedCategoryIds = CategoryIds;
-            createVM.NumberOfLinkedCategory = CategoryIds.Count;
             await _service.CreateSpecification(createVM);
+            createVM.NumberOfLinkedCategory = CategoryIds.Count;
+            await _service.Save();
             return RedirectToAction(nameof(AllSpecifications));
         }
         #endregion
@@ -109,7 +110,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             }
             model.SelectedSpecificationIds = specIds;
             await _service.AddSpecificationToProduct(model);
-            return RedirectToAction("Details", "Products", new { id = model.ProductId });
+            return RedirectToAction(nameof(SpecificationDetails), new { id = model.ProductId });
         }
         #endregion
 

@@ -1,12 +1,14 @@
-﻿@using E_Shop.Application.ViewModels.ProductsViewModel
-@model ProductViewModel
+﻿@model ProductViewModel
+
+
+
 
 <main class="page-content">
     <div class="container">
         <!-- start of breadcrumb -->
         <nav class="mb-5" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">خانه</a></li>
+                <li class="breadcrumb-item"><a href="/">خانه</a></li>
                 <li class="breadcrumb-item"><a href="#">کالای دیجیتال</a></li>
                 <li class="breadcrumb-item"><a href="#">موبایل</a></li>
                 <li class="breadcrumb-item"><a href="#">گوشی موبایل</a></li>
@@ -515,11 +517,15 @@
                 @await Component.InvokeAsync("ProductSpecification")
                 <!-- end of product-params -->
                 <!-- start of product-comments -->
-                @await Component.InvokeAsync("ProductComments")
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
+                        @await Component.InvokeAsync("RatingSummary", new { productId = Model.Id })
+                    </div>
+                    <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
+                        @await Component.InvokeAsync("Comments", new { productId = Model.Id })
+                    </div>
+                </div>
                 <!-- end of product-comments -->
-                <!-- start of product-questions -->
-                @await Component.InvokeAsync("ProductQuestions")
-                <!-- end of product-questions -->
             </div>
             <div class="col-xl-3 col-lg-4 d-lg-block d-none">
                 <div class="ui-sticky ui-sticky-top">
