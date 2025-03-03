@@ -5,30 +5,24 @@
 
 <main class="page-content">
     <div class="container">
-        <!-- start of breadcrumb -->
+        <!-- Start of Breadcrumb -->
         <nav class="mb-5" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">خانه</a></li>
-                <li class="breadcrumb-item"><a href="#">کالای دیجیتال</a></li>
-                <li class="breadcrumb-item"><a href="#">موبایل</a></li>
-                <li class="breadcrumb-item"><a href="#">گوشی موبایل</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">خانه</a></li>
+                <!-- Dynamically display category name as the last breadcrumb -->
+                <li class="breadcrumb-item"><a href="#">@Model.CategoryName</a></li>
             </ol>
         </nav>
-        <!-- end of breadcrumb -->
-        <!-- start of product-detail-container -->
+        <!-- End of Breadcrumb -->
+        <!-- Start of Product Detail Container -->
         <div class="product-detail-container mb-5">
             <div class="row">
                 <div class="col-lg-4 col-md-5 mb-md-0 mb-4">
                     <div class="ui-sticky ui-sticky-top">
-                        <!-- start of product-gallery -->
+                        <!-- Start of Product Gallery -->
                         <div class="product-gallery">
                             <div class="product-options">
                                 <ul>
-                                    <!--
-                                                Add this class to enable the option => 'added'.
-                                                for example :
-                                                <li><a href="#" class="added"><i class="ri-heart-3-fill"></i></a></li>
-                                            -->
                                     <li><a href="#"><i class="ri-heart-3-fill"></i></a></li>
                                     <li>
                                         <a href="#" data-remodal-target="share-modal">
@@ -47,41 +41,46 @@
                             </div>
                             <div class="gallery-img-container">
                                 <div class="gallery-img">
-                                    <img src="./theme-assets/images/gallery/main.jpg" class="zoom-img" alt=""
+                                    <!-- Dynamic main product image -->
+                                    <img src="@Url.Content("/theme-assets/images/products/" + Model.ImageName)"
+                                         class="zoom-img"
+                                         alt="@Model.Title"
                                          style="visibility: visible;">
                                 </div>
-                                @await Component.InvokeAsync("ProductGalleries")
+                                <!-- Pass product ID to ProductGalleries component -->
+                                @await Component.InvokeAsync("ProductGalleries", new { productId = Model.Id })
                             </div>
                         </div>
-                        <!-- end of product-gallery -->
+                        <!-- End of Product Gallery -->
                     </div>
                 </div>
+
                 <div class="col-xl-5 col-lg-4 col-md-7 mb-lg-0 mb-4">
-                    <!-- start of breadcrumb -->
+                    <!-- Start of Product Detail -->
+                    <!-- Secondary Breadcrumb -->
                     <nav class="mb-2" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">اپل</a></li>
-                            <li class="breadcrumb-item"><a href="#">گوشی موبایل اپل</a></li>
+                            <li class="breadcrumb-item"><a href="#">@Model.CategoryName</a></li>
                         </ol>
                     </nav>
-                    <!-- end of breadcrumb -->
-                    <!-- start of product-detail -->
-                    <h2 class="product-title">
-                        گوشی موبایل اپل مدل iPhone 13 A2634 دو سیم کارت ظرفیت 128
-                        گیگابایت و رم 4 گیگابایت
-                    </h2>
-                    <div class="product-en mb-3">
-                        <span>Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</span>
-                    </div>
+                    <!-- Dynamic Product Title and Description -->
+                    <h2 class="product-title">@Model.Title</h2>
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <div class="product-en mb-3">
+                            <span>@Model.Description</span>
+                        </div>
+                    }
+
+                    <!-- Placeholder for User Suggestions and Ratings (Static for now) -->
                     <div class="product-user-suggestion mb-2">
                         <i class="ri-thumb-up-fill text-success me-1"></i>
                         <span class="fs-7 me-2">
-                            ۷۹٪ (۱۷۰ نفر) از خریداران، این کالا را پیشنهاد کرده
-                            اند.
+                            ۷۹٪ (۱۷۰ نفر) از خریداران، این کالا را پیشنهاد کرده‌اند.
                         </span>
-                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title=""
-                              data-bs-original-title="خریداران کالا با انتخاب یکی از گزینه‌های پیشنهاد یا عدم پیشنهاد، تجربه خرید خود را با کاربران به اشتراک می‌گذارند."
-                              aria-label="خریداران کالا با انتخاب یکی از گزینه‌های پیشنهاد یا عدم پیشنهاد، تجربه خرید خود را با کاربران به اشتراک می‌گذارند.">
+                        <span data-bs-toggle="tooltip"
+                              data-bs-placement="bottom"
+                              title="خریداران کالا با انتخاب یکی از گزینه‌های پیشنهاد یا عدم پیشنهاد، تجربه خرید خود را با کاربران به اشتراک می‌گذارند.">
                             <i class="ri-information-line"></i>
                         </span>
                     </div>
@@ -96,132 +95,98 @@
                         <span class="divider"></span>
                         <a href="#" class="link border-bottom-0 fs-7">۴۰۵ پرسش و پاسخ</a>
                     </div>
+
+                    <!-- Dynamic Product Colors -->
                     <div class="product-variants-container mb-3">
                         <div class="product-variant-selected-container">
                             <span class="product-variant-selected-label">رنگ:</span>
-                            <span class="product-variant-selected">آبی</span>
+                            <span class="product-variant-selected">
+                                @(Model.Colors?.FirstOrDefault(c => c.IsDefault)?.Name ?? "نامشخص")
+                            </span>
                         </div>
                         <div class="product-variants">
-                            <div class="product-variant-item">
-                                <div class="custom-radio-circle">
-                                    <input type="radio" class="custom-radio-circle-input" name="productColor"
-                                           id="productColor01" checked="">
-                                    <label for="productColor01" class="custom-radio-circle-label"
-                                           data-variant-label="آبی">
-                                        <span class="color" style="background-color: #2196f3;" data-bs-toggle="tooltip"
-                                              data-bs-placement="bottom" title="" data-bs-original-title="آبی"
-                                              aria-label="آبی"></span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="product-variant-item">
-                                <div class="custom-radio-circle">
-                                    <input type="radio" class="custom-radio-circle-input" name="productColor"
-                                           id="productColor02">
-                                    <label for="productColor02" class="custom-radio-circle-label"
-                                           data-variant-label="سفید">
-                                        <span class="color" style="background-color: #fff;" data-bs-toggle="tooltip"
-                                              data-bs-placement="bottom" title="" data-bs-original-title="سفید"
-                                              aria-label="سفید"></span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="product-variant-item">
-                                <div class="custom-radio-circle">
-                                    <input type="radio" class="custom-radio-circle-input" name="productColor"
-                                           id="productColor03">
-                                    <label for="productColor03" class="custom-radio-circle-label"
-                                           data-variant-label="صورتی">
-                                        <span class="color" style="background-color: #ff80ab;" data-bs-toggle="tooltip"
-                                              data-bs-placement="bottom" title="" data-bs-original-title="صورتی"
-                                              aria-label="صورتی"></span>
-                                    </label>
-                                </div>
-                            </div>
+                            @if (Model.Colors != null)
+                            {
+                                foreach (var color in Model.Colors)
+                                {
+                                    <div class="product-variant-item">
+                                        <div class="custom-radio-circle">
+                                            <input type="radio"
+                                                   class="custom-radio-circle-input"
+                                                   name="productColor"
+                                                   id="productColor_@color.Id"
+                                            @(color.IsDefault ? "checked" : "")>
+                                            <label for="productColor_@color.Id"
+                                                   class="custom-radio-circle-label"
+                                                   data-variant-label="@color.Name">
+                                                <span class="color"
+                                                      style="background-color: @color.Code;"
+                                                      data-bs-toggle="tooltip"
+                                                      data-bs-placement="bottom"
+                                                      title="@color.Name"
+                                                      aria-label="@color.Name"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            }
                         </div>
                     </div>
+
+                    <!-- Static Product Parameters (Could be made dynamic with additional model properties) -->
                     <div class="expandable-text mb-3" style="height: 95px;">
                         <div class="expandable-text_text">
                             <div class="product-params">
                                 <ul>
-                                    <li>
-                                        <span class="label">حافظه داخلی:</span>
-                                        <span class="title">128 گیگابایت</span>
-                                    </li>
-                                    <li>
-                                        <span class="label">مقدار RAM:</span>
-                                        <span class="title">چهار گیگابایت</span>
-                                    </li>
-                                    <li>
-                                        <span class="label">بازه‌ی اندازه صفحه نمایش:</span>
-                                        <span class="title">6.0 اینچ و بزرگتر</span>
-                                    </li>
-                                    <li>
-                                        <span class="label">شبکه های ارتباطی:</span>
-                                        <span class="title">2G، 3G، 4G، 5G</span>
-                                    </li>
+                                    <li><span class="label">حافظه داخلی:</span><span class="title">128 گیگابایت</span></li>
+                                    <li><span class="label">مقدار RAM:</span><span class="title">چهار گیگابایت</span></li>
+                                    <li><span class="label">بازه‌ی اندازه صفحه نمایش:</span><span class="title">6.0 اینچ و بزرگتر</span></li>
+                                    <li><span class="label">شبکه های ارتباطی:</span><span class="title">2G، 3G، 4G، 5G</span></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="expandable-text-expand-btn">
-                            <span class="show-more">
-                                بیشتر بخوانید <i class="ri-arrow-down-s-line"></i>
-                            </span>
-                            <span class="show-less d-none">
-                                بستن <i class="ri-arrow-up-s-line"></i>
-                            </span>
+                            <span class="show-more">بیشتر بخوانید <i class="ri-arrow-down-s-line"></i></span>
+                            <span class="show-less d-none">بستن <i class="ri-arrow-up-s-line"></i></span>
                         </div>
                     </div>
+
+                    <!-- Static Additional Info -->
                     <div class="product-additional-info-container mb-3">
-                        <span class="icon">
-                            <i class="ri-information-line"></i>
-                        </span>
+                        <span class="icon"><i class="ri-information-line"></i></span>
                         <div class="product-additional-info">
-                            <p>
-                                هشدار سامانه همتا: در صورت انجام معامله، از فروشنده کد فعالسازی را
-                                گرفته
-                                و حتما در حضور ایشان، دستگاه را از طریق #7777*، برای سیمکارت خود
-                                فعالسازی نمایید. آموزش تصویری در آدرس اینترنتی hmti.ir/06
-                            </p>
-                            <p>
-                                امکان برگشت کالا در گروه موبایل با دلیل "انصراف از خرید" تنها در
-                                صورتی
-                                مورد قبول است که پلمپ کالا باز نشده باشد.
-                            </p>
+                            <p>هشدار سامانه همتا: در صورت انجام معامله، از فروشنده کد فعالسازی را گرفته و حتما در حضور ایشان، دستگاه را از طریق #7777*، برای سیمکارت خود فعالسازی نمایید.</p>
+                            <p>امکان برگشت کالا در گروه موبایل با دلیل "انصراف از خرید" تنها در صورتی مورد قبول است که پلمپ کالا باز نشده باشد.</p>
                         </div>
                     </div>
+
+                    <!-- Static Free Shipping Widget -->
                     <div class="widget p-0">
                         <div class="widget-content widget--free-shipping">
                             <div class="free-shipping--detail">
                                 <div class="title d-flex align-items-center">
-                                    <i class="ri-truck-fill me-1"></i>
-                                    ارسال رایگان سفارش
+                                    <i class="ri-truck-fill me-1"></i> ارسال رایگان سفارش
                                 </div>
                                 <div class="subtitle">سفارش‌های بالای ۳۰۰ هزار تومان</div>
                             </div>
                             <div class="free-shipping--banner">
-                                <img src="./theme-assets/images/theme/free-shipping--banner.png"
-                                     alt="ارسال رایگان سفارش">
+                                <img src="./theme-assets/images/theme/free-shipping--banner.png" alt="ارسال رایگان سفارش">
                             </div>
                         </div>
                     </div>
-                    <!-- end of product-detail -->
+                    <!-- End of Product Detail -->
                 </div>
+
                 <div class="col-xl-3 col-lg-4">
-                    <!-- start of product-seller-info -->
+                    <!-- Start of Product Seller Info -->
                     <div class="product-seller-info ui-box">
                         <div class="seller-info-changeable">
                             <div class="product-seller-counter">
                                 <span class="label">فروشنده</span>
-                                <a href="#" class="anchor-link link border-bottom-0 fs-7 fa-num">
-                                    4
-                                    فروشنده
-                                    دیگر
-                                </a>
+                                <a href="#" class="anchor-link link border-bottom-0 fs-7 fa-num">4 فروشنده دیگر</a>
                             </div>
                             <div class="product-seller-row">
                                 <div class="product-seller-row-icon">
-                                    <!-- <i class="ri-store-3-fill"></i> -->
                                     <img src="./theme-assets/images/seller-logo-small.svg" alt="">
                                 </div>
                                 <div class="product-seller-row-detail">
@@ -235,280 +200,132 @@
                                             <span class="seller-final-score">عالی</span>
                                         </div>
                                     </div>
-                                    <a href="#" class="seller-info-link"></a>
                                 </div>
                             </div>
                             <div class="product-seller-row">
-                                <div class="product-seller-row-icon">
-                                    <i class="ri-shield-check-fill"></i>
-                                </div>
+                                <div class="product-seller-row-icon"><i class="ri-shield-check-fill"></i></div>
                                 <div class="product-seller-row-detail">
                                     <div class="product-seller-row-detail-title">گارانتی ۱۸ ماهه</div>
                                 </div>
                             </div>
                             <div class="product-seller-row product-seller-row--clickable">
-                                <div class="product-seller-row-icon">
-                                    <i class="ri-checkbox-multiple-fill"></i>
-                                </div>
+                                <div class="product-seller-row-icon"><i class="ri-checkbox-multiple-fill"></i></div>
                                 <div class="product-seller-row-detail">
                                     <div class="product-seller-row-detail-title">موجود در انبار</div>
                                     <div class="product-seller-row-detail-subtitle"><i></i> آماده ارسال</div>
                                 </div>
                             </div>
                             <div class="product-seller-row">
-                                <div class="product-seller-row-icon">
-                                    <i class="ri-copper-coin-fill text-warning"></i>
-                                </div>
+                                <div class="product-seller-row-icon"><i class="ri-copper-coin-fill text-warning"></i></div>
                                 <div class="product-seller-row-detail">
-                                    <div class="product-seller-row-detail-title">
-                                        ۱۵۰ امتیاز
-                                        در باشگاه مشتریان
-                                    </div>
+                                    <div class="product-seller-row-detail-title">۱۵۰ امتیاز در باشگاه مشتریان</div>
                                 </div>
                             </div>
+                            <!-- Dynamic Price -->
                             <div class="product-seller-row product-seller-row--price">
                                 <div class="product-seller-row--price-now fa-num">
-                                    <span class="price">28,250,000</span>
+                                    <span class="price">@Model.Price.ToString("N0")</span>
                                     <span class="currency">تومان</span>
                                 </div>
                             </div>
-                            <div class="product-seller-row product-remaining-in-stock">
-                                <span>
-                                    تنها <span class="mx-2">۱</span> عدد در انبار باقیست - پیش از
-                                    اتمام بخرید
-                                </span>
-                            </div>
+                            <!-- Dynamic Inventory -->
+                            @if (Model.Inventory > 0)
+                            {
+                                <div class="product-seller-row product-remaining-in-stock">
+                                    <span>
+                                        تنها <span class="mx-2">@Model.Inventory</span> عدد در انبار باقیست - پیش از اتمام بخرید
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="product-seller-row product-remaining-in-stock text-danger">
+                                    <span>موجود نیست</span>
+                                </div>
+                            }
                         </div>
                         <div class="product-seller--add-to-cart">
-                            <a href="#" class="btn btn-primary w-100" data-toast="" data-toast-type="success"
-                               data-toast-color="green" data-toast-position="topRight" data-toast-icon="ri-check-fill"
-                               data-toast-title="موفق!" data-toast-message="به سبد اضافه شد!">
+                            <a href="#" class="btn btn-primary w-100"
+                               data-toast=""
+                               data-toast-type="success"
+                               data-toast-color="green"
+                               data-toast-position="topRight"
+                               data-toast-icon="ri-check-fill"
+                               data-toast-title="موفق!"
+                               data-toast-message="به سبد اضافه شد!">
                                 افزودن به سبد خرید
                             </a>
                         </div>
                     </div>
-                    <!-- end of product-seller-info -->
+                    <!-- End of Product Seller Info -->
                 </div>
             </div>
         </div>
-        <!-- end of product-detail-container -->
-        <!-- start of box -->
-        @await Component.InvokeAsync("SellersList")
-        <!-- end of box -->
-        <!-- start of box -->
-        @await Component.InvokeAsync("SimularProducts")
-        <!-- end of box -->
+        <!-- End of Product Detail Container -->
+        <!-- Dynamic Components -->
+        @await Component.InvokeAsync("SellersList", new { productId = Model.Id })
+        @await Component.InvokeAsync("SimularProducts", new { productId = Model.Id })
+
         <div class="row">
             <div class="col-xl-9 col-lg-8">
                 <div class="ui-sticky ui-sticky-top mb-4">
-                    <!-- start of product-tabs -->
+                    <!-- Start of Product Tabs -->
                     <div class="product-tabs">
                         <ul class="nav nav-pills">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#scrollspyHeading1" data-scroll="scrollspyHeading1">
-                                    نقد
-                                    و بررسی
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#scrollspyHeading2" data-scroll="scrollspyHeading2">
-                                    بررسی
-                                    تخصصی
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#scrollspyHeading3" data-scroll="scrollspyHeading3">مشخصات</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#scrollspyHeading4" data-scroll="scrollspyHeading4">
-                                    دیدگاه
-                                    کاربران
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#scrollspyHeading5" data-scroll="scrollspyHeading5">
-                                    پرسش و
-                                    پاسخ
-                                </a>
-                            </li>
+                            <li class="nav-item"><a class="nav-link active" href="#scrollspyHeading1" data-scroll="scrollspyHeading1">نقد و بررسی</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#scrollspyHeading2" data-scroll="scrollspyHeading2">بررسی تخصصی</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#scrollspyHeading3" data-scroll="scrollspyHeading3">مشخصات</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#scrollspyHeading4" data-scroll="scrollspyHeading4">دیدگاه کاربران</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#scrollspyHeading5" data-scroll="scrollspyHeading5">پرسش و پاسخ</a></li>
                         </ul>
                     </div>
-                    <!-- end of product-tabs -->
+                    <!-- End of Product Tabs -->
                 </div>
-                <!-- start of product-content-expert-summary -->
-                <div class="product-tab-content product-content-expert-summary tab-content border-bottom pb-2 mb-4"
-                     id="scrollspyHeading1">
+
+                <!-- Dynamic Review Section -->
+                <div class="product-tab-content product-content-expert-summary tab-content border-bottom pb-2 mb-4" id="scrollspyHeading1">
                     <div class="product-tab-title">
                         <h2>نقد و بررسی اجمالی</h2>
-                        <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                        <h3 class="subtitle">@Model.Title</h3>
                     </div>
                     <div class="expandable-text pt-1" style="height: 250px;">
                         <div class="expandable-text_text">
-                            <p>
-                                گوشی موبایل «iPhone 13» پرچم‌دار جدید شرکت اپل است که با چند ویژگی جدید و دوربین
-                                دوگانه روانه بازار شده است. اپل برای ویژگی‌ها و طراحی کلی این گوشی از همان فرمول
-                                چند سال اخیرش استفاده کرده است. نمایشگر آیفون 13 به پنل Super Retina مجهز ‌شده
-                                است تا تصاویر بسیار مطلوبی را به کاربر عرضه کند. این نمایشگر رزولوشن بسیار
-                                بالایی دارد؛ به‌طوری‌که در اندازه­‌ی 6.1 اینچی‌اش، حدود 460 پیکسل را در هر اینچ
-                                جا داده است. امکان شارژ بی‌‌سیم باتری در این گوشی وجود دارد. روکش سرامیکی
-                                صفحه‌نمایش این گوشی می‌تواند انقلابی در محافظت به‌پا کند. این گوشی ضدآب و ضد
-                                گردوخاک است. بدنه­ زیبا iPhone 13 در مقابل خط‌‌وخش مقاومت زیادی دارد؛ پس خیالتان
-                                از این بابت که آب و گردوغبار به‌‌راحتی روی آیفون 13 تأثیر نمی‌‌گذارد، راحت باشد.
-                                علاوه‌براین لکه و چربی هم روی این صفحه‌نمایش باکیفیت تأثیر چندانی ندارند. تشخیص
-                                چهره با استفاده از دوربین جلو دیگر ویژگی است که در آیفون جدید اپل به کار گرفته
-                                شده است. قابلیت اتصال به شبکه­‌های 4G و 5G، بلوتوث نسخه‌ 5، نسخه­‌ 15 از iOS
-                                دیگر ویژگی‌های این گوشی هستند. ازنظر سخت‌‌افزاری هم این گوشی از تراشه­‌ی جدید
-                                A15 بهره می‌برد که دارای 15 میلیارد ترانزیستور است که دارای کنترل گرمای مطلوبی
-                                بوده که تا بتواند علاوه بر کارهای معمول، از قابلیت‌های جدید واقعیت مجازی که اپل
-                                این روزها روی آن تمرکز خاصی دارد، پشتیبانی کند. به گفته خود شرکت اپل این گوشی
-                                دارای سرعتی 50 برابر نسخه 12 خود است. پردازنده دارای ماژولار جدیدی است که مصرف
-                                باتری را بسیار پایین‌تر آورده است و شما دارای حفظ باتری بالاتری هستید. کیفیت
-                                نمایش شما در iPhone 13 دارای 120 هرتز است و کسفیت بالایی را شاهد خواهید بود. اپل
-                                در این سری از گوشی‌های iPhone خود پردازنده گرافیکی‌ای را قرار داده که از سری 12
-                                گوشی‌های خود 30 درصد سریع‌تر است و این نویدبخش آن است که شما می‌توانید بازی‌هایی
-                                را با گرافیک و MAP سنگین تر و بزرگ‌تر اجرا کنید. یکی از ویژگی‌هایی که در iPhone
-                                13 شاهد هستیم سیستم فیلمبرداری ProRes سینمایی آن است که می تواند انقلابی در
-                                فیلمبرداری گوشی‌های موبایل به‌راه انداخته باشد. این قابلیت می‌تواند نسبت به صورت
-                                روبرو بین افراد و یا بین فرد و اشیا فوکوس و بِلار داشته باشد.
-                            </p>
+                            @if (!string.IsNullOrEmpty(Model.Review))
+                            {
+                                <p>@Model.Review</p>
+                            }
+                            else
+                            {
+                                <p>هنوز نقد و بررسی برای این محصول ثبت نشده است.</p>
+                            }
                         </div>
                         <div class="expandable-text-expand-btn justify-content-start text-sm">
-                            <span class="show-more active">
-                                ادامه مطلب <i class="ri-arrow-down-s-line ms-2"></i>
-                            </span>
-                            <span class="show-less d-none">
-                                مشاهده کمتر <i class="ri-arrow-up-s-line ms-2"></i>
-                            </span>
+                            <span class="show-more active">ادامه مطلب <i class="ri-arrow-down-s-line ms-2"></i></span>
+                            <span class="show-less d-none">مشاهده کمتر <i class="ri-arrow-up-s-line ms-2"></i></span>
                         </div>
                     </div>
                 </div>
-                <!-- end of product-content-expert-summary -->
-                <!-- start of product-content-expert-articles -->
-                <div class="product-tab-content product-content-expert-articles tab-content border-bottom pb-2 mb-4"
-                     id="scrollspyHeading2">
+
+                <!-- Dynamic Expert Review Section -->
+                <div class="product-tab-content product-content-expert-articles tab-content border-bottom pb-2 mb-4" id="scrollspyHeading2">
                     <div class="product-tab-title">
                         <h2>نقد و بررسی تخصصی</h2>
-                        <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                        <h3 class="subtitle">@Model.Title</h3>
                     </div>
                     <div class="expandable-text pt-1" style="height: 840px;">
                         <div class="expandable-text_text">
-                            <h3>آیفون 13 مینی کوچک‌ترین عضو خانواده، اما قدرتمند</h3>
-                            <p>
-                                تا قبل از رونمایی گوشی‌های هوشمند خانواده آیفون 12، پرچمداران این شرکت در قالب دو
-                                یا سه گوشی‌هوشمند معرفی می‌شدند. تا اینکه آیفون 12 مینی نیز در کنار گوشی‌های
-                                هوشمند خانواده آیفون 12 معرفی شد. حال گوشی‌های هوشمند خانواده آیفون 13 به عنوان
-                                جدید‌ترین پرچمداران این شرکت روانه بازار شده‌اند و بار دیگر آیفون 13 مینی به
-                                عنوان کوچکترین عضو و البته ارزان قیمت‌ترین گوشی هوشمند خانواده آیفون 13 معرفی
-                                شد. اما قیمت ارزان تر این گوشی‌هوشمند به نسبت سایر اعضای این خانواده سبب نشده تا
-                                مشخصات قوی را با خود به‌همراه نداشته باشد و آیفون 13 مینی با بهره بردن از مشخصات
-                                فنی قدرتمند، توانایی رقابت با پرچمداران اندرویدی را به‌خوبی دارد.
-                            </p>
-                            <h3>طراحی و صفحه نمایش</h3>
-                            <p>
-                                در نگاه اول تفاوت چندانی در زمینه طراحی با سری قبلی پرچمداران این شرکت و به‌خصوص
-                                آیفون 12 مینی نمی‌بینیم. اپل با توجه به طراحی بسیار جذابی که برای گوشی‌های
-                                هوشمند خانواده آیفون 12 در نظر گرفته بود و بازخورد بسیار خوبی از سمت کاربران
-                                داشت، تصمیم گرفت تا طراحی مشابهی را برای گوشی‌های هوشمند خانواده آیفون 13 در نظر
-                                بگیرد. در نمای رو به رویی این بار ناچ کوچکتری به نسبت آیفون 12 مینی برای صفحه
-                                نمایش آیفون 13 مینی در نظر گرفته شده. در قسمت پشتی هم شاهد قرار گیری دو سنسور
-                                دوربین می‌باشیم که این بار چیدمان متفاوتی با نسل قبلی خود دارند. دو سنسور دوربین
-                                قسمت پشتی به همراه فلش LED با چیدمانی ضربدری در بریدگی مربعی شکلی کنار یکدیگر
-                                قرار گرفته‌اند. متریال بسیار با‌کیفیت این گوشی هوشمند نیز سبب شده تا از
-                                استاندارد IP68 نیز پشتیبانی کند. پس با این تفاسیر، آیفون 13 مینی توانایی
-                                قرار‌گیری در عمق 6 متری آب و مدت زمان 30 دقیقه‌ای را دارد. پس با خیال راحت از
-                                این گوشی‌هوشمند در شرایط جوی متفاوت و حتی تفریحات آبی همچون شنا هم استفاده کنید.
-                            </p>
-                            <img src="./theme-assets/images/product/01.jpg" alt="">
-                            <p>
-                                صفحه نمایش در نظر گرفته شده برای این گوشی‌هوشمند نیز هیچ تفاوتی با برادر
-                                بزرگترش، یعنی آیفون 12 ندارد و تنها از ابعاد کوچک‌تری بهره برده است. آیفون 13
-                                مینی به صفحه نمایشی 5.4 اینچی با رزولوشن 1080×2340 از نوع اولد و فناوری Super
-                                Retina XDR مجهز شده است. صفحه نمایشی که با توجه به تراکم پیکسلی 467ppi (پیکسل در
-                                هر اینچ) توانایی ارائه کیفیت بسیار عالی وخوبی را دارد. Scratch-resistant ceramic
-                                glass هم از صفحه نمایش این گوشی‌هوشمند در مقابل ضربات و افتادن‌های احتمالی
-                                محافظت می‌کند. از طرفی این صفحه نمایش توانایی ارائه حداکثر روشنایی 800 نیت (شمع
-                                در متر مربع) در حالت معمولی (typical) و حداکثر روشنایی 1200 نیت در حالت HDR را
-                                دارد. میزان روشنایی بسیار خوب در نظر گرفته شده برای صفحه‌نمایش سبب شده تا در
-                                شرایط نوری متنوع و حتی زیر تابش مستقیم نور خورشید هم شاهد وضوح تصویر بسیار عالی
-                                و با‌کیفیتی از این گوشی‌هوشمند باشیم.
-                            </p>
-                            <h3>دوربین مشابه با آیفون 13</h3>
-                            <p>
-                                نه تنها سنسور‌های دوربین در نظر گرفته شده برای این گوشی‌هوشمند تفاوتی با مدل
-                                آیفون 13 ندارد، بلکه از سنسور‌های دوربین تقریبا مشابهی با آیفون 12 مینی بهره
-                                برده است. اما بدون شک آیفون 13 مینی در این زمینه می‌تواند عملکرد بهتر و خروجی
-                                تصاویر بسیار با‌کیفیت‌تری را به نسبت آیفون 12 مینی ارائه کند. دلیل این اتفاق
-                                چیزی نیست جز پردازنده بسیار قدرتمند در نظر گرفته شده برای این گوشی‌هوشمند است.
-                                پردازنده قدرتمند، ISP یا همان پردازش تصویر قدرتمند‌تری را با خود به همراه دارد
-                                که تاثیر بسیار مهمی در کیفیت خروجی تصاویر می‌گذارد.
-                                یک سنسور دوربین اصلی با رزولوشن 12 مگاپیکسل، گشودگی دریچه دیافراگم f/1.6، فاصله
-                                کانونی 26 میلی متر از نوع عریض به‌همراه سنسور دوربین از نوع فوق عریض (ultra
-                                wide) با رزولوشن 12 مگاپیکسل، گشودگی دریچه دیافراگم f/2.4، زاویه دید 120 درجه و
-                                فاصله کانونی 13 میلی‌متر، سنسور‌های دوربین دوگانه آیفون 13 مینی را تشکیل
-                                می‌دهند. برای دوربین سلفی نیز، سنسور 12 مگاپیکسل از نوع عریض با گشودگی دریچه
-                                دیافراگم f/2.2 در نظر گرفته شده که توانایی ضبط ویدیو با کیفیت 4K و نرخ 60 فریم
-                                در ثانیه را هم دارد.
-                            </p>
-                            <img src="./theme-assets/images/product/02.jpg" alt="">
-                            <p>
-                                عملکرد سنسور دوربین اصلی 12 مگاپیکسلی در نور روز جای هیچ حرف و حدیثی را باقی
-                                نگذاشته است. داینامیک رنج بسیار جذاب، جزئیات عالی و کنتراست بسیار جذاب در تصاویر
-                                خروجی ثبت شده به‌خوبی دیده می‌شود. گشودگی دریچه دیافراگم هم جذب نور بسیار خوبی
-                                دارد و این نشان از عملکرد عالی این گوشی هوشمند در ثبت تصاویر شب یا در نور کم
-                                دارد. سنسور دوربین فوق عریض نیز با زاویه دید گسترده‌تر به نسبت سنسور دوربین
-                                اصلی، این امکان را برای شما فراهم می‌کند که تصاویری با زاویه دید باز و بسیار
-                                جذاب (برای مثال عکاسی در طبیعت و عکس‌های گروهی) به ثبت برسانید.
-                                در بخش فیلمبرداری هنوز هم گوشی‌های هوشمند اپل در مقایسه با بسیاری از پرچمداران
-                                اندرویدی توانایی ارائه عملکرد بهتری را دارد. آیفون 13 مینی نیز از این اتفاق
-                                مستثنی نیست و در کنار توانایی ضبط ویدیو با حداکثر کیفیت 4K‌ و نرخ 60 فریم در
-                                ثانیه، قابلیت های ویژه و جدیدی را در این بخش با خود به‌همراه داشته است. سنسور
-                                دوربین اصلی به قابلیت بسیار جذاب OIS یا همان لرزشگیر اپتیکال مجهز شده است.
-                                قابلیتی که لرزش های ناخواسته هنگام ضبط ویدیو را به‌خوبی حذف می‌کند و در نهایت
-                                خروجی ویدیو بسیار با‌کیفیتی را به شما ارائه می‌کند. همانند نسل قبلی، سنسور
-                                دوربین این گوشی نیز توانایی ضبط ویدیو سینماتیک را دارد که بالا‌ترین کیفیت ممکن
-                                ضبط ویدیو در میان تمام پرچمداران دنیا است. اما این بار اپل بهبود‌های چشم گیری را
-                                برای بخش فیلمبرداری این گوشی‌هوشمند در نظر گرفته تا به‌راحتی نیاز‌های یک
-                                فیلمبردار حرفه‌ای را نیز برطرف کند. فوکوس خودکار بسیار شگفت‌انگیز این دوربین، به
-                                لطف هوش مصنوعی یا همان AI، عملکرد بی‌نظیری را از خود به نمایش گذاشته است. فوکوس
-                                خودکار بین چهره افراد (برای مثال دو نفر در کادر دوربین حضور دارند و فوکوس بر روی
-                                چهره نفر جلو‌تر است، به محض اینکه نفر اول سرش با برگرداند و به نفر بعدی نگاه کن،
-                                دوربین به‌صورت خودکار بر روی نفر دوم فوکوس می‌کند).
-                            </p>
-                            <h3>پردازنده ای قدرتمند مشابه با آیفون 13 پرو مکس</h3>
-                            <img src="./theme-assets/images/product/01.jpg" alt="">
-                            <p>
-                                باید قبول کنیم که تا به امروز، پردازنده‌های قدرتمند گوشی‌های هوشمند اپل در کنار
-                                سیستم عامل بی‌نظیر iOS توانسته اند عملکرد بسیار شگفت‌انگیزی را به نمایش بگذارند.
-                                این بار هم آیفون 13 مینی همانند برادران بزرگترش، یعنی آیفون 13 پرو وآیفون 13 پرو
-                                مکس، به قدرتمند‌ترین پردازنده این شرکت یعنیُ A15 بایونیک مجهز شده است. پردازنده
-                                ای با معماری 5 نانومتری و متشکل از 6 هسته (2 هسته قدرتمند‌تر به‌همراه 4 هسته با
-                                کارایی معمولی و صرفه انرژی کمتر). برای GPU یا همان پردازنده گرافیکی هم، پردازنده
-                                اختصاصی 4 هسته‌ای در نظر گرفته شده است.
-                                با توجه به نتایج بنچمارک و تست های انجام شده باید بگوییم که هیچ بازی در دنیا
-                                وجود ندارد که آیفون 13 مینی با بهره بردن از چنین پردازنده قدرتمندی، توانایی اجرا
-                                آن را نداشته باشد. البته لازم به ذکر است که این گوشی توانایی اجرای بازی های
-                                سنگینی همچون کال‌آ‌ف‌دیوتی موبایل و آسفالت 9 را در بالاتری تنظیمات گرافیکی خواهد
-                                داشت. از طرفی معماری 5 نانومتری این پردازنده نیز سبب شده تا به‌نسبت
-                                پردازنده‌هایی با معماری 7 و 10 نانومتری مصرف انرژی کمتری داشته باشد و در نهایت
-                                طول عمر مفید طولانی‌تری به ازای هر بار شارژ 100 درصدی ارائه کند. آیفون 13 مینی
-                                در سه مدل با حافظه‌های داخلی 128،256 و 512 گیگابایت روانه بازار شده است. در
-                                مقایسه با آیفون 12 مینی، همانطور که می‌بینیم دیگر خبری از حافظه داخلی 64
-                                گیگابایتی نیست و در عوض، آیفون 13 به حافظه داخلی 512 گیگابایت مجهز شده است
-                                (آیفون 12 به حافظه داخلی 512 گیگابایت مجهز نشده بود). دربخش میزان ظرفیت باتری
-                                نیز همانند هر سال، اپل هیچ حرفی از میزان طرفیت باتری در نظر گرفته شده برای این
-                                گوشی‌هوشمند چیزی نگفته است. اما به گفته اپل، آیفون 13 مینی توانایی ارائه طول عمر
-                                مفید بهتری به ازای هر بار شارژ 100 درصدی به‌نسبت آیفون 12 مینی دارد. حضور
-                                پردازنده‌ای با معماری 5 نانومتری و تکنولوژی جدید‌تر این پردازنده به نسبت
-                                پردازنده ‌A14 بایونیک، صرفه انرژی به‌مراتب کمتری را خواهد داشت.
-                            </p>
+                            @if (!string.IsNullOrEmpty(Model.ExpertReview))
+                            {
+                                @Html.Raw(Model.ExpertReview) <!-- Use Html.Raw if ExpertReview contains HTML -->
+                            }
+                            else
+                            {
+                                <p>هنوز نقد و بررسی تخصصی برای این محصول ثبت نشده است.</p>
+                            }
                         </div>
                         <div class="expandable-text-expand-btn justify-content-start text-sm">
-                            <span class="show-more active">
-                                نمایش کامل نقد و بررسی تخصصی <i class="ri-arrow-down-s-line ms-2"></i>
-                            </span>
-                            <span class="show-less d-none">
-                                نمایش خلاصه <i class="ri-arrow-up-s-line ms-2"></i>
-                            </span>
+                            <span class="show-more active">نمایش کامل نقد و بررسی تخصصی <i class="ri-arrow-down-s-line ms-2"></i></span>
+                            <span class="show-less d-none">نمایش خلاصه <i class="ri-arrow-up-s-line ms-2"></i></span>
                         </div>
                     </div>
                 </div>
@@ -526,27 +343,32 @@
                     </div>
                 </div>
                 <!-- end of product-comments -->
+
             </div>
+
             <div class="col-xl-3 col-lg-4 d-lg-block d-none">
                 <div class="ui-sticky ui-sticky-top">
-                    <!-- start of mini-buy-box -->
+                    <!-- Dynamic Mini Buy Box -->
                     <div class="mini-buy-box ui-box bg-transparent p-4">
                         <div class="d-flex border-bottom pb-3 mb-3">
                             <div class="product-thumbnail">
-                                <img src="./theme-assets/images/gallery/main.jpg" alt="product title">
+                                <img src="@Url.Content("~/theme-assets/images/products/" + Model.ImageName)" alt="@Model.Title">
                             </div>
                             <div class="product-details">
                                 <div class="product-title">
-                                    <h1>
-                                        گوشی موبایل اپل مدل iPhone 13 A2634 دو سیم کارت ظرفیت 128 گیگابایت و رم
-                                        4 گیگابایت
-                                    </h1>
+                                    <h1>@Model.Title</h1>
                                 </div>
                                 <div class="product-options">
-                                    <div class="product-option">
-                                        <span class="color" style="background-color: #2196f3;"></span>
-                                        <span class="color-label ms-2">آبی</span>
-                                    </div>
+                                    @if (Model.Colors != null)
+                                    {
+                                        foreach (var color in Model.Colors)
+                                        {
+                                            <div class="product-option">
+                                                <span class="color" style="background-color: @color.Code;"></span>
+                                                <span class="color-label ms-2">@color.Name</span>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -565,25 +387,14 @@
                             </div>
                         </div>
                         <div class="product-price">
-                            <span class="price-value">۶,۵۹۹,۰۰۰</span>
+                            <span class="price-value">@Model.Price.ToString("N0")</span>
                             <span class="currency ms-1">تومان</span>
                         </div>
-                        <a href="#" class="btn btn-block btn-primary fw-bold">
-                            افزودن به
-                            سبد خرید
-                        </a>
+                        <a href="#" class="btn btn-block btn-primary fw-bold">افزودن به سبد خرید</a>
                     </div>
-                    <!-- end of mini-buy-box -->
+                    <!-- End of Mini Buy Box -->
                 </div>
             </div>
         </div>
     </div>
-    <!-- start of notification-modal -->
-    <!-- end of notification-modal -->
-    <!-- start of add-question-modal -->
-    <!-- end of add-question-modal -->
-    <!-- start of share-modal -->
-    <!-- end of share-modal -->
-    <!-- start of quick-view-modal -->
-    <!-- end of quick-view-modal -->
 </main>
