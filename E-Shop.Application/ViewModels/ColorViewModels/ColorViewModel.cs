@@ -20,6 +20,8 @@ namespace E_Shop.Application.ViewModels.ColorViewModels
         [RegularExpression("#[0-9A-Fa-f]{6}", ErrorMessage = "کد باید به فرم #RRGGBB باشد")]
         public string Code { get; set; }
 
+        public bool IsDefault { get; set; }
+
 
     }
     public class CreateColorViewModel

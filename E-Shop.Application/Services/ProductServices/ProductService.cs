@@ -57,7 +57,7 @@ namespace E_Shop.Application.Services.ProductServices
         }
         #endregion Product CRUD
 
-       
+
 
         public ProductViewModel GetById(int Id)
         {
@@ -146,7 +146,7 @@ namespace E_Shop.Application.Services.ProductServices
             return selectListitems;
         }
 
-       
+
         public FilterProductViewModel Filter(FilterProductViewModel filter)
         {
             var query = productsRepository.Filter();
@@ -181,7 +181,7 @@ namespace E_Shop.Application.Services.ProductServices
                 });
             }
 
-            var products = query.Select(q=> new ProductViewModel 
+            var products = query.Select(q => new ProductViewModel
             {
                 Id = q.Id,
                 CategoryName = q.Category.Name,
@@ -191,7 +191,7 @@ namespace E_Shop.Application.Services.ProductServices
             });
 
             filter.ToPaged(products);
-            
+
             return filter;
         }
 
@@ -238,12 +238,12 @@ namespace E_Shop.Application.Services.ProductServices
                 ImageName = q.ImageName,
                 Colors = q.Color.Select(color => new ColorViewModel()
                 {
-                    Id = color.ColorId , 
-                    Name = color.Color.Name, 
+                    Id = color.ColorId,
+                    Name = color.Color.Name,
                     Code = color.Color.Code
                 }).ToList(),
-                
-                
+
+
             });
 
             filter.Category = new ProductCategoriesViewModel();
@@ -257,11 +257,12 @@ namespace E_Shop.Application.Services.ProductServices
 
         }
 
-        public ProductViewModel GetByIdForDetails(int productId , int colorId )
+        public ProductViewModel GetByIdForDetails(int productId, int colorId)
         {
-
-            
             var product = productsRepository.GetByIdForDetails(productId);
+
+            product.Category = new ProductCategories();
+
             ProductViewModel model = new()
             {
                 Title = product.Title,
@@ -274,11 +275,25 @@ namespace E_Shop.Application.Services.ProductServices
                 CategoryName = product.Category.Name,
             };
 
+            model.Colors = [];
+            
+            foreach (var item in product.Color)
+            {
+                item.Color = new Domain.Models.ColorModels.ColorModel();
+                model.Colors.Add(new ColorViewModel
+                {
+                    Code = item.Color.Code,
+                    Name = item.Color.Name,
+                    Id = item.ColorId,
+                    IsDefault = item.IsDefault,
+                });
+            }
+
             if (colorId != 0)
             {
                 model.Price = product.Price + product.Color.Where(c => c.ColorId == colorId).FirstOrDefault().Price;
             }
-            else 
+            else
             {
                 model.Price = product.Price + product.Color.Where(c => c.IsDefault == true).FirstOrDefault().Price;
             }

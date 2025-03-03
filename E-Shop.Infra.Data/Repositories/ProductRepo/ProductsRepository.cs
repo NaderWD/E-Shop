@@ -62,7 +62,9 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
 
         public Product GetByIdForDetails(int Id)
         {
-            return dbContext.Products.Where(p => p.Id == Id).Include(p => p.Color).FirstOrDefault();
+            return dbContext.Products.Where(p => p.Id == Id)
+                .Include(p => p.Color)
+                .ThenInclude(p=> p.Color).FirstOrDefault();
         }
     }
 }
