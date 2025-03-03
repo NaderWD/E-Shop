@@ -1,18 +1,14 @@
-﻿
+﻿@using E_Shop.Application.ViewModels.ProductsViewModel
+@model List<ProductGalleryViewModel>
 
 <div class="gallery-thumbs">
     <ul>
-        <li data-fancybox="gallery-a" data-src="./theme-assets/images/gallery/01.png">
-            <img src="./theme-assets/images/gallery/01.png" alt="">
-        </li>
-        <li data-fancybox="gallery-a" data-src="./theme-assets/images/gallery/02.png">
-            <img src="./theme-assets/images/gallery/02.png" alt="">
-        </li>
-        <li data-fancybox="gallery-a" data-src="./theme-assets/images/gallery/03.png">
-            <img src="./theme-assets/images/gallery/03.png" alt="">
-        </li>
-        <li data-fancybox="gallery-a" data-src="./theme-assets/images/gallery/04.png">
-            <img src="./theme-assets/images/gallery/04.png" alt="">
-        </li>
+        @foreach (var item in Model)
+        {
+            <li data-fancybox="gallery-a" data-src="/theme-assets/images/products/@item.ImageName">
+                <img src="/theme-assets/images/products/@item.ImageName" alt="@item.ImageName">
+            </li>
+        }
+
     </ul>
 </div>

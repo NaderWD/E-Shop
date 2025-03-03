@@ -77,6 +77,7 @@ namespace E_Shop.Application.Services.ProductServices
             return model;
         }
 
+
         public CreateProductViewModel GetProductCreateModel()
         {
             var productCategories = productCategoriesRepository.GetAll();
@@ -265,6 +266,7 @@ namespace E_Shop.Application.Services.ProductServices
 
             ProductViewModel model = new()
             {
+                Id = product.Id,
                 Title = product.Title,
                 Description = product.Description,
                 Review = product.Review,
@@ -276,10 +278,10 @@ namespace E_Shop.Application.Services.ProductServices
             };
 
             model.Colors = [];
-            
+
             foreach (var item in product.Color)
             {
-                item.Color = new Domain.Models.ColorModels.ColorModel();
+
                 model.Colors.Add(new ColorViewModel
                 {
                     Code = item.Color.Code,
@@ -297,6 +299,34 @@ namespace E_Shop.Application.Services.ProductServices
             {
                 model.Price = product.Price + product.Color.Where(c => c.IsDefault == true).FirstOrDefault().Price;
             }
+
+            return model;
+        }
+
+        public List<ProductViewModel> GetByCategoryId(int Id)
+        {
+            var products = productsRepository.GetByCategoryId(Id);
+
+            List<ProductViewModel> model = new List<ProductViewModel>();
+
+            foreach (var item in products)
+            {
+                model.Add(new ProductViewModel
+                    {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Description = item.Description,
+                    Review = item.Review,
+                    ExpertReview = item.ExpertReview,
+                    Inventory = item.Inventory,
+                    ImageName = item.ImageName,
+                    Price = item.Price,
+                    CategoryId = item.CategoryId,
+                    
+                });
+                
+            }
+            
 
             return model;
         }

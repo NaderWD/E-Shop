@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Shop.Web.Components
 {
-    public class ProductGalleriesViewComponent : ViewComponent
+    public class ProductGalleriesViewComponent(IProductGalleryService productGalleryService) : ViewComponent
     {
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(int productId)
         {
-            
-            return View("GetProductGalleries");
+            var content = productGalleryService.GetGalleryByProductId(productId);
+            return View("GetProductGalleries", content);
         }
     }
 }
