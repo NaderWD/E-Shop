@@ -79,6 +79,11 @@ namespace E_Shop.Infra.Data.Repositories.SpecificationRepo
             => await _context.ProductSpecifications.Include(x => x.Specification)
                                                                            .FirstOrDefaultAsync(x => x.Id == proSpecId);
 
+        public async Task<List<ProductSpecification>> GetProductSpecListBySpecId(int specId)
+          => await _context.ProductSpecifications.Include(x => x.Product)
+                                                                         .Include(s => s.Specification)
+                                                                         .Where(x => x.SpecificationId == specId && !x.IsDelete).ToListAsync();
+
         public async Task<List<ProductSpecification>> GetProductSpecListByProductId(int productId)
             => await _context.ProductSpecifications.Include(x => x.Product)
                                                                            .Include(s => s.Specification)

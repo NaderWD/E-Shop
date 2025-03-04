@@ -1,8 +1,6 @@
 ﻿using E_Shop.Application.Services.SpecificationServices;
 using E_Shop.Application.ViewModels.SpecificationViewModels;
-using E_Shop.Domain.Models.ProductModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {

@@ -28,6 +28,7 @@ namespace E_Shop.Domain.Contracts.SpecificationCont
         #region ProductSpecification
         Task CreateProductSpec(ProductSpecification productSpec);
         Task<ProductSpecification> GetProductSpecById(int proSpecId);
+        Task<List<ProductSpecification>> GetProductSpecListBySpecId(int specId);
         Task<List<ProductSpecification>> GetProductSpecListByProductId(int specId);
         Task<List<Specification>> GetSpecListByProductId(int productId);
         Task<Product> GetProductById(int productId);
