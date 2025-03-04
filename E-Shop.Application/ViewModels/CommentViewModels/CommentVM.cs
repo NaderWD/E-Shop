@@ -15,8 +15,8 @@ namespace E_Shop.Application.ViewModels.CommentViewModels
         public List<ReplyVM>? Replies { get; set; }
         public int LikeCount { get; set; }
         public int DisLikeCount { get; set; }
-        public List<LikeVM> Likes { get; set; }
-        public List<EvaluationVM> Evaluations { get; set; } = [];
+        public List<LikeVM>? Likes { get; set; }
+        public List<EvaluationVM>? Evaluations { get; set; } = [];
     }
 
     public class EvaluationVM
@@ -50,8 +50,8 @@ namespace E_Shop.Application.ViewModels.CommentViewModels
         public string AuthorName { get; set; }
 
         public int ProductId { get; set; }
-        public List<EvaluationInputVM> PositiveEvaluations { get; set; } = [];
-        public List<EvaluationInputVM> NegativeEvaluations { get; set; } = [];
+        public List<EvaluationInputVM>? PositiveEvaluations { get; set; } = [];
+        public List<EvaluationInputVM>? NegativeEvaluations { get; set; } = [];
     }
 
     public class EvaluationInputVM

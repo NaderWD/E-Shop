@@ -17,10 +17,16 @@ namespace E_Shop.Infra.Data.Repositories.CommentRepo
             => await _context.Comments.FindAsync(commentId);
 
         public async Task<IEnumerable<Comment>> GetApprovedCommentsByProductIdAsync(int productId)
-            => _context.Comments.Include(x => x.Replies).ThenInclude(x => x.User).Where(x => !x.IsDelete && x.IsApproved);
+            => _context.Comments.Include(x => x.Replies!)
+                                               .ThenInclude(x => x.User)
+                                               .Where(x => !x.IsDelete 
+                                                              && x.IsApproved
+                                                              && x.ProductId == productId);
 
         public async Task<IEnumerable<Comment>> GetUnapprovedCommentsAsync()
-            => _context.Comments.Include(x => x.Product).ThenInclude(x => x.Comments).Where(x => !x.IsDelete && !x.IsApproved);
+            => _context.Comments.Include(x => x.Product)
+                                               .ThenInclude(x => x.Comments)
+                                               .Where(x => !x.IsDelete && !x.IsApproved);
 
         public async Task<IEnumerable<Reply>> GetRepliesByProductIdAsync(int productId)
             => _context.Replies.Include(x => x.Comment).Where(x => x.Comment.ProductId == productId);

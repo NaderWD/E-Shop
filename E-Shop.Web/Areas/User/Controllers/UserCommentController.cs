@@ -2,6 +2,7 @@
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.CommentViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace E_Shop.Web.Areas.User.Controllers
 {
@@ -15,10 +16,14 @@ namespace E_Shop.Web.Areas.User.Controllers
         }
         #endregion
 
-        #region Create Comment 
-        public IActionResult CreateComment()
+        #region Create Comment
+        [HttpGet]
+        public async Task<IActionResult> CreateComment(int productId)
         {
-            return View();
+            var userId = User.GetUserId().ToString();
+            if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int parsedUserId)) return RedirectToAction("Login", "Account");
+            var model = await _commentService.GetCreateCommentVM(productId, parsedUserId);
+            return View(model);
         }
 
         [HttpPost]
@@ -26,7 +31,7 @@ namespace E_Shop.Web.Areas.User.Controllers
         {
             if (!ModelState.IsValid) return View(commentVM);
             await _commentService.CreateComment(commentVM);
-            return RedirectToAction("ProductDetails", "Products");
+            return RedirectToAction("ProductDetails", "Products", new { productId = commentVM.ProductId });
         }
         #endregion
 
@@ -50,14 +55,15 @@ namespace E_Shop.Web.Areas.User.Controllers
         [HttpPost]
         public async Task<IActionResult> LikeComment(int commentId)
         {
+            var userId = User.GetUserId();
             try
             {
-                var likeCount = await _commentService.LikeComment(commentId);
+                var likeCount = await _commentService.LikeComment(commentId, userId);
                 return Json(new { success = true, likeCount });
             }
             catch
             {
-                return Json(new { success = false });
+                return Json(new { success = false, message = "لایک انجام نشد" });
             }
         }
 
@@ -80,8 +86,9 @@ namespace E_Shop.Web.Areas.User.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteComment(int commentId)
         {
+            var comment = await _commentService.GetCommentByIdAsync(commentId);
             await _commentService.DeleteComment(commentId);
-            return RedirectToAction();
+            return RedirectToAction(nameof(ProductComments), new { productId = comment.ProductId });
         }
         #endregion
     }
