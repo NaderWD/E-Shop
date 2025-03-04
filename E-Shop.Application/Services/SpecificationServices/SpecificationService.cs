@@ -152,9 +152,11 @@ namespace E_Shop.Application.Services.SpecificationServices
                 await _repository.CreateProductSpec(proSpec);
                 await Save();
             }
-            await UpdateProductSpecifications(product.Id, [.. addSpecVM.SelectedSpecifications.Select(s => s.SelectedSpecId)]);
             await Save();
         }
+
+        public async Task<ProductSpecification> GetProductSpecificationById(int proSpecId)
+            => await _repository.GetProductSpecById(proSpecId);
 
         public async Task<List<SpecVM>> GetAvailableSpecificationsToAddProduct(int productId)
         {
@@ -174,16 +176,16 @@ namespace E_Shop.Application.Services.SpecificationServices
         public async Task<ProSpecEditVM> GetProSpecVMForEdit(int proSpecId)
         {
             var proSpec = await _repository.GetProductSpecById(proSpecId) ?? throw new Exception("مشخصه ی مورد نظر یافت نشد");
-            var allSpecs = await _repository.GetAllSpecs();
+            var availableSpecs = await GetAvailableSpecificationsToAddProduct(proSpec.ProductId);
             return new ProSpecEditVM
             {
                 ProSpecId = proSpec.Id,
                 ProductId = proSpec.ProductId,
                 SelectedSpecIds = [proSpec.SpecificationId],
                 Value = proSpec.Value,
-                AvailableSpecifications = [.. allSpecs.Select(s => new SelectListItem
+                AvailableSpecifications = [.. availableSpecs.Select(s => new SelectListItem
                 {
-                    Value = s.Id.ToString(),
+                    Value = s.SpecId.ToString(),
                     Text = s.Name
                 })]
             };
@@ -207,27 +209,27 @@ namespace E_Shop.Application.Services.SpecificationServices
             };
         }
 
-        public async Task UpdateProductSpecifications(int productId, List<int> selectedSpecIds)
-        {
-            var productSpecList = await _repository.GetProductSpecListByProductId(productId);
-            foreach (var productSpec in productSpecList)
-                if (!selectedSpecIds.Contains(productSpec.SpecificationId))
-                {
-                    await DeleteProductSpecification(productSpec.Id);
-                }
-            foreach (var specId in selectedSpecIds)
-            {
-                ProductSpecification proSpec = new()
-                {
-                    ProductId = productId,
-                    SpecificationId = specId,
-                    LastModifiedDate = DateTime.Now,
-                    CreateDate = DateTime.Now,
-                    IsDelete = false
-                };
-                await _repository.CreateProductSpec(proSpec);
-            }
-        }
+        //public async Task UpdateProductSpecifications(int productId, List<int> selectedSpecIds)
+        //{
+        //    var productSpecList = await _repository.GetProductSpecListByProductId(productId);
+        //    foreach (var productSpec in productSpecList)
+        //        if (!selectedSpecIds.Contains(productSpec.SpecificationId))
+        //        {
+        //            await DeleteProductSpecification(productSpec.Id);
+        //        }
+        //    foreach (var specId in selectedSpecIds)
+        //    {
+        //        ProductSpecification proSpec = new()
+        //        {
+        //            ProductId = productId,
+        //            SpecificationId = specId,
+        //            LastModifiedDate = DateTime.Now,
+        //            CreateDate = DateTime.Now,
+        //            IsDelete = false
+        //        };
+        //        await _repository.CreateProductSpec(proSpec);
+        //    }
+        //}
 
         public async Task UpdateProductSpecificationForProduct(ProSpecEditVM ProSpecVM)
         {
@@ -236,7 +238,7 @@ namespace E_Shop.Application.Services.SpecificationServices
             proSpec.SpecificationId = ProSpecVM.SelectedSpecIds.FirstOrDefault();
             proSpec.LastModifiedDate = DateTime.Now;
             await _repository.UpdateProductSpec(proSpec);
-            await UpdateProductSpecifications(ProSpecVM.ProductId, [.. ProSpecVM.SelectedSpecIds]);
+            //await UpdateProductSpecifications(ProSpecVM.ProductId, [.. ProSpecVM.SelectedSpecIds]);
             await Save();
         }
 

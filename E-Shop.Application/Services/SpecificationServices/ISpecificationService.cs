@@ -1,5 +1,6 @@
 ﻿using E_Shop.Application.ViewModels.SpecificationViewModels;
 using E_Shop.Domain.Models.ProductModels;
+using E_Shop.Domain.Models.SpecificationModels;
 
 namespace E_Shop.Application.Services.SpecificationServices
 {
@@ -24,11 +25,12 @@ namespace E_Shop.Application.Services.SpecificationServices
 
         #region ProductSpecification
         Task AddSpecificationToProduct(AddSpecToProductVM addSpecVM);
+        Task<ProductSpecification> GetProductSpecificationById(int proSpecId);
         Task<List<SpecVM>> GetAvailableSpecificationsToAddProduct(int productId);
         Task<ProSpecDetailsFinalVM> GetSpecificationDetailByProductId(int productId);
         Task<ProSpecEditVM> GetProSpecVMForEdit(int proSpecId);
         Task UpdateProductSpecificationForProduct(ProSpecEditVM ProSpecVM);
-        Task UpdateProductSpecifications(int productId, List<int> selectedSpecIds);
+        //Task UpdateProductSpecifications(int productId, List<int> selectedSpecIds);
         Task DeleteProductSpecification(int proSpecId);
         #endregion
     }

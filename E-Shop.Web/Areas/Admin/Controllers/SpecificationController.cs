@@ -129,18 +129,19 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditForProduct(ProSpecEditVM editVM)
         {
-            if (!ModelState.IsValid) return RedirectToAction(nameof(EditForProduct), editVM.ProSpecId);
+            if (!ModelState.IsValid) return RedirectToAction(nameof(EditForProduct), new { proSpecId = editVM.ProSpecId });
             await _service.UpdateProductSpecificationForProduct(editVM);
-            return RedirectToAction("ProductDetails", "Products", new { id = editVM.ProductId });
+            return RedirectToAction(nameof(SpecificationDetails), new { productId = editVM.ProductId });
         }
         #endregion
 
         #region Delete For Product
         [HttpPost]
-        public async Task<IActionResult> DeleteSpecificationForProduct(int productId)
+        public async Task<IActionResult> DeleteSpecificationForProduct(int proSpecId)
         {
-            await _service.DeleteProductSpecification(productId);
-            return RedirectToAction(nameof(SpecificationDetails));
+            var proSpec = await _service.GetProductSpecificationById(proSpecId);
+            await _service.DeleteProductSpecification(proSpecId);
+            return RedirectToAction(nameof(SpecificationDetails), new { productId = proSpec.ProductId });
         }
         #endregion
     }

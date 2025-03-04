@@ -1,16 +1,18 @@
 ﻿@model ProSpecEditVM
 
+
+
 <div class="card">
     <h2 class="card-header">ویرایش مشخصه محصول</h2>
     <div class="card-body">
-        <form asp-action="EditSpecification" method="post">
+        <form asp-action="EditForProduct" method="post">
             @Html.AntiForgeryToken()
             <input type="hidden" asp-for="ProSpecId" />
             <input type="hidden" asp-for="ProductId" />
 
             <div class="mb-3">
                 <label asp-for="SelectedSpecIds" class="form-label">نام مشخصه</label>
-                <select asp-for="SelectedSpecIds" class="form-select" asp-items="Model.AvailableSpecifications">
+                <select asp-for="SelectedSpecIds" class="form-select" asp-items="Model.AvailableSpecifications" multiple>
                     <option value="">-- انتخاب کنید --</option>
                 </select>
                 <span asp-validation-for="SelectedSpecIds" class="text-danger"></span>
@@ -24,12 +26,9 @@
 
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">ذخیره</button>
-                <a asp-action="ProductDetails" asp-controller="Products" asp-route-id="@Model.ProductId" class="btn btn-secondary">لغو</a>
+                            <a asp-action="SpecificationDetails" asp-controller="Specification" asp-route-productId="@Model.ProductId" class="btn btn-secondary">لغو</a>
             </div>
         </form>
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
