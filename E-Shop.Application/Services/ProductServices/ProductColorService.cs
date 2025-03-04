@@ -40,7 +40,7 @@ namespace E_Shop.Application.Services.ProductServices
 
         public List<AddColorToProductViewModel> GetAllColorForProduct(int productId)
         {
-            var colorList = productColor.GetAllColorForProduct(productId).Where(c => c.IsDefault == false);
+            var colorList = productColor.GetAllColorForProduct(productId).Where(c => c.IsDelete == false);
 
             var model = new List<AddColorToProductViewModel>();
 

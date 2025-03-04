@@ -42,13 +42,13 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
             return dbContext.Products.Find(Id);
         }
 
-        public IQueryable<Product> GetByCategoryId(int Id)
+        public List<Product> GetByCategoryId(int Id)
         {
             return dbContext.Products.Where(p => p.CategoryId == Id)
                 .Include(p => p.Category)
                 .Include(p => p.Color)
                 .ThenInclude(p => p.Color)
-                .Include(p => p.ProductSpecification);
+                .Include(p => p.ProductSpecification).ToList();
         }
 
         public IQueryable<Product> ArchiveFilter(int categoryId)

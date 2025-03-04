@@ -68,7 +68,7 @@
                     @if (!string.IsNullOrEmpty(Model.Description))
                     {
                         <div class="product-en mb-3">
-                            <span>@Model.Description</span>
+                            <span>@Html.Raw(@Model.Description)</span>
                         </div>
                     }
 
@@ -116,9 +116,7 @@
                                                    name="productColor"
                                                    id="productColor_@color.Id"
                                             @(color.IsDefault ? "checked" : "")>
-                                            <label for="productColor_@color.Id"
-                                                   class="custom-radio-circle-label"
-                                                   data-variant-label="@color.Name">
+                                            <label for="productColor_@color.Id" class="custom-radio-circle-label" data-variant-label="@color.Name">
                                                 <span class="color"
                                                       style="background-color: @color.Code;"
                                                       data-bs-toggle="tooltip"
@@ -129,6 +127,7 @@
                                         </div>
                                     </div>
                                 }
+                                
                             }
                         </div>
                     </div>
@@ -170,7 +169,7 @@
                                 <div class="subtitle">سفارش‌های بالای ۳۰۰ هزار تومان</div>
                             </div>
                             <div class="free-shipping--banner">
-                                <img src="./theme-assets/images/theme/free-shipping--banner.png" alt="ارسال رایگان سفارش">
+                                <img src="/theme-assets/images/theme/free-shipping--banner.png" alt="ارسال رایگان سفارش">
                             </div>
                         </div>
                     </div>
@@ -187,7 +186,7 @@
                             </div>
                             <div class="product-seller-row">
                                 <div class="product-seller-row-icon">
-                                    <img src="./theme-assets/images/seller-logo-small.svg" alt="">
+                                    <img src="/theme-assets/images/seller-logo-small.svg" alt="">
                                 </div>
                                 <div class="product-seller-row-detail">
                                     <div class="product-seller-name mb-1">یکتاکالا</div>
@@ -264,7 +263,7 @@
         <!-- End of Product Detail Container -->
         <!-- Dynamic Components -->
         @await Component.InvokeAsync("SellersList", new { productId = Model.Id })
-        @await Component.InvokeAsync("SimularProducts", new { productId = Model.Id })
+        @await Component.InvokeAsync("SimularProducts", new { categoryId = Model.CategoryId })
 
         <div class="row">
             <div class="col-xl-9 col-lg-8">
@@ -292,7 +291,7 @@
                         <div class="expandable-text_text">
                             @if (!string.IsNullOrEmpty(Model.Review))
                             {
-                                <p>@Model.Review</p>
+                                @Html.Raw(@Model.Review)
                             }
                             else
                             {
@@ -316,7 +315,7 @@
                         <div class="expandable-text_text">
                             @if (!string.IsNullOrEmpty(Model.ExpertReview))
                             {
-                                @Html.Raw(Model.ExpertReview) <!-- Use Html.Raw if ExpertReview contains HTML -->
+                                @Html.Raw(Model.ExpertReview) 
                             }
                             else
                             {
@@ -352,7 +351,7 @@
                     <div class="mini-buy-box ui-box bg-transparent p-4">
                         <div class="d-flex border-bottom pb-3 mb-3">
                             <div class="product-thumbnail">
-                                <img src="@Url.Content("~/theme-assets/images/products/" + Model.ImageName)" alt="@Model.Title">
+                                <img src="@Url.Content("/theme-assets/images/products/" + Model.ImageName)" alt="@Model.Title">
                             </div>
                             <div class="product-details">
                                 <div class="product-title">

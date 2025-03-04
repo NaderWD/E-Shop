@@ -8,7 +8,7 @@ namespace E_Shop.Domain.Contracts.ProductCont
         IQueryable<Product> ArchiveFilter(int categoryId);
         Product GetById(int Id);
         Product GetByIdForDetails(int Id);
-        IQueryable<Product> GetByCategoryId(int Id);
+        List<Product> GetByCategoryId(int Id);
         bool CreateProduct(Product product);
         bool UpdateProduct(Product product);
         bool DeleteProduct(int Id);
