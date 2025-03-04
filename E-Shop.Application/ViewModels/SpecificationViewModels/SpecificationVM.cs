@@ -84,6 +84,6 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
         public int ProductId { get; set; } 
         public string Value { get; set; }        
         public List<int> SelectedSpecIds { get; set; }
-        public List<SelectListItem> AvailableSpecifications { get; set; } 
+        public List<SelectListItem>? AvailableSpecifications { get; set; } 
     }
 }
