@@ -61,14 +61,14 @@ namespace E_Shop.Application.Services.CommentService
         }
 
         public async Task<int> DisLikeComment(int commentId)
-        {                                               
+        {
             var comment = await _repository.GetCommentByIdAsync(commentId);
             comment.DisLikeCounts++;
             await Save();
             return comment.DisLikeCounts;
         }
 
-        public async Task<IQueryable<CommentVM>> GetApprovedCommentListByProductId(int productId)
+        public async Task<IEnumerable<CommentVM>> GetApprovedCommentListByProductId(int productId)
         {
             var comments = await _repository.GetApprovedCommentsByProductIdAsync(productId);
             return comments.Select(c => new CommentVM
@@ -90,7 +90,7 @@ namespace E_Shop.Application.Services.CommentService
             }).AsQueryable();
         }
 
-        public async Task<IQueryable<CommentVM>> GetUnApprovedCommentList()
+        public async Task<IEnumerable<CommentVM>> GetUnApprovedCommentList()
         {
             var comments = await _repository.GetUnapprovedCommentsAsync();
             return comments.Select(c => new CommentVM
@@ -101,7 +101,7 @@ namespace E_Shop.Application.Services.CommentService
                 LikeCount = c.LikeCounts,
                 CreateDate = c.CreateDate,
                 ProductName = c.Product.Title
-            }).AsQueryable();
+            });
         }
 
         public async Task ApproveComment(int commentId)

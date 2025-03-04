@@ -1,27 +1,56 @@
 ﻿@model AddSpecToProductVM
 
-<form asp-action="AddToProduct" method="post">
-    <input type="hidden" asp-for="ProductId" />
-    <div class="container mt-3">
-        <div class="row mt-3">
-            @for (int i = 0; i < Model.AvailabeSpecifications.Count; i++)
-            {
-                var spec = Model.AvailabeSpecifications[i];
-                <div class="form-row align-items-center mb-3">
-                    <div class="form-check col-md-3">
-                        <input class="form-check-input" type="checkbox" name="SelectedSpecificationIds" value="@spec.SpecId">
-                        <label class="form-check-label">@spec.Name</label>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="Value[@i]" class="form-control" placeholder="مقدار" />
-                        </div>
+
+
+
+<div class="container mt-3">
+    <h2>Add Specifications to Product</h2>
+    <form asp-action="AddToProduct" method="post" class="mb-3">
+        <input type="hidden" asp-for="ProductId" />
+
+        <div class="row mb-3">
+            <div class="col-md-2"><strong>#</strong></div>
+            <div class="col-md-4"><strong>مشخصه</strong></div>
+            <div class="col-md-6"><strong>مقدار</strong></div>
+        </div>
+
+        @for (int i = 0; i < Model.SelectedSpecifications.Count; i++)
+        {
+            <div class="row mb-3 align-items-center">
+                <!-- Checkbox for IsSelected -->
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" asp-for="SelectedSpecifications[i].IsSelected" />
+                        <label class="form-check-label" asp-for="SelectedSpecifications[i].IsSelected"> انتخاب </label>
                     </div>
                 </div>
-            }
+
+                <!-- Dropdown for Available Specifications -->
+                <div class="col-md-4">
+                    <select class="form-control" asp-for="SelectedSpecifications[i].SelectedSpecId" asp-items="@(new SelectList(Model.AvailabeSpecifications, "SpecId", "Name"))">
+                        <option value="">انتخاب مشخصه</option>
+                    </select>
+                </div>
+                <!-- Textbox for Specification Value -->
+                <div class="col-md-6">
+                    <input type="text" class="form-control" asp-for="SelectedSpecifications[i].SelectedSpecValue" placeholder="مقدار" />
+                    <span asp-validation-for="SelectedSpecifications[i].SelectedSpecValue" class="text-danger"></span>
+                </div>
+            </div>
+        }
+        <!-- Buttons -->
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <!-- Add Row Button (posts to AddRow action) -->
+                    <button type="submit" formaction="@Url.Action("AddRow")" formmethod="post" class="btn btn-secondary me-2"> مشخصه جدید</button>
+                </div>
+                <br />
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary me-2">ذخیره</button>
+                <!-- Back Button -->
+                <a asp-action="SpecificationDetails" asp-route-id="@Model.ProductId" class="btn btn-outline-primary">بازگشت</a>
+            </div>
         </div>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <button type="submit" class="btn btn-primary mt-3">ایجاد</button>
-        <a asp-action="SpecificationDetails" asp-route-productId="@Model.ProductId" class="btn btn-primary mt-3">بازگشت</a>
-    </div>
-</form>
+    </form>
+</div>

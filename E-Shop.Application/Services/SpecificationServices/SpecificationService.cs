@@ -2,6 +2,7 @@
 using E_Shop.Domain.Contracts.SpecificationCont;
 using E_Shop.Domain.Models.ProductModels;
 using E_Shop.Domain.Models.SpecificationModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace E_Shop.Application.Services.SpecificationServices
 {
@@ -41,19 +42,6 @@ namespace E_Shop.Application.Services.SpecificationServices
             return specListVM;
         }
 
-        public async Task<SpecDetailsVM> GetSpecificationDetails(int specId)
-        {
-            var spec = await _repository.GetSpecById(specId);
-            var categoriesNames = (await _repository.GetCategoryListBySpecId(specId)).Select(c => c.Name).ToList();
-            SpecDetailsVM specDetail = new()
-            {
-                SpecId = spec.Id,
-                Name = spec.Name,
-                LinkedCategories = categoriesNames
-            };
-            return specDetail;
-        }
-
         public async Task<SpecCreateVM> GetSpecificationForEdit(int specId)
         {
             var spec = await _repository.GetSpecById(specId);
@@ -74,8 +62,8 @@ namespace E_Shop.Application.Services.SpecificationServices
         {
             var spec = await _repository.GetSpecById(specVM.SpecId);
             spec.Name = specVM.Name;
-            await UpdateCategorySpecifications(spec.Id, specVM.SelectedCategoryIds);
             await _repository.UpdateSpec(spec);
+            await UpdateCategorySpecifications(spec.Id, specVM.SelectedCategoryIds);
             await Save();
         }
 
@@ -84,7 +72,7 @@ namespace E_Shop.Application.Services.SpecificationServices
             var spec = await _repository.GetSpecById(specId);
             await DeleteCategorySpecification(spec.CategorySpecificationId);
             await DeleteProductSpecification(spec.ProductSpecificationId);
-            spec.IsDelete = true;
+            await _repository.DeleteSpecification(specId);
             await Save();
         }
 
@@ -147,17 +135,24 @@ namespace E_Shop.Application.Services.SpecificationServices
         #endregion                       
 
         #region ProductSpecification
-        public async Task CreateProductSpecification(ProductSpecVM productSpec)
+        public async Task AddSpecificationToProduct(AddSpecToProductVM addSpecVM)
         {
-            ProductSpecification proSpec = new()
+            var product = await _repository.GetProductById(addSpecVM.ProductId);
+            addSpecVM.AvailabeSpecifications = await GetAvailableSpecificationsToAddProduct(product.Id);
+            foreach (var specVM in addSpecVM.SelectedSpecifications.Where(s => s.IsSelected))
             {
-                ProductId = productSpec.ProductId,
-                SpecificationId = productSpec.SpecId,
-                Value = productSpec.Value,
-                CreateDate = DateTime.Now,
-                LastModifiedDate = DateTime.Now
-            };
-            await _repository.CreateProductSpec(proSpec);
+                ProductSpecification proSpec = new()
+                {
+                    ProductId = product.Id,
+                    SpecificationId = specVM.SelectedSpecId,
+                    Value = specVM.SelectedSpecValue,
+                    CreateDate = DateTime.Now,
+                    LastModifiedDate = DateTime.Now
+                };
+                await _repository.CreateProductSpec(proSpec);
+                await Save();
+            }
+            await UpdateProductSpecifications(product.Id, [.. addSpecVM.SelectedSpecifications.Select(s => s.SelectedSpecId)]);
             await Save();
         }
 
@@ -176,61 +171,40 @@ namespace E_Shop.Application.Services.SpecificationServices
             return listSpecVM;
         }
 
-        public async Task AddSpecificationToProduct(AddSpecToProductVM addSpecVM)
+        public async Task<ProSpecEditVM> GetProSpecVMForEdit(int proSpecId)
         {
-            var product = await _repository.GetProductById(addSpecVM.ProductId);
-            addSpecVM.AvailabeSpecifications = await GetAvailableSpecificationsToAddProduct(product.Id);
-            for (int i = 0; i < addSpecVM.SelectedSpecificationIds.Count; i++)
+            var proSpec = await _repository.GetProductSpecById(proSpecId) ?? throw new Exception("مشخصه ی مورد نظر یافت نشد");
+            var allSpecs = await _repository.GetAllSpecs();
+            return new ProSpecEditVM
             {
-                var specId = addSpecVM.SelectedSpecificationIds[i];
-                var specValue = addSpecVM.Values[i];
-                ProductSpecification proSpec = new()
+                ProSpecId = proSpec.Id,
+                ProductId = proSpec.ProductId,
+                SelectedSpecIds = [proSpec.SpecificationId],
+                Value = proSpec.Value,
+                AvailableSpecifications = [.. allSpecs.Select(s => new SelectListItem
                 {
-                    ProductId = product.Id,
-                    SpecificationId = specId,
-                    Value = specValue,
-                    CreateDate = DateTime.Now,
-                    LastModifiedDate = DateTime.Now
-                };
-                await _repository.CreateProductSpec(proSpec);
-            }
-
-            await UpdateProductSpecifications(product.Id, addSpecVM.SelectedSpecificationIds);
-            await Save();
+                    Value = s.Id.ToString(),
+                    Text = s.Name
+                })]
+            };
         }
 
-        public async Task<List<SpecVM>> GetSpecificationListByProductId(int productId)
-        {
-            var specs = await _repository.GetSpecListByProductId(productId);
-            List<SpecVM> listSpecVM = [];
-            foreach (var spec in specs) listSpecVM.Add(new SpecVM
-            {
-                SpecId = spec.Id,
-                Name = spec.Name,
-                CategorySpecId = spec.CategorySpecificationId,
-                ProductSpecId = spec.ProductSpecificationId
-            });
-            return listSpecVM;
-        }
         // ask if its right
         public async Task<ProSpecDetailsFinalVM> GetSpecificationDetailByProductId(int productId)
         {
             var product = await _repository.GetProductById(productId);
             var proSpecList = await _repository.GetProductSpecListByProductId(productId);
-            List<ProductSpecDetailVM> specVMList = [];
-            foreach (var spec in proSpecList)
-                specVMList.Add(new ProductSpecDetailVM
-                {
-                    SpecId = spec.Id,
-                    SpecName = spec.Specification.Name,
-                    Value = spec.Value
-                });
-            ProSpecDetailsFinalVM finalVm = new()
+            return new ProSpecDetailsFinalVM
             {
                 ProductId = product.Id,
-                ProSpecVM = specVMList
+                ProSpecVM = [.. proSpecList.Select(ps => new ProductSpecDetailVM
+                {
+                    ProSpecId = ps.Id,
+                    SpecName = ps.Specification.Name,
+                    Value = ps.Value
+
+                })]
             };
-            return finalVm;
         }
 
         public async Task UpdateProductSpecifications(int productId, List<int> selectedSpecIds)
@@ -255,16 +229,20 @@ namespace E_Shop.Application.Services.SpecificationServices
             }
         }
 
-        public async Task DeleteProductSpecification(int proSpecId)
+        public async Task UpdateProductSpecificationForProduct(ProSpecEditVM ProSpecVM)
         {
-            await _repository.DeleteProductSpec(proSpecId);
+            var proSpec = await _repository.GetProductSpecById(ProSpecVM.ProSpecId) ?? throw new Exception("مشخصه ی مورد نظر یافت نشد");
+            proSpec.Value = ProSpecVM.Value;
+            proSpec.SpecificationId = ProSpecVM.SelectedSpecIds.FirstOrDefault();
+            proSpec.LastModifiedDate = DateTime.Now;
+            await _repository.UpdateProductSpec(proSpec);
+            await UpdateProductSpecifications(ProSpecVM.ProductId, [.. ProSpecVM.SelectedSpecIds]);
             await Save();
         }
 
-        public async Task DeleteProductSpecificationForProduct(int specId)
+        public async Task DeleteProductSpecification(int proSpecId)
         {
-            var proSpec = await _repository.GetProductSpecBySpecId(specId);
-            await _repository.DeleteProductSpec(proSpec.Id);
+            await _repository.DeleteProductSpec(proSpecId);
             await Save();
         }
         #endregion
