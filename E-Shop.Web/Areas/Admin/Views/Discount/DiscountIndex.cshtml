@@ -1,0 +1,129 @@
+﻿@using E_Shop.Application.ViewModels.DiscountsViewModels
+@model List<DiscountViewModel>
+
+
+<div class="content-wrapper">
+    <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y h-100">
+        <!-- Discounts List Table -->
+        <div class="card">
+            <div class="card-header border-bottom">
+                <h5 class="card-title">تخفیف‌ها</h5>
+                <div class="d-flex justify-content-between align-items-center row py-1 gap-3 gap-md-0">
+                    <div class="col-md-4 discount_code"></div>
+                    <div class="col-md-4 discount_details"></div>
+                </div>
+            </div>
+            <div class="card-datatable table-responsive">
+                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                    <div class="row mx-2 my-3">
+                        <div class="col-md-2">
+                            <div class="me-3">
+                                <div class="dataTables_length" id="DataTables_Table_0_length">
+                                    <label>
+                                        <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0">
+                                <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                                    <label>
+                                        <input type="search" class="form-control" placeholder="جستجو..." aria-controls="DataTables_Table_0">
+                                    </label>
+                                </div>
+                                <div class="dt-buttons btn-group flex-wrap">
+                                    <div class="btn-group">
+                                        <button class="btn btn-secondary buttons-collection dropdown-toggle btn-outline-secondary mx-3" tabindex="0" aria-controls="DataTables_Table_0" type="button" aria-haspopup="dialog" aria-expanded="false">
+                                            <span>
+                                                <i class="bx bx-export me-1"></i>دریافت خروجی
+                                            </span>
+                                            <span class="dt-down-arrow"></span>
+                                        </button>
+                                    </div>
+                                    <a class="btn btn-secondary add-new btn-primary" asp-action="CreateDiscount">
+                                        <span>
+                                            <i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">افزودن تخفیف</span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="datatables-discounts table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                        <thead>
+                            <tr>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 125.3px;" aria-label="Code: activate to sort column ascending">کد</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 123.2px;" aria-label="Discount Percentage: activate to sort column ascending">درصد تخفیف</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 123.2px;" aria-label="Discount Amount: activate to sort column ascending">مبلغ تخفیف</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 123.2px;" aria-label="Start Date: activate to sort column ascending">تاریخ شروع</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 123.2px;" aria-label="End Date: activate to sort column ascending">تاریخ پایان</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 123.2px;" aria-label="Active: activate to sort column ascending">فعال</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 164.75px;" aria-label="Actions">عملیات‌ها</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Any())
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="odd">
+                                        <td>@item.Code</td>
+                                        <td>@item.DiscountPercentage</td>
+                                        <td>@item.DiscountAmount</td>
+                                        <td>@item.StartDate?.ToShortDateString()</td>
+                                        <td>@item.EndDate?.ToShortDateString()</td>
+                                        <td>@item.IsActive</td>
+                                        <td>
+                                            <a class="dropdown-item" asp-action="UpdateDiscount" asp-route-DiscountId="@item.Id">
+                                                <i class="bx bx-edit-alt me-1"></i> ویرایش
+                                            </a>
+                                            <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@item.Id', '@item.Code')">
+                                                <i class="bx bx-trash me-1"></i> حذف
+                                            </a>
+                                            <form id="deleteForm-@item.Id" method="post" action="@Url.Action("DeleteDiscount", new { Id = item.Id })" style="display:none;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="7"><p>تخفیفی وجود ندارد</p></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="row mx-2">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">نمایش @Model.Count() از @Model.Count()</div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                <ul class="pagination">
+                                    <li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">
+                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="previous" tabindex="0" class="page-link">Previous</a>
+                                    </li>
+                                    <li class="paginate_button page-item next disabled" id="DataTables_Table_0_next">
+                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="next" tabindex="0" class="page-link">Next</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+    <div class="content-backdrop fade"></div>
+</div>

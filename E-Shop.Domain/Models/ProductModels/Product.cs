@@ -1,5 +1,6 @@
 ﻿using E_Shop.Domain.Models.ColorModels;
 using E_Shop.Domain.Models.CommentModels;
+using E_Shop.Domain.Models.DiscountsModels;
 using E_Shop.Domain.Models.SpecificationModels;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,5 +23,6 @@ namespace E_Shop.Domain.Models.ProductModels
         public ICollection<ProductSpecification>? ProductSpecification { get; set; }
         public ICollection<Comment>? Comments { get; set; }
         public List<ProductGallery> ProductGalleries { get; set; }
+        public ICollection<DiscountProductMapping> DiscountProductMappings { get; set; }
     }
 }

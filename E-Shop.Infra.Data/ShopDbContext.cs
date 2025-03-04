@@ -1,6 +1,7 @@
 ﻿using E_Shop.Domain.Models.ColorModels;
 using E_Shop.Domain.Models.CommentModels;
 using E_Shop.Domain.Models.ContactUsModels;
+using E_Shop.Domain.Models.DiscountsModels;
 using E_Shop.Domain.Models.ProductModels;
 using E_Shop.Domain.Models.SpecificationModels;
 using E_Shop.Domain.Models.TicketModels;
@@ -36,5 +37,12 @@ namespace E_Shop.Infra.Data
         public DbSet<Reply> Replies { get; set; }
         public DbSet<Like> Likes { get; set; }         
         public DbSet<Evaluation> Evaluations { get; set; }
+        public DbSet<Reply> Replies { get; set; }   
+
+        public DbSet<Discount> Discounts { get; set; }   
+        
+        public DbSet<DiscountProductMapping> DiscountProductMapping { get; set; }   
+
+
     }
 }
