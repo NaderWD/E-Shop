@@ -18,8 +18,8 @@ namespace E_Shop.Web.Areas.User.Controllers
         public async Task<IActionResult> CreateRating(CreateProductRatingVM model)
         {
             if (!ModelState.IsValid) return View(model);
-            await _ratingService.CreateProductRatingAsync(model);
-            return RedirectToAction("ProductDetail", "Product", new { id = model.ProductId });
+            await _ratingService.CreateProductRatingAsync(model);                  
+            return RedirectToAction("ProductDetail", "Product", new { productId = model.ProductId });
         }
     }
 }

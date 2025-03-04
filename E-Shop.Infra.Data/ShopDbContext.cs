@@ -21,7 +21,7 @@ namespace E_Shop.Infra.Data
         public DbSet<TicketMessage> TicketMessages { get; set; }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductCategories> ProductCategories { get; set; }   
+        public DbSet<ProductCategories> ProductCategories { get; set; }
         public DbSet<ProductRating> ProductRatings { get; set; }
 
         public DbSet<ColorModel> Color { get; set; }
@@ -34,6 +34,9 @@ namespace E_Shop.Infra.Data
         public DbSet<ProductGallery> ProductGallery { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Reply> Replies { get; set; }
+        public DbSet<Like> Likes { get; set; }         
+        public DbSet<Evaluation> Evaluations { get; set; }
         public DbSet<Reply> Replies { get; set; }   
 
         public DbSet<Discount> Discounts { get; set; }   

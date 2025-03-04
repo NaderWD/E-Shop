@@ -335,10 +335,10 @@
                 <!-- start of product-comments -->
                 <div class="row">
                     <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
-                        @await Component.InvokeAsync("RatingSummary", new { productId = Model.Id })
+                        @await Component.InvokeAsync("ProductRatingSummary", new { productId = Model.Id })
                     </div>
                     <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
-                        @await Component.InvokeAsync("Comments", new { productId = Model.Id })
+                        @await Component.InvokeAsync("ProductComments", new { productId = Model.Id })
                     </div>
                 </div>
                 <!-- end of product-comments -->

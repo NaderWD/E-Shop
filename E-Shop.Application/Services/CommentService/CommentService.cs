@@ -1,12 +1,14 @@
 ﻿using E_Shop.Application.ViewModels.CommentViewModels;
 using E_Shop.Domain.Contracts.CommentCont;
+using E_Shop.Domain.Contracts.UserCont;
 using E_Shop.Domain.Models.CommentModels;
 using E_Shop.Domain.Models.ProductModels;
+using E_Shop.Domain.Models.UserModels;
 using static E_Shop.Domain.Enum.CommentEnums;
 
 namespace E_Shop.Application.Services.CommentService
 {
-    public class CommentService(ICommentRepository _repository) : ICommentService
+    public class CommentService(ICommentRepository _repository, IUserRepository _userRepository) : ICommentService
     {
         public async Task CreateComment(CreateCommentVM commentVM)
         {
@@ -23,7 +25,7 @@ namespace E_Shop.Application.Services.CommentService
                 DisLikeCounts = 0,
                 Evaluations = []
             };
-            foreach (var eval in commentVM.PositiveEvaluations)
+            foreach (var eval in commentVM.PositiveEvaluations.Where(e => !string.IsNullOrWhiteSpace(e.Text)))
             {
                 comment.Evaluations.Add(new Evaluation { Text = eval.Text, IsPositive = true });
             }
@@ -52,10 +54,14 @@ namespace E_Shop.Application.Services.CommentService
             await Save();
         }
 
-        public async Task<int> LikeComment(int commentId)
+        public async Task<int> LikeComment(int commentId, int userId)
         {
             var comment = await _repository.GetCommentByIdAsync(commentId);
+            if (comment.Likes?.Any(u => u.UserId == userId) == true) return comment.LikeCounts;
             comment.LikeCounts++;
+            comment.Likes ??= [];
+            comment.Likes.Add(new Like { CommentId = commentId, UserId = userId });
+            await _repository.UpdateCommentAsync(comment);
             await Save();
             return comment.LikeCounts;
         }
@@ -68,6 +74,22 @@ namespace E_Shop.Application.Services.CommentService
             return comment.DisLikeCounts;
         }
 
+        public async Task<CreateCommentVM> GetCreateCommentVM(int productId, int userId)
+        {
+            var user = await _userRepository.GetUserById(userId);
+            return new CreateCommentVM
+            {
+                ProductId = productId,
+                AuthorName = user?.FirstName,
+                Text = "",
+                PositiveEvaluations = [],
+                NegativeEvaluations = []
+            };
+        }
+
+        public async Task<Comment> GetCommentByIdAsync(int commentId)
+            => await _repository.GetCommentByIdAsync(commentId);
+
         public async Task<IEnumerable<CommentVM>> GetApprovedCommentListByProductId(int productId)
         {
             var comments = await _repository.GetApprovedCommentsByProductIdAsync(productId);
@@ -79,15 +101,15 @@ namespace E_Shop.Application.Services.CommentService
                 Text = c.Text,
                 CreateDate = c.CreateDate,
                 LastModifiedDate = c.LastModifiedDate,
-                Replies = c.Replies.Select(r => new ReplyVM
+                Replies = [.. c.Replies.Select(r => new ReplyVM
                 {
                     Id = r.Id,
                     AuthorName = r.AuthorName,
                     Text = r.Text,
                     CreateDate = r.CreateDate,
                     LastModifiedDate = r.LastModifiedDate
-                }).ToList(),
-            }).AsQueryable();
+                })],
+            });
         }
 
         public async Task<IEnumerable<CommentVM>> GetUnApprovedCommentList()

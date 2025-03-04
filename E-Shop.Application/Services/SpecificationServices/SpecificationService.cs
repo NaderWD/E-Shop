@@ -69,9 +69,12 @@ namespace E_Shop.Application.Services.SpecificationServices
 
         public async Task DeleteSpecification(int specId)
         {
-            var spec = await _repository.GetSpecById(specId);
-            await DeleteCategorySpecification(spec.CategorySpecificationId);
-            await DeleteProductSpecification(spec.ProductSpecificationId);
+            var catspecs = await _repository.GetCategorySpecListBySpecId(specId);
+            foreach (var catSpec in catspecs)
+                await DeleteCategorySpecification(catSpec.Id);
+            var proSpecs = await _repository.GetProductSpecListBySpecId(specId);
+            foreach (var proSpec in proSpecs)
+                await DeleteProductSpecification(proSpec.Id);
             await _repository.DeleteSpecification(specId);
             await Save();
         }
