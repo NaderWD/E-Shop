@@ -1,0 +1,57 @@
+﻿@using E_Shop.Application.ViewModels.DiscountsViewModels
+@model DiscountViewModel
+
+<form class="add-new-discount pt-0 fv-plugins-bootstrap5 fv-plugins-framework" id="addNewDiscountForm" novalidate="novalidate" method="post" asp-action="CreateDiscount">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="row">
+        <div class="mb-3 col-md-12 fv-plugins-icon-container">
+            <label class="form-label" for="add-discount-code">کد</label>
+            <input type="text" class="form-control" id="add-discount-code" placeholder="" aria-label="" asp-for="Code">
+            <span asp-validation-for="Code" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-discount-percentage">درصد تخفیف</label>
+            <input type="number" class="form-control" id="add-discount-percentage" placeholder="" aria-label="" asp-for="DiscountPercentage">
+            <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-discount-amount">مبلغ تخفیف</label>
+            <input type="number" class="form-control" id="add-discount-amount" placeholder="" aria-label="" asp-for="DiscountAmount">
+            <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-discount-startdate">تاریخ شروع</label>
+            <input type="date" class="form-control" id="add-discount-startdate" placeholder="" aria-label="" asp-for="StartDate">
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-discount-enddate">تاریخ پایان</label>
+            <input type="date" class="form-control" id="add-discount-enddate" placeholder="" aria-label="" asp-for="EndDate">
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="mb-3 col-md-6 fv-plugins-icon-container">
+            <label class="form-label" for="add-discount-isactive">فعال</label>
+            <input type="checkbox" class="form-check-input" id="add-discount-isactive" asp-for="IsActive">
+            <span asp-validation-for="IsActive" class="text-danger"></span>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">افزودن تخفیف</button>
+    <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal">لغو</button>
+</form>

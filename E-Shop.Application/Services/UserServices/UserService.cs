@@ -132,6 +132,7 @@ namespace E_Shop.Application.Services.UserServices
                 };
 
                 await _repository.CreateUser(user);
+                _repository.Save();
                 return ValidationErrorType.Success;
             }
         }
