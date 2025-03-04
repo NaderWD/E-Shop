@@ -1,4 +1,5 @@
 ﻿using E_Shop.Domain.Models.ProductModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Application.ViewModels.SpecificationViewModels
@@ -27,13 +28,6 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
         public List<ProductCategories>? AllCategories { get; set; } = [];
     }
 
-    public class SpecDetailsVM
-    {
-        public int SpecId { get; set; }
-        public string Name { get; set; }
-        public List<string> LinkedCategories { get; set; } = [];
-    }
-
     public class SpecListVM
     {
         public int SpecId { get; set; }
@@ -44,14 +38,18 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
     public class AddSpecToProductVM
     {
         public int SpecId { get; set; }
-                                                                                     
         public int ProductId { get; set; }
-
-        public List<int>? SelectedSpecificationIds { get; set; }
-
-        public List<string> Values { get; set; }
-
+        public List<SelectedSpecificationsVM> SelectedSpecifications { get; set; } = [];
         public List<SpecVM> AvailabeSpecifications { get; set; } = [];
+    }
+
+    public class SelectedSpecificationsVM
+    {
+        public int SelectedSpecId { get; set; }
+        [Display(Name = "مقدار مشخصه")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public string SelectedSpecValue { get; set; }
+        public bool IsSelected { get; set; }
     }
 
     public class CategorySpecVM
@@ -69,7 +67,7 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
 
     public class ProductSpecDetailVM
     {
-        public int SpecId { get; set; }
+        public int ProSpecId { get; set; }
         public string SpecName { get; set; }
         public string Value { get; set; }
     }
@@ -78,5 +76,14 @@ namespace E_Shop.Application.ViewModels.SpecificationViewModels
     {
         public int ProductId { get; set; }
         public List<ProductSpecDetailVM>? ProSpecVM { get; set; }
+    }
+                                                       
+    public class ProSpecEditVM
+    {                                                  
+        public int ProSpecId { get; set; } 
+        public int ProductId { get; set; } 
+        public string Value { get; set; }        
+        public List<int> SelectedSpecIds { get; set; }
+        public List<SelectListItem> AvailableSpecifications { get; set; } 
     }
 }

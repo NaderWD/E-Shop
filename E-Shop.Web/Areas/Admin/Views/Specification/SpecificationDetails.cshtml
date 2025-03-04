@@ -30,18 +30,15 @@
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-action="EditSpecification" asp-route-specId="@spec.SpecId">
+                                    <a class="dropdown-item" asp-action="EditForProduct" asp-route-proSpecId="@spec.ProSpecId">
                                         <i class="bx bx-edit-alt me-1"></i> ویرایش
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@spec.SpecId', '@spec.SpecName')"><i class="bx bx-trash me-1"></i> حذف </a>
-
-                                    <form id="deleteForm-@spec.SpecId" method="post" action="@Url.Action("DeleteSpecificationForProduct", new { specId = spec.SpecId })" style="display:none;">
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@spec.ProSpecId', '@spec.SpecName')"><i class="bx bx-trash me-1"></i> حذف </a>
+                                    <form id="deleteForm-@spec.ProSpecId" method="post" action="@Url.Action("DeleteSpecificationForProduct", new { proSpecId = spec.ProSpecId })" style="display:none;">
                                         @Html.AntiForgeryToken()
-                                        <input type="hidden" name="UserId" value="@spec.SpecId" />
                                     </form>
                                 </div>
                             </div>
-
                         </td>
                     </tr>
                 }

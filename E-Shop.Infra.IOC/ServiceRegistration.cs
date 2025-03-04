@@ -20,6 +20,9 @@ using E_Shop.Domain.Contracts.ColorCont;
 using E_Shop.Application.Services.ColorServices;
 using E_Shop.Infra.Data.Repositories.ColorRepo;
 using E_Shop.Infra.Data.Repositories.Implementations;
+using E_Shop.Domain.Contracts.CommentCont;
+using E_Shop.Infra.Data.Repositories.CommentRepo;
+using E_Shop.Application.Services.CommentService;
 
 namespace E_Shop.Infra.IOC
 {
@@ -59,6 +62,12 @@ namespace E_Shop.Infra.IOC
 
             services.AddScoped<ISpecificationRepository, SpecificationRepository>();
             services.AddScoped<ISpecificationService, SpecificationService>();
+
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<ICommentService, CommentService>();
+
+            services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
+            services.AddScoped<IProductRatingService, ProductRatingService>();
 
             return services;
         }

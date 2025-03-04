@@ -1,5 +1,6 @@
 ﻿using E_Shop.Application.Services.SpecificationServices;
 using E_Shop.Application.ViewModels.SpecificationViewModels;
+using E_Shop.Domain.Models.ProductModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 
@@ -78,7 +79,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         #endregion
 
         #region Delete Specifications
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> DeleteSpecification(int specId)
         {
             await _service.DeleteSpecification(specId);
@@ -92,59 +93,55 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         {
             AddSpecToProductVM specModel = new()
             {
-                AvailabeSpecifications = await _service.GetAvailableSpecificationsToAddProduct(productId)
+                ProductId = productId,
+                AvailabeSpecifications = await _service.GetAvailableSpecificationsToAddProduct(productId),
+                SelectedSpecifications = [new()] // Start with one row
             };
             return View(specModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToProduct(AddSpecToProductVM model, List<int> specIds)
+        public async Task<IActionResult> AddToProduct(AddSpecToProductVM model)
         {
-            if (!ModelState.IsValid)
-            {
-                AddSpecToProductVM specModel = new()
-                {
-                    AvailabeSpecifications = await _service.GetAvailableSpecificationsToAddProduct(model.ProductId)
-                };
-                return View(specModel);
-            }
-            model.SelectedSpecificationIds = specIds;
+            if (!ModelState.IsValid) return RedirectToAction(nameof(AddToProduct), new { productId = model.ProductId });
             await _service.AddSpecificationToProduct(model);
-            return RedirectToAction(nameof(SpecificationDetails), new { id = model.ProductId });
+            return RedirectToAction(nameof(SpecificationDetails), new { productId = model.ProductId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRow(AddSpecToProductVM model)
+        {
+            // Re-populate available specifications
+            model.AvailabeSpecifications = await _service.GetAvailableSpecificationsToAddProduct(model.ProductId);
+            // Add a new empty row
+            model.SelectedSpecifications.Add(new SelectedSpecificationsVM());
+            return View(nameof(AddToProduct), model);
         }
         #endregion
 
         #region Edit For Product
         [HttpGet]
-        public async Task<IActionResult> EditForProduct(int productId)
+        public async Task<IActionResult> EditForProduct(int proSpecId)
         {
-            var specs = await _service.GetSpecificationListByProductId(productId);
-            AddSpecToProductVM updateVm = new()
-            {
-                ProductId = productId,
-                SelectedSpecificationIds = [.. specs.Select(c => c.SpecId)],
-                AvailabeSpecifications = await _service.GetAvailableSpecificationsToAddProduct(productId)
-            };
-            return View(updateVm);
+            return View(await _service.GetProSpecVMForEdit(proSpecId));
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> EditForProduct(int productId, AddSpecToProductVM model, List<int> selectedSpecsIds)
+        public async Task<IActionResult> EditForProduct(ProSpecEditVM editVM)
         {
-            if (!ModelState.IsValid) return View(model);
-            await _service.AddSpecificationToProduct(model);
-            await _service.UpdateProductSpecifications(productId, selectedSpecsIds);
-            return RedirectToAction("Details", "Products", new { id = model.ProductId });
+            if (!ModelState.IsValid) return RedirectToAction(nameof(EditForProduct), new { proSpecId = editVM.ProSpecId });
+            await _service.UpdateProductSpecificationForProduct(editVM);
+            return RedirectToAction(nameof(SpecificationDetails), new { productId = editVM.ProductId });
         }
         #endregion
 
         #region Delete For Product
-        [HttpGet]
-        public async Task<IActionResult> DeleteSpecificationForProduct(int specId)
+        [HttpPost]
+        public async Task<IActionResult> DeleteSpecificationForProduct(int proSpecId)
         {
-            await _service.DeleteProductSpecificationForProduct(specId);
-            return RedirectToAction(nameof(SpecificationDetails));
+            var proSpec = await _service.GetProductSpecificationById(proSpecId);
+            await _service.DeleteProductSpecification(proSpecId);
+            return RedirectToAction(nameof(SpecificationDetails), new { productId = proSpec.ProductId });
         }
         #endregion
     }

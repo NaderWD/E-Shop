@@ -8,9 +8,9 @@ namespace E_Shop.Domain.Contracts.CommentCont
         Task AddCommentAsync(Comment comment);           
         Task AddReplyAsync(Reply reply);
         Task<Comment> GetCommentByIdAsync(int commentId);
-        Task<IQueryable<Comment>> GetApprovedCommentsByProductIdAsync(int productId);
-        Task<IQueryable<Comment>> GetUnapprovedCommentsAsync();                               
-        Task<IQueryable<Reply>> GetRepliesByProductIdAsync(int productId);
+        Task<IEnumerable<Comment>> GetApprovedCommentsByProductIdAsync(int productId);
+        Task<IEnumerable<Comment>> GetUnapprovedCommentsAsync();                               
+        Task<IEnumerable<Reply>> GetRepliesByProductIdAsync(int productId);
         Task ApproveCommentAsync(int commentId);
         Task UpdateCommentAsync(Comment comment);
         Task DeleteComment(int commentId);

@@ -1,24 +1,34 @@
-﻿@model AddSpecToProductVM
+﻿@model ProSpecEditVM
 
 
 
+<div class="card">
+    <h2 class="card-header">ویرایش مشخصه محصول</h2>
+    <div class="card-body">
+        <form asp-action="EditForProduct" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ProSpecId" />
+            <input type="hidden" asp-for="ProductId" />
 
-<form asp-action="EditForProduct" method="post">
-    <input type="hidden" asp-for="ProductId" />
+            <div class="mb-3">
+                <label asp-for="SelectedSpecIds" class="form-label">نام مشخصه</label>
+                <select asp-for="SelectedSpecIds" class="form-select" asp-items="Model.AvailableSpecifications" multiple>
+                    <option value="">-- انتخاب کنید --</option>
+                </select>
+                <span asp-validation-for="SelectedSpecIds" class="text-danger"></span>
+            </div>
 
-    <div class="container mt-3">
-        <div class="row">
-            @foreach (var specification in Model.AvailabeSpecifications)
-            {
-                <div class="col-6 col-md-3 mb-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="selectedSpecsIds" value="@specification.SpecId" @(Model.SelectedSpecificationIds.Contains(specification.SpecId) ? "checked" : "")>
-                        <label class="form-check-label">@specification.Name</label>
-                    </div>
-                </div>
-            }
-        </div>
+            <div class="mb-3">
+                <label asp-for="Value" class="form-label">مقدار</label>
+                <input asp-for="Value" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
 
-        <button type="submit" class="btn btn-primary mt-3">ویرایش</button>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">ذخیره</button>
+                            <a asp-action="SpecificationDetails" asp-controller="Specification" asp-route-productId="@Model.ProductId" class="btn btn-secondary">لغو</a>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+

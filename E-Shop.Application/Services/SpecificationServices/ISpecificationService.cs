@@ -1,5 +1,6 @@
 ﻿using E_Shop.Application.ViewModels.SpecificationViewModels;
 using E_Shop.Domain.Models.ProductModels;
+using E_Shop.Domain.Models.SpecificationModels;
 
 namespace E_Shop.Application.Services.SpecificationServices
 {
@@ -8,9 +9,8 @@ namespace E_Shop.Application.Services.SpecificationServices
         #region Specification
         Task CreateSpecification(SpecCreateVM specVM);
         Task<List<SpecListVM>> GetAllSpecifications();
-        Task<SpecDetailsVM> GetSpecificationDetails(int specId);
         Task<SpecCreateVM> GetSpecificationForEdit(int specId);
-        Task UpdateSpecification(SpecCreateVM specVM);
+        Task UpdateSpecification(SpecCreateVM specVM);            
         Task DeleteSpecification(int specId);
         Task Save();
         #endregion                              
@@ -24,14 +24,14 @@ namespace E_Shop.Application.Services.SpecificationServices
         #endregion
 
         #region ProductSpecification
-        Task CreateProductSpecification(ProductSpecVM productSpec);
         Task AddSpecificationToProduct(AddSpecToProductVM addSpecVM);
+        Task<ProductSpecification> GetProductSpecificationById(int proSpecId);
         Task<List<SpecVM>> GetAvailableSpecificationsToAddProduct(int productId);
-        Task<List<SpecVM>> GetSpecificationListByProductId(int productId);
         Task<ProSpecDetailsFinalVM> GetSpecificationDetailByProductId(int productId);
-        Task UpdateProductSpecifications(int productId, List<int> selectedSpecIds);
+        Task<ProSpecEditVM> GetProSpecVMForEdit(int proSpecId);
+        Task UpdateProductSpecificationForProduct(ProSpecEditVM ProSpecVM);
+        //Task UpdateProductSpecifications(int productId, List<int> selectedSpecIds);
         Task DeleteProductSpecification(int proSpecId);
-        Task DeleteProductSpecificationForProduct(int specId);
         #endregion
     }
 }

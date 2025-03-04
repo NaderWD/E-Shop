@@ -1,24 +1,25 @@
-﻿@model List<CommentVM>
+﻿@model IEnumerable<CommentVM>
 
-<h2>All Comments</h2>
+
+
+
+<h2>نظرات جدید </h2>
 <table class="table">
     <thead>
         <tr>
-            <th>Text</th>
-            <th>Author</th>
-            <th>Approved</th>
-            <th>Likes</th>
-            <th>Actions</th>
+            <th>نویسنده</th>
+            <th>متن</th>
+            <th>وضعیت</th>
+            <th>تعداد لایک ها</th>
+            <th>عملیات</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var comment in Model)
         {
             <tr>
-                <td>@comment.Text</td>
                 <td>@comment.AuthorName</td>
-                <td>@comment.IsApproved</td>
-                <td>@comment.LikeCount</td>
+                <td>@comment.Text</td>
                 <td>
                     @if (!comment.IsApproved)
                     {
@@ -27,6 +28,10 @@
                             <input type="submit" value="Approve" class="btn btn-success" />
                         </form>
                     }
+                <td>
+                <td>@comment.LikeCount</td>
+                <td>
+                    فعلا خالی
                 </td>
             </tr>
         }

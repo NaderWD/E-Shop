@@ -50,9 +50,7 @@ namespace E_Shop.Application.ViewModels.CommentViewModels
         public string AuthorName { get; set; }
 
         public int ProductId { get; set; }
-
         public List<EvaluationInputVM> PositiveEvaluations { get; set; } = [];
-
         public List<EvaluationInputVM> NegativeEvaluations { get; set; } = [];
     }
 
