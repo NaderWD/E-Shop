@@ -189,7 +189,7 @@ namespace E_Shop.Application.Services.SpecificationServices
             };
         }
 
-        // ask if its right     its for test 
+        // ask if its right
         public async Task<ProSpecDetailsFinalVM> GetSpecificationDetailByProductId(int productId)
         {
             var product = await _repository.GetProductById(productId);
