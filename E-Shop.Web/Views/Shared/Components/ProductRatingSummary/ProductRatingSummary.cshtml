@@ -29,6 +29,6 @@
     <div class="mb-2">درباره این کالا نظر بدهید یا امتیاز دهید</div>
     <a asp-controller="UserComment" asp-action="CreateComment" asp-area="User" asp-route-productId="@ViewContext.RouteData.Values["productId"]"
        class="btn btn-block btn-outline-primary mb-2">افزودن دیدگاه</a>
-    <a asp-controller="UserRating" asp-action="CreateRating" asp-route-productId="@ViewContext.RouteData.Values["productId"]"
+    <a asp-controller="UserRating" asp-action="CreateRating" asp-area="User" asp-route-productId="@ViewContext.RouteData.Values["productId"]"
        class="btn btn-block btn-outline-secondary">افزودن امتیاز</a>
 </div>
