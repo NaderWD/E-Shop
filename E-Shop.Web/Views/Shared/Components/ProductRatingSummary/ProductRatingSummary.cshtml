@@ -1,7 +1,8 @@
 ﻿@model ProductRatingSummaryVM
 
-
-
+@{
+    var productId = ViewData["ProductId"] as int? ?? 0;
+}
 
 <div class="comments-sidebar">
     <div class="comments-sidebar-rating">
@@ -24,11 +25,45 @@
                 <div class="content-expert-rating-value-label">@Model.BuildQuality.ToString("0.0")</div>
             </div>
         </div>
-        <!-- Repeat for ValueForMoney, Innovation, Features, EaseOfUse, Design -->
+        <div class="mb-3">
+            <div class="content-expert-rating-title">ارزش خرید</div>
+            <div class="content-expert-rating-value-wrapper">
+                <div class="content-expert-rating-value" style="width: @(Model.ValueForMoney / 5 * 100)%;"></div>
+                <div class="content-expert-rating-value-label">@Model.ValueForMoney.ToString("0.0")</div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="content-expert-rating-title">نوآوری</div>
+            <div class="content-expert-rating-value-wrapper">
+                <div class="content-expert-rating-value" style="width: @(Model.Innovation / 5 * 100)%;"></div>
+                <div class="content-expert-rating-value-label">@Model.Innovation.ToString("0.0")</div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="content-expert-rating-title">ویژگی‌ها</div>
+            <div class="content-expert-rating-value-wrapper">
+                <div class="content-expert-rating-value" style="width: @(Model.Features / 5 * 100)%;"></div>
+                <div class="content-expert-rating-value-label">@Model.Features.ToString("0.0")</div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="content-expert-rating-title">سهولت استفاده</div>
+            <div class="content-expert-rating-value-wrapper">
+                <div class="content-expert-rating-value" style="width: @(Model.EaseOfUse / 5 * 100)%;"></div>
+                <div class="content-expert-rating-value-label">@Model.EaseOfUse.ToString("0.0")</div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="content-expert-rating-title">طراحی</div>
+            <div class="content-expert-rating-value-wrapper">
+                <div class="content-expert-rating-value" style="width: @(Model.Design / 5 * 100)%;"></div>
+                <div class="content-expert-rating-value-label">@Model.Design.ToString("0.0")</div>
+            </div>
+        </div>
     </div>
     <div class="mb-2">درباره این کالا نظر بدهید یا امتیاز دهید</div>
-    <a asp-controller="UserComment" asp-action="CreateComment" asp-area="User" asp-route-productId="@ViewContext.RouteData.Values["productId"]"
+    <a asp-controller="UserComment" asp-action="CreateComment" asp-area="User" asp-route-productId="@productId"
        class="btn btn-block btn-outline-primary mb-2">افزودن دیدگاه</a>
-    <a asp-controller="UserRating" asp-action="CreateRating" asp-area="User" asp-route-productId="@ViewContext.RouteData.Values["productId"]"
+    <a asp-controller="UserRating" asp-action="CreateRating" asp-area="User" asp-route-productId="@productId"
        class="btn btn-block btn-outline-secondary">افزودن امتیاز</a>
 </div>

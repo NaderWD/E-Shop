@@ -1,33 +1,122 @@
 ﻿@model CreateProductRatingVM
 
-
+<style>
+    .form-group {
+        margin-bottom: 20px; /* Adds vertical space between form groups */
+    }
+</style>
 
 <div class="col-xl-9 col-lg-8 col-md-7">
     <div class="ui-box bg-white mb-5">
         <div class="ui-box-title">افزودن امتیاز</div>
-        <form asp-action="CreateRating" method="post">
+        <!-- Display the product name at the top -->
+        <h2>امتیازدهی به محصول: @ViewBag.ProductName</h2>
+        <form asp-action="CreateRating" asp-controller="UserRating" asp-area="User" method="post">
             <input type="hidden" asp-for="ProductId" />
-            <div class="form-group">
-                <label asp-for="RaterName"></label>
-                <input asp-for="RaterName" class="form-control" />
-                <span asp-validation-for="RaterName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OverallRating"></label>
-                <input asp-for="OverallRating" class="form-control" type="number" step="0.1" min="1" max="5" />
-                <span asp-validation-for="OverallRating" class="text-danger"></span>
-            </div>
+
+            <!-- Build Quality -->
             <div class="form-group">
                 <label asp-for="BuildQuality"></label>
-                <input asp-for="BuildQuality" class="form-control" type="number" step="0.1" min="1" max="5" />
+                <input type="range" min="1" max="5" step="0.5" asp-for="BuildQuality" id="buildQuality"
+                       oninput="updateRatingValue(this.value, 'buildQualityValue'); calculateOverallRating();" />
+                <span id="buildQualityValue">@Model.BuildQuality</span>
+                <small class="form-text text-muted">از 1 تا 5</small>
                 <span asp-validation-for="BuildQuality" class="text-danger"></span>
             </div>
-            <!-- Repeat for ValueForMoney, Innovation, Features, EaseOfUse, Design -->
+
+            <!-- Value For Money -->
+            <div class="form-group">
+                <label asp-for="ValueForMoney"></label>
+                <input type="range" min="1" max="5" step="0.5" asp-for="ValueForMoney" id="valueForMoney"
+                       oninput="updateRatingValue(this.value, 'valueForMoneyValue'); calculateOverallRating();" />
+                <span id="valueForMoneyValue">@Model.ValueForMoney</span>
+                <small class="form-text text-muted">از 1 تا 5</small>
+                <span asp-validation-for="ValueForMoney" class="text-danger"></span>
+            </div>
+
+            <!-- Innovation -->
+            <div class="form-group">
+                <label asp-for="Innovation"></label>
+                <input type="range" min="1" max="5" step="0.5" asp-for="Innovation" id="innovation"
+                       oninput="updateRatingValue(this.value, 'innovationValue'); calculateOverallRating();" />
+                <span id="innovationValue">@Model.Innovation</span>
+                <small class="form-text text-muted">از 1 تا 5</small>
+                <span asp-validation-for="Innovation" class="text-danger"></span>
+            </div>
+
+            <!-- Features -->
+            <div class="form-group">
+                <label asp-for="Features"></label>
+                <input type="range" min="1" max="5" step="0.5" asp-for="Features" id="features"
+                       oninput="updateRatingValue(this.value, 'featuresValue'); calculateOverallRating();" />
+                <span id="featuresValue">@Model.Features</span>
+                <small class="form-text text-muted">از 1 تا 5</small>
+                <span asp-validation-for="Features" class="text-danger"></span>
+            </div>
+
+            <!-- Ease of Use -->
+            <div class="form-group">
+                <label asp-for="EaseOfUse"></label>
+                <input type="range" min="1" max="5" step="0.5" asp-for="EaseOfUse" id="easeOfUse"
+                       oninput="updateRatingValue(this.value, 'easeOfUseValue'); calculateOverallRating();" />
+                <span id="easeOfUseValue">@Model.EaseOfUse</span>
+                <small class="form-text text-muted">از 1 تا 5</small>
+                <span asp-validation-for="EaseOfUse" class="text-danger"></span>
+            </div>
+
+            <!-- Design -->
+            <div class="form-group">
+                <label asp-for="Design"></label>
+                <input type="range" min="1" max="5" step="0.5" asp-for="Design" id="design"
+                       oninput="updateRatingValue(this.value, 'designValue'); calculateOverallRating();" />
+                <span id="designValue">@Model.Design</span>
+                <small class="form-text text-muted">از 1 تا 5</small>
+                <span asp-validation-for="Design" class="text-danger"></span>
+            </div>
+
+            <!-- Overall Rating Display -->
+            <div class="form-group">
+                <label>Overall Rating</label>
+                <span id="overallRating">1.0</span>
+                <small class="form-text text-muted">متوسط امتیازات (از 1 تا 5)</small>
+            </div>
+            <input type="hidden" asp-for="OverallRating" id="overallRatingInput" />
+
+            <!-- Submit Button -->
             <button type="submit" class="btn btn-primary">ثبت امتیاز</button>
         </form>
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+<!-- JavaScript to update the displayed rating value and calculate overall rating -->
+<script>
+    function updateRatingValue(value, elementId) {
+        document.getElementById(elementId).textContent = value;
+    }
+
+    function calculateOverallRating() {
+        // Get slider values and convert to numbers
+        var buildQuality = parseFloat(document.getElementById('buildQuality').value);
+        var valueForMoney = parseFloat(document.getElementById('valueForMoney').value);
+        var innovation = parseFloat(document.getElementById('innovation').value);
+        var features = parseFloat(document.getElementById('features').value);
+        var easeOfUse = parseFloat(document.getElementById('easeOfUse').value);
+        var design = parseFloat(document.getElementById('design').value);
+
+        // Calculate average
+        var sum = buildQuality + valueForMoney + innovation + features + easeOfUse + design;
+        var average = sum / 6;
+
+        // Update display (rounded to 1 decimal place)
+        document.getElementById('overallRating').textContent = average.toFixed(1);
+
+        // Update hidden input with precise value
+        var overallRatingInput = document.getElementById('overallRatingInput');
+        if (overallRatingInput) {
+            overallRatingInput.value = average;
+        }
+    }
+
+    // Initial calculation on page load
+    calculateOverallRating();
+</script>

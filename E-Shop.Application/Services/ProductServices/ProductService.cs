@@ -171,7 +171,7 @@ namespace E_Shop.Application.Services.ProductServices
             #endregion
 
             var productCategories = GetSelectItems();
-            filter.Category = new List<ProductCategoryViewModel>();
+            filter.Category = [];
             foreach (var item in productCategories)
             {
                 filter.Category.Add(new ProductCategoryViewModel
@@ -222,6 +222,8 @@ namespace E_Shop.Application.Services.ProductServices
                 case Domain.Enum.ProductEnums.MostRecent:
                     query = query.OrderByDescending(p => p.CreateDate);
                     break;
+                case Domain.Enum.ProductEnums.All:
+                    break;
                 default:
                     query = query.OrderBy(p => p.Id);
                     break;
@@ -246,10 +248,12 @@ namespace E_Shop.Application.Services.ProductServices
 
             });
 
-            filter.Category = new ProductCategoriesViewModel();
-            filter.Category.Name = query.Select(q => q.Category.Name).FirstOrDefault();
-            filter.Category.ParentName = query.Select(q => q.Category.Parent.Name).FirstOrDefault();
-            filter.Category.ParentId = query.Select(q => q.Category.Parent.Id).FirstOrDefault();
+            filter.Category = new ProductCategoriesViewModel
+            {
+                Name = query.Select(q => q.Category.Name).FirstOrDefault(),
+                ParentName = query.Select(q => q.Category.Parent.Name).FirstOrDefault(),
+                ParentId = query.Select(q => q.Category.Parent.Id).FirstOrDefault()
+            };
 
             filter.ToPaged(productsQuery);
             return filter;
@@ -265,7 +269,7 @@ namespace E_Shop.Application.Services.ProductServices
 
             ProductViewModel model = new()
             {
-                Id = product.Id,
+                Id = productId,
                 Title = product.Title,
                 Description = product.Description,
                 Review = product.Review,
@@ -274,9 +278,8 @@ namespace E_Shop.Application.Services.ProductServices
                 ImageName = product.ImageName,
                 CategoryId = product.CategoryId,
                 CategoryName = product.Category.Name,
+                Colors = []
             };
-
-            model.Colors = [];
 
             foreach (var item in product.Color)
             {
@@ -306,7 +309,7 @@ namespace E_Shop.Application.Services.ProductServices
         {
             var products = productsRepository.GetByCategoryId(Id);
 
-            List<ProductViewModel> model = new List<ProductViewModel>();
+            List<ProductViewModel> model = [];
 
             foreach (var item in products)
             {

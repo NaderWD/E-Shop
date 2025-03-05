@@ -5,28 +5,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Shop.Application.Services.ProductServices
 {
-    public class ProductRatingService : IProductRatingService
+    public class ProductRatingService(IProductRatingRepository _ratingRepository) : IProductRatingService
     {
-        private readonly IProductRatingRepository _ratingRepository;
-
-        public ProductRatingService(IProductRatingRepository ratingRepository)
-        {
-            _ratingRepository = ratingRepository;
-        }
-
         public async Task CreateProductRatingAsync(CreateProductRatingVM ratingVM)
         {
             var rating = new ProductRating
             {
                 ProductId = ratingVM.ProductId,
-                RaterName = ratingVM.RaterName,
-                OverallRating = ratingVM.OverallRating,
+                CreateDate = DateTime.Now,
+                LastModifiedDate = DateTime.Now,
                 BuildQuality = ratingVM.BuildQuality,
                 ValueForMoney = ratingVM.ValueForMoney,
                 Innovation = ratingVM.Innovation,
                 Features = ratingVM.Features,
                 EaseOfUse = ratingVM.EaseOfUse,
-                Design = ratingVM.Design
+                Design = ratingVM.Design,
+                OverallRating = new[] {
+                        ratingVM.BuildQuality,
+                        ratingVM.ValueForMoney,
+                        ratingVM.Innovation,
+                        ratingVM.Features,
+                        ratingVM.EaseOfUse,
+                        ratingVM.Design
+                        }.Average()
             };
             await _ratingRepository.AddProductRatingAsync(rating);
             await _ratingRepository.SaveAsync();
@@ -34,7 +35,7 @@ namespace E_Shop.Application.Services.ProductServices
 
         public async Task<ProductRatingSummaryVM> GetRatingSummaryByProductIdAsync(int productId)
         {
-            var ratings = _ratingRepository.GetRatingsByProductId(productId);
+            var ratings = await _ratingRepository.GetRatingsByProductId(productId);
             var count = await ratings.CountAsync();
             if (count == 0) return new ProductRatingSummaryVM { RatingCount = 0 };
             return new ProductRatingSummaryVM
@@ -49,5 +50,8 @@ namespace E_Shop.Application.Services.ProductServices
                 RatingCount = count
             };
         }
+
+        public async Task<Product> GetProductById(int productId)
+            => await _ratingRepository.GetProductById(productId);
     }
 }

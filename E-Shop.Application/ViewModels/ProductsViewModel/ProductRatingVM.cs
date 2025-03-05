@@ -2,12 +2,11 @@
 
 namespace E_Shop.Application.ViewModels.ProductsViewModel
 {
-    public class CreateProductRatingVM
+    public class CreateProductRatingVM                  
     {
         public int ProductId { get; set; }
-        [Display(Name = "نام")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string RaterName { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
         [Display(Name = "امتیاز کلی")]
         [Range(1, 5, ErrorMessage = "امتیاز باید بین 1 تا 5 باشد")]
         public double OverallRating { get; set; }

@@ -4,7 +4,6 @@
     {
         public int ProductId { get; set; }
         public Product Product { get; set; }
-        public string RaterName { get; set; }
         public double OverallRating { get; set; }
         public double BuildQuality { get; set; }
         public double ValueForMoney { get; set; }

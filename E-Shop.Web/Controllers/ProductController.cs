@@ -12,7 +12,7 @@ namespace E_Shop.Web.Controllers
             return View(content);
         }
         
-        public IActionResult ProductDetail(int productId , int colorId)
+        public IActionResult ProductDetail(int productId, int colorId)
         {
             var content = productsService.GetByIdForDetails(productId , colorId);
             return View(content);

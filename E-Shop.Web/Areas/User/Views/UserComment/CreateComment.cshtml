@@ -8,19 +8,25 @@
         <div class="ui-box-title">افزودن دیدگاه</div>
         <form asp-action="CreateComment" method="post">
             <div class="form-group">
-                <label>نام</label>
+                <label asp-for="AuthorName"></label>
                 <input asp-for="AuthorName" class="form-control" />
+                <span asp-validation-for="AuthorName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label>متن دیدگاه</label>
+                <label asp-for="Text"></label>
                 <textarea asp-for="Text" class="form-control"></textarea>
+                <span asp-validation-for="Text" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label>نقاط قوت</label>
                 <div id="positive-evaluations">
                     @for (int i = 0; i < Model.PositiveEvaluations.Count; i++)
                     {
-                        <input type="text" asp-for="PositiveEvaluations[i].Text" class="form-control mb-2" placeholder="نقطه قوت" />
+                        <input type="text" asp-for="PositiveEvaluations[i].Text" class="form-control mb-2" placeholder="نقطه قوت @(i + 1)" />
+                    }
+                    @if (Model.PositiveEvaluations.Count == 0)
+                    {
+                        <p>هیچ نقطه قوتی وارد نشده است</p>
                     }
                 </div>
                 <button type="button" class="btn btn-secondary" onclick="addPositiveEvaluation()">افزودن نقطه قوت</button>
@@ -30,7 +36,11 @@
                 <div id="negative-evaluations">
                     @for (int i = 0; i < Model.NegativeEvaluations.Count; i++)
                     {
-                        <input type="text" asp-for="NegativeEvaluations[i].Text" class="form-control mb-2" placeholder="نقطه ضعف" />
+                        <input type="text" asp-for="NegativeEvaluations[i].Text" class="form-control mb-2" placeholder="نقطه ضعف @(i + 1)" />
+                    }
+                    @if (Model.NegativeEvaluations.Count == 0)
+                    {
+                        <p>هیچ نقطه ضعفی وارد نشده است</p>
                     }
                 </div>
                 <button type="button" class="btn btn-secondary" onclick="addNegativeEvaluation()">افزودن نقطه ضعف</button>
@@ -41,16 +51,17 @@
     </div>
 </div>
 
+
 @section Scripts {
     <script>
         function addPositiveEvaluation() {
             var index = $('#positive-evaluations input').length;
-            $('#positive-evaluations').append('<input type="text" name="PositiveEvaluations[' + index + '].Text" class="form-control mb-2" placeholder="نقطه قوت" />');
+            $('#positive-evaluations').append('<input type="text" name="PositiveEvaluations[' + index + '].Text" class="form-control mb-2" placeholder="نقطه قوت ' + (index + 1) + '" />');
         }
 
         function addNegativeEvaluation() {
             var index = $('#negative-evaluations input').length;
-            $('#negative-evaluations').append('<input type="text" name="NegativeEvaluations[' + index + '].Text" class="form-control mb-2" placeholder="نقطه ضعف" />');
+            $('#negative-evaluations').append('<input type="text" name="NegativeEvaluations[' + index + '].Text" class="form-control mb-2" placeholder="نقطه ضعف ' + (index + 1) + '" />');
         }
     </script>
 }

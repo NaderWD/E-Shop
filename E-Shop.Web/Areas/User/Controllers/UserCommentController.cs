@@ -2,7 +2,6 @@
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.CommentViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace E_Shop.Web.Areas.User.Controllers
 {

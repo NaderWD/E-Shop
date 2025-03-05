@@ -37,7 +37,6 @@ namespace E_Shop.Infra.Data
         public DbSet<Reply> Replies { get; set; }
         public DbSet<Like> Likes { get; set; }         
         public DbSet<Evaluation> Evaluations { get; set; }
-        public DbSet<Reply> Replies { get; set; }   
 
         public DbSet<Discount> Discounts { get; set; }   
         
