@@ -3,9 +3,11 @@ using E_Shop.Domain.Models.CommentModels;
 using E_Shop.Domain.Models.ContactUsModels;
 using E_Shop.Domain.Models.DiscountsModels;
 using E_Shop.Domain.Models.ProductModels;
+using E_Shop.Domain.Models.RolePermissionModels;
 using E_Shop.Domain.Models.SpecificationModels;
 using E_Shop.Domain.Models.TicketModels;
 using E_Shop.Domain.Models.UserModels;
+using E_Shop.Infra.Data.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -35,13 +37,29 @@ namespace E_Shop.Infra.Data
 
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Reply> Replies { get; set; }
-        public DbSet<Like> Likes { get; set; }         
+        public DbSet<Like> Likes { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
 
-        public DbSet<Discount> Discounts { get; set; }   
-        
-        public DbSet<DiscountProductMapping> DiscountProductMapping { get; set; }   
+        public DbSet<Discount> Discounts { get; set; }
+        public DbSet<DiscountProductMapping> DiscountProductMapping { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
 
+
+
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Seed the permissions
+            modelBuilder.Entity<Permission>().HasData(PermissionSeeds.ApplicationPermissions);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

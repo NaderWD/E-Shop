@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using E_Shop.Domain.Models.RolePermissionModels;
+using System.ComponentModel.DataAnnotations;
 using static E_Shop.Domain.Enum.UserEnums;
 
 namespace E_Shop.Domain.Models.UserModels
@@ -36,5 +37,7 @@ namespace E_Shop.Domain.Models.UserModels
         public bool IsAdmin { get; set; }
 
         public bool IsActive { get; set; }
+
+        public List<UserRole>? UserRoles { get; set; }
     }
 }
