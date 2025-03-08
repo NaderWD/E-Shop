@@ -39,7 +39,7 @@ namespace E_Shop.Application.Services.CommentService
             await Save();
         }
 
-        public async Task CreateReply(CreateReplyVM replyVM, bool isAdmin = false)
+        public async Task CreateReply(CreateReplyVM replyVM, bool isAdmin )
         {
             Reply reply = new()
             {
@@ -70,6 +70,7 @@ namespace E_Shop.Application.Services.CommentService
         {
             var comment = await _repository.GetCommentByIdAsync(commentId);
             comment.DisLikeCounts++;
+            await _repository.UpdateCommentAsync(comment);
             await Save();
             return comment.DisLikeCounts;
         }
@@ -109,6 +110,18 @@ namespace E_Shop.Application.Services.CommentService
                     CreateDate = r.CreateDate,
                     LastModifiedDate = r.LastModifiedDate
                 })],
+                Evaluations = [.. c.Evaluations.Select(e => new EvaluationVM
+                {
+                    Text = e.Text,
+                    IsPositive = e.IsPositive
+                })],
+                LikeCount = c.LikeCounts,
+                DisLikeCount = c.DisLikeCounts,
+                //Likes = [.. c.Likes.Select(l => new LikeVM
+                //{
+                //    LikeId = l.Id,
+                //    UserId = l.UserId
+                //})]
             });
         }
 

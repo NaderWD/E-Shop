@@ -1,10 +1,6 @@
 ﻿@model CreateProductRatingVM
 
-<style>
-    .form-group {
-        margin-bottom: 20px; /* Adds vertical space between form groups */
-    }
-</style>
+
 
 <div class="col-xl-9 col-lg-8 col-md-7">
     <div class="ui-box bg-white mb-5">
@@ -88,35 +84,3 @@
     </div>
 </div>
 
-<!-- JavaScript to update the displayed rating value and calculate overall rating -->
-<script>
-    function updateRatingValue(value, elementId) {
-        document.getElementById(elementId).textContent = value;
-    }
-
-    function calculateOverallRating() {
-        // Get slider values and convert to numbers
-        var buildQuality = parseFloat(document.getElementById('buildQuality').value);
-        var valueForMoney = parseFloat(document.getElementById('valueForMoney').value);
-        var innovation = parseFloat(document.getElementById('innovation').value);
-        var features = parseFloat(document.getElementById('features').value);
-        var easeOfUse = parseFloat(document.getElementById('easeOfUse').value);
-        var design = parseFloat(document.getElementById('design').value);
-
-        // Calculate average
-        var sum = buildQuality + valueForMoney + innovation + features + easeOfUse + design;
-        var average = sum / 6;
-
-        // Update display (rounded to 1 decimal place)
-        document.getElementById('overallRating').textContent = average.toFixed(1);
-
-        // Update hidden input with precise value
-        var overallRatingInput = document.getElementById('overallRatingInput');
-        if (overallRatingInput) {
-            overallRatingInput.value = average;
-        }
-    }
-
-    // Initial calculation on page load
-    calculateOverallRating();
-</script>

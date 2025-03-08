@@ -9,9 +9,11 @@
         <tr>
             <th>نویسنده</th>
             <th>متن</th>
+            <th></th>
+            <th></th>
             <th>وضعیت</th>
-            <th>تعداد لایک ها</th>
-            <th>عملیات</th>
+            <th></th>
+            <th>حذف</th>
         </tr>
     </thead>
     <tbody>
@@ -20,18 +22,27 @@
             <tr>
                 <td>@comment.AuthorName</td>
                 <td>@comment.Text</td>
+                <td></td>
+                <td></td>
                 <td>
                     @if (!comment.IsApproved)
                     {
                         <form asp-action="ApproveComment" method="post">
                             <input type="hidden" name="commentId" value="@comment.Id" />
-                            <input type="submit" value="Approve" class="btn btn-success" />
+                            <input type="submit" value="Approve" class="btn rounded-pill btn-success" />
                         </form>
                     }
                 <td>
-                <td>@comment.LikeCount</td>
                 <td>
-                    فعلا خالی
+                    <span>
+                        <button class="btn rounded-pill btn-danger" href="javascript:void(0);" onclick="confirmDelete('deleteForm-@comment.Id', '@comment.Text')">
+                            <i class="bx bx-trash me-1"></i> حذف
+                        </button>
+                        <form id="deleteForm-@comment.Id" method="post" action="@Url.Action("DeleteComment", new { commentId = comment.Id })" style="display:none;">
+                                    @Html.AntiForgeryToken()
+                            <input type="hidden" name="commentId" value="@comment.Id" />
+                        </form>
+                    </span>
                 </td>
             </tr>
         }

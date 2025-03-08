@@ -4,7 +4,6 @@
 }
 
 
-
 <main class="page-content">
     <div class="container">
         <!-- Start of Breadcrumb -->
@@ -129,7 +128,7 @@
                                         </div>
                                     </div>
                                 }
-                                
+
                             }
                         </div>
                     </div>
@@ -317,7 +316,7 @@
                         <div class="expandable-text_text">
                             @if (!string.IsNullOrEmpty(Model.ExpertReview))
                             {
-                                @Html.Raw(Model.ExpertReview) 
+                                @Html.Raw(Model.ExpertReview)
                             }
                             else
                             {
@@ -332,17 +331,48 @@
                 </div>
                 <!-- end of product-content-expert-articles -->
                 <!-- start of product-params -->
-                @await Component.InvokeAsync("ProductSpecification")
+                @await Component.InvokeAsync("ProductSpecification", new { productId = Model.Id })
                 <!-- end of product-params -->
                 <!-- start of product-comments -->
                 <div class="row">
-                    <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
-                        @await Component.InvokeAsync("ProductRatingSummary", new { productId = Model.Id })
-                    </div>
-                    <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
-                        @await Component.InvokeAsync("ProductComments", new { productId = Model.Id })
+                    <div class="col-xl-9 col-lg-8">
+                        <div class="product-tab-content product-comments tab-content border-bottom pb-2 mb-4"
+                             id="scrollspyHeading4">
+                            <div class="product-tab-title mb-0">
+                                <h2>امتیاز و دیدگاه کاربران</h2>
+                                <h3 class="subtitle">@Model.Title</h3>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
+                                    <div class="ui-sticky ui-sticky-top pt-5 z-index-0">
+                                        <!-- start of comments-sidebar -->
+                                        @await Component.InvokeAsync("ProductRatingSummary", new { productId = productId })
+                                        <!-- end of comments-sidebar -->
+                                    </div>
+                                </div>
+                                <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
+                                    <!-- start of filter-comments -->
+                                    <div class="filter-comments mb-4">
+                                        <div class="filter-comments-title me-2">
+                                            <i class="ri-list-settings-fill me-1"></i>
+                                            <span>مرتب سازی دیدگاه ها بر اساس:</span>
+                                        </div>
+                                        <div class="filter-comments-options">
+                                            <button class="filter-comments-option active">جدیدترین دیدگاه ها</button>
+                                            <button class="filter-comments-option">مفیدترین دیدگاه ها</button>
+                                            <button class="filter-comments-option">دیدگاه خریداران</button>
+                                        </div>
+                                    </div>
+                                    <!-- end of filter-comments -->
+                                    <!-- start of comments -->
+                                    @await Component.InvokeAsync("ProductComments", new { productId = productId })
+                                    <!-- end of comments -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
                 <!-- end of product-comments -->
 
             </div>

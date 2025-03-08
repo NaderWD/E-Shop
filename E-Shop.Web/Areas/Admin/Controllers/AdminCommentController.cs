@@ -16,14 +16,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Product Approved Comments
-        [HttpGet]
-        public async Task<IActionResult> ProductComments(int productId)
-        {
-            return View(await _commentService.GetApprovedCommentListByProductId(productId));
-        }
-        #endregion
-
         #region Create Reply
         [HttpGet]
         public async Task<IActionResult> CreateReply(int commentId)
@@ -41,10 +33,20 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         #endregion
 
         #region Approve Comment
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> ApproveComment(int commentId)
         {
             await _commentService.ApproveComment(commentId);
+            return RedirectToAction(nameof(AllComments));
+        }
+        #endregion
+
+        #region Delete Comment
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            var comment = await _commentService.GetCommentByIdAsync(commentId);
+            await _commentService.DeleteComment(commentId);
             return RedirectToAction(nameof(AllComments));
         }
         #endregion

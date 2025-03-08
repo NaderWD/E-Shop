@@ -2,3 +2,42 @@
 .hidden {
     display: none;
 }
+
+/* Make the comment textarea bigger */
+.comment-textarea {
+    height: 150px; /* Adjust this value as needed */
+}
+
+/* Add spacing between positive and negative evaluations */
+.evaluations-section {
+    margin-bottom: 20px; /* Space between sections */
+}
+
+/* Arrange evaluation inputs in a flexible layout */
+.evaluations-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between inputs */
+}
+
+/* Make evaluation inputs smaller */
+.evaluation-input {
+    flex: 1 1 45%; /* Each input takes about half the width */
+    max-width: 45%;
+}
+
+/* Style the Add buttons to be smaller and prettier */
+.add-evaluation-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 0.875rem; /* Smaller font size */
+}
+
+/* Add spacing above the submit button */
+.submit-btn {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px; /* Adds vertical space between form groups */
+}
