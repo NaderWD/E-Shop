@@ -12,7 +12,14 @@ namespace E_Shop.Application.Services.DiscountServices
     {
         public List<DiscountViewModel> GetAll();
         public DiscountViewModel GetById(int Id);
+        public UpdateDiscountViewModel GetByIdForUpdate(int Id);
+        #region CRUD
         public bool CreateDiscount(DiscountViewModel discount);
         public bool UpdateDiscount(UpdateDiscountViewModel discount);
+        public bool DeleteDiscount(int Id);
+
+        #endregion
+
+        
     }
 }

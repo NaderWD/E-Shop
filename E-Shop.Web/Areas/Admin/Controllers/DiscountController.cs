@@ -31,44 +31,59 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             var result = discountService.CreateDiscount(model);
             if (result == true)
             {
-                TempData[SuccessMessage] = ErrorMessages.ColorAdded;
-                return RedirectToAction("ColorIndex");
+                TempData[SuccessMessage] = ErrorMessages.DiscountAdded;
+                return RedirectToAction("DiscountIndex");
             }
             else
             {
-                TempData[ErrorMessage] = ErrorMessages.FailedMessage;
-                return RedirectToAction("ColorIndex");
+                TempData[ErrorMessage] = ErrorMessages.DiscountFailMessage;
+                return View(model);
             }
         }
         #endregion
 
-        #region Add
+        #region Update
         public IActionResult UpdateDiscount(int DiscountId)
         {
-            var content = discountService.GetById(DiscountId);
+            var content = discountService.GetByIdForUpdate(DiscountId);
             return View(content);
         }
 
         [HttpPost]
-        public IActionResult UpdateDiscount(DiscountViewModel model)
+        public IActionResult UpdateDiscount(UpdateDiscountViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var result = discountService.CreateDiscount(model);
+            var result = discountService.UpdateDiscount(model);
             if (result == true)
             {
-                TempData[SuccessMessage] = ErrorMessages.ColorAdded;
-                return RedirectToAction("ColorIndex");
+                TempData[SuccessMessage] = ErrorMessages.DiscountUpdate;
+                return RedirectToAction("DiscountIndex");
+            }
+            else
+            {
+                TempData[ErrorMessage] = ErrorMessages.DiscountFailMessage;
+                return View(model);
+            }
+        }
+        #endregion 
+
+        public IActionResult DeleteDiscount(int Id)
+        {
+            var result = discountService.DeleteDiscount(Id);
+            if (result == true)
+            {
+                TempData[SuccessMessage] = ErrorMessages.DiscountDeleted;
+                return RedirectToAction("DiscountIndex");
             }
             else
             {
                 TempData[ErrorMessage] = ErrorMessages.FailedMessage;
-                return RedirectToAction("ColorIndex");
+                return RedirectToAction("DiscountIndex");
             }
         }
-        #endregion 
     }
 }

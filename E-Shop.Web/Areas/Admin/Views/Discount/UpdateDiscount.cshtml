@@ -1,8 +1,8 @@
 ﻿@using E_Shop.Application.ViewModels.DiscountsViewModels
-@model DiscountViewModel
+@model UpdateDiscountViewModel
 
 <form class="add-new-discount pt-0 fv-plugins-bootstrap5 fv-plugins-framework" id="addNewDiscountForm" novalidate="novalidate" method="post" asp-action="UpdateDiscount">
-    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Id" value="@Model.Id"/>
 
     <div class="row">
         <div class="mb-3 col-md-12 fv-plugins-icon-container">
@@ -52,6 +52,6 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">افزودن تخفیف</button>
+    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">بروزرسانی تخفیف</button>
     <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal">لغو</button>
 </form>

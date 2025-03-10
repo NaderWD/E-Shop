@@ -17,15 +17,25 @@ namespace E_Shop.Application.Services.DiscountServices
             Discount model = new Discount();
             if (discount.DiscountAmount != null && discount.DiscountPercentage != null)
             {
+                if (discount.StartDate == null && discount.EndDate != null)
+                {
+                    model.StartDate = DateTime.Now;
+                }
+                else
+                {
+                    model.StartDate = discount.StartDate;
+                }
+
                 model.DiscountPercentage = discount.DiscountPercentage;
                 model.EndDate = discount.EndDate;
-                model.StartDate = discount.StartDate;
                 model.CreateDate = discount.CreateDate;
                 model.Code = discount.Code;
                 model.IsActive = discount.IsActive;
                 model.LastModifiedDate = discount.LastModifiedDate;
                 model.DiscountAmount = discount.DiscountAmount;
+
                 discountRepository.CreateDiscount(model);
+
                 return true;
             }
             else
@@ -46,13 +56,20 @@ namespace E_Shop.Application.Services.DiscountServices
                 model.IsActive = discount.IsActive;
                 model.LastModifiedDate = discount.LastModifiedDate;
                 model.DiscountAmount = discount.DiscountAmount;
-                discountRepository.CreateDiscount(model);
+                discountRepository.UpdateDiscount(model);
                 return true;
             }
             else
             {
                 return false;
             }
+        }
+        public bool DeleteDiscount(int Id)
+        {
+            var discount = discountRepository.GetById(Id);
+            discount.IsDelete = true;
+            discountRepository.UpdateDiscount(discount);
+            return true;
         }
         #endregion
 
@@ -78,12 +95,29 @@ namespace E_Shop.Application.Services.DiscountServices
             }
             return models;
         }
-
         public DiscountViewModel GetById(int Id)
         {
             var discount = discountRepository.GetById(Id);
             DiscountViewModel model = new DiscountViewModel()
             {
+                DiscountPercentage = discount.DiscountPercentage,
+                EndDate = discount.EndDate,
+                StartDate = discount.StartDate,
+                CreateDate = discount.CreateDate,
+                Code = discount.Code,
+                IsActive = discount.IsActive,
+                LastModifiedDate = discount.LastModifiedDate,
+                DiscountAmount = discount.DiscountAmount,
+            };
+
+            return model;
+        }
+        public UpdateDiscountViewModel GetByIdForUpdate(int Id)
+        {
+            var discount = discountRepository.GetById(Id);
+            UpdateDiscountViewModel model = new UpdateDiscountViewModel()
+            {
+                Id = discount.Id,
                 DiscountPercentage = discount.DiscountPercentage,
                 EndDate = discount.EndDate,
                 StartDate = discount.StartDate,

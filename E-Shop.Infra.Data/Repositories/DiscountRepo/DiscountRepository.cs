@@ -32,18 +32,8 @@ namespace E_Shop.Infra.Data.Repositories.DiscountRepo
             return true;
         }
 
-        public bool UpdateDiscount(Discount discount)
+        public bool UpdateDiscount(Discount model)
         {
-            var model = GetById(discount.Id);
-            model.DiscountPercentage = discount.DiscountPercentage;
-            model.EndDate = discount.EndDate;
-            model.StartDate = discount.StartDate;
-            model.CreateDate = discount.CreateDate;
-            model.Code = discount.Code;
-            model.IsActive = discount.IsActive;
-            model.LastModifiedDate = discount.LastModifiedDate;
-            model.DiscountAmount = discount.DiscountAmount;
-
             dbContext.Discounts.Update(model);
             dbContext.SaveChanges();
             return true;

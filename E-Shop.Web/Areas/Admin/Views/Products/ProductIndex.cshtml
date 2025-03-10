@@ -71,6 +71,9 @@
                                         <a class="dropdown-item" asp-controller="Specification" asp-action="SpecificationDetails" asp-route-productId="@item.Id">
                                             <i class="bx bx-edit-alt me-1"></i> مشخصات محصول
                                         </a>
+                                        <a class="dropdown-item" asp-controller="ProductDiscount" asp-action="DiscountIndex" asp-route-productId="@item.Id">
+                                            <i class="bx bx-edit-alt me-1"></i> تخفیفات محصول
+                                        </a>
                                         <a class="dropdown-item" asp-controller="AdminComment" asp-action="ProductComments" asp-route-productId="@item.Id">
                                             <i class="bx bx-edit-alt me-1"></i> نظرات
                                         </a>

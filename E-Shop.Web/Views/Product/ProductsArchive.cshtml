@@ -132,47 +132,123 @@
                                             @foreach (var item in Model.Entities)
                                             {
                                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
-                                                    <div class="product-card">
-                                                        <div class="product-thumbnail">
-                                                            <a asp-action="ProductDetail" asp-route-productId="@item.Id">
-                                                                <img src="/theme-assets/images/products/@item.ImageName" alt="@item.Title"/>
-                                                                
-                                                            </a>
-                                                        </div>
-                                                        <div class="product-card-body">
-                                                            <h2 class="product-title">
-                                                                <a asp-action="ProductDetail" asp-route-productId="@item.Id">@item.Title</a>
-                                                            </h2>
-                                                            <div class="product-variant">
-                                                                @foreach (var color in item.Colors)
-                                                                {
-                                                                    <a asp-action="ProductDetail" asp-route-productId="@item.Id" asp-route-colorId="@color.Id">
-                                                                        <span class="color" style="background-color: @color.Code;"></span>
-                                                                    </a>
-                                                                }
-                                                                <span></span>
+                                                    @if (item.Price != item.OffPrice)
+                                                    {
+                                                        <!-- Discounted Product Card -->
+                                                        <div class="product-card">
+                                                            <div class="product-thumbnail">
+                                                                <a asp-action="ProductDetail" asp-route-productId="@item.Id">
+                                                                    <img src="/theme-assets/images/products/@item.ImageName" alt="@item.Title" />
+                                                                </a>
                                                             </div>
-                                                            <div class="product-price fa-num">
-                                                                <span class="price-now">@item.Price <span class="currency">تومان</span></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-card-footer">
-                                                            <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                                                <div class="product-actions">
-                                                                    <ul>
-                                                                        <li><a href="#" data-bs-toggle="tooltip" title="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
-                                                                        <li><a href="#" data-bs-toggle="tooltip" title="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a></li>
-                                                                        <li><a href="#" data-bs-toggle="tooltip" title="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a></li>
-                                                                    </ul>
+                                                            <div class="product-card-body">
+                                                                <h2 class="product-title">
+                                                                    <a asp-action="ProductDetail" asp-route-productId="@item.Id">@item.Title</a>
+                                                                </h2>
+                                                                <div class="product-variant">
+                                                                    @foreach (var color in item.Colors)
+                                                                    {
+                                                                        <a asp-action="ProductDetail" asp-route-productId="@item.Id" asp-route-colorId="@color.Id">
+                                                                            <span class="color" style="background-color: @color.Code;"></span>
+                                                                        </a>
+                                                                    }
+                                                                    <span>+</span>
                                                                 </div>
-                                                                <div class="product-rating fa-num">
-                                                                    <i class="ri-star-fill star"></i>
-                                                                    <strong>۴.۴</strong>
-                                                                    <span>(۴۳۶)</span>
+                                                                <div class="product-price fa-num">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <del class="price-old">@item.Price</del>
+                                                                        <span class="discount ms-2">@((double)((item.Price - item.OffPrice) / item.Price) * 100)%</span>
+                                                                    </div>
+                                                                    <span class="price-now">@item.OffPrice <span class="currency">تومان</span></span>
                                                                 </div>
                                                             </div>
+                                                            <div class="product-card-footer">
+                                                                <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
+                                                                    <div class="product-actions">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <a href="#" data-bs-toggle="tooltip" title="افزودن به سبد خرید">
+                                                                                    <i class="ri-shopping-cart-line"></i>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#" data-bs-toggle="tooltip" title="مشاهده سریع" data-remodal-target="quick-view-modal">
+                                                                                    <i class="ri-search-line"></i>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#" data-bs-toggle="tooltip" title="افزودن به علاقمندی">
+                                                                                    <i class="ri-heart-3-line"></i>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div class="product-rating fa-num">
+                                                                        <i class="ri-star-fill star"></i>
+                                                                        <strong>۴.۴</strong>
+                                                                        <span>(۴۳۶)</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <!-- Regular Product Card -->
+                                                        <div class="product-card">
+                                                            <div class="product-thumbnail">
+                                                                <a asp-action="ProductDetail" asp-route-productId="@item.Id">
+                                                                    <img src="/theme-assets/images/products/@item.ImageName" alt="@item.Title" />
+                                                                </a>
+                                                            </div>
+                                                            <div class="product-card-body">
+                                                                <h2 class="product-title">
+                                                                    <a asp-action="ProductDetail" asp-route-productId="@item.Id">@item.Title</a>
+                                                                </h2>
+                                                                <div class="product-variant">
+                                                                    @foreach (var color in item.Colors)
+                                                                    {
+                                                                        <a asp-action="ProductDetail" asp-route-productId="@item.Id" asp-route-colorId="@color.Id">
+                                                                            <span class="color" style="background-color: @color.Code;"></span>
+                                                                        </a>
+                                                                    }
+                                                                    <span></span>
+                                                                </div>
+                                                                <div class="product-price fa-num">
+                                                                    <span class="price-now">@item.Price <span class="currency">تومان</span></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-card-footer">
+                                                                <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
+                                                                    <div class="product-actions">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <a href="#" data-bs-toggle="tooltip" title="افزودن به سبد خرید">
+                                                                                    <i class="ri-shopping-cart-line"></i>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#" data-bs-toggle="tooltip" title="مشاهده سریع" data-remodal-target="quick-view-modal">
+                                                                                    <i class="ri-search-line"></i>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#" data-bs-toggle="tooltip" title="افزودن به علاقمندی">
+                                                                                    <i class="ri-heart-3-line"></i>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div class="product-rating fa-num">
+                                                                        <i class="ri-star-fill star"></i>
+                                                                        <strong>۴.۴</strong>
+                                                                        <span>(۴۳۶)</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
                                                 </div>
                                             }
                                         </div>

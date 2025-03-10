@@ -39,7 +39,11 @@
         public const string ColorDeleted = "رنگ مورد نظر با موفقیت حذف شد.";
         
         public const string GalleryAdded = "تصویر مورد نظر با موفقیت اضافه شد.";
-        
         public const string GalleryDeleted = "تصویر مورد نظر با موفقیت حذف شد.";
+
+        public const string DiscountAdded = "تخفیف مورد نظر با موفقیت اضافه شد.";
+        public const string DiscountUpdate = "تخفیف مورد نظر با موفقیت برورزرسانی شد.";
+        public const string DiscountDeleted = "تخفیف مورد نظر با موفقیت حذف شد.";
+        public const string DiscountFailMessage = "از مبلغ تخفیف و درصد تخفیف حتما یکی باید پر باشد.";
     }
 }
