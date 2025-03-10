@@ -52,36 +52,54 @@ function readfile(input) {
 }
 
 
-// Update auto-refresh to maintain scroll position
-setInterval(function () {
-    if (@Model.SelectedUserId.HasValue.ToString().ToLower()) {
-        const container = $('.chat-history-body');
-        const scrollPos = container.scrollTop();
 
-        $.get('@Url.Action("Chat", new { userId = Model.SelectedUserId })',
-            function (data) {
-                const newContent = $(data).find('.chat-history-wrapper').html();
-                container.html(newContent);
-                container.scrollTop(scrollPos);
-            });
+function updateRatingValue(value, elementId) {
+    document.getElementById(elementId).textContent = value;
+}
+
+
+// Rating
+function calculateOverallRating() {
+    // Get slider values and convert to numbers
+    var buildQuality = parseFloat(document.getElementById('buildQuality').value);
+    var valueForMoney = parseFloat(document.getElementById('valueForMoney').value);
+    var innovation = parseFloat(document.getElementById('innovation').value);
+    var features = parseFloat(document.getElementById('features').value);
+    var easeOfUse = parseFloat(document.getElementById('easeOfUse').value);
+    var design = parseFloat(document.getElementById('design').value);
+
+    // Calculate average
+    var sum = buildQuality + valueForMoney + innovation + features + easeOfUse + design;
+    var average = sum / 6;
+
+    // Update display (rounded to 1 decimal place)
+    document.getElementById('overallRating').textContent = average.toFixed(1);
+
+    // Update hidden input with precise value
+    var overallRatingInput = document.getElementById('overallRatingInput');
+    if (overallRatingInput) {
+        overallRatingInput.value = average;
     }
-}, 5000);
+}
+
+// Initial calculation on page load
+calculateOverallRating();
 
 
-// Handle message submission via AJAX
-$('form').submit(function (e) {
-    e.preventDefault();
-    var formData = new FormData(this);
 
-    $.ajax({
-        url: $(this).attr('action'),
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (data) {
-            $('.chat-history-wrapper').html($(data).find('.chat-history-wrapper').html());
-            $('input[name="NewMessage.Text"]').val('');
-        }
-    });
-});
+// Evaluations
+function addPositiveEvaluation() {
+    var index = $('#positive-evaluations input').length;
+    $('#positive-evaluations').append('<input type="text" name="PositiveEvaluations[' + index + '].Text" class="form-control evaluation-input mb-2" placeholder="نقطه قوت ' + (index + 1) + '" />');
+}
+
+
+function addNegativeEvaluation() {
+    var index = $('#negative-evaluations input').length;
+    $('#negative-evaluations').append('<input type="text" name="NegativeEvaluations[' + index + '].Text" class="form-control evaluation-input mb-2" placeholder="نقطه ضعف ' + (index + 1) + '" />');
+}
+
+
+
+
+

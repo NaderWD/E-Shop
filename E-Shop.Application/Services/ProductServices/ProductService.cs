@@ -174,7 +174,7 @@ namespace E_Shop.Application.Services.ProductServices
             #endregion
 
             var productCategories = GetSelectItems();
-            filter.Category = new List<ProductCategoryViewModel>();
+            filter.Category = [];
             foreach (var item in productCategories)
             {
                 filter.Category.Add(new ProductCategoryViewModel
@@ -224,6 +224,8 @@ namespace E_Shop.Application.Services.ProductServices
                     break;
                 case Domain.Enum.ProductEnums.MostRecent:
                     query = query.OrderByDescending(p => p.CreateDate);
+                    break;
+                case Domain.Enum.ProductEnums.All:
                     break;
                 default:
                     query = query.OrderBy(p => p.Id);
@@ -287,7 +289,7 @@ namespace E_Shop.Application.Services.ProductServices
 
             ProductViewModel model = new()
             {
-                Id = product.Id,
+                Id = productId,
                 Title = product.Title,
                 Description = product.Description,
                 Review = product.Review,
@@ -298,8 +300,6 @@ namespace E_Shop.Application.Services.ProductServices
                 CategoryName = product.Category.Name,
                 
             };
-
-            model.Colors = [];
 
             foreach (var item in product.Color)
             {
@@ -362,7 +362,7 @@ namespace E_Shop.Application.Services.ProductServices
         {
             var products = productsRepository.GetByCategoryId(Id);
 
-            List<ProductViewModel> model = new List<ProductViewModel>();
+            List<ProductViewModel> model = [];
 
             foreach (var item in products)
             {

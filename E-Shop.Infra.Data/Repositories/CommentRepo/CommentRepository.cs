@@ -17,9 +17,11 @@ namespace E_Shop.Infra.Data.Repositories.CommentRepo
             => await _context.Comments.FindAsync(commentId);
 
         public async Task<IEnumerable<Comment>> GetApprovedCommentsByProductIdAsync(int productId)
-            => _context.Comments.Include(x => x.Replies!)
+            => _context.Comments.Include(x => x.Evaluations)
+                                               .Include(x => x.Likes)
+                                               .Include(x => x.Replies!)
                                                .ThenInclude(x => x.User)
-                                               .Where(x => !x.IsDelete 
+                                               .Where(x => !x.IsDelete
                                                               && x.IsApproved
                                                               && x.ProductId == productId);
 

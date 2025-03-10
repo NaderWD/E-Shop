@@ -8,6 +8,7 @@ namespace E_Shop.Web.Components
         public async Task<IViewComponentResult> InvokeAsync(int productId)
         {
             var summary = await _ratingService.GetRatingSummaryByProductIdAsync(productId);
+            ViewData["ProductId"] = productId;
             return View("ProductRatingSummary", summary);
         }
     }

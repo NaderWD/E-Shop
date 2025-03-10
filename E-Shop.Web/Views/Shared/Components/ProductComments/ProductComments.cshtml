@@ -3,7 +3,7 @@
 <div class="comments">
     @foreach (var comment in Model)
     {
-        <div class="comment">
+        <div class="comment" data-comment-id="@comment.Id">
             <div class="comment-header">
                 <span>@comment.CreateDate?.ToString("dd MMM yyyy")</span>
                 <span>@comment.AuthorName</span>
@@ -16,7 +16,7 @@
                         @foreach (var evaluation in comment.Evaluations)
                         {
                             <li class="comment-evaluation @(evaluation.IsPositive ? "positive" : "negative")">
-                                @(evaluation.IsPositive ? "👍" : "👎") @evaluation.Text
+                                @evaluation.Text
                             </li>
                         }
                     </ul>
@@ -24,32 +24,24 @@
             </div>
             <div class="comment-footer">
                 <span class="me-2">آیا این دیدگاه برایتان مفید بود؟</span>
-                <button class="comment-like" onclick="likeComment(@comment.Id)">
-                    لایک (<span id="likeCount-@comment.Id">@comment.LikeCount</span>)
-                </button>
-                <button class="comment-dislike" onclick="dislikeComment(@comment.Id)">
-                    دیس‌لایک (<span id="dislikeCount-@comment.Id">@comment.DisLikeCount</span>)
-                </button>
+
+                <!-- Like Form -->
+                <form asp-action="LikeComment" asp-controller="Comments" method="post" style="display:inline;">
+                    <input type="hidden" name="commentId" value="@comment.Id" />
+                    <button type="submit" class="comment-like">
+                         (<span class="like-count">@comment.LikeCount</span>)
+                    </button>
+                </form>
+
+                <!-- Dislike Form -->
+                <form asp-action="DislikeComment" asp-controller="Comments" method="post" style="display:inline;">
+                    <input type="hidden" name="commentId" value="@comment.Id" />
+                    <button type="submit" class="comment-dislike">
+                         (<span class="dislike-count">@comment.DisLikeCount</span>)
+                    </button>
+                </form>
             </div>
         </div>
         <hr />
     }
 </div>
-
-<script>
-    function likeComment(commentId) {
-        $.post('@Url.Action("LikeComment", "UserComment")', { commentId: commentId }, function (data) {
-            if (data.success) {
-                $('#likeCount-' + commentId).text(data.likeCount);
-            }
-        });
-    }
-
-    function dislikeComment(commentId) {
-        $.post('@Url.Action("DislikeComment", "UserComment")', { commentId: commentId }, function (data) {
-            if (data.success) {
-                $('#dislikeCount-' + commentId).text(data.dislikeCount);
-            }
-        });
-    }
-</script>
