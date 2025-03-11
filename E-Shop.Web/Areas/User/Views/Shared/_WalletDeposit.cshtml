@@ -1,0 +1,27 @@
+﻿@using E_Shop.Application.ViewModels.Wallet
+@model WalletViewModel
+
+<form asp-action="Deposit" asp-controller="Wallet" method="post" class="py-3">
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Amount" class="form-label">مبلغ مورد نظر را وارد کنید (ریال)</label>
+                <input asp-for="Amount"
+                       class="form-control text-right"
+                       min="10000"
+                       step="10000"
+                       placeholder="مثال: 100000" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" asp-for="Type" value="Deposit" />
+    <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+    <div class="form-row">
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary btn-block">
+                پرداخت و شارژ کیف پول
+            </button>
+        </div>
+    </div>
+</form>

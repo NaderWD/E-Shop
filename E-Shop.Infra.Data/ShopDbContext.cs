@@ -6,6 +6,7 @@ using E_Shop.Domain.Models.ProductModels;
 using E_Shop.Domain.Models.SpecificationModels;
 using E_Shop.Domain.Models.TicketModels;
 using E_Shop.Domain.Models.UserModels;
+using E_Shop.Domain.Models.Wallet;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -41,6 +42,7 @@ namespace E_Shop.Infra.Data
         public DbSet<Discount> Discounts { get; set; }   
         
         public DbSet<DiscountProductMapping> DiscountProductMapping { get; set; }   
+        public DbSet<Wallet> Wallet { get; set; }   
 
 
     }

@@ -26,6 +26,9 @@ using E_Shop.Application.Services.CommentService;
 using E_Shop.Domain.Contracts.DiscountCont;
 using E_Shop.Application.Services.DiscountServices;
 using E_Shop.Infra.Data.Repositories.DiscountRepo;
+using E_Shop.Domain.Contracts.WalletCont;
+using E_Shop.Application.Services.WalletServices;
+using E_Shop.Infra.Data.Repositories.WalletRepo;
 
 namespace E_Shop.Infra.IOC
 {
@@ -72,11 +75,14 @@ namespace E_Shop.Infra.IOC
             services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
             services.AddScoped<IProductRatingService, ProductRatingService>();
 
-            services.AddScoped<IDiscountRepository,DiscountRepository>();
-            services.AddScoped<IDiscountService,DiscountService>();
-            
-            services.AddScoped<IProductDiscountRepository,ProductDiscountRepository>();
-            services.AddScoped<IProductDiscountService,ProductDiscountService>();
+            services.AddScoped<IDiscountRepository, DiscountRepository>();
+            services.AddScoped<IDiscountService, DiscountService>();
+
+            services.AddScoped<IProductDiscountRepository, ProductDiscountRepository>();
+            services.AddScoped<IProductDiscountService, ProductDiscountService>();
+
+            services.AddScoped<IWalletRepository, WalletRepository>();
+            services.AddScoped<IWalletService, WalletService>();
 
             return services;
 

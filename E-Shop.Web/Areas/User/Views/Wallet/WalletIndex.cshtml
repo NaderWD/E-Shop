@@ -1,0 +1,109 @@
+﻿@using E_Shop.Application.ViewModels.Wallet
+@model List<WalletViewModel>
+
+
+@{
+    int userId = (int)ViewData["UserId"];
+}
+
+<div class="col-xl-9 col-lg-8 col-md-7">
+    <div class="shadow-around p-3">
+        <div class="section-title mb-2">
+            <h3 class="title">شارژ کیف پول</h3>
+        </div>
+
+        <partial name="_WalletDeposit" model="new WalletViewModel{UserId = userId }"></partial>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="ui-box bg-white mb-5">
+                <div class="ui-box-title">لیست تراکنش‌های کیف پول</div>
+                <div class="ui-box-content">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>تاریخ ایجاد</th>
+                                    <th>مبلغ (ریال)</th>
+                                    <th>نوع تراکنش</th>
+                                    <th>وضعیت تراکنش</th>
+                                    <th>کاربر</th>
+                                    <th>جزئیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model == null || !Model.Any())
+                                {
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">هیچ تراکنشی یافت نشد</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    int counter = 1;
+                                    foreach (var transaction in Model)
+                                    {
+                                        <tr>
+                                            <td class="fa-num">@counter</td>
+                                            <td class="fa-num text-muted">
+                                                @transaction.CreateDate?.ToString("yyyy/MM/dd HH:mm")
+                                            </td>
+                                            <td class="fa-num fs-6 fw-bold">
+                                                @transaction.Amount.ToString("N0") <span class="currency">ریال</span>
+                                            </td>
+                                            <td>
+                                                @switch (transaction.Type)
+                                                {
+                                                    case TransactionType.Deposit:
+                                                        <span class="badge bg-primary rounded-pill fs-7">واریز</span>
+                                                        break;
+                                                    case TransactionType.Withdrawal:
+                                                        <span class="badge bg-secondary rounded-pill fs-7">برداشت</span>
+                                                        break;
+                                                    default:
+                                                        <span class="badge bg-light text-dark rounded-pill fs-7">نامشخص</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>
+                                                @switch (transaction.Status)
+                                                {
+                                                    case TranStatus.Success:
+                                                        <span class="badge bg-success rounded-pill fs-7">موفق</span>
+                                                        break;
+                                                    case TranStatus.Failed:
+                                                        <span class="badge bg-danger rounded-pill fs-7">ناموفق</span>
+                                                        break;
+                                                    case TranStatus.Pending:
+                                                        <span class="badge bg-warning rounded-pill fs-7">در انتظار</span>
+                                                        break;
+                                                    default:
+                                                        <span class="badge bg-light text-dark rounded-pill fs-7">نامشخص</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>
+                                                @(transaction.User?.FirstName + " " + transaction.User?.LastName) <br>
+                                                <small class="text-muted fa-num">@transaction.UserId</small>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="btn btn-sm btn-outline-light">
+                                                    جزئیات <i class="ri-arrow-left-s-fill"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        counter++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

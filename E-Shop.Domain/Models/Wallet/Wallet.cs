@@ -15,7 +15,7 @@ namespace E_Shop.Domain.Models.Wallet
         public int Amount { get; set; }
         public int UserId { get; set; }
         public TransactionType Type { get; set; }
-        public Status Status { get; set; }
+        public TranStatus Status { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }

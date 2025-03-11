@@ -11,7 +11,7 @@ namespace E_Shop.Domain.Enum
         Deposit,
         Withdrawal,
     }
-    public enum Status
+    public enum TranStatus
     {
         Pending,
         Failed,

@@ -38,5 +38,6 @@ namespace E_Shop.Application.DTOs.Novino
 
         [JsonProperty("payment_url")]
         public string Payment_Url { get; set; }
+        
     }
 }
