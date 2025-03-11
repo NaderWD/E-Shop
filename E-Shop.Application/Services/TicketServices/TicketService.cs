@@ -30,7 +30,6 @@ namespace E_Shop.Application.Services.TicketServices
                 FilePath = ticketVM.FilePath,
                 OwnerId = userId,
                 IsDelete = false,
-
             };
             await _ticketRepository.AddTicket(ticket);
             await SaveChanges();
@@ -52,9 +51,9 @@ namespace E_Shop.Application.Services.TicketServices
 
         public async Task<List<TicketVM>> GetAllTickets()
         {
-            var ticket = await _ticketRepository.GetAllTickets();
+            var tickets = await _ticketRepository.GetAllTickets();
 
-            return [.. ticket.Select(item => new TicketVM()
+            return [.. tickets.Select(item => new TicketVM()
             {
                 Id = item.Id,
                 Title = item.Title,

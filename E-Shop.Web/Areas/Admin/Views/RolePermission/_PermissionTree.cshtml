@@ -1,0 +1,14 @@
+﻿@model PermissionForDetailVM
+
+<ul class="ms-3">
+    @if (Model.Children != null && Model.Children.Any())
+    {
+        @foreach (var child in Model.Children)
+        {
+            <li>
+                @child.DisplayName
+                @await Html.PartialAsync("_PermissionTree", child)
+            </li>
+        }
+    }
+</ul>

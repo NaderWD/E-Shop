@@ -1,0 +1,48 @@
+﻿@model RoleDetailsVM
+
+
+<div class="container mt-5">
+    <!-- Role Name -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-4">
+                <label for="RoleName" class="form-label">نام نقش</label>
+                <input type="text" class="form-control" id="RoleName" value="@Model.RoleName" disabled />
+            </div>
+        </div>
+        <!-- Back Button -->
+        <div class="col-md-6 d-flex align-items-center justify-content-start">
+            <a asp-action="AllRoles" asp-controller="RolePermission" asp-area="Admin" class="btn btn-secondary">بازگشت به لیست نقش‌ها</a>
+        </div>
+    </div>
+
+    <!-- Permissions Section -->
+    <h3>دسترسی‌ها</h3>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var parent in Model.Permissions)
+        {
+            <div class="col">
+                <div class="card h-100" style="min-height: 200px;">
+                    <div class="card-body">
+                        <!-- Parent Permission Name -->
+                        <h5 class="card-title fw-bold">@parent.DisplayName</h5>
+                        <ul class="ms-3">
+                            <!-- Child Permissions -->
+                            @if (parent.Children != null && parent.Children.Any())
+                            {
+                                @foreach (var child in parent.Children)
+                                {
+                                    <li>@child.DisplayName</li>
+                                }
+                            }
+                            else
+                            {
+                                <li>هیچ زیرمجموعه‌ای وجود ندارد</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

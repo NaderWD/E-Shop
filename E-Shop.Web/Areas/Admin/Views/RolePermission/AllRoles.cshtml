@@ -1,0 +1,80 @@
+﻿@model IEnumerable<RoleVM>
+
+
+
+
+<div class="container mt-5">
+    <h5 class="mb-4">لیست نقش‌ها</h5>
+
+    <!-- Add Role Button -->
+    <a class="btn btn-primary mb-3" asp-action="CreateRole" asp-controller="RolePermission">
+        افزودن نقش جدید
+    </a>
+
+    <!-- Role Table -->
+    <div class="table-responsive text-nowrap" style="min-height: 100vh;">
+        <table class="table card-table">
+            <thead>
+                <tr>
+                    <th>نام نقش</th>
+                    <th>‌نمایش جزییات</th>
+                    <th>ویرایش نقش‌</th>
+                    <th>حذف‌</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @if (Model.Any())
+                {
+                    @foreach (var role in Model.OrderBy(r => r.RoleName))
+                    {
+                        <tr>
+                            <td>@role.RoleName</td>
+                            <td>
+                                <div>
+                                    <span>
+                                        <a asp-action="RoleDetails" asp-controller="RolePermission" asp-route-roleId="@role.RoleId"
+                                                class="btn rounded-pill btn-success">
+                                            <i class="bx bx-reply me-1"></i>
+                                            جزییات
+                                        </a>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <span>
+                                        <a type="button" asp-action="EditRole" asp-controller="RolePermission" asp-route-roleId="@role.RoleId"
+                                                class="btn rounded-pill btn-warning">
+                                            <i class="bx bx-reply me-1"></i>
+                                            ویرایش
+                                        </a>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <span>
+                                        <button class="btn rounded-pill btn-danger" type="button" onclick="confirmDelete('deleteForm-@role.RoleId')">
+                                            <i class="bx bx-trash me-1"></i> حذف
+                                        </button>
+                                        <form id="deleteForm-@role.RoleId" method="post" action="@Url.Action("DeleteRole", "RolePermission", new { roleId = role.RoleId, Title = role.RoleName })" style="display:none;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" id="roleId" name="roleId" value="@role.RoleId" />
+                                        </form>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2" class="text-center">نقشی یافت نشد.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

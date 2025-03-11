@@ -17,9 +17,9 @@
 
 
 
-function confirmDelete(url) {
+function confirmDelete(formId, Title) {
     Swal.fire({
-        title: 'آیا مطمئن هستید؟',
+        title: 'آیا از حذف' + Title + 'مطمئن هستید؟',
         text: "این عملیات قابل بازگشت نیست!",
         icon: 'warning',
         showCancelButton: true,
@@ -29,10 +29,30 @@ function confirmDelete(url) {
         cancelButtonText: 'لغو'
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = url;
+            document.getElementById(formId).submit();
         }
     })
 }
+
+
+// Set timer duration in seconds
+let duration = 120;
+
+const timerElement = document.getElementById('timer');
+const resendLink = document.getElementById('resendLink');
+
+function updateTimer() {
+    if (duration > 0) {
+        timerElement.textContent = `مدت زمان اعتبار کد: ${duration--} ثانیه`;
+        setTimeout(updateTimer, 1000);
+    } else {
+        timerElement.classList.add('hidden');
+        resendLink.classList.remove('hidden');
+    }
+}
+
+updateTimer();
+
 
 
 function readfile(input) {
@@ -101,5 +121,31 @@ function addNegativeEvaluation() {
 
 
 
+// Permission CheckBoxes
+function toggleChildren(parentCheckbox, parentId) {
+    // Select or deselect all children based on the parent checkbox
+    var childCheckboxes = document.getElementsByClassName('child-checkbox-' + parentId);
+    for (var i = 0; i < childCheckboxes.length; i++) {
+        childCheckboxes[i].checked = parentCheckbox.checked;
+    }
+}
+
+function toggleParent(childCheckbox, parentId) {
+    // Get the parent checkbox element
+    var parentCheckbox = document.getElementById('permission_' + parentId);
+
+    // Check if any child is checked
+    var childCheckboxes = document.getElementsByClassName('child-checkbox-' + parentId);
+    var anyChecked = false;
+    for (var i = 0; i < childCheckboxes.length; i++) {
+        if (childCheckboxes[i].checked) {
+            anyChecked = true;
+            break;
+        }
+    }
+
+    // Select the parent checkbox if any child is checked
+    parentCheckbox.checked = anyChecked;
+}
 
 
