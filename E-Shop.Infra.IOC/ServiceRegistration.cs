@@ -23,6 +23,9 @@ using E_Shop.Infra.Data.Repositories.Implementations;
 using E_Shop.Domain.Contracts.CommentCont;
 using E_Shop.Infra.Data.Repositories.CommentRepo;
 using E_Shop.Application.Services.CommentService;
+using E_Shop.Domain.Contracts.RolePermissionCont;
+using E_Shop.Infra.Data.Repositories.RolePermissionRepo;
+using E_Shop.Application.Services.RoleServices;
 
 namespace E_Shop.Infra.IOC
 {
@@ -68,6 +71,11 @@ namespace E_Shop.Infra.IOC
 
             services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
             services.AddScoped<IProductRatingService, ProductRatingService>();
+
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+            services.AddScoped<IRolePermissionService, RolePermissionService>();
 
             return services;
         }

@@ -6,8 +6,10 @@ namespace E_Shop.Domain.Contracts.RolePermissionCont
     {
         Task CreateRole(Role role);
         Task<Role> GetRoleById(int roleId);
+        Task<List<Role>> GetRolesByUserId(int userId);
         Task<IEnumerable<Role>> GetAllRoles();
         Task UpdateRole(Role role);
         Task DeleteRole(int roleId);
+        Task Save();
     }
 }

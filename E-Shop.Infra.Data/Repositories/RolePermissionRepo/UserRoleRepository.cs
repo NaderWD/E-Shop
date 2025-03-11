@@ -6,7 +6,7 @@ namespace E_Shop.Infra.Data.Repositories.RolePermissionRepo
 {
     public class UserRoleRepository(ShopDbContext _context) : IUserRoleRepository
     {
-        public async Task CreateUserRole(UserRole userRole)                
+        public async Task CreateUserRole(UserRole userRole)
             => await _context.UserRoles.AddAsync(userRole);
 
         public async Task<IEnumerable<UserRole>> GetAllUserRoles()
@@ -20,8 +20,20 @@ namespace E_Shop.Infra.Data.Repositories.RolePermissionRepo
                                                         .Include(x => x.Role)
                                                         .FirstOrDefaultAsync(x => x.Id == userRoleId);
 
+        public async Task<List<UserRole>> GetUserRolesByRoleId(int roleId)
+            => await _context.UserRoles.Include(x => x.Role)
+                                                        .Include(x => x.User)
+                                                        .Where(x => x.RoleId == roleId && !x.IsDelete)
+                                                        .ToListAsync();
+
+        public async Task<List<UserRole>> GetUserRolesByUserId(int userId)
+            => await _context.UserRoles.Include(x => x.Role)
+                                                        .Include(x => x.User)
+                                                        .Where(x => x.UserId == userId && !x.IsDelete)
+                                                        .ToListAsync();
+
         public async Task UpdateUserRole(UserRole userRoleId)
-            => _context.UserRoles.Update(userRoleId);
+                    => _context.UserRoles.Update(userRoleId);
 
         public async Task DeleteUserRole(int userRoleId)
             => _context.UserRoles.Remove(await GetUserRoleById(userRoleId));
