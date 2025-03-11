@@ -34,10 +34,8 @@
             <li>
                 <span class="label">کیف پول</span>
                 <span class="detail">
-                    <span class="d-block">
-                        ۰ <span class="currency fs-7 fw-bold">تومان</span>
-                    </span>
-                    <a href="#"
+                    @await Component.InvokeAsync("WalletBalance");
+                    <a asp-controller="Wallet" asp-action="WalletIndex"
                        class="link border-bottom-0 text-info fs-7 fw-bold">
                         افزایش
                         موجودی <i class="ri-arrow-left-s-line"></i>

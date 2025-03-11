@@ -13,7 +13,6 @@ namespace E_Shop.Domain.Contracts.DiscountCont
         Discount GetById(int Id);
         bool CreateDiscount(Discount discount);
         bool UpdateDiscount(Discount discount);
-        
-        
+
     }
 }

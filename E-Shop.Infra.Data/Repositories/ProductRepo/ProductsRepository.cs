@@ -57,6 +57,8 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
                 .Include(p => p.Category)
                 .Include(p => p.Color)
                 .ThenInclude(p => p.Color)
+                .Include(p => p.DiscountProductMappings)
+                .ThenInclude(p => p.Discount)
                 .Include(p => p.ProductSpecification); 
         }
 
@@ -64,7 +66,10 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
         {
             return dbContext.Products.Where(p => p.Id == Id)
                 .Include(p => p.Color)
-                .ThenInclude(p=> p.Color).FirstOrDefault();
+                .ThenInclude(p=> p.Color)
+                .Include(p => p.DiscountProductMappings)
+                .ThenInclude(p => p.Discount)
+                .FirstOrDefault();
         }
     }
 }

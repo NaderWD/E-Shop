@@ -1,12 +1,15 @@
-﻿using E_Shop.Application.ViewModels.ColorViewModels;
+﻿using E_Shop.Application.Services.DiscountServices;
+using E_Shop.Application.ViewModels.ColorViewModels;
 using E_Shop.Application.ViewModels.ProductsViewModel;
 using E_Shop.Application.ViewModels.SpecificationViewModels;
+using E_Shop.Domain.Contracts.DiscountCont;
 using E_Shop.Domain.Contracts.ProductCont;
+using E_Shop.Domain.Models.DiscountsModels;
 using E_Shop.Domain.Models.ProductModels;
 
 namespace E_Shop.Application.Services.ProductServices
 {
-    public class ProductService(IProductsRepository productsRepository, IProductCategoriesRepository productCategoriesRepository) : IProductsService
+    public class ProductService(IProductsRepository productsRepository, IProductCategoriesRepository productCategoriesRepository, IProductDiscountService productDiscountService) : IProductsService
     {
 
         #region Product CRUD
@@ -195,7 +198,7 @@ namespace E_Shop.Application.Services.ProductServices
             return filter;
         }
 
-        public ProductArchiveViewModel ArchiveFilter(ProductArchiveViewModel filter)
+        public async Task<ProductArchiveViewModel> ArchiveFilter(ProductArchiveViewModel filter)
         {
             var query = productsRepository.ArchiveFilter(filter.CategoryId);
 
@@ -246,14 +249,31 @@ namespace E_Shop.Application.Services.ProductServices
                 }).ToList(),
 
 
+                OffPrice = q.DiscountProductMappings.Any(d => d.IsAppliedToAll) ?
+                productDiscountService.ApplypublicDiscount(q.DiscountProductMappings.OrderBy(d => d.CreateDate).Last(d => d.IsAppliedToAll), q.Price)
+
+                : productDiscountService.ApplyDiscount(q.DiscountProductMappings.Select(d => new DiscountsViewModel
+                {
+                    Code = d.Discount.Code,
+                    DiscountAmount = d.Discount.DiscountAmount,
+                    DiscountPercentage = d.Discount.DiscountPercentage,
+                    EndDate = d.Discount.EndDate,
+                    StartDate = d.Discount.StartDate,
+                    IsActive = d.Discount.IsActive,
+                    IsAppliedToAll = d.IsAppliedToAll,
+                    ProductId = d.ProductId,
+                }).ToList(), q.Price),
+
+
             });
 
-            filter.Category = new ProductCategoriesViewModel
-            {
-                Name = query.Select(q => q.Category.Name).FirstOrDefault(),
-                ParentName = query.Select(q => q.Category.Parent.Name).FirstOrDefault(),
-                ParentId = query.Select(q => q.Category.Parent.Id).FirstOrDefault()
-            };
+
+
+
+            filter.Category = new ProductCategoriesViewModel();
+            filter.Category.Name = query.Select(q => q.Category.Name).FirstOrDefault();
+            filter.Category.ParentName = query.Select(q => q.Category.Parent.Name).FirstOrDefault();
+            filter.Category.ParentId = query.Select(q => q.Category.Parent.Id).FirstOrDefault();
 
             filter.ToPaged(productsQuery);
             return filter;
@@ -261,7 +281,7 @@ namespace E_Shop.Application.Services.ProductServices
 
         }
 
-        public ProductViewModel GetByIdForDetails(int productId, int colorId)
+        public async Task<ProductViewModel> GetByIdForDetails(int productId, int colorId)
         {
             var product = productsRepository.GetByIdForDetails(productId);
 
@@ -278,7 +298,7 @@ namespace E_Shop.Application.Services.ProductServices
                 ImageName = product.ImageName,
                 CategoryId = product.CategoryId,
                 CategoryName = product.Category.Name,
-                Colors = []
+                
             };
 
             foreach (var item in product.Color)
@@ -293,13 +313,46 @@ namespace E_Shop.Application.Services.ProductServices
                 });
             }
 
+            
             if (colorId != 0)
             {
-                model.Price = product.Price + product.Color.Where(c => c.ColorId == colorId).FirstOrDefault().Price;
+                var colorprice = product.Price + product.Color.Where(c => c.ColorId == colorId).FirstOrDefault().Price;
+                model.Price = colorprice;
+                model.OffPrice = product.DiscountProductMappings.Any(d => d.IsAppliedToAll) ?
+
+                productDiscountService.ApplypublicDiscount(product.DiscountProductMappings.Last(d => d.IsAppliedToAll), product.Price)
+
+                : productDiscountService.ApplyDiscount(product.DiscountProductMappings.Select(d => new DiscountsViewModel
+                {
+                    Code = d.Discount.Code,
+                    DiscountAmount = d.Discount.DiscountAmount,
+                    DiscountPercentage = d.Discount.DiscountPercentage,
+                    EndDate = d.Discount.EndDate,
+                    StartDate = d.Discount.StartDate,
+                    IsActive = d.Discount.IsActive,
+                    IsAppliedToAll = d.IsAppliedToAll,
+                    ProductId = d.ProductId,
+                }).ToList(), product.Price);
             }
             else
             {
-                model.Price = product.Price + product.Color.Where(c => c.IsDefault == true).FirstOrDefault().Price;
+                var colorprice = product.Price + product.Color.Where(c => c.IsDefault == true).FirstOrDefault().Price;
+                model.Price = colorprice;
+                model.OffPrice = product.DiscountProductMappings.Any(d => d.IsAppliedToAll) ?
+
+                productDiscountService.ApplypublicDiscount(product.DiscountProductMappings.OrderBy(d => d.CreateDate).Last(d => d.IsAppliedToAll), model.Price)
+
+                : productDiscountService.ApplyDiscount(product.DiscountProductMappings.Select(d => new DiscountsViewModel
+                {
+                    Code = d.Discount.Code,
+                    DiscountAmount = d.Discount.DiscountAmount,
+                    DiscountPercentage = d.Discount.DiscountPercentage,
+                    EndDate = d.Discount.EndDate,
+                    StartDate = d.Discount.StartDate,
+                    IsActive = d.Discount.IsActive,
+                    IsAppliedToAll = d.IsAppliedToAll,
+                    ProductId = d.ProductId,
+                }).ToList(), model.Price);
             }
 
             return model;
@@ -314,7 +367,7 @@ namespace E_Shop.Application.Services.ProductServices
             foreach (var item in products)
             {
                 model.Add(new ProductViewModel
-                    {
+                {
                     Id = item.Id,
                     Title = item.Title,
                     Description = item.Description,
@@ -324,11 +377,11 @@ namespace E_Shop.Application.Services.ProductServices
                     ImageName = item.ImageName,
                     Price = item.Price,
                     CategoryId = item.CategoryId,
-                    
+
                 });
-                
+
             }
-            
+
 
             return model;
         }

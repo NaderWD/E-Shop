@@ -1,0 +1,23 @@
+﻿@using E_Shop.Application.ViewModels.DiscountsViewModels
+@model UpdateMappingViewModel
+
+<div class="container w-50">
+    <form asp-action="UpdateDiscount" method="post">
+        <input type="hidden" asp-for="Id" value="@Model.Id" />
+        <input type="hidden" value="@ViewData["ProductId"]" asp-for="ProductId" />
+        <div class="mb-3">
+            <label class="form-label">انتخاب تخفیف</label>
+            <select asp-for="DiscountId" class="form-select" asp-items="ViewBag.Discounts">
+                <option value="">-- انتخاب کنید --</option>
+            </select>
+            <span asp-validation-for="DiscountId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 form-check">
+            <input asp-for="IsAppliedToAll" class="form-check-input" type="checkbox" />
+            <label asp-for="IsAppliedToAll" class="form-check-label">اعمال به همه محصولات</label>
+            <span asp-validation-for="IsAppliedToAll" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">به‌روزرسانی تخفیف</button>
+        <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas" asp-action="ProductIndex">لغو</button>
+    </form>
+</div>

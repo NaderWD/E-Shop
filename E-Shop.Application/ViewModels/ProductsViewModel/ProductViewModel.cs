@@ -4,9 +4,12 @@ using E_Shop.Application.ViewModels.SpecificationViewModels;
 using E_Shop.Domain.Enum;
 using E_Shop.Domain.Models.ColorModels;
 using E_Shop.Domain.Models.CommentModels;
+using E_Shop.Domain.Models.DiscountsModels;
+using E_Shop.Domain.Models.ProductModels;
 using E_Shop.Domain.Models.SpecificationModels;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace E_Shop.Application.ViewModels.ProductsViewModel
 {
@@ -21,6 +24,8 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
         [Required(ErrorMessage = "قیمت نباید خالی باشد.")]
         [Range(0, int.MaxValue, ErrorMessage = "قیمت باید یک عدد مثبت باشد.")]
         public int Price { get; set; }
+
+        public int? OffPrice { get; set; }
 
         [StringLength(500, ErrorMessage = "توضیحات باید کمتر از 500 کاراکتر باشد.")]
         public string Description { get; set; }
@@ -44,6 +49,8 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
         [Required(ErrorMessage = "موجودی نباید خالی باشد.")]
         [Range(0, int.MaxValue, ErrorMessage = "موجودی باید یک عدد مثبت باشد.")]
         public int Inventory { get; set; }
+
+        public List<DiscountsViewModel> Discounts { get; set; }
 
         public List<ColorViewModel> Colors { get; set; }
     }
@@ -178,5 +185,16 @@ namespace E_Shop.Application.ViewModels.ProductsViewModel
         public List<ColorModel>? Colors { get; set; }
     }
 
+    public class DiscountsViewModel 
+    {
+        public int ProductId { get; set; }
+        public bool IsAppliedToAll { get; set; }
 
+        public string? Code { get; set; }
+        public int? DiscountPercentage { get; set; }
+        public int? DiscountAmount { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public bool IsActive { get; set; }
+    }
 }
