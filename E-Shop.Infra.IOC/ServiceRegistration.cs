@@ -76,6 +76,7 @@ namespace E_Shop.Infra.IOC
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
             services.AddScoped<IRolePermissionService, RolePermissionService>();
+            services.AddScoped<IUserRoleService, UserRoleService>();
 
             return services;
         }
