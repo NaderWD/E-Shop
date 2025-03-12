@@ -1,5 +1,6 @@
 ﻿using E_Shop.Application.Services.RoleServices;
 using E_Shop.Application.Services.UserServices;
+using E_Shop.Application.ViewModels.RoleViewModels;
 using E_Shop.Application.ViewModels.UserViewModels;
 using E_Shop.Domain.Models.ValidationModels;
 using Microsoft.AspNetCore.Mvc;
@@ -9,26 +10,23 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 {
     public class UserController(IUserService _userService, IUserRoleService _userRoleService) : AdminBaseController
     {
-        #region Index
         public async Task<IActionResult> Index()
         {
             var model = await _userService.GetAllUsers();
             return View(model);
         }
-        #endregion
 
-        #region Create
+
         [HttpPost]
-        public async Task<IActionResult> CreateUser(UserViewModel model, List<int> selectedRoleIds)
+        public async Task<IActionResult> CreateUser(UserViewModel model)
         {
-            ViewBag.Roles = await _userRoleService.GetAllRolesForShow();
             if (!ModelState.IsValid)
             {
                 return PartialView("_AddUser", model);
             }
             else
             {
-                var result = await _userService.CreateUser(model, selectedRoleIds);
+                var result = await _userService.CreateUser(model);
                 switch (result)
                 {
                     case Domain.Enum.ValidationErrorType.EmailIsDuplicated:
@@ -38,21 +36,18 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                         TempData[SuccessMessage] = ErrorMessages.UserAdded;
                         return RedirectToAction("Index");
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
         }
-        #endregion
 
-        #region Update
         public async Task<IActionResult> UpdateUser(int UserId)
         {
-            ViewBag.Roles = await _userRoleService.GetAllRolesForShow();
             var content = await _userService.GetUserById(UserId);
             return PartialView("_UpdateUser", content);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateUser(UserViewModel model, List<int> selectedRoleIds)
+        public async Task<IActionResult> UpdateUser(UserViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -64,7 +59,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 if (emailcheck.EmailAddress != model.EmailAddress)
                 {
 
-                    var result = await _userService.UpdateUser(model, true, selectedRoleIds);
+                    var result = await _userService.UpdateUser(model, true);
                     switch (result)
                     {
                         case Domain.Enum.ValidationErrorType.EmailIsDuplicated:
@@ -72,25 +67,23 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                             break;
                         case Domain.Enum.ValidationErrorType.Success:
                             TempData[SuccessMessage] = ErrorMessages.UserUpdate;
-                            return RedirectToAction(nameof(Index));
+                            return RedirectToAction("Index");
                     }
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index");
 
                 }
                 else
                 {
 
-                    await _userService.UpdateUser(model, false, selectedRoleIds);
+                    await _userService.UpdateUser(model, false);
                     TempData[SuccessMessage] = ErrorMessages.UserUpdate;
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index");
 
                 }
             }
 
         }
-        #endregion
 
-        #region Delete
         public async Task<IActionResult> DeleteUser(int UserId)
         {
             var result = await _userService.DeleteUser(UserId);
@@ -98,13 +91,30 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             if (result == true)
             {
                 TempData[SuccessMessage] = ErrorMessages.UserDeleted;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
             else
             {
                 TempData[ErrorMessage] = ErrorMessages.FailedMessage;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
+        }
+
+        #region Add Role To User
+        [HttpGet]
+        public async Task<IActionResult> AddRoleToUser(int userId)
+        {
+            ViewBag.Roles = await _userRoleService.GetAllRolesForShow();
+            ViewBag.CurrentRoles = await _userRoleService.GetUsersCurrentRoles(userId);
+            return View(new UserRoleVM { UserId = userId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRoleToUser(int userId, List<int> selectedRoleIds)
+        {
+            if (!ModelState.IsValid) return RedirectToAction(nameof(AddRoleToUser), userId);
+            await _userRoleService.UpdateUserRole(userId, selectedRoleIds);
+            return RedirectToAction(nameof(Index));
         }
         #endregion
     }

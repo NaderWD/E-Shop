@@ -42,40 +42,7 @@
 
     </div>
 
-    <div class="form-check mb-3">
-        <input type="checkbox" id="is-admin" class="form-check-input" asp-for="IsAdmin">
-        <label class="form-check-label" for="is-admin">ادمین</label>
-    </div>
-
-        <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" id="addNewUserForm" novalidate="novalidate" method="post" asp-action="CreateUser">
-            <!-- Other input fields remain unchanged -->
-
-            <div class="mb-3">
-                <label class="form-label" for="user-role">نقش‌های کاربر</label>
-                <div id="roles-container">
-                    <!-- Initial dropdown -->
-                    <div class="role-selection mb-3" data-index="0">
-                        <select class="form-select role-dropdown" onchange="addRoleDropdown(this)">
-                            <option value="">یک نقش را انتخاب کنید</option>
-                            @foreach (var role in ViewBag.Roles)
-                            {
-                                <option value="@role.RoleId">@role.RoleName</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hidden input to store selected roles -->
-            <input type="hidden" id="selectedRoles" name="selectedRoleIds" value="" />
-
-            <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">افزودن کاربر</button>
-            <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas" asp-action="Index">لغو</button>
-        </form>
-
-
     <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">افزودن کاربر</button>
     <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas" asp-action="Index">لغو</button>
     <input type="hidden">
 </form>
-

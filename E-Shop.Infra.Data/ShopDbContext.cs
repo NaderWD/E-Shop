@@ -49,8 +49,8 @@ namespace E_Shop.Infra.Data
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 
-        public DbSet<Discount> Discounts { get; set; }
-        public DbSet<DiscountProductMapping> DiscountProductMapping { get; set; }
+        //public DbSet<Discount> Discounts { get; set; }
+        //public DbSet<DiscountProductMapping> DiscountProductMapping { get; set; }
         public DbSet<Wallet> Wallet { get; set; }   
 
 

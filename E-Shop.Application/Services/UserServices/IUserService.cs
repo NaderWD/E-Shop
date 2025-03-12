@@ -5,10 +5,11 @@ namespace E_Shop.Application.Services.UserServices
 {
     public interface IUserService
     {
-        Task<ValidationErrorType> CreateUser(UserViewModel userVM, List<int> selectedRoleIds);
-        Task<List<UserViewModel>> GetAllUsers();
-        Task<UserViewModel> GetUserById(int id);
-        Task<ValidationErrorType> UpdateUser(UserViewModel userVM, bool EmailCheck, List<int> selectedRoleIds);
+        Task<ValidationErrorType> CreateUser(UserViewModel userVM);
+        Task<ValidationErrorType> UpdateUser(UserViewModel userVM, bool EmailCheck);
         Task<bool> DeleteUser(int id);
+        Task<UserViewModel> GetUserById(int id);
+        Task<List<UserViewModel>> GetAllUsers();
+        Task<List<UserDetailsVM>> GetAllUsersForShow();
     }
 }

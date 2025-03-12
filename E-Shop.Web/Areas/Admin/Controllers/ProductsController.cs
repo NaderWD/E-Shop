@@ -12,9 +12,8 @@ namespace E_Shop.Web.Areas.Admin.Controllers
     {
         public IActionResult ProductIndex(FilterProductViewModel filter)
         {
-           
             var content = productsService.Filter(filter);
-            ViewBag.CategoryList = new SelectList(content.Category ?? new List<ProductCategoryViewModel>(), "Id", "Name");
+            ViewBag.CategoryList = new SelectList(content.Category ?? [], "Id", "Name");
             return View(content);
         }
 
@@ -22,7 +21,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         public IActionResult CreateProduct()
         {
             var content = productsService.GetProductCreateModel();
-            ViewBag.CategoryList = new SelectList(content.Category ?? new List<ProductCategoryViewModel>(), "Id", "Name");
+            ViewBag.CategoryList = new SelectList(content.Category ?? [], "Id", "Name");
             return View(content);
         }
 
@@ -78,7 +77,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         public IActionResult UpdateProduct(int productId)
         {
             var content = productsService.GetProductUpdateModel(productId);
-            ViewBag.CategoryList = new SelectList(content.Category ?? new List<ProductCategoryViewModel>(), "Id", "Name");
+            ViewBag.CategoryList = new SelectList(content.Category ?? [], "Id", "Name");
             return View(content);
         }
 

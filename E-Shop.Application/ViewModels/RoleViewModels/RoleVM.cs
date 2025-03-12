@@ -55,7 +55,6 @@
     #region User Role
     public class UserRoleVM
     {
-        public int UserRoleId { get; set; }
         public int UserId { get; set; }
         public List<RoleVMForUser>? Roles { get; set; }
     }
