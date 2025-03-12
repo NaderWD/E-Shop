@@ -40,6 +40,6 @@ namespace E_Shop.Domain.Models.UserModels
         public bool IsActive { get; set; }
 
         public List<UserRole>? UserRoles { get; set; }
-        public List<Address> Addresses { get; set; }
+        public List<Address>? Addresses { get; set; }
     }
 }

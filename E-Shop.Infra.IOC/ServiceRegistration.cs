@@ -1,4 +1,5 @@
 ﻿using E_Shop.Application.Services.AccountServices;
+using E_Shop.Application.Services.AddressServices;
 using E_Shop.Application.Services.ColorServices;
 using E_Shop.Application.Services.CommentService;
 using E_Shop.Application.Services.ContactUsServices;
@@ -10,6 +11,7 @@ using E_Shop.Application.Services.SpecificationServices;
 using E_Shop.Application.Services.TicketServices;
 using E_Shop.Application.Services.UserServices;
 using E_Shop.Application.Services.WalletServices;
+using E_Shop.Domain.Contracts.AddressCont;
 using E_Shop.Domain.Contracts.ColorCont;
 using E_Shop.Domain.Contracts.CommentCont;
 using E_Shop.Domain.Contracts.ContactUsCont;
@@ -20,6 +22,7 @@ using E_Shop.Domain.Contracts.SpecificationCont;
 using E_Shop.Domain.Contracts.TicketCont;
 using E_Shop.Domain.Contracts.UserCont;
 using E_Shop.Domain.Contracts.WalletCont;
+using E_Shop.Infra.Data.Repositories.AddressRepo;
 using E_Shop.Infra.Data.Repositories.ColorRepo;
 using E_Shop.Infra.Data.Repositories.CommentRepo;
 using E_Shop.Infra.Data.Repositories.ContactUsRepo;
@@ -92,6 +95,11 @@ namespace E_Shop.Infra.IOC
 
             services.AddScoped<IWalletRepository, WalletRepository>();
             services.AddScoped<IWalletService, WalletService>();
+
+            services.AddScoped<IStateRepository, StateRepository>();
+            services.AddScoped<ICityRepository, CityRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IAddressService, AddressService>();
 
             return services;
 
