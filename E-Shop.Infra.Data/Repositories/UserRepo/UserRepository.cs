@@ -29,7 +29,6 @@ namespace E_Shop.Infra.Data.Repositories.UserRepo
         public async Task<List<User>> GetAllUsers()
         {
             return await _context.Users.ToListAsync();
-
         }
 
         public async Task<User> GetUserByActivationCode(string code)
@@ -53,9 +52,10 @@ namespace E_Shop.Infra.Data.Repositories.UserRepo
 
         public async Task<User> GetUserById(int id)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Users.Include(x => x.UserRoles!)
+                                                         .ThenInclude(x => x.Role)
+                                                         .FirstOrDefaultAsync(x => x.Id == id);
         }
-
 
         public async Task Save()
         {

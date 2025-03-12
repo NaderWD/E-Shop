@@ -50,6 +50,7 @@ namespace E_Shop.Application.Services.RoleServices
                     LastModifiedDate = DateTime.Now,
                 };
                 await _rolePermissionRepository.CreateRolePermission(rolePermission);
+                await Save();
             }
             await Save();
         }

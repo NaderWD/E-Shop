@@ -149,3 +149,63 @@ function toggleParent(childCheckbox, parentId) {
 }
 
 
+//Add Roles To User
+document.addEventListener("DOMContentLoaded", function () {
+    const selectedRoles = [];
+
+    function updateHiddenInput() {
+        document.getElementById("selectedRoles").value = JSON.stringify(selectedRoles);
+    }
+
+    function addRoleDropdown(dropdown) {
+        const selectedValue = dropdown.value;
+
+        if (selectedValue && !selectedRoles.includes(selectedValue)) {
+            selectedRoles.push(selectedValue);
+            updateHiddenInput();
+
+            // Remove selected option from all existing dropdowns
+            removeSelectedOption(selectedValue);
+
+            // Create a new dropdown
+            const container = document.getElementById("roles-container");
+            const newDropdownDiv = document.createElement("div");
+            newDropdownDiv.className = "role-selection mb-3";
+            const newDropdown = document.createElement("select");
+            newDropdown.className = "form-select role-dropdown";
+            newDropdown.onchange = function () {
+                addRoleDropdown(newDropdown);
+            };
+
+            // Default option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "یک نقش را انتخاب کنید";
+            newDropdown.appendChild(defaultOption);
+
+            // Add options from available roles
+            const availableRoles = JSON.parse(document.getElementById("roles-data").textContent);
+            availableRoles.forEach((role) => {
+                if (!selectedRoles.includes(role.RoleId)) {
+                    const option = document.createElement("option");
+                    option.value = role.RoleId;
+                    option.textContent = role.RoleName;
+                    newDropdown.appendChild(option);
+                }
+            });
+
+            newDropdownDiv.appendChild(newDropdown);
+            container.appendChild(newDropdownDiv);
+        }
+    }
+
+    function removeSelectedOption(value) {
+        const dropdowns = document.querySelectorAll(".role-dropdown");
+        dropdowns.forEach((dropdown) => {
+            const option = dropdown.querySelector(`option[value="${value}"]`);
+            if (option) {
+                option.remove();
+            }
+        });
+    }
+});

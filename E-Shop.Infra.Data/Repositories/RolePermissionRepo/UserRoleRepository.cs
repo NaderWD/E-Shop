@@ -15,6 +15,12 @@ namespace E_Shop.Infra.Data.Repositories.RolePermissionRepo
                                                         .Where(x => !x.IsDelete)
                                                         .ToListAsync();
 
+        public async Task<List<Role>> GetAllRolesForUser()
+            => await _context.UserRoles.Include(x => x.Role)
+                                                        .Select(x => x.Role)
+                                                        .Where(x => !x.IsDelete)
+                                                        .ToListAsync();
+
         public async Task<UserRole> GetUserRoleById(int userRoleId)
             => await _context.UserRoles.Include(x => x.User)
                                                         .Include(x => x.Role)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using E_Shop.Application.ViewModels.RoleViewModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Application.ViewModels.UserViewModels
 {
@@ -28,7 +29,7 @@ namespace E_Shop.Application.ViewModels.UserViewModels
         public bool IsDelete { get; set; }
         public bool IsActive { get; set; }
 
-        //public List<> MyProperty { get; set; }
+        public List<string>? RoleNames { get; set; }                        
     }
     
 }

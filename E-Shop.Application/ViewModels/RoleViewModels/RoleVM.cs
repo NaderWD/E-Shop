@@ -57,9 +57,13 @@
     {
         public int UserRoleId { get; set; }
         public int UserId { get; set; }
-        public int RoleId { get; set; }                      
-        public List<string>? RolesName { get; set; }        
-        public List<int>? SelectedRoles { get; set; }
+        public List<RoleVMForUser>? Roles { get; set; }
+    }
+
+    public class RoleVMForUser
+    {
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
     }
     #endregion
 }
