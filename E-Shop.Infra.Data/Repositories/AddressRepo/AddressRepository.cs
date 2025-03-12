@@ -25,7 +25,5 @@ namespace E_Shop.Infra.Data.Repositories.AddressRepo
 
         public async Task DeleteAddress(int addressId)
             => _context.Addresses.Remove(await GetAddressById(addressId));
-
-        public async Task Save() => await _context.SaveChangesAsync();
     }
 }

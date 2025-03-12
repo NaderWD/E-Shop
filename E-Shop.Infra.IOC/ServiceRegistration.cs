@@ -32,6 +32,7 @@ using E_Shop.Infra.Data.Repositories.ProductRepo;
 using E_Shop.Infra.Data.Repositories.RolePermissionRepo;
 using E_Shop.Infra.Data.Repositories.SpecificationRepo;
 using E_Shop.Infra.Data.Repositories.TicketRepo;
+using E_Shop.Infra.Data.Repositories.UserAddressRepo;
 using E_Shop.Infra.Data.Repositories.UserRepo;
 using E_Shop.Infra.Data.Repositories.WalletRepo;
 using Microsoft.Extensions.DependencyInjection;
@@ -99,7 +100,9 @@ namespace E_Shop.Infra.IOC
             services.AddScoped<IStateRepository, StateRepository>();
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IUserAddressRepository, UserAddressRepository>();
             services.AddScoped<IAddressService, AddressService>();
+
 
             return services;
 

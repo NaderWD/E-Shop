@@ -7,5 +7,6 @@
         public string? NeighborHood { get; set; }
         public City? City { get; set; }
         public State? State { get; set; }
+        public List<UserAddress>? UserAddresses { get; set; }
     }
 }

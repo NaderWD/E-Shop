@@ -53,8 +53,9 @@ namespace E_Shop.Infra.Data
         public DbSet<Wallet> Wallet { get; set; }
 
         public DbSet<State> States { get; set; }
-        public DbSet<City> Cities { get; set; }
-        public DbSet<Address> Addresses { get; set; }   
+        public DbSet<City> Cities { get; set; }                        
+        public DbSet<Address> Addresses { get; set; }         
+        public DbSet<UserAddress> UserAddresses { get; set; }
 
 
 

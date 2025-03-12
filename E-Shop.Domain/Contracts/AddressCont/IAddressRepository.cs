@@ -9,6 +9,5 @@ namespace E_Shop.Domain.Contracts.AddressCont
         Task<Address> GetAddressById(int addressId);
         Task UpdateAddress(Address address);
         Task DeleteAddress(int addressId);
-        Task Save();
     }
 }
