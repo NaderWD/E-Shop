@@ -10,6 +10,7 @@ using E_Shop.Domain.Models.UserModels;
 using E_Shop.Infra.Data.Seeds;
 using E_Shop.Domain.Models.Wallet;
 using Microsoft.EntityFrameworkCore;
+using E_Shop.Domain.Models.AddressModels;
 
 
 namespace E_Shop.Infra.Data
@@ -49,10 +50,11 @@ namespace E_Shop.Infra.Data
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 
-        //public DbSet<Discount> Discounts { get; set; }
-        //public DbSet<DiscountProductMapping> DiscountProductMapping { get; set; }
-        public DbSet<Wallet> Wallet { get; set; }   
+        public DbSet<Wallet> Wallet { get; set; }
 
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Address> Addresses { get; set; }   
 
 
 
