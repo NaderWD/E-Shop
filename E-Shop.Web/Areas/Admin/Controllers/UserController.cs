@@ -2,12 +2,15 @@
 using E_Shop.Application.Services.UserServices;
 using E_Shop.Application.ViewModels.RoleViewModels;
 using E_Shop.Application.ViewModels.UserViewModels;
+using E_Shop.Domain.Models.RolePermissionModels;
 using E_Shop.Domain.Models.ValidationModels;
+using E_Shop.Web.attributes;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
+[InvokePermission(PermissionName.UserManagement)]
     public class UserController(IUserService _userService, IUserRoleService _userRoleService) : AdminBaseController
     {
         public async Task<IActionResult> Index()
@@ -17,7 +20,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost , InvokePermission(PermissionName.CreateUser)]
         public async Task<IActionResult> CreateUser(UserViewModel model)
         {
             if (!ModelState.IsValid)
