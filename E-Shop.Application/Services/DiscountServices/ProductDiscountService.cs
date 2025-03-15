@@ -82,7 +82,7 @@ namespace E_Shop.Application.Services.DiscountServices
                             }
                             else if (query.Where(d => d.DiscountPercentage == null && d.DiscountAmount != null).Any())
                             {
-                                if (price - discount.DiscountAmount.Value> 0)
+                                if (price - discount.DiscountAmount.Value > 0)
                                 {
                                     return price - discount.DiscountAmount.Value;
                                 }
@@ -126,7 +126,7 @@ namespace E_Shop.Application.Services.DiscountServices
                             }
                             else
                             {
-                                if (price - discount.DiscountAmount.Value> 0)
+                                if (price - discount.DiscountAmount.Value > 0)
                                 {
                                     return price - discount.DiscountAmount.Value;
                                 }
@@ -183,7 +183,7 @@ namespace E_Shop.Application.Services.DiscountServices
                 var p = price * ((double)publicDiscount.Discount.DiscountPercentage.Value / 100);
                 if (price - publicDiscount.Discount.DiscountAmount < price * ((double)publicDiscount.Discount.DiscountPercentage.Value / 100))
                 {
-                    
+
                     if (price * ((double)publicDiscount.Discount.DiscountPercentage.Value / 100) > 0)
                     {
                         return (int)(price * ((double)publicDiscount.Discount.DiscountPercentage.Value / 100));
@@ -256,10 +256,35 @@ namespace E_Shop.Application.Services.DiscountServices
 
         public List<DiscountViewModel> GetDiscountForProduct(int productId)
         {
-            _proDiscountRepository.GetDiscountForProduct(productId);
-            List<DiscountViewModel> discounts = new List<DiscountViewModel>();
+            var discounts = _proDiscountRepository.GetDiscountForProduct(productId);
+            List<DiscountViewModel> models = new List<DiscountViewModel>();
 
-            throw new NotImplementedException();
+            if (discounts.Count != 0)
+            {
+                foreach (var item in discounts)
+                {
+                    models.Add(new DiscountViewModel
+                    {
+                        Code = item.Discount.Code,
+                        DiscountAmount = item.Discount.DiscountAmount,
+                        DiscountPercentage = item.Discount.DiscountPercentage,
+                        Id = item.Discount.Id,
+                        StartDate = item.Discount.StartDate,
+                        EndDate = item.Discount.EndDate,
+                        IsAppliedToAll = item.IsAppliedToAll,
+                        IsActive = item.Discount.IsActive,
+                        CreateDate = item.CreateDate,
+
+                    });
+                }
+
+                return models;
+            }
+            else
+            {
+                models = new List<DiscountViewModel>();
+                return models;
+            }
 
         }
 
@@ -314,6 +339,59 @@ namespace E_Shop.Application.Services.DiscountServices
             return model;
         }
 
+        public int ApplypublicDiscountByVM(DiscountViewModel publicDiscount, int price)
+        {
+            if (publicDiscount.DiscountPercentage != null && publicDiscount.DiscountAmount != null)
+            {
+                var o = ((double)publicDiscount.DiscountPercentage.Value / 100);
+                var q = price - publicDiscount.DiscountAmount;
+                var p = price * ((double)publicDiscount.DiscountPercentage.Value / 100);
+                if (price - publicDiscount.DiscountAmount < price * ((double)publicDiscount.DiscountPercentage.Value / 100))
+                {
 
+                    if (price * ((double)publicDiscount.DiscountPercentage.Value / 100) > 0)
+                    {
+                        return (int)(price * ((double)publicDiscount.DiscountPercentage.Value / 100));
+                    }
+                    else
+                    {
+                        return price;
+                    }
+                }
+                else
+                {
+                    if (price - publicDiscount.DiscountAmount.Value > 0)
+                    {
+                        return price - publicDiscount.DiscountAmount.Value;
+                    }
+                    else
+                    {
+                        return price;
+                    }
+                }
+            }
+            else if (publicDiscount.DiscountPercentage == null && publicDiscount.DiscountAmount != null)
+            {
+                if (price - publicDiscount.DiscountAmount.Value > 0)
+                {
+                    return price - publicDiscount.DiscountAmount.Value;
+                }
+                else
+                {
+                    return price;
+                }
+            }
+            else
+            {
+                if (price * ((double)publicDiscount.DiscountPercentage.Value / 100) > 0)
+                {
+                    return (int)(price * ((double)publicDiscount.DiscountPercentage.Value / 100));
+                }
+                else
+                {
+                    return price;
+                }
+            }
+        }
     }
 }

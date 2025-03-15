@@ -48,7 +48,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         public async Task<IActionResult> UpdateUser(UserViewModel model)
         {
             if (!ModelState.IsValid)
-            {
+            {   
                 return PartialView("_UpdateUser", model);
             }
             else

@@ -1,4 +1,5 @@
-﻿@using E_Shop.Application.ViewModels.ProductsViewModel
+﻿@using E_Shop.Application.ViewModels.OrdersViewModel
+@using E_Shop.Application.ViewModels.ProductsViewModel
 @using E_Shop.Domain.Enum
 @model ProductArchiveViewModel
 
@@ -167,9 +168,8 @@
                                                                     <div class="product-actions">
                                                                         <ul>
                                                                             <li>
-                                                                                <a href="#" data-bs-toggle="tooltip" title="افزودن به سبد خرید">
-                                                                                    <i class="ri-shopping-cart-line"></i>
-                                                                                </a>
+                                                                                
+                                                                                <partial name="_AddToCart" model="new CreateOrderViewModel{ProductId=item.Id}">
                                                                             </li>
                                                                             <li>
                                                                                 <a href="#" data-bs-toggle="tooltip" title="مشاهده سریع" data-remodal-target="quick-view-modal">
@@ -223,9 +223,7 @@
                                                                     <div class="product-actions">
                                                                         <ul>
                                                                             <li>
-                                                                                <a href="#" data-bs-toggle="tooltip" title="افزودن به سبد خرید">
-                                                                                    <i class="ri-shopping-cart-line"></i>
-                                                                                </a>
+                                                                                <partial name="_AddToCart" model="new CreateOrderViewModel{ProductId=item.Id}">
                                                                             </li>
                                                                             <li>
                                                                                 <a href="#" data-bs-toggle="tooltip" title="مشاهده سریع" data-remodal-target="quick-view-modal">

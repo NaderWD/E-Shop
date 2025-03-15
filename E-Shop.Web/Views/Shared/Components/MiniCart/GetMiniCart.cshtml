@@ -1,0 +1,84 @@
+﻿@using E_Shop.Application.ViewModels.OrdersViewModel
+@model OrderViewModel
+
+<div class="user-option user-option--cart">
+    <a asp-area="User" asp-controller="ShopCart" asp-action="ShopCartIndex" class="user-option-btn user-option-btn--cart">
+        <i class="ri-shopping-bag-2-fill icon"></i>
+        <span class="user-item-text">
+            <span class="title">سبد خرید شما</span>
+
+            @await Component.InvokeAsync("CartTotalPrice");
+        </span>
+
+        @if (Model.orderProducts != null)
+        {<span class="counter">@Model.orderProducts.Count()</span> }
+        
+    </a>
+    <div class="mini-cart">
+        <div class="mini-cart-header">
+            <span class="mini-cart-products-count fa-num">4 کالا</span>
+            <a asp-area="User" asp-controller="ShopCart" asp-action="ShopCartIndex" class="btn btn-link px-0">
+                مشاهده سبد خرید <i class="ri-arrow-left-s-fill"></i>
+            </a>
+        </div>
+        <div class="mini-cart-products do-simplebar">
+            @if (Model.orderProducts != null)
+            {
+                @foreach (var product in Model.orderProducts)
+                {
+                    <div class="mini-cart-product">
+                        <div class="mini-cart-product-thumbnail">
+                            <a href="#">
+                                <img src="./theme-assets/images/products/@product.ImageName" alt="@product.Title">
+                            </a>
+                        </div>
+                        <div class="mini-cart-product-detail">
+                            <div class="mini-cart-product-title">
+                                <a href="#">
+                                    @product.Title
+                                </a>
+                            </div>
+                            <div class="mini-cart-purchase-info">
+                                <div class="mini-cart-product-meta">
+                                    <span class="fa-num">@product.Count عدد</span>
+                                    @if (!string.IsNullOrEmpty(product.ColorName))
+                                    {
+                                        <span class="color" style="background-color: @product.ColorName;"></span>
+                                    }
+                                </div>
+                                <div class="mini-cart-product-price fa-num">
+                                    @if (product.OffPrice > 0)
+                                    {
+                                        <del>@product.Price.ToString("N0")</del>
+                                        @product.OffPrice.ToString("N0")
+                                    }
+                                    else
+                                    {
+                                        @product.Price.ToString("N0")
+                                    }
+                                    <span class="currency">تومان</span>
+                                </div>
+                            </div>
+                            <button class="mini-cart-product-remove"
+                                    data-product-id="@product.ProductId"
+                                    data-color-id="@product.ColorId"></button>
+                        </div>
+                    </div>
+                }
+
+            }
+            else
+            {
+                <p>محصولی وجود ندارد</p>
+            }
+        </div>
+
+        <div class="mini-cart-footer">
+            <div class="mini-cart-total">
+                <span class="mini-cart-total-label">مبلغ قابل پرداخت:</span>
+                @await Component.InvokeAsync("CartTotalPrice");
+            </div>
+            <a href="Login" class="btn btn-primary">ورود </a>
+        </div>
+    </div>
+</div>

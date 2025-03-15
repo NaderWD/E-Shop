@@ -32,6 +32,9 @@ using E_Shop.Infra.Data.Repositories.DiscountRepo;
 using E_Shop.Domain.Contracts.WalletCont;
 using E_Shop.Application.Services.WalletServices;
 using E_Shop.Infra.Data.Repositories.WalletRepo;
+using E_Shop.Domain.Contracts.OrderCont;
+using E_Shop.Infra.Data.Repositories.OrderRepo;
+using E_Shop.Application.Services.Order;
 
 namespace E_Shop.Infra.IOC
 {
@@ -91,6 +94,9 @@ namespace E_Shop.Infra.IOC
 
             services.AddScoped<IWalletRepository, WalletRepository>();
             services.AddScoped<IWalletService, WalletService>();
+
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderService, OrderService>();
 
             return services;
 

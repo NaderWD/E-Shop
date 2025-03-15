@@ -13,6 +13,7 @@ namespace E_Shop.Application.Services.DiscountServices
     {
         public int ApplyDiscount(List<DiscountsViewModel> query, int price);
         public int ApplypublicDiscount(DiscountProductMapping discount, int price);
+        public int ApplypublicDiscountByVM(DiscountViewModel publicDiscount, int price);
         List<DiscountViewModel> GetDiscountForProduct(int productId);
         
         List<DiscountViewModel> GetAllForProduct(int productId);

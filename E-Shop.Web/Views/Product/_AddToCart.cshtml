@@ -1,0 +1,12 @@
+﻿@using E_Shop.Application.ViewModels.OrdersViewModel
+@model CreateOrderViewModel
+<form asp-area="User" asp-controller="ShopCart" asp-action="AddProduct" method="post">
+    <input type="hidden" asp-for="ProductId" value="@Model.ProductId" />
+    <button type="submit" class="bg-transparent border-0">
+        <a data-bs-toggle="tooltip" title="افزودن به سبد خرید">
+            
+            <i class="ri-shopping-cart-line"></i>
+        </a>
+    </button>
+    
+</form>

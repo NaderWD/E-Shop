@@ -74,9 +74,21 @@ namespace E_Shop.Application.Services.ProductServices
                 Inventory = products.Inventory,
                 ImageName = products.ImageName,
                 Price = products.Price,
-                CategoryId = products.CategoryId
+                CategoryId = products.CategoryId,
             };
 
+            model.Colors = new List<ColorViewModel>();
+            foreach (var item in products.Color)
+            {
+                model.Colors.Add(new ColorViewModel 
+                {
+                    Id = item.Color.Id,
+                    Code = item.Color.Code,
+                    ColorPrice = item.Price,
+                    Name = item.Color.Name,
+                    IsDefault = item.IsDefault,
+                });
+            }
             return model;
         }
 

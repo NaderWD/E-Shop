@@ -10,7 +10,7 @@ namespace E_Shop.Domain.Contracts.DiscountCont
     public interface IProductDiscountRepository
     {
 
-        Task<List<DiscountProductMapping>> GetDiscountForProduct(int productId);
+        List<DiscountProductMapping> GetDiscountForProduct(int productId);
         int GetProductPrice(int productId);
 
         List<DiscountProductMapping> GetAllForProduct(int productId);

@@ -39,7 +39,7 @@ namespace E_Shop.Infra.Data.Repositories.ProductRepo
 
         public Product GetById(int Id)
         {
-            return dbContext.Products.Find(Id);
+            return dbContext.Products.Where(p => p.Id == Id).Include(p => p.Color).ThenInclude(p => p.Color).FirstOrDefault();
         }
 
         public List<Product> GetByCategoryId(int Id)

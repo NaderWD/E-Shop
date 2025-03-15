@@ -309,7 +309,6 @@ namespace E_Shop.Infra.Data.Seeds
                  DisplayName = "حذف تیکت"
              },
              #endregion
-    ];      
-    }       
-}           
-            
+    ];
+    }
+}

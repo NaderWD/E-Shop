@@ -21,7 +21,7 @@ namespace E_Shop.Application.Services.UserServices
 
         public async Task<List<UserDetailsVM>> GetAllUsersForShow()
         {
-            List<User> model = await _repository.GetAllUsers();   
+            List<User> model = await _repository.GetAllUsers();
             List<UserDetailsVM> users = [];
 
             foreach (var item in model.Where(u => u.IsDelete == false))
@@ -78,39 +78,23 @@ namespace E_Shop.Application.Services.UserServices
 
         public async Task<ValidationErrorType> UpdateUser(UserViewModel model, bool EmailCheck)
         {
-            if (EmailCheck)
+            if (EmailCheck && await _accountService.EmailExist(model.EmailAddress))
             {
-                if (await _accountService.EmailExist(model.EmailAddress))
-                    return ValidationErrorType.EmailIsDuplicated;
-
-                var user = await _repository.GetUserById(model.Id);
-
-
-                user.EmailAddress = model.EmailAddress;
-                user.Mobile = model.Mobile;
-                user.IsAdmin = model.IsAdmin;
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
-
-
-                await _repository.UpdateUser(user);
-                return ValidationErrorType.Success;
+                return ValidationErrorType.EmailIsDuplicated;
             }
-            else
-            {
-                var user = await _repository.GetUserById(model.Id);
+
+            var user = await _repository.GetUserById(model.Id);
 
 
-                user.EmailAddress = model.EmailAddress;
-                user.Mobile = model.Mobile;
-                user.IsAdmin = model.IsAdmin;
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
+            user.EmailAddress = model.EmailAddress;
+            user.Mobile = model.Mobile;
+            user.IsAdmin = model.IsAdmin;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
 
 
-                await _repository.UpdateUser(user);
-                return ValidationErrorType.Success;
-            }
+            await _repository.UpdateUser(user);
+            return ValidationErrorType.Success;
 
         }
 

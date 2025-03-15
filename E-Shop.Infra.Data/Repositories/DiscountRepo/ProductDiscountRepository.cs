@@ -32,9 +32,9 @@ namespace E_Shop.Infra.Data.Repositories.DiscountRepo
             return dbContext.DiscountProductMapping.Where(m => m.ProductId == productId && m.IsDelete == false).Include(m => m.Discount).ToList();
         }
 
-        public async Task<List<DiscountProductMapping>> GetDiscountForProduct(int productId)
+        public List<DiscountProductMapping> GetDiscountForProduct(int productId)
         {
-            return await dbContext.DiscountProductMapping.Where(p => p.ProductId == productId).Include(m => m.Discount).ToListAsync();
+            return dbContext.DiscountProductMapping.Where(p => p.ProductId == productId && p.Discount.IsActive == true).Include(m => m.Discount).ToList();
         }
 
         public int GetProductPrice(int productId)

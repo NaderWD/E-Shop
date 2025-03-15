@@ -22,7 +22,7 @@ namespace E_Shop.Application.ViewModels.ColorViewModels
 
         public bool IsDefault { get; set; }
 
-
+        public int? ColorPrice { get; set; }
     }
     public class CreateColorViewModel
     {
