@@ -115,7 +115,7 @@ namespace E_Shop.Application.ViewModels.DiscountsViewModels
                 }
                 else
                 {
-                    return $"{Code} - {DiscountPercentage.Value}% - {DiscountAmount.Value} off";
+                    return $"{Code} - {DiscountPercentage!.Value}% - {DiscountAmount!.Value} off";
                 }
                 
             }

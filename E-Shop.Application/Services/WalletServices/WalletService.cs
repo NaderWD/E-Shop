@@ -77,7 +77,7 @@ namespace E_Shop.Application.Services.WalletServices
 
         public NovinoGetPaymentUrlRequestDto RequestContent(WalletViewModel transaction, int InvoiceId)
         {
-            NovinoGetPaymentUrlRequestDto model = new NovinoGetPaymentUrlRequestDto()
+            NovinoGetPaymentUrlRequestDto model = new()
             {
                 Amount = transaction.Amount,
                 CallBack_Method = "",

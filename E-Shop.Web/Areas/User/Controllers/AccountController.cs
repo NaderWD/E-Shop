@@ -35,15 +35,12 @@ namespace E_Shop.Web.Areas.User.Controllers
         }
         #endregion
 
-
-
         #region Login
         [HttpGet("/login")]
         public IActionResult Login()
         {
             return View();
         }
-
 
         [HttpPost("/login")]
         public async Task<IActionResult> Login(LoginVM userLogin)
@@ -70,8 +67,6 @@ namespace E_Shop.Web.Areas.User.Controllers
         }
         #endregion
 
-
-
         #region Logout
         [HttpGet("/logout")]
         public async Task<IActionResult> Logout()
@@ -80,8 +75,6 @@ namespace E_Shop.Web.Areas.User.Controllers
             return Redirect("/");
         }
         #endregion
-
-
 
         #region Confirm Email
         [HttpGet("/confirmEmail")]
@@ -100,8 +93,6 @@ namespace E_Shop.Web.Areas.User.Controllers
         }
         #endregion
 
-
-
         #region Forget Password
         [HttpGet("/ForgetPassword")]
         public IActionResult ForgetPassword(string email)
@@ -118,8 +109,6 @@ namespace E_Shop.Web.Areas.User.Controllers
             return RedirectToAction("ResetPassword", new { email = forgetPassword.EmailAddress });
         }
         #endregion
-
-
 
         #region Reset Password
         [HttpGet("/ResetPassword")]
@@ -138,8 +127,6 @@ namespace E_Shop.Web.Areas.User.Controllers
         }
         #endregion
 
-
-
         #region ReSendForReset
         [HttpGet("ReSendForReset")]
         public async Task<IActionResult> ReSendForReset(string email)
@@ -149,8 +136,6 @@ namespace E_Shop.Web.Areas.User.Controllers
         }
         #endregion
 
-
-
         #region ReSendForConfirm
         [HttpGet("ReSendForConfirm")]
         public async Task<IActionResult> ReSendForConfirm(string email)
@@ -159,8 +144,6 @@ namespace E_Shop.Web.Areas.User.Controllers
             return RedirectToAction("ConfirmEmail", new { email });
         }
         #endregion
-
-
 
         #region User Profile
         [HttpGet("/UserProfile")]

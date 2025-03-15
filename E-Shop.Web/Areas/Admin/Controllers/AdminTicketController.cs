@@ -9,7 +9,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
 {
     public class AdminTicketController(ITicketService _ticketService, ITicketMessageService _messageService, IUserService _userService) : AdminBaseController
     {
-
         #region View All Tickets
         [HttpGet]
         public async Task<IActionResult> AllTickets()
@@ -19,8 +18,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
         #endregion
 
-
-
         #region Create New Ticket
         [HttpGet]
         public async Task<IActionResult> CreateNewTicket()
@@ -29,8 +26,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             return View(users);
         }
         #endregion
-
-
 
         #region Send Ticket To User
         [HttpGet]
@@ -51,8 +46,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(AllTickets));
         }
         #endregion
-
-
 
         #region Send Message
         [HttpGet]
@@ -76,8 +69,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         }
         #endregion
 
-
-        
         #region Save Message
         [HttpPost]
         public async Task<IActionResult> SaveMessage(MessageVM messageVM, IFormFile? attachment)
@@ -88,8 +79,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(SendMessage), new { messageVM.TicketId });
         }
         #endregion
-
-
 
         #region Delete Ticket
         [HttpPost]

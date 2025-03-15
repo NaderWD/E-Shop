@@ -11,6 +11,7 @@ using E_Shop.Infra.Data.Seeds;
 using E_Shop.Domain.Models.Wallet;
 using Microsoft.EntityFrameworkCore;
 using E_Shop.Domain.Models.Order;
+using E_Shop.Domain.Models.AddressModels;
 
 
 namespace E_Shop.Infra.Data
@@ -67,6 +68,14 @@ namespace E_Shop.Infra.Data
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         #endregion
+
+        
+
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }                        
+        public DbSet<Address> Addresses { get; set; }         
+        public DbSet<UserAddress> UserAddresses { get; set; }
+
 
         #region Money
         public DbSet<Order> Orders { get; set; }

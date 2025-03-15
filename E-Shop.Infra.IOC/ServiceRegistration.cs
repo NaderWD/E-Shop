@@ -1,40 +1,44 @@
 ﻿using E_Shop.Application.Services.AccountServices;
+using E_Shop.Application.Services.AddressServices;
+using E_Shop.Application.Services.ColorServices;
+using E_Shop.Application.Services.CommentService;
 using E_Shop.Application.Services.ContactUsServices;
+using E_Shop.Application.Services.DiscountServices;
 using E_Shop.Application.Services.EmailServices;
+using E_Shop.Application.Services.Order;
 using E_Shop.Application.Services.ProductServices;
+using E_Shop.Application.Services.RoleServices;
 using E_Shop.Application.Services.SpecificationServices;
 using E_Shop.Application.Services.TicketServices;
 using E_Shop.Application.Services.UserServices;
+using E_Shop.Application.Services.WalletServices;
+using E_Shop.Domain.Contracts.AddressCont;
+using E_Shop.Domain.Contracts.ColorCont;
+using E_Shop.Domain.Contracts.CommentCont;
 using E_Shop.Domain.Contracts.ContactUsCont;
+using E_Shop.Domain.Contracts.DiscountCont;
+using E_Shop.Domain.Contracts.OrderCont;
 using E_Shop.Domain.Contracts.ProductCont;
+using E_Shop.Domain.Contracts.RolePermissionCont;
 using E_Shop.Domain.Contracts.SpecificationCont;
 using E_Shop.Domain.Contracts.TicketCont;
 using E_Shop.Domain.Contracts.UserCont;
+using E_Shop.Domain.Contracts.WalletCont;
+using E_Shop.Infra.Data.Repositories.AddressRepo;
+using E_Shop.Infra.Data.Repositories.ColorRepo;
+using E_Shop.Infra.Data.Repositories.CommentRepo;
 using E_Shop.Infra.Data.Repositories.ContactUsRepo;
+using E_Shop.Infra.Data.Repositories.DiscountRepo;
+using E_Shop.Infra.Data.Repositories.Implementations;
+using E_Shop.Infra.Data.Repositories.OrderRepo;
 using E_Shop.Infra.Data.Repositories.ProductRepo;
+using E_Shop.Infra.Data.Repositories.RolePermissionRepo;
 using E_Shop.Infra.Data.Repositories.SpecificationRepo;
 using E_Shop.Infra.Data.Repositories.TicketRepo;
+using E_Shop.Infra.Data.Repositories.UserAddressRepo;
 using E_Shop.Infra.Data.Repositories.UserRepo;
-using Microsoft.Extensions.DependencyInjection;
-using E_Shop.Domain.Contracts.ColorCont;
-using E_Shop.Application.Services.ColorServices;
-using E_Shop.Infra.Data.Repositories.ColorRepo;
-using E_Shop.Infra.Data.Repositories.Implementations;
-using E_Shop.Domain.Contracts.CommentCont;
-using E_Shop.Infra.Data.Repositories.CommentRepo;
-using E_Shop.Application.Services.CommentService;
-using E_Shop.Domain.Contracts.RolePermissionCont;
-using E_Shop.Infra.Data.Repositories.RolePermissionRepo;
-using E_Shop.Application.Services.RoleServices;
-using E_Shop.Domain.Contracts.DiscountCont;
-using E_Shop.Application.Services.DiscountServices;
-using E_Shop.Infra.Data.Repositories.DiscountRepo;
-using E_Shop.Domain.Contracts.WalletCont;
-using E_Shop.Application.Services.WalletServices;
 using E_Shop.Infra.Data.Repositories.WalletRepo;
-using E_Shop.Domain.Contracts.OrderCont;
-using E_Shop.Infra.Data.Repositories.OrderRepo;
-using E_Shop.Application.Services.Order;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace E_Shop.Infra.IOC
 {
@@ -85,6 +89,7 @@ namespace E_Shop.Infra.IOC
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
             services.AddScoped<IRolePermissionService, RolePermissionService>();
+            services.AddScoped<IUserRoleService, UserRoleService>();
 
             services.AddScoped<IDiscountRepository, DiscountRepository>();
             services.AddScoped<IDiscountService, DiscountService>();
@@ -97,6 +102,16 @@ namespace E_Shop.Infra.IOC
 
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
+
+            services.AddScoped<IStateRepository, StateRepository>();
+            services.AddScoped<ICityRepository, CityRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IUserAddressRepository, UserAddressRepository>();
+            services.AddScoped<IStateServices, StateServices>();
+            services.AddScoped<ICityServices, CityServices>();
+            services.AddScoped<IAddressServices, AddressServices>();
+            services.AddScoped<IUserAddressServices, UserAddressServices>();
+
 
             return services;
 

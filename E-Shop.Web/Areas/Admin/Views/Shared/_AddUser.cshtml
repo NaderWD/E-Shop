@@ -42,22 +42,6 @@
 
     </div>
 
-    <div class="form-check mb-3">
-        <input type="checkbox" id="is-admin" class="form-check-input" asp-for="IsAdmin">
-        <label class="form-check-label" for="is-admin">ادمین</label>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label" for="user-role">User Role</label>
-        <select id="user-role" class="form-select">
-            <option value="subscriber">Subscriber</option>
-            <option value="editor">Editor</option>
-            <option value="maintainer">Maintainer</option>
-            <option value="author">Author</option>
-            <option value="admin">Admin</option>
-        </select>
-    </div>
-
     <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">افزودن کاربر</button>
     <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas" asp-action="Index">لغو</button>
     <input type="hidden">

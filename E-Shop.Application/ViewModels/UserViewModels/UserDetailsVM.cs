@@ -12,5 +12,7 @@ namespace E_Shop.Application.ViewModels.UserViewModels
         public string? EmailAddress { get; set; }
 
         public string? Mobile { get; set; }
+                                                            
+        public IEnumerable<string>? RoleNames { get; set; }
     }
 }

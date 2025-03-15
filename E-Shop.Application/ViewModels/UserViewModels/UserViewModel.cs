@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop.Application.ViewModels.UserViewModels
 {
@@ -31,7 +26,6 @@ namespace E_Shop.Application.ViewModels.UserViewModels
 
         public bool IsAdmin { get; set; }
         public bool IsDelete { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; }                
     }
-    
 }

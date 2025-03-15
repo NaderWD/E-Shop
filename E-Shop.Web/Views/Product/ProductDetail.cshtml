@@ -227,7 +227,7 @@
                                 <div class="product-seller-row product-seller-row--price">
                                     <div class="product-seller-row--price-now fa-num">
                                         <del class="price-old">@Model.Price</del>
-                                        <span class="discount ms-2">@((double)((Model.Price - Model.OffPrice) / Model.Price) * 100)%</span>
+                                        <span class="discount ms-2">@((double)((Model.Price - Model.OffPrice!) / Model.Price) * 100)%</span>
                                     </div>
                                     <span class="price-now">@Model.OffPrice <span class="currency">تومان</span></span>
                                 </div>

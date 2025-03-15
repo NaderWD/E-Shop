@@ -1,0 +1,21 @@
+﻿@model StateVM
+
+
+<div class="container mt-5">
+    <h2>ایجاد استان جدید</h2>
+    <form asp-action="CreateState" asp-controller="AdminAddress" asp-area="Admin" method="post">
+        <!-- Role Name Input -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <label for="StateName" class="form-label">نام استان</label>
+                    <input type="text" class="form-control" id="StateName" name="StateName" required />
+                </div>
+            </div>
+        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary mt-3">ایجاد</button>
+    </form>
+</div>
+
+

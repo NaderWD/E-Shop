@@ -57,11 +57,11 @@ namespace E_Shop.Application.Services.DiscountServices
                             var discount = query.OrderByDescending(m => m.StartDate).First();
                             if (query.Where(d => d.DiscountPercentage != null && d.DiscountAmount != null).Any())
                             {
-                                if (price - discount.DiscountAmount < price * (double)(discount.DiscountPercentage / 100))
+                                if (price - discount.DiscountAmount < price * (double)(discount.DiscountPercentage / 100)!)
                                 {
-                                    if (price * (double)(discount.DiscountPercentage / 100) > 0)
+                                    if (price * (double)(discount.DiscountPercentage / 100)! > 0)
                                     {
-                                        return (int)(price * (double)(discount.DiscountPercentage / 100));
+                                        return (int)(price * (double)(discount.DiscountPercentage / 100)!);
                                     }
                                     else
                                     {
@@ -70,7 +70,7 @@ namespace E_Shop.Application.Services.DiscountServices
                                 }
                                 else
                                 {
-                                    if (price - discount.DiscountAmount.Value! < 0)
+                                    if (price - discount.DiscountAmount!.Value! < 0)
                                     {
                                         return price - discount.DiscountAmount.Value;
                                     }
@@ -82,7 +82,7 @@ namespace E_Shop.Application.Services.DiscountServices
                             }
                             else if (query.Where(d => d.DiscountPercentage == null && d.DiscountAmount != null).Any())
                             {
-                                if (price - discount.DiscountAmount.Value > 0)
+                                if (price - discount.DiscountAmount!.Value> 0)
                                 {
                                     return price - discount.DiscountAmount.Value;
                                 }
@@ -93,9 +93,9 @@ namespace E_Shop.Application.Services.DiscountServices
                             }
                             else
                             {
-                                if (price * (double)(discount.DiscountPercentage / 100) > 0)
+                                if (price * (double)(discount.DiscountPercentage / 100)! > 0)
                                 {
-                                    return (int)(price * (double)(discount.DiscountPercentage / 100));
+                                    return (int)(price * (double)(discount.DiscountPercentage / 100)!);
                                 }
                                 else
                                 {
@@ -113,11 +113,11 @@ namespace E_Shop.Application.Services.DiscountServices
                         var discount = query.First();
                         if (query.Where(d => d.DiscountPercentage != null && d.DiscountAmount != null).Any())
                         {
-                            if (price - discount.DiscountAmount > price * (double)(discount.DiscountPercentage / 100))
+                            if (price - discount.DiscountAmount > price * (double)(discount.DiscountPercentage / 100)!)
                             {
-                                if (price * (double)(discount.DiscountPercentage / 100) > 0)
+                                if (price * (double)(discount.DiscountPercentage / 100)! > 0)
                                 {
-                                    return (int)(price * (double)(discount.DiscountPercentage / 100));
+                                    return (int)(price * (double)(discount.DiscountPercentage / 100)!);
                                 }
                                 else
                                 {
@@ -126,7 +126,7 @@ namespace E_Shop.Application.Services.DiscountServices
                             }
                             else
                             {
-                                if (price - discount.DiscountAmount.Value > 0)
+                                if (price - discount.DiscountAmount!.Value> 0)
                                 {
                                     return price - discount.DiscountAmount.Value;
                                 }
@@ -138,7 +138,7 @@ namespace E_Shop.Application.Services.DiscountServices
                         }
                         else if (query.Where(d => d.DiscountPercentage == null && d.DiscountAmount != null).Any())
                         {
-                            if (price - discount.DiscountAmount.Value > 0)
+                            if (price - discount.DiscountAmount!.Value > 0)
                             {
                                 return price - discount.DiscountAmount.Value;
                             }
@@ -149,9 +149,9 @@ namespace E_Shop.Application.Services.DiscountServices
                         }
                         else
                         {
-                            if (price * (double)(discount.DiscountPercentage / 100) > 0)
+                            if (price * (double)(discount.DiscountPercentage / 100)! > 0)
                             {
-                                return (int)(price * (double)(discount.DiscountPercentage / 100));
+                                return (int)(price * (double)(discount.DiscountPercentage / 100)!);
                             }
                             else
                             {
@@ -218,7 +218,7 @@ namespace E_Shop.Application.Services.DiscountServices
             }
             else
             {
-                if (price * ((double)publicDiscount.Discount.DiscountPercentage.Value / 100) > 0)
+                if (price * ((double)publicDiscount.Discount.DiscountPercentage!.Value / 100) > 0)
                 {
                     return (int)(price * ((double)publicDiscount.Discount.DiscountPercentage.Value / 100));
                 }

@@ -1,4 +1,5 @@
-﻿using E_Shop.Domain.Models.RolePermissionModels;
+﻿using E_Shop.Domain.Models.AddressModels;
+using E_Shop.Domain.Models.RolePermissionModels;
 using System.ComponentModel.DataAnnotations;
 using static E_Shop.Domain.Enum.UserEnums;
 
@@ -38,6 +39,7 @@ namespace E_Shop.Domain.Models.UserModels
 
         public bool IsActive { get; set; }
 
-        public List<UserRole>? UserRoles { get; set; }
+        public List<UserRole>? UserRoles { get; set; }         
+        public List<UserAddress>? UserAddresses { get; set; }
     }
 }

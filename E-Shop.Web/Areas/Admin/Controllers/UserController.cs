@@ -1,25 +1,27 @@
-﻿using E_Shop.Application.Services.UserServices;
+﻿using E_Shop.Application.Services.RoleServices;
+using E_Shop.Application.Services.UserServices;
+using E_Shop.Application.ViewModels.RoleViewModels;
 using E_Shop.Application.ViewModels.UserViewModels;
+using E_Shop.Domain.Models.RolePermissionModels;
 using E_Shop.Domain.Models.ValidationModels;
+using E_Shop.Web.attributes;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
-    public class UserController(IUserService _userService) : AdminBaseController
+    public class UserController(IUserService _userService, IUserRoleService _userRoleService) : AdminBaseController
     {
         public async Task<IActionResult> Index()
         {
-            var model = await _userService.GetAllUsers(); 
+            var model = await _userService.GetAllUsers();
             return View(model);
         }
 
-        
-        [HttpPost]
         public async Task<IActionResult> CreateUser(UserViewModel model)
         {
-            if (!ModelState.IsValid) 
-            { 
+            if (!ModelState.IsValid)
+            {
                 return PartialView("_AddUser", model);
             }
             else
@@ -57,7 +59,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 if (emailcheck.EmailAddress != model.EmailAddress)
                 {
 
-                    var result = await _userService.UpdateUser(model,true);
+                    var result = await _userService.UpdateUser(model, true);
                     switch (result)
                     {
                         case Domain.Enum.ValidationErrorType.EmailIsDuplicated:
@@ -97,5 +99,23 @@ namespace E_Shop.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        #region Add Role To User
+        [HttpGet]
+        public async Task<IActionResult> AddRoleToUser(int userId)
+        {
+            ViewBag.Roles = await _userRoleService.GetAllRolesForShow();
+            ViewBag.CurrentRoles = await _userRoleService.GetUsersCurrentRoles(userId);
+            return View(new UserRoleVM { UserId = userId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRoleToUser(int userId, List<int> selectedRoleIds)
+        {
+            if (!ModelState.IsValid) return RedirectToAction(nameof(AddRoleToUser), userId);
+            await _userRoleService.UpdateUserRole(userId, selectedRoleIds);
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
     }
 }

@@ -38,4 +38,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\User\Views\Address\" />
+  </ItemGroup>
+
 </Project>

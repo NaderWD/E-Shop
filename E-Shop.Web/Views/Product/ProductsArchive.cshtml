@@ -158,7 +158,7 @@
                                                                 <div class="product-price fa-num">
                                                                     <div class="d-flex align-items-center">
                                                                         <del class="price-old">@item.Price</del>
-                                                                        <span class="discount ms-2">@((double)((item.Price - item.OffPrice) / item.Price) * 100)%</span>
+                                                                        <span class="discount ms-2">@((double)((item.Price - item.OffPrice!) / item.Price) * 100)%</span>
                                                                     </div>
                                                                     <span class="price-now">@item.OffPrice <span class="currency">تومان</span></span>
                                                                 </div>

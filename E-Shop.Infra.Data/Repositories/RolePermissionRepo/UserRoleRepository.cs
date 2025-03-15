@@ -15,6 +15,9 @@ namespace E_Shop.Infra.Data.Repositories.RolePermissionRepo
                                                         .Where(x => !x.IsDelete)
                                                         .ToListAsync();
 
+        public async Task<List<Role>> GetAllRolesForUser()            
+            => await _context.Roles.Where(x => !x.IsDelete).ToListAsync();
+
         public async Task<UserRole> GetUserRoleById(int userRoleId)
             => await _context.UserRoles.Include(x => x.User)
                                                         .Include(x => x.Role)
@@ -32,8 +35,16 @@ namespace E_Shop.Infra.Data.Repositories.RolePermissionRepo
                                                         .Where(x => x.UserId == userId && !x.IsDelete)
                                                         .ToListAsync();
 
+        public async Task<List<Role>> GetRolesByUserId(int userId)
+            => await _context.UserRoles.Include(x => x.User)
+                                                        .Include(x => x.Role)
+                                                        .ThenInclude(x => x.RolePermissions!)
+                                                        .ThenInclude(x => x.Permission)
+                                                        .Select(x => x.Role)
+                                                        .ToListAsync();
+
         public async Task UpdateUserRole(UserRole userRoleId)
-                    => _context.UserRoles.Update(userRoleId);
+            => _context.UserRoles.Update(userRoleId);
 
         public async Task DeleteUserRole(int userRoleId)
             => _context.UserRoles.Remove(await GetUserRoleById(userRoleId));
