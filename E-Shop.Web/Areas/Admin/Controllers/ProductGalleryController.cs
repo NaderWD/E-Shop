@@ -15,6 +15,7 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             TempData.Keep("ProductId");
             return View(content);
         }
+
         #region AddGallery
 
         public IActionResult AddProductGallery(int productId)
