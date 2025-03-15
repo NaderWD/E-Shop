@@ -1,9 +1,8 @@
-﻿@using E_Shop.Application.ViewModels.Wallet
-@model List<WalletViewModel>
+﻿@model List<WalletViewModel>
 
 
 @{
-    int userId = (int)ViewData["UserId"];
+    int userId = (int)ViewData["UserId"]!;
 }
 
 <div class="col-xl-9 col-lg-8 col-md-7">

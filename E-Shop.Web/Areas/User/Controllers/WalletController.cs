@@ -1,11 +1,8 @@
 ﻿using E_Shop.Application.Services.WalletServices;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.Wallet;
-using E_Shop.Domain.DTOs.Novino;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
-using System.Security.Claims;
 
 namespace E_Shop.Web.Areas.User.Controllers
 {

@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Shop.Web.Areas.Admin.Controllers
 {
-[InvokePermission(PermissionName.UserManagement)]
     public class UserController(IUserService _userService, IUserRoleService _userRoleService) : AdminBaseController
     {
         public async Task<IActionResult> Index()
@@ -19,8 +18,6 @@ namespace E_Shop.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-
-        [HttpPost , InvokePermission(PermissionName.CreateUser)]
         public async Task<IActionResult> CreateUser(UserViewModel model)
         {
             if (!ModelState.IsValid)

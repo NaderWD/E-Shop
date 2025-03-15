@@ -7,6 +7,7 @@ namespace E_Shop.Domain.Contracts.AddressCont
         Task CreateState(State state);
         Task<List<State>> GetAllStates();
         Task<State> GetStateById(int stateId);
+        Task<List<City>> GetCitiesByStateId(int stateId);
         Task UpdateState(State state);
         Task DeleteState(int stateId);
     }

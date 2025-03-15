@@ -1,19 +1,14 @@
 ﻿using E_Shop.Application.Services.TicketServices;
 using E_Shop.Application.Tools;
 using E_Shop.Application.ViewModels.TicketViewModels;
-using E_Shop.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace E_Shop.Web.Areas.User.Controllers
 {
-
-
-    [Authorize]
     public class UserTicketController(ITicketService _ticketService, ITicketMessageService _messageService) : UserBaseController
     {
-
         #region User Tickets
         [HttpGet]
         public async Task<IActionResult> UserTickets()
@@ -23,8 +18,6 @@ namespace E_Shop.Web.Areas.User.Controllers
             return View(tickets);
         }
         #endregion
-
-
 
         #region Details & Save Message
         [HttpGet]
@@ -45,8 +38,6 @@ namespace E_Shop.Web.Areas.User.Controllers
         }
         #endregion
 
-
-
         #region Create 
         [HttpGet]
         public IActionResult Create()
@@ -65,8 +56,6 @@ namespace E_Shop.Web.Areas.User.Controllers
         }
         #endregion
 
-
-
         #region Delete Ticket
         public async Task<IActionResult> DeleteTicket(int ticketId)
         {
@@ -76,6 +65,5 @@ namespace E_Shop.Web.Areas.User.Controllers
             return RedirectToAction(nameof(UserTickets));
         }
         #endregion
-
     }
 }

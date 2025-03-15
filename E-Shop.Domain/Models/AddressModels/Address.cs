@@ -2,9 +2,10 @@
 {
     public class Address : BaseModel
     {
-        public int HouseNumber { get; set; }
-        public string StreetName { get; set; }
-        public string? NeighborHood { get; set; }
+        public string FullAddress { get; set; }            
+        public int CityId { get; set; }
+        public int StateId { get; set; }           
+        public bool IsDefault { get; set; }
         public City? City { get; set; }
         public State? State { get; set; }
         public List<UserAddress>? UserAddresses { get; set; }

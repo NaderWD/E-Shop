@@ -16,12 +16,17 @@ namespace E_Shop.Infra.Data.Repositories.AddressRepo
                                                  .ToListAsync();
 
         public async Task<City> GetCityById(int cityId)
-            => await _context.Cities.Include(x => x.Address)         
+            => await _context.Cities.Include(x => x.Address)
                                                  .Include(x => x.State)
                                                  .FirstOrDefaultAsync(x => x.Id == cityId && !x.IsDelete);
 
+        public async Task<List<City>> GetCityListByStateId(int stateId)
+            => await _context.Cities.Include(x => x.Address)
+                                                 .Include(x => x.State)
+                                                 .Where(x => x.StateId == stateId && !x.IsDelete).ToListAsync();
+
         public async Task UpdateCity(City city)
-            => _context.Cities.Update(city);
+                    => _context.Cities.Update(city);
 
         public async Task DeleteCity(int cityId)
             => _context.Cities.Remove(await GetCityById(cityId));

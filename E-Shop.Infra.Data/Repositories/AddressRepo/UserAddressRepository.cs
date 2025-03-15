@@ -8,19 +8,32 @@ namespace E_Shop.Infra.Data.Repositories.UserAddressRepo
     {
         public async Task CreateUserAddress(UserAddress userAddress)
             => await _context.UserAddresses.AddAsync(userAddress);
-
-        public async Task<List<UserAddress>> GetAllUserAddresss()
+                                                                                                                  
+        public async Task<List<UserAddress>> GetAllUserAddresses()
             => await _context.UserAddresses.Include(x => x.Address)
                                                                 .ThenInclude(x => x.City)
                                                                 .ThenInclude(x => x.State)
                                                                 .Where(x => !x.IsDelete)
                                                                 .ToListAsync();
 
+        public async Task<List<Address>> GetAddressListByUserId(int userId)
+            => await _context.UserAddresses.Include(x => x.Address)
+                                                                 .Include(x => x.User)
+                                                                 .Where(x => x.UserId == userId)
+                                                                 .Select(x => x.Address!)
+                                                                 .ToListAsync();
+
+        public async Task<List<UserAddress>> GetUserAddressListByUserId(int userId)
+            => await _context.UserAddresses.Include(x => x.Address)
+                                                                         .Include(x => x.User)
+                                                                         .Where(x => x.UserId == userId)
+                                                                         .ToListAsync();
+
         public async Task<UserAddress> GetUserAddressById(int userAddressId)
             => await _context.UserAddresses.Include(x => x.Address)
-                                                                 .ThenInclude(x => x.City)
-                                                                 .ThenInclude(x => x.State)
-                                                                 .FirstOrDefaultAsync(x => x.Id == userAddressId && !x.IsDelete);
+                                                                         .ThenInclude(x => x.City)
+                                                                         .ThenInclude(x => x.State)
+                                                                         .FirstOrDefaultAsync(x => x.Id == userAddressId && !x.IsDelete);
 
         public async Task UpdateUserAddress(UserAddress userAddress)
             => _context.UserAddresses.Update(userAddress);

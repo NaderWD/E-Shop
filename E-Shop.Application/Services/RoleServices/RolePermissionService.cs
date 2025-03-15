@@ -35,17 +35,17 @@ namespace E_Shop.Application.Services.RoleServices
             await Save();
         }
 
-        public async Task AssignPermissionsToRoleAsync(int roleId, List<int> selectedRolePermissionIds)
+        public async Task AssignPermissionsToRoleAsync(int roleId, List<int> selectedPermissionIds)
         {
             var rolePermissions = await _rolePermissionRepository.GetRolePermissionsByRoleId(roleId);
             foreach (var rolePermission in rolePermissions)
-                if (!selectedRolePermissionIds.Any( id=> id == rolePermission.Id)) await _rolePermissionRepository.DeleteRolePermission(rolePermission.Id);
-            foreach (var rolePermissionId in selectedRolePermissionIds)
+                if (!selectedPermissionIds.Any( id=> id == rolePermission.PermissionId)) await _rolePermissionRepository.DeleteRolePermission(rolePermission.Id);
+            foreach (var PermissionId in selectedPermissionIds)
             {
                 RolePermission rolePermission = new()
                 {
                     RoleId = roleId,
-                    PermissionId = rolePermissionId,
+                    PermissionId = PermissionId,
                     CreateDate = DateTime.Now,
                     LastModifiedDate = DateTime.Now,
                 };

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<StateVM>
+
+
+<div class="container mt-5">
+    <h5 class="mb-4">لیست استان‌ها</h5>
+
+    <!-- Add Role Button -->
+    <a class="btn btn-primary mb-3" asp-action="CreateState" asp-controller="AdminAddress">
+        افزودن استان جدید
+    </a>
+
+    <!-- Role Table -->
+    <div class="table-responsive text-nowrap" style="min-height: 100vh;">
+        <table class="table card-table">
+            <thead>
+                <tr>
+                    <th>نام استان</th>
+                    <th>حذف‌</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @if (Model.Any())
+                {
+                    @foreach (var state in Model.OrderBy(r => r.StateName))
+                    {
+                        <tr>
+                            <td>@state.StateName</td>
+                            <td>
+                                <div>
+                                    <span>
+                                        <button class="btn rounded-pill btn-danger" type="button" onclick="confirmDelete('deleteForm-@state.StateId')">
+                                            <i class="bx bx-trash me-1"></i> حذف
+                                        </button>
+                                        <form id="deleteForm-@state.StateId" method="post" action="@Url.Action("DeleteState", "AdminAddress", new { stateId = state.StateId, Title = state.StateId })" style="display:none;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" id="stateId" name="stateId" value="@state.StateId" />
+                                        </form>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2" class="text-center">استانی یافت نشد.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

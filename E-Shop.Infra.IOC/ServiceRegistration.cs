@@ -101,7 +101,10 @@ namespace E_Shop.Infra.IOC
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IUserAddressRepository, UserAddressRepository>();
-            services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<IStateServices, StateServices>();
+            services.AddScoped<ICityServices, CityServices>();
+            services.AddScoped<IAddressServices, AddressServices>();
+            services.AddScoped<IUserAddressServices, UserAddressServices>();
 
 
             return services;

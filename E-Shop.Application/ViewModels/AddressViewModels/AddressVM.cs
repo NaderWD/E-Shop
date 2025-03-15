@@ -3,20 +3,21 @@
     public class AddressVM
     {
         public int AddressId { get; set; }
-        public int HouseNumber { get; set; }
-        public string StreetName { get; set; }
-        public string? NeighborHood { get; set; }
+        public int CityId { get; set; }
+        public int StateId { get; set; }
+        public string FullAddress { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public CityVM? City { get; set; }
-        public StateVM? State { get; set; }               
+        public StateVM? State { get; set; }
         public List<UserAddressVM>? UserAddresses { get; set; }
     }
 
     public class CityVM
     {
         public int CityId { get; set; }
-        public string CityName { get; set; }
+        public string CityName { get; set; }             
+        public int StateId { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public StateVM? State { get; set; }
