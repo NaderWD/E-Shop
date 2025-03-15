@@ -91,6 +91,8 @@
             <span class="counter">۲</span>
         </a>
     </div>
-    
-    @await Component.InvokeAsync("MiniCart")
+    @if (User.Identity.IsAuthenticated)
+    {
+        @await Component.InvokeAsync("MiniCart")
+    }
 </div>
