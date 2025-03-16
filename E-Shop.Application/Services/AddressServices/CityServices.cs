@@ -4,14 +4,14 @@ using E_Shop.Domain.Models.AddressModels;
 
 namespace E_Shop.Application.Services.AddressServices
 {
-    public class CityServices(ICityRepository _cityRepository, IUserAddressRepository _userAddressRepository, IStateRepository _stateRepository) : ICityServices
+    public class CityServices(ICityRepository _cityRepository, IUserAddressRepository _userAddressRepository) : ICityServices
     {
-        public async Task CreateCity(CityVM cityVM)
+        public async Task CreateCity(string cityName, int stateId)
         {
             City newCity = new()
             {
-                CityName = cityVM.CityName,
-                StateId = cityVM.StateId,
+                CityName = cityName,
+                StateId = stateId,
                 CreateDate = DateTime.Now,
                 LastModifiedDate = DateTime.Now,
             };
@@ -55,16 +55,6 @@ namespace E_Shop.Application.Services.AddressServices
                 CityName = c.CityName
             })];
         }
-
-        //public async Task<List<CityVM>> GetSortedCityListForViewBag()
-        //{
-        //    var states = await _stateRepository.GetAllStates();
-        //    foreach (var state in states)
-        //    {
-        //        await _cityRepository.GetCityListByStateId(state.Id);
-        //    }
-
-        //}
 
         public async Task UpdateCity(CityVM cityVM)
         {

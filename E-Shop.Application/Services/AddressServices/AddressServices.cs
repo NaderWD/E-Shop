@@ -6,18 +6,22 @@ namespace E_Shop.Application.Services.AddressServices
 {
     public class AddressServices(IAddressRepository _addressRepository,
                                                    IUserAddressRepository _userAddressRepository,
-                                                   IStateServices _stateServices,
                                                    ICityServices _cityServices) : IAddressServices
     {
-        public async Task CreateAddress(AddressVM addressVM)
+        public async Task CreateAddress(CreateAddressVM addressVM, int userId)
         {
             Address newAddress = new()
             {
                 FullAddress = addressVM.FullAddress,
                 CityId = (await _cityServices.GetCityById(addressVM.CityId)).CityId,
-                StateId = (await _stateServices.GetStateById(addressVM.StateId)).StateId,
             };
             await _addressRepository.CreateAddress(newAddress);
+            await _userAddressRepository.Save();
+            _ = new UserAddress()
+            {
+                UserId = userId,
+                AddressId = newAddress.Id
+            };
             await _userAddressRepository.Save();
         }
 
@@ -29,7 +33,6 @@ namespace E_Shop.Application.Services.AddressServices
                 AddressId = address.Id,
                 FullAddress = address.FullAddress,
                 CityId = address.CityId,
-                StateId = address.StateId,
                 CreateDate = address.CreateDate,
                 LastModifiedDate = address.LastModifiedDate,
             };
@@ -55,17 +58,15 @@ namespace E_Shop.Application.Services.AddressServices
             };
         }
 
-        public async Task<List<AddressVM>> GetUsersAddressesByUserId(int userId)
+        public async Task<List<AddressForShowVM>> ShowAddressListByUserId(int userId)
         {
             var addresses = (await _userAddressRepository.GetAddressListByUserId(userId));
-            return [.. addresses.Select(a => new AddressVM
+            return [.. addresses.Select(a => new AddressForShowVM
             {
                 AddressId = a.Id,
-                CityId = a.CityId,
-                StateId = a.StateId,
                 FullAddress = a.FullAddress,
-                CreateDate = a.CreateDate,
-                LastModifiedDate = a.LastModifiedDate
+                CityName = a.City.CityName,
+                StateName = a.City.State.StateName
             })];
         }
 
@@ -74,7 +75,6 @@ namespace E_Shop.Application.Services.AddressServices
             var address = await _addressRepository.GetAddressById(addressVM.AddressId);
             address.FullAddress = addressVM.FullAddress;
             address.CityId = addressVM.CityId;
-            address.StateId = addressVM.StateId;
             address.LastModifiedDate = DateTime.Now;
             await _addressRepository.UpdateAddress(address);
             await _userAddressRepository.Save();

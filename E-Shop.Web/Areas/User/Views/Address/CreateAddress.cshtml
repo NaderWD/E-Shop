@@ -1,0 +1,66 @@
+﻿@model CreateAddressVM
+
+
+<div class="container mt-5">
+    <h2>افزودن آدرس جدید</h2>
+    <form asp-action="CreateAddress" method="post">
+        <div class="form-group">
+            <label for="StateId">استان</label>
+            <select id="StateId" class="form-control">
+                <option value="">-- انتخاب استان --</option>
+                @foreach (var state in ViewBag.States)
+                {
+                    <option value="@state.Value">@state.Text</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CityId">شهر</label>
+            <select asp-for="CityId" class="form-control" id="CityId">
+                <option value="">-- ابتدا استان را انتخاب کنید --</option>
+            </select>
+            <span asp-validation-for="CityId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="FullAddress">آدرس کامل</label>
+            <textarea asp-for="FullAddress" class="form-control" id="FullAddress" rows="3"></textarea>
+            <span asp-validation-for="FullAddress" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">افزودن آدرس</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#StateId').change(function () {
+                var stateId = $(this).val();
+                var cityDropdown = $('#CityId');
+
+                if (stateId) {
+                    $.ajax({
+                        url: '@Url.Action("GetCitiesByStateId", "Address")',
+                        type: 'GET',
+                        data: { stateId: stateId },
+                        success: function (data) {
+                            cityDropdown.empty();
+                            cityDropdown.append('<option value="">-- انتخاب شهر --</option>');
+                            $.each(data, function (index, city) {
+                                cityDropdown.append('<option value="' + city.cityId + '">' + city.cityName + '</option>');
+                            });
+                        },
+                        error: function () {
+                            alert('خطا در بارگذاری شهرها');
+                        }
+                    });
+                } else {
+                    cityDropdown.empty().append('<option value="">-- ابتدا استان را انتخاب کنید --</option>');
+                }
+            });
+        });
+    </script>
+}

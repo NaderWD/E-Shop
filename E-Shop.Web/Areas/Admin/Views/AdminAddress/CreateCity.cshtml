@@ -1,16 +1,19 @@
-﻿@model StateVM
+﻿@model CityVM
+@{
+    var stateId = ViewBag.stateId;
+}
 
 
 <div class="container mt-5">
-    <h2>ایجاد استان جدید</h2>
-    <form asp-action="CreateState" asp-controller="AdminAddress" asp-area="Admin" method="post">
+    <h2>ایجاد شهر جدید</h2>
+    <form asp-action="CreateCity" asp-controller="AdminAddress" asp-area="Admin" method="post">
         <input type="hidden" asp-for="StateId" />
         <!-- Role Name Input -->
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-4">
-                    <label for="StateName" class="form-label">نام استان</label>
-                    <input type="text" class="form-control" id="StateName" name="StateName" required />
+                    <label for="CityName" class="form-label">نام شهر</label>
+                    <input type="text" class="form-control" id="CityName" name="CityName" required />
                 </div>
             </div>
         </div>

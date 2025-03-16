@@ -4,11 +4,11 @@ namespace E_Shop.Application.Services.AddressServices
 {
     public interface IAddressServices
     {
-        Task CreateAddress(AddressVM addressVM);
+        Task CreateAddress(CreateAddressVM addressVM, int userId);
         Task<AddressVM> GetAddressById(int addressId);
         Task<StateVM> GetStateByAddressId(int addressId);
         Task<CityVM> GetCityByAddressId(int addressId);
-        Task<List<AddressVM>> GetUsersAddressesByUserId(int userId);
+        Task<List<AddressForShowVM>> ShowAddressListByUserId(int userId);
         Task UpdateAddress(AddressVM addressVM);
         Task SoftDeleteAddress(int addressId);
     }

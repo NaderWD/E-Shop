@@ -15,6 +15,7 @@
             <thead>
                 <tr>
                     <th>نام استان</th>
+                    <th>مدیریت شهر ها</th>
                     <th>حذف‌</th>
                 </tr>
             </thead>
@@ -25,6 +26,15 @@
                     {
                         <tr>
                             <td>@state.StateName</td>
+                            <td>
+                                <div>
+                                    <span>
+                                        <a class="btn rounded-pill btn-success" asp-action="AllCities" asp-controller="AdminAddress" asp-route-stateId="@state.StateId">
+                                            <i class="bx bx-book-open me-1"></i> شهر ها
+                                        </a>
+                                    </span>
+                                </div>
+                            </td>
                             <td>
                                 <div>
                                     <span>
