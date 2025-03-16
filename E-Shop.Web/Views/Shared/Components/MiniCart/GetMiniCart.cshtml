@@ -11,8 +11,10 @@
         </span>
 
         @if (Model.orderProducts != null)
-        {<span class="counter">@Model.orderProducts.Count()</span> }
-        
+        {
+            <span class="counter">@Model.orderProducts.Count()</span>
+        }
+
     </a>
     <div class="mini-cart">
         <div class="mini-cart-header">
@@ -24,46 +26,92 @@
         <div class="mini-cart-products do-simplebar">
             @if (Model.orderProducts != null)
             {
+
                 @foreach (var product in Model.orderProducts)
                 {
-                    <div class="mini-cart-product">
-                        <div class="mini-cart-product-thumbnail">
-                            <a href="#">
-                                <img src="./theme-assets/images/products/@product.ImageName" alt="@product.Title">
-                            </a>
-                        </div>
-                        <div class="mini-cart-product-detail">
-                            <div class="mini-cart-product-title">
+                    @if (product.Price != product.OffPrice)
+                    {
+                        <div class="mini-cart-product">
+                            <div class="mini-cart-product-thumbnail">
                                 <a href="#">
-                                    @product.Title
+                                    <img src="./theme-assets/images/products/@product.ImageName" alt="@product.Title">
                                 </a>
                             </div>
-                            <div class="mini-cart-purchase-info">
-                                <div class="mini-cart-product-meta">
-                                    <span class="fa-num">@product.Count عدد</span>
-                                    @if (!string.IsNullOrEmpty(product.ColorName))
-                                    {
-                                        <span class="color" style="background-color: @product.ColorName;"></span>
-                                    }
+                            <div class="mini-cart-product-detail">
+                                <div class="mini-cart-product-title">
+                                    <a href="#">
+                                        @product.Title
+                                    </a>
                                 </div>
-                                <div class="mini-cart-product-price fa-num">
-                                    @if (product.OffPrice > 0)
-                                    {
-                                        <del>@product.Price.ToString("N0")</del>
-                                        @product.OffPrice.ToString("N0")
-                                    }
-                                    else
-                                    {
-                                        @product.Price.ToString("N0")
-                                    }
-                                    <span class="currency">تومان</span>
+                                <div class="mini-cart-purchase-info">
+                                    <div class="mini-cart-product-meta">
+                                        <span class="fa-num">@product.Count عدد</span>
+                                        @if (!string.IsNullOrEmpty(product.ColorName))
+                                        {
+                                            <span class="color" style="background-color: @product.ColorName;"></span>
+                                        }
+                                    </div>
+                                    <div class="mini-cart-product-price fa-num">
+                                        @if (product.OffPrice > 0)
+                                        {
+                                            <del>@product.Price.ToString("N0")</del>
+                                            @product.OffPrice.ToString("N0")
+                                        }
+                                        else
+                                        {
+                                            @product.Price.ToString("N0")
+                                        }
+                                        <span class="currency">تومان</span>
+                                    </div>
                                 </div>
+                                <button class="mini-cart-product-remove"
+                                data-product-id="@product.ProductId"
+                                data-color-id="@product.ColorId"></button>
                             </div>
-                            <button class="mini-cart-product-remove"
-                                    data-product-id="@product.ProductId"
-                                    data-color-id="@product.ColorId"></button>
                         </div>
-                    </div>
+                    }
+
+                    else
+                    {
+                        <div class="mini-cart-product">
+                            <div class="mini-cart-product-thumbnail">
+                                <a href="#">
+                                    <img src="./theme-assets/images/products/@product.ImageName" alt="@product.Title">
+                                </a>
+                            </div>
+                            <div class="mini-cart-product-detail">
+                                <div class="mini-cart-product-title">
+                                    <a href="#">
+                                        @product.Title
+                                    </a>
+                                </div>
+                                <div class="mini-cart-purchase-info">
+                                    <div class="mini-cart-product-meta">
+                                        <span class="fa-num">@product.Count عدد</span>
+                                        @if (!string.IsNullOrEmpty(product.ColorName))
+                                        {
+                                            <span class="color" style="background-color: @product.ColorName;"></span>
+                                        }
+                                    </div>
+                                    <div class="mini-cart-product-price fa-num">
+                                        @if (product.OffPrice > 0)
+                                        {
+                                            @product.Price.ToString("N0")
+                                            
+                                        }
+                                        else
+                                        {
+                                            @product.Price.ToString("N0")
+                                        }
+                                        <span class="currency">تومان</span>
+                                    </div>
+                                </div>
+                                <button class="mini-cart-product-remove"
+                                        data-product-id="@product.ProductId"
+                                        data-color-id="@product.ColorId"></button>
+                            </div>
+                        </div>
+                    }
                 }
 
             }

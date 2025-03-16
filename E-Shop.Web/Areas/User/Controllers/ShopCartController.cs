@@ -32,5 +32,43 @@ namespace E_Shop.Web.Areas.User.Controllers
 
             return RedirectToAction("ShopCartIndex");
         }
+
+        [HttpPost]
+        public IActionResult AddAnotherProduct(int productId ,int colorId)
+        {
+            int userId = User.GetUserId();
+
+            CreateOrderViewModel model = new CreateOrderViewModel() 
+            {
+                ProductId = productId,
+                UserId = userId,
+                ColorId = colorId,
+            };
+
+            var result = _orderService.AddProduct(model);
+
+
+            return RedirectToAction("ShopCartIndex");
+        }
+
+        [HttpPost]
+        public IActionResult removeProduct(int productId, int colorId)
+        {
+            int userId = User.GetUserId();
+
+            CreateOrderViewModel model = new CreateOrderViewModel()
+            {
+                ProductId = productId,
+                UserId = userId,
+                ColorId = colorId,
+            };
+
+            var result = _orderService.AddProduct(model);
+
+
+            return RedirectToAction("ShopCartIndex");
+        }
+
+        
     }
 }

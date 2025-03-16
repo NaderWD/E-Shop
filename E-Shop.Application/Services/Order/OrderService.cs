@@ -119,7 +119,7 @@ namespace E_Shop.Application.Services.Order
                 {
                     OrderId = modelOrder.Id,
                     CreateDate = DateTime.Now,
-                    Price = product.Price,
+                    Price = price.Value,
                     ProductId = order.ProductId,
                     Count = 1,
                     OffPrice = offprice,
@@ -183,9 +183,9 @@ namespace E_Shop.Application.Services.Order
                     model.orderProducts.Add(new OrderProductViewModel
                     {
                         ImageName = product.ImageName,
-                        Price = product.Price,
+                        Price = price.Value,
                         Title = product.Title,
-                        
+
                         #region offprice
 
                         OffPrice = discount.Any(d => d.IsAppliedToAll) ?
@@ -223,6 +223,20 @@ namespace E_Shop.Application.Services.Order
                 return model;
             }
 
+        }
+
+        public bool RemoveProduct(CreateOrderViewModel model)
+        {
+            var order = _orderRepository.GetOrderByUserId(model.UserId);
+            var orderdetail = _orderRepository.GetById(order.Id, model.ProductId);
+
+            orderdetail.Count = orderdetail.Count - 1;
+            if (orderdetail.Count == 0)
+            {
+                
+            }
+            _orderRepository.UpdateOrderDetails(orderdetail);
+            return true;
         }
     }
 }

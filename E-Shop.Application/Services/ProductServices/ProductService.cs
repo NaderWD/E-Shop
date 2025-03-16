@@ -313,6 +313,7 @@ namespace E_Shop.Application.Services.ProductServices
                 
             };
 
+            model.Colors = new List<ColorViewModel>();
             foreach (var item in product.Color)
             {
 

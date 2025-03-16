@@ -10,6 +10,7 @@ namespace E_Shop.Application.Services.Order
     public interface IOrderService
     {
         bool AddProduct(CreateOrderViewModel model);
+        bool RemoveProduct(CreateOrderViewModel model);
         bool CreateOrder(CreateOrderViewModel order);
         bool DeleteOrder();
         OrderViewModel GetOrder(int userId);
