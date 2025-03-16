@@ -4,7 +4,7 @@ namespace E_Shop.Application.Services.AddressServices
 {
     public interface ICityServices
     {
-        Task CreateCity(CityVM cityVM);
+        Task CreateCity(string cityName, int stateId);
         Task<List<CityVM>> GetAllCities();
         Task<CityVM> GetCityById(int cityId);
         Task<List<CityVM>> GetCityListByStateId(int stateId);

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CityVM>
+@{
+    var stateId = ViewBag.stateId;
+}
+
+
+<div class="container mt-5">
+    <h5 class="mb-4">لیست شهر ها</h5>
+
+    <!-- Add Role Button -->
+    <a class="btn btn-primary mb-3" asp-action="CreateCity" asp-controller="AdminAddress" asp-route-stateId="@stateId">
+        افزودن شهر جدید
+    </a>
+
+    <!-- Role Table -->
+    <div class="table-responsive text-nowrap" style="min-height: 100vh;">
+        <table class="table card-table">
+            <thead>
+                <tr>
+                    <th>نام شهر</th>
+                    <th>حذف‌</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @if (Model.Any())
+                {
+                    @foreach (var city in Model.OrderBy(r => r.CityName))
+                    {
+                        <tr>
+                            <td>@city.CityName</td>
+                            <td>
+                                <div>
+                                    <span>
+                                        <button class="btn rounded-pill btn-danger" type="button" onclick="confirmDelete('deleteForm-@city.CityId')">
+                                            <i class="bx bx-trash me-1"></i> حذف
+                                        </button>
+                                        <form id="deleteForm-@city.CityName" method="post" action="@Url.Action("DeleteCity", "AdminAddress", new { cityId = city.CityId, Title = city.CityName })" style="display:none;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" id="cityId" name="cityId" value="@city.CityId" />
+                                        </form>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2" class="text-center">شهری یافت نشد.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

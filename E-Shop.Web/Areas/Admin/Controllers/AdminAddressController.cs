@@ -34,23 +34,25 @@ namespace E_Shop.Web.Areas.Admin.Controllers
         #endregion
 
         #region City
-        public async Task<IActionResult> AllCities()
+        [HttpGet]
+        public async Task<IActionResult> AllCities(int stateId)
         {
-            return View(await _cityServices.GetAllCities());
+            ViewBag.stateId = stateId;
+            return View(await _cityServices.GetCityListByStateId(stateId));
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateCity()
+        public async Task<IActionResult> CreateCity(int stateId)
         {
-            ViewBag.StateList = await _stateServices.GetAllStates();
-            return View(new CityVM { });
+            ViewBag.stateId = stateId;
+            return View(new CityVM { StateId = stateId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCity(CityVM cityVm)
+        public async Task<IActionResult> CreateCity(string cityName, int stateId)
         {
-            await _cityServices.CreateCity(cityVm);
-            return RedirectToAction(nameof(AllCities));
+            await _cityServices.CreateCity(cityName, stateId);
+            return RedirectToAction(nameof(AllCities), new {stateId});
         }
 
         [HttpPost]
