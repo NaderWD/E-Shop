@@ -15,7 +15,11 @@ namespace E_Shop.Application.Services.DiscountServices
         public bool CreateDiscount(DiscountViewModel discount)
         {
             Discount model = new Discount();
-            if (discount.DiscountAmount != null && discount.DiscountPercentage != null)
+            if (discount.DiscountAmount == null && discount.DiscountPercentage == null)
+            {
+                return false;
+            }
+            else
             {
                 if (discount.StartDate == null && discount.EndDate != null)
                 {
@@ -37,10 +41,6 @@ namespace E_Shop.Application.Services.DiscountServices
                 discountRepository.CreateDiscount(model);
 
                 return true;
-            }
-            else
-            {
-                return false;
             }
         }
         public bool UpdateDiscount(UpdateDiscountViewModel discount)

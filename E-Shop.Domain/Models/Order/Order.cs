@@ -13,6 +13,7 @@ namespace E_Shop.Domain.Models.Order
         public int UserId { get; set; }
         public bool IsFinally { get; set; }
         public int TotalPrice { get; set; }
+        public int? AddressId { get; set; }
         public List<OrderDetails> OrderDetails { get; set; }
 
         [ForeignKey(nameof(UserId))]

@@ -12,13 +12,13 @@ namespace E_Shop.Application.ViewModels.DiscountsViewModels
     public class DiscountViewModel
     {
         public int? Id { get; set; }
-        [MaxLength(50)]
+        [MaxLength(50, ErrorMessage = "کد نمی‌تواند بیشتر از ۵۰ کاراکتر باشد.")]
         public string? Code { get; set; }
 
-        [Range(0, 100)]
+        [Range(0, 100, ErrorMessage = "درصد تخفیف باید بین ۰٪ تا ۱۰۰٪ باشد.")]
         public int? DiscountPercentage { get; set; }
 
-        [Range(0, int.MaxValue)]
+        [Range(0, int.MaxValue, ErrorMessage = "مبلغ تخفیف نمی‌تواند منفی باشد.")]
         public int? DiscountAmount { get; set; }
 
         public DateTime? StartDate { get; set; }
