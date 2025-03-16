@@ -209,3 +209,34 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+
+//Address Creation
+$(document).ready(function () {
+    $('#StateId').change(function () {
+        var stateId = $(this).val();
+        var cityDropdown = $('#CityId');
+
+        if (stateId) {
+            $.ajax({
+                url: '@Url.Action("GetCitiesByStateId", "Address")',
+                type: 'GET',
+                data: { stateId: stateId },
+                success: function (data) {
+                    cityDropdown.empty();
+                    cityDropdown.append('<option value="">-- انتخاب شهر --</option>');
+                    $.each(data, function (index, city) {
+                        cityDropdown.append('<option value="' + city.cityId + '">' + city.cityName + '</option>');
+                    });
+                },
+                error: function () {
+                    alert('خطا در بارگذاری شهرها');
+                }
+            });
+        } else {
+            cityDropdown.empty().append('<option value="">-- ابتدا استان را انتخاب کنید --</option>');
+        }
+    });
+});
+
+

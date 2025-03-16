@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace E_Shop.Application.ViewModels.UserViewModels
+﻿namespace E_Shop.Application.ViewModels.UserViewModels
 {
     public class UserDetailsVM
     {
